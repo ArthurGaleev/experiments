@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-02T18:31:36",
+  "seconds": 25.34,
+  "python": "3.13.16",
+  "opencv": "5.0.0",
+  "numpy": "2.5.4",
+  "title": "SIFT",
+  "run": "20261102-183110-969545",
+  "params": {
+    "ratio": 0.8,
+    "max_error_px": 1.5,
+    "trials": 30,
+    "min_z": 4.0,
+    "seed": 0
+  },
+  "dataset": "Blueprint-Bench / example_house (manually split collages)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
