@@ -1,0 +1,33 @@
+{
+  "python": "3.13.16",
+  "created": "2026-11-09T22:38:26",
+  "versions": {
+    "torch": "2.15.0",
+    "torchvision": "0.29.2",
+    "romav2": "2.0.1",
+    "numpy": "2.5.4",
+    "opencv-python-headless": "5.0.0.93"
+  },
+  "weights_sha256": "1557dec0d21b62366465f7ff4d5fdf228cc695d0582e196ad2b80e05230828b7",
+  "device": "mps:0",
+  "failures": 0,
+  "status": "completed",
+  "title": "RoMa v2 и SIFT: соответствия",
+  "run": "20261109-223826-955235",
+  "params": {
+    "pair": null,
+    "all_pairs": true,
+    "reference_smoke": false,
+    "device": "mps",
+    "setting": "precise",
+    "num_matches": 2048,
+    "min_confidence": 0.0,
+    "max_error_px": 1.5,
+    "ratio": 0.8,
+    "show_lines": 100,
+    "seed": 0,
+    "limit": null
+  },
+  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}

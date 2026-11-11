@@ -1,0 +1,58 @@
+{
+  "created": "2026-11-11T04:03:52.222523+03:00",
+  "seconds": 16.154159875004552,
+  "python": "3.13.16",
+  "settings": {
+    "min_confidence": 0.2,
+    "base_error_m": 0.03,
+    "relative_error": 0.04,
+    "iterations": 1200,
+    "min_inliers": 20,
+    "min_fraction": 0.3,
+    "min_cells": 6,
+    "max_reprojection_diagonal": 0.015,
+    "max_gravity_deg": 15.0,
+    "grid": 8,
+    "seed": 0
+  },
+  "status": "complete",
+  "accepted": 9,
+  "attempted": 26,
+  "title": "Совмещение облаков: пара и группа",
+  "run": "20261111-040351-894796",
+  "params": {
+    "pair": [
+      [
+        "img_2",
+        "img_9"
+      ],
+      [
+        "img_12",
+        "img_6"
+      ],
+      [
+        "img_10",
+        "img_13"
+      ],
+      [
+        "img_12",
+        "img_14"
+      ]
+    ],
+    "group": [
+      [
+        "img_1",
+        "img_2",
+        "img_3",
+        "img_9",
+        "img_12"
+      ]
+    ],
+    "models": [
+      "metricanything",
+      "moge2"
+    ]
+  },
+  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}

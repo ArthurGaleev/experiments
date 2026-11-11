@@ -1,0 +1,348 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><title>Глубина одного фото: MetricAnything и MoGe-2</title><style>
+body { font: 14px/1.45 system-ui, sans-serif; margin: 24px; color: #222; background: #fafafa; }
+h1 { font-size: 22px; margin: 0 0 8px; }
+h2 { font-size: 17px; margin: 30px 0 8px; }
+p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
+  border: 1px solid #ddd; }
+.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
+figcaption { font-size: 12px; color: #555; margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
+  vertical-align: -2px; border: 1px solid #bbb; }
+.mwrap { overflow-x: auto; }
+table.m { border-collapse: collapse; font-size: 10px; }
+table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
+  border: 1px solid #fff; }
+table.m td[data-index] { cursor: pointer; }
+table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
+table.m td.diag { background: #fff; }
+table.m th { font-weight: normal; color: #555; white-space: nowrap; }
+table.m th.rh { text-align: right; padding-right: 6px; }
+table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
+table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
+table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
+table.m th.hl { color: #000; font-weight: 700; }
+#viewer { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column;
+  align-items: center; justify-content: center; background: rgba(18, 18, 18, 0.95); }
+#viewer.open { display: flex; }
+#viewer img { width: 92vw; height: 80vh; object-fit: contain; }
+#viewer .cap { color: #eee; margin-top: 12px; max-width: 90vw; text-align: center;
+  white-space: pre-line; }
+#viewer button { position: absolute; border: 0; background: none; color: #ccc;
+  font-size: 44px; line-height: 1; padding: 12px 18px; cursor: pointer; }
+#viewer button:hover { color: #fff; }
+#viewer .prev { left: 0; top: 44%; }
+#viewer .next { right: 0; top: 44%; }
+#viewer .close { right: 4px; top: 4px; font-size: 34px; }
+</style></head><body><nav style="margin-bottom:20px"><a href="../">← Все эксперименты</a> · <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">Источник фотографий</a> · <a href="../LICENSE">Apache 2.0</a></nav><h1>Глубина одного фото: MetricAnything и MoGe-2</h1>
+<h2>Условия сравнения</h2>
+<p>Вход модели — только RGB. Эталонные K, глубина и поза используются после инференса. Основные ошибки рассчитаны на всех допустимых пикселях эталона, до маски модели. Отсутствующая численная глубина считается ошибкой δ1; AbsRel/RMSE всей области в таком случае недоступны. Подгонка масштаба показана только отдельной диагностикой. Таблица усредняет кадры поровну внутри набора. Отказы сохранены в знаменателе.</p>
+<table><tr><th>Набор / модель</th><th>Готово / всего</th><th>AbsRel</th><th>RMSE, м</th><th>δ1</th><th>AbsRel после подгонки масштаба</th><th>Покрытие маски</th><th>Медиана, с</th></tr><tr><td>photos / MetricAnything</td><td>23 / 23</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>0.312</td></tr><tr><td>photos / MoGe-2 с нормалями</td><td>23 / 23</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>0.341</td></tr></table><div style='width:360px;max-width:100%;height:16px;background:linear-gradient(to right,rgb(48,18,59),rgb(70,107,227),rgb(40,188,235),rgb(50,242,152),rgb(164,252,60),rgb(236,209,58),rgb(251,129,34),rgb(210,49,5),rgb(122,4,3))'></div><p>Слева 0 м, справа 8 м; большие значения насыщены. Чёрный — отсутствующая глубина.</p><p>Красно-жёлтая карта ошибки: 0 — тёмный, ≥100% — светлый; чёрный — нет эталона, пурпурный — численный отказ модели.</p><p>Небольшой dev-пример проверяет работоспособность; это не бенчмарк. Holdout не использован. Пересечение сцен с обучением готовых весов не исключено.</p><p>В bundled Blueprint sample пять коллажей вручную разделены на отдельные фото. Эталонных глубины и камер у него нет; план и смысл имён не подаются моделям.</p><p><a href='info.json'>Параметры и хеши</a> · <a href='results.json'>Результаты</a> · <a href='summary.json'>Сводка</a></p>
+<h2>00_photos_img_1</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/00_photos_img_1.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/00_photos_img_1.png' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/00_photos_img_1_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/00_photos_img_1_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/00_photos_img_1_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/00_photos_img_1_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/00_photos_img_1_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/00_photos_img_1.jpg' loading='lazy' alt='' data-group='s1' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>01_photos_img_10</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/01_photos_img_10.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/01_photos_img_10.png' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/01_photos_img_10.jpg' loading='lazy' alt='' data-group='s2' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>02_photos_img_11_a</h2>
+<p>MetricAnything: 0.45 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.35 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/02_photos_img_11_a.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/02_photos_img_11_a.png' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/02_photos_img_11_a_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/02_photos_img_11_a_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/02_photos_img_11_a_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/02_photos_img_11_a_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/02_photos_img_11_a_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/02_photos_img_11_a.jpg' loading='lazy' alt='' data-group='s3' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>03_photos_img_11_b</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/03_photos_img_11_b.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/03_photos_img_11_b.png' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/03_photos_img_11_b_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/03_photos_img_11_b_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/03_photos_img_11_b_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/03_photos_img_11_b_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/03_photos_img_11_b_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/03_photos_img_11_b.jpg' loading='lazy' alt='' data-group='s4' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>04_photos_img_12</h2>
+<p>MetricAnything: 0.32 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.35 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/04_photos_img_12.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/04_photos_img_12.png' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/04_photos_img_12_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/04_photos_img_12_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/04_photos_img_12_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/04_photos_img_12_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/04_photos_img_12_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/04_photos_img_12.jpg' loading='lazy' alt='' data-group='s5' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>05_photos_img_13</h2>
+<p>MetricAnything: 0.32 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/05_photos_img_13.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/05_photos_img_13.png' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/05_photos_img_13_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/05_photos_img_13_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/05_photos_img_13_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/05_photos_img_13_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/05_photos_img_13_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/05_photos_img_13.jpg' loading='lazy' alt='' data-group='s6' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>06_photos_img_14</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/06_photos_img_14.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/06_photos_img_14.png' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/06_photos_img_14_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/06_photos_img_14_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/06_photos_img_14_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/06_photos_img_14_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/06_photos_img_14_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/06_photos_img_14.jpg' loading='lazy' alt='' data-group='s7' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>07_photos_img_15</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/07_photos_img_15.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/07_photos_img_15.png' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/07_photos_img_15_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/07_photos_img_15_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/07_photos_img_15_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/07_photos_img_15_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/07_photos_img_15_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/07_photos_img_15.jpg' loading='lazy' alt='' data-group='s8' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>08_photos_img_16_a</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/08_photos_img_16_a.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/08_photos_img_16_a.png' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/08_photos_img_16_a_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/08_photos_img_16_a_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/08_photos_img_16_a_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/08_photos_img_16_a_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/08_photos_img_16_a_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/08_photos_img_16_a.jpg' loading='lazy' alt='' data-group='s9' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>09_photos_img_16_b</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.33 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/09_photos_img_16_b.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/09_photos_img_16_b.png' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/09_photos_img_16_b_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/09_photos_img_16_b_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/09_photos_img_16_b_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/09_photos_img_16_b_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/09_photos_img_16_b_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/09_photos_img_16_b.jpg' loading='lazy' alt='' data-group='s10' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>10_photos_img_17_a</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.33 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/10_photos_img_17_a.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/10_photos_img_17_a.png' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/10_photos_img_17_a_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/10_photos_img_17_a_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/10_photos_img_17_a_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/10_photos_img_17_a_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/10_photos_img_17_a_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/10_photos_img_17_a.jpg' loading='lazy' alt='' data-group='s11' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>11_photos_img_17_b</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.33 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/11_photos_img_17_b.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/11_photos_img_17_b.png' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/11_photos_img_17_b_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/11_photos_img_17_b_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/11_photos_img_17_b_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/11_photos_img_17_b_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/11_photos_img_17_b_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/11_photos_img_17_b.jpg' loading='lazy' alt='' data-group='s12' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>12_photos_img_18</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.33 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/12_photos_img_18.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/12_photos_img_18.png' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/12_photos_img_18_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/12_photos_img_18_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/12_photos_img_18_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/12_photos_img_18_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/12_photos_img_18_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/12_photos_img_18.jpg' loading='lazy' alt='' data-group='s13' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>13_photos_img_2</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.33 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/13_photos_img_2.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/13_photos_img_2.png' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/13_photos_img_2_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/13_photos_img_2_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/13_photos_img_2_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/13_photos_img_2_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/13_photos_img_2_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/13_photos_img_2.jpg' loading='lazy' alt='' data-group='s14' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>14_photos_img_3</h2>
+<p>MetricAnything: 0.32 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.33 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/14_photos_img_3.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/14_photos_img_3.png' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/14_photos_img_3_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/14_photos_img_3_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/14_photos_img_3_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/14_photos_img_3_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/14_photos_img_3_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/14_photos_img_3.jpg' loading='lazy' alt='' data-group='s15' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>15_photos_img_4_a</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.33 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/15_photos_img_4_a.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/15_photos_img_4_a.png' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/15_photos_img_4_a_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/15_photos_img_4_a_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/15_photos_img_4_a_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/15_photos_img_4_a_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/15_photos_img_4_a_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/15_photos_img_4_a.jpg' loading='lazy' alt='' data-group='s16' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>16_photos_img_4_b</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/16_photos_img_4_b.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/16_photos_img_4_b.png' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/16_photos_img_4_b_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/16_photos_img_4_b_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/16_photos_img_4_b_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/16_photos_img_4_b_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/16_photos_img_4_b_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/16_photos_img_4_b.jpg' loading='lazy' alt='' data-group='s17' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>17_photos_img_5_a</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/17_photos_img_5_a.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/17_photos_img_5_a.png' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/17_photos_img_5_a_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/17_photos_img_5_a_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/17_photos_img_5_a_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/17_photos_img_5_a_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/17_photos_img_5_a_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/17_photos_img_5_a.jpg' loading='lazy' alt='' data-group='s18' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>18_photos_img_5_b</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.35 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/18_photos_img_5_b.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/18_photos_img_5_b.png' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/18_photos_img_5_b_metricanything_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/18_photos_img_5_b_metricanything_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/18_photos_img_5_b_moge2_depth.jpg' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/18_photos_img_5_b_moge2_mask.png' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/18_photos_img_5_b_moge2_normals.jpg' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/18_photos_img_5_b.jpg' loading='lazy' alt='' data-group='s19' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>19_photos_img_6</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/19_photos_img_6.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/19_photos_img_6.png' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/19_photos_img_6_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/19_photos_img_6_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/19_photos_img_6_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/19_photos_img_6_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/19_photos_img_6_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/19_photos_img_6.jpg' loading='lazy' alt='' data-group='s20' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>20_photos_img_7</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.34 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/20_photos_img_7.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/20_photos_img_7.png' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/20_photos_img_7_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/20_photos_img_7_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/20_photos_img_7_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/20_photos_img_7_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/20_photos_img_7_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/20_photos_img_7.jpg' loading='lazy' alt='' data-group='s21' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>21_photos_img_8</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.36 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/21_photos_img_8.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/21_photos_img_8.png' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/21_photos_img_8_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/21_photos_img_8_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/21_photos_img_8_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/21_photos_img_8_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/21_photos_img_8_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/21_photos_img_8.jpg' loading='lazy' alt='' data-group='s22' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div>
+<h2>22_photos_img_9</h2>
+<p>MetricAnything: 0.31 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p>MoGe-2 с нормалями: 0.36 с; маска 100.0%; <span>полные массивы NPZ (массив хранится локально)</span>.</p><p><a href='clouds/22_photos_img_9.html'>Открыть интерактивное облако</a> · вращение, цвет фото/источника, переключение модели и эталона.</p>
+<div class='row' style='--h: 240px'>
+<figure><img src='photos/22_photos_img_9.png' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
+<figure><img src='panels/22_photos_img_9_metricanything_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='1'><figcaption>MetricAnything: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/22_photos_img_9_metricanything_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='2'><figcaption>MetricAnything: белый — маска модели</figcaption></figure>
+<figure><img src='panels/22_photos_img_9_moge2_depth.jpg' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='3'><figcaption>MoGe-2 с нормалями: глубина до маски, м</figcaption></figure>
+<figure><img src='panels/22_photos_img_9_moge2_mask.png' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='4'><figcaption>MoGe-2 с нормалями: белый — маска модели</figcaption></figure>
+<figure><img src='panels/22_photos_img_9_moge2_normals.jpg' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='5'><figcaption>Нормали: R=x, G=y, B=z</figcaption></figure>
+<figure><img src='clouds/22_photos_img_9.jpg' loading='lazy' alt='' data-group='s23' data-index='6'><figcaption>Статический ракурс первого источника</figcaption></figure>
+</div><div id='viewer'><button class='prev' title='Назад (←)'>‹</button><img alt=''><div class='cap'></div><button class='next' title='Вперёд (→)'>›</button><button class='close' title='Закрыть (Esc)'>×</button></div><script>const groups = {"s1": [{"src": "photos/00_photos_img_1.png", "caption": "Исходное RGB"}, {"src": "panels/00_photos_img_1_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/00_photos_img_1_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/00_photos_img_1_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/00_photos_img_1_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/00_photos_img_1_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/00_photos_img_1.jpg", "caption": "Статический ракурс первого источника"}], "s2": [{"src": "photos/01_photos_img_10.png", "caption": "Исходное RGB"}, {"src": "panels/01_photos_img_10_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/01_photos_img_10_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/01_photos_img_10_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/01_photos_img_10_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/01_photos_img_10_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/01_photos_img_10.jpg", "caption": "Статический ракурс первого источника"}], "s3": [{"src": "photos/02_photos_img_11_a.png", "caption": "Исходное RGB"}, {"src": "panels/02_photos_img_11_a_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/02_photos_img_11_a_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/02_photos_img_11_a_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/02_photos_img_11_a_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/02_photos_img_11_a_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/02_photos_img_11_a.jpg", "caption": "Статический ракурс первого источника"}], "s4": [{"src": "photos/03_photos_img_11_b.png", "caption": "Исходное RGB"}, {"src": "panels/03_photos_img_11_b_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/03_photos_img_11_b_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/03_photos_img_11_b_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/03_photos_img_11_b_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/03_photos_img_11_b_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/03_photos_img_11_b.jpg", "caption": "Статический ракурс первого источника"}], "s5": [{"src": "photos/04_photos_img_12.png", "caption": "Исходное RGB"}, {"src": "panels/04_photos_img_12_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/04_photos_img_12_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/04_photos_img_12_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/04_photos_img_12_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/04_photos_img_12_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/04_photos_img_12.jpg", "caption": "Статический ракурс первого источника"}], "s6": [{"src": "photos/05_photos_img_13.png", "caption": "Исходное RGB"}, {"src": "panels/05_photos_img_13_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/05_photos_img_13_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/05_photos_img_13_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/05_photos_img_13_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/05_photos_img_13_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/05_photos_img_13.jpg", "caption": "Статический ракурс первого источника"}], "s7": [{"src": "photos/06_photos_img_14.png", "caption": "Исходное RGB"}, {"src": "panels/06_photos_img_14_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/06_photos_img_14_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/06_photos_img_14_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/06_photos_img_14_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/06_photos_img_14_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/06_photos_img_14.jpg", "caption": "Статический ракурс первого источника"}], "s8": [{"src": "photos/07_photos_img_15.png", "caption": "Исходное RGB"}, {"src": "panels/07_photos_img_15_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/07_photos_img_15_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/07_photos_img_15_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/07_photos_img_15_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/07_photos_img_15_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/07_photos_img_15.jpg", "caption": "Статический ракурс первого источника"}], "s9": [{"src": "photos/08_photos_img_16_a.png", "caption": "Исходное RGB"}, {"src": "panels/08_photos_img_16_a_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/08_photos_img_16_a_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/08_photos_img_16_a_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/08_photos_img_16_a_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/08_photos_img_16_a_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/08_photos_img_16_a.jpg", "caption": "Статический ракурс первого источника"}], "s10": [{"src": "photos/09_photos_img_16_b.png", "caption": "Исходное RGB"}, {"src": "panels/09_photos_img_16_b_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/09_photos_img_16_b_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/09_photos_img_16_b_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/09_photos_img_16_b_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/09_photos_img_16_b_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/09_photos_img_16_b.jpg", "caption": "Статический ракурс первого источника"}], "s11": [{"src": "photos/10_photos_img_17_a.png", "caption": "Исходное RGB"}, {"src": "panels/10_photos_img_17_a_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/10_photos_img_17_a_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/10_photos_img_17_a_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/10_photos_img_17_a_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/10_photos_img_17_a_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/10_photos_img_17_a.jpg", "caption": "Статический ракурс первого источника"}], "s12": [{"src": "photos/11_photos_img_17_b.png", "caption": "Исходное RGB"}, {"src": "panels/11_photos_img_17_b_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/11_photos_img_17_b_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/11_photos_img_17_b_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/11_photos_img_17_b_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/11_photos_img_17_b_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/11_photos_img_17_b.jpg", "caption": "Статический ракурс первого источника"}], "s13": [{"src": "photos/12_photos_img_18.png", "caption": "Исходное RGB"}, {"src": "panels/12_photos_img_18_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/12_photos_img_18_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/12_photos_img_18_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/12_photos_img_18_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/12_photos_img_18_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/12_photos_img_18.jpg", "caption": "Статический ракурс первого источника"}], "s14": [{"src": "photos/13_photos_img_2.png", "caption": "Исходное RGB"}, {"src": "panels/13_photos_img_2_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/13_photos_img_2_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/13_photos_img_2_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/13_photos_img_2_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/13_photos_img_2_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/13_photos_img_2.jpg", "caption": "Статический ракурс первого источника"}], "s15": [{"src": "photos/14_photos_img_3.png", "caption": "Исходное RGB"}, {"src": "panels/14_photos_img_3_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/14_photos_img_3_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/14_photos_img_3_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/14_photos_img_3_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/14_photos_img_3_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/14_photos_img_3.jpg", "caption": "Статический ракурс первого источника"}], "s16": [{"src": "photos/15_photos_img_4_a.png", "caption": "Исходное RGB"}, {"src": "panels/15_photos_img_4_a_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/15_photos_img_4_a_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/15_photos_img_4_a_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/15_photos_img_4_a_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/15_photos_img_4_a_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/15_photos_img_4_a.jpg", "caption": "Статический ракурс первого источника"}], "s17": [{"src": "photos/16_photos_img_4_b.png", "caption": "Исходное RGB"}, {"src": "panels/16_photos_img_4_b_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/16_photos_img_4_b_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/16_photos_img_4_b_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/16_photos_img_4_b_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/16_photos_img_4_b_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/16_photos_img_4_b.jpg", "caption": "Статический ракурс первого источника"}], "s18": [{"src": "photos/17_photos_img_5_a.png", "caption": "Исходное RGB"}, {"src": "panels/17_photos_img_5_a_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/17_photos_img_5_a_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/17_photos_img_5_a_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/17_photos_img_5_a_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/17_photos_img_5_a_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/17_photos_img_5_a.jpg", "caption": "Статический ракурс первого источника"}], "s19": [{"src": "photos/18_photos_img_5_b.png", "caption": "Исходное RGB"}, {"src": "panels/18_photos_img_5_b_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/18_photos_img_5_b_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/18_photos_img_5_b_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/18_photos_img_5_b_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/18_photos_img_5_b_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/18_photos_img_5_b.jpg", "caption": "Статический ракурс первого источника"}], "s20": [{"src": "photos/19_photos_img_6.png", "caption": "Исходное RGB"}, {"src": "panels/19_photos_img_6_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/19_photos_img_6_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/19_photos_img_6_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/19_photos_img_6_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/19_photos_img_6_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/19_photos_img_6.jpg", "caption": "Статический ракурс первого источника"}], "s21": [{"src": "photos/20_photos_img_7.png", "caption": "Исходное RGB"}, {"src": "panels/20_photos_img_7_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/20_photos_img_7_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/20_photos_img_7_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/20_photos_img_7_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/20_photos_img_7_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/20_photos_img_7.jpg", "caption": "Статический ракурс первого источника"}], "s22": [{"src": "photos/21_photos_img_8.png", "caption": "Исходное RGB"}, {"src": "panels/21_photos_img_8_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/21_photos_img_8_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/21_photos_img_8_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/21_photos_img_8_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/21_photos_img_8_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/21_photos_img_8.jpg", "caption": "Статический ракурс первого источника"}], "s23": [{"src": "photos/22_photos_img_9.png", "caption": "Исходное RGB"}, {"src": "panels/22_photos_img_9_metricanything_depth.jpg", "caption": "MetricAnything: глубина до маски, м"}, {"src": "panels/22_photos_img_9_metricanything_mask.png", "caption": "MetricAnything: белый — маска модели"}, {"src": "panels/22_photos_img_9_moge2_depth.jpg", "caption": "MoGe-2 с нормалями: глубина до маски, м"}, {"src": "panels/22_photos_img_9_moge2_mask.png", "caption": "MoGe-2 с нормалями: белый — маска модели"}, {"src": "panels/22_photos_img_9_moge2_normals.jpg", "caption": "Нормали: R=x, G=y, B=z"}, {"src": "clouds/22_photos_img_9.jpg", "caption": "Статический ракурс первого источника"}]};
+
+const viewer = document.getElementById("viewer");
+const shown = viewer.querySelector("img");
+const caption = viewer.querySelector(".cap");
+let group = null;
+let index = 0;
+
+function show() {
+  const items = groups[group];
+  shown.src = items[index].src;
+  caption.textContent = items[index].caption + "\n" + (index + 1) + " / " + items.length;
+}
+function openViewer(g, i) {
+  group = g;
+  index = i;
+  viewer.classList.add("open");
+  show();
+}
+function step(d) {
+  const n = groups[group].length;
+  index = (index + d + n) % n;
+  show();
+}
+function closeViewer() {
+  viewer.classList.remove("open");
+}
+document.addEventListener("click", (e) => {
+  if (viewer.classList.contains("open")) {
+    if (e.target === viewer) closeViewer();
+    return;
+  }
+  const el = e.target.closest("[data-group]");
+  if (el) openViewer(el.dataset.group, Number(el.dataset.index));
+});
+viewer.querySelector(".prev").addEventListener("click", () => step(-1));
+viewer.querySelector(".next").addEventListener("click", () => step(1));
+viewer.querySelector(".close").addEventListener("click", closeViewer);
+document.addEventListener("keydown", (e) => {
+  if (!viewer.classList.contains("open")) return;
+  if (e.key === "ArrowLeft") step(-1);
+  else if (e.key === "ArrowRight") step(1);
+  else if (e.key === "Escape") closeViewer();
+});
+for (const table of document.querySelectorAll("table.m")) {
+  table.addEventListener("mouseover", (e) => {
+    for (const th of table.querySelectorAll("th.hl")) th.classList.remove("hl");
+    const td = e.target.closest("td[data-r]");
+    if (!td) return;
+    table.querySelector(`th.rh[data-r="${td.dataset.r}"]`).classList.add("hl");
+    table.querySelector(`th.ch[data-c="${td.dataset.c}"]`).classList.add("hl");
+  });
+}
+</script></body></html>

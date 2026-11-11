@@ -1,0 +1,30 @@
+{
+  "python": "3.13.16",
+  "created": "2026-11-10T22:26:47",
+  "versions": {
+    "torch": "2.15.0",
+    "torchvision": "0.29.2",
+    "geocalib": "1.0",
+    "kornia": "0.9.0"
+  },
+  "checkpoint": {
+    "url": "https://github.com/cvg/GeoCalib/releases/download/v1.0/geocalib-pinhole.tar",
+    "filename": "geocalib-pinhole.tar",
+    "sha256": "86d6aeacd8bbd974c59ce39f61854e00d36911c732ad89be471476fd708722ac",
+    "bytes": 116074121,
+    "license": "CC-BY-4.0"
+  },
+  "geocalib_revision": "1dedb29f94fc11b896c5f572005978aeebccd67f",
+  "axes": "x_right_y_down_z_forward; gravity_points_down",
+  "failures": 0,
+  "status": "complete",
+  "title": "GeoCalib: вертикаль и калибровка",
+  "run": "20261110-222647-275422",
+  "params": {
+    "device": "mps",
+    "seed": 0,
+    "limit": null
+  },
+  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}

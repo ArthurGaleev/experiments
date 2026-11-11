@@ -1,0 +1,1083 @@
+[
+  {
+    "id": "00_photos_img_1",
+    "dataset": "photos",
+    "photo": "photos/00_photos_img_1.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.1682328330061864,
+    "K": [
+      [
+        846.0513916015625,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        846.0513916015625,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.006399281712933218,
+      0.9998642087938312,
+      0.01518595293830314
+    ],
+    "roll_pitch_deg": [
+      -0.36669662211035703,
+      -0.8701244571272834
+    ],
+    "uncertainty": {
+      "roll_deg": 0.5592866539955139,
+      "pitch_deg": 3.0244622230529785,
+      "gravity_deg": 3.0248501300811768,
+      "vfov_deg": 15.595257759094238,
+      "focal_px": 321.62933349609375
+    },
+    "optimizer_steps": 6,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 7.815396202204283e-06
+  },
+  {
+    "id": "01_photos_img_10",
+    "dataset": "photos",
+    "photo": "photos/01_photos_img_10.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.12887875000888016,
+    "K": [
+      [
+        443.5324401855469,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        443.5324401855469,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.00037499716334940314,
+      0.9999997762826118,
+      -0.0005539059972330681
+    ],
+    "roll_pitch_deg": [
+      -0.021485758588906625,
+      0.03173647751129458
+    ],
+    "uncertainty": {
+      "roll_deg": 0.6274524331092834,
+      "pitch_deg": 1.5750441551208496,
+      "gravity_deg": 1.5900599956512451,
+      "vfov_deg": 20.15291976928711,
+      "focal_px": 134.96578979492188
+    },
+    "optimizer_steps": 3,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 8.516506568412296e-06
+  },
+  {
+    "id": "02_photos_img_11_a",
+    "dataset": "photos",
+    "photo": "photos/02_photos_img_11_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.2706710829952499,
+    "K": [
+      [
+        382.8215026855469,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        382.8215026855469,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.001617311760402081,
+      0.9999498771601216,
+      0.009880661421562879
+    ],
+    "roll_pitch_deg": [
+      -0.0926697020939278,
+      -0.5661294101384482
+    ],
+    "uncertainty": {
+      "roll_deg": 0.9677366614341736,
+      "pitch_deg": 2.4130189418792725,
+      "gravity_deg": 2.456489324569702,
+      "vfov_deg": 10.876462936401367,
+      "focal_px": 59.137718200683594
+    },
+    "optimizer_steps": 4,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 4.678496225096751e-06
+  },
+  {
+    "id": "03_photos_img_11_b",
+    "dataset": "photos",
+    "photo": "photos/03_photos_img_11_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.12298175001342315,
+    "K": [
+      [
+        299.79620361328125,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        299.79620361328125,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.0016368305270851023,
+      0.9999968527494343,
+      -0.00190138819076306
+    ],
+    "roll_pitch_deg": [
+      -0.09378369238519284,
+      0.10894158418914092
+    ],
+    "uncertainty": {
+      "roll_deg": 0.9116676449775696,
+      "pitch_deg": 2.3102810382843018,
+      "gravity_deg": 2.3162550926208496,
+      "vfov_deg": 31.718751907348633,
+      "focal_px": 122.60969543457031
+    },
+    "optimizer_steps": 3,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 7.009554792603012e-06
+  },
+  {
+    "id": "04_photos_img_12",
+    "dataset": "photos",
+    "photo": "photos/04_photos_img_12.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.13210554199758917,
+    "K": [
+      [
+        485.1604919433594,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        485.1604919433594,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.0024253095702442807,
+      0.9999893583084015,
+      -0.003924429059074412
+    ],
+    "roll_pitch_deg": [
+      -0.13896120870506992,
+      0.2248537992535818
+    ],
+    "uncertainty": {
+      "roll_deg": 0.4918276369571686,
+      "pitch_deg": 0.9808689951896667,
+      "gravity_deg": 0.9896312952041626,
+      "vfov_deg": 12.581461906433105,
+      "focal_px": 97.30860900878906
+    },
+    "optimizer_steps": 3,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.1253662705712486e-05
+  },
+  {
+    "id": "05_photos_img_13",
+    "dataset": "photos",
+    "photo": "photos/05_photos_img_13.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.17393445900233928,
+    "K": [
+      [
+        386.5003967285156,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        386.5003967285156,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.007658705603187797,
+      0.9999248414424545,
+      0.009573698071584423
+    ],
+    "roll_pitch_deg": [
+      -0.43883590927283694,
+      -0.548540873534419
+    ],
+    "uncertainty": {
+      "roll_deg": 1.0673415660858154,
+      "pitch_deg": 1.9284210205078125,
+      "gravity_deg": 2.066917657852173,
+      "vfov_deg": 15.039839744567871,
+      "focal_px": 81.6218032836914
+    },
+    "optimizer_steps": 5,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.245476414624136e-05
+  },
+  {
+    "id": "06_photos_img_14",
+    "dataset": "photos",
+    "photo": "photos/06_photos_img_14.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.1649417500011623,
+    "K": [
+      [
+        366.1980895996094,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        366.1980895996094,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.008211485757673035,
+      0.9999631893652305,
+      -0.0024882556476045667
+    ],
+    "roll_pitch_deg": [
+      -0.4704902214746607,
+      0.14256669407254696
+    ],
+    "uncertainty": {
+      "roll_deg": 0.7835769057273865,
+      "pitch_deg": 1.14246666431427,
+      "gravity_deg": 1.2262777090072632,
+      "vfov_deg": 20.08441734313965,
+      "focal_px": 100.76456451416016
+    },
+    "optimizer_steps": 5,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.3255928934086114e-05
+  },
+  {
+    "id": "07_photos_img_15",
+    "dataset": "photos",
+    "photo": "photos/07_photos_img_15.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.12940199999138713,
+    "K": [
+      [
+        471.6673278808594,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        471.6673278808594,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.0002728968337797997,
+      0.9999918735192157,
+      -0.004022241022946796
+    ],
+    "roll_pitch_deg": [
+      -0.015635963495268707,
+      0.23045805621006316
+    ],
+    "uncertainty": {
+      "roll_deg": 0.6677094101905823,
+      "pitch_deg": 1.230788230895996,
+      "gravity_deg": 1.308722734451294,
+      "vfov_deg": 11.680033683776855,
+      "focal_px": 86.29097747802734
+    },
+    "optimizer_steps": 3,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.0149224181077443e-05
+  },
+  {
+    "id": "08_photos_img_16_a",
+    "dataset": "photos",
+    "photo": "photos/08_photos_img_16_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.1641097920073662,
+    "K": [
+      [
+        408.5273742675781,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        408.52734375,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.001105388894158674,
+      0.9998564578615071,
+      -0.016906856243335856
+    ],
+    "roll_pitch_deg": [
+      0.06334318496910504,
+      0.9687376622667158
+    ],
+    "uncertainty": {
+      "roll_deg": 0.5110177397727966,
+      "pitch_deg": 1.6242691278457642,
+      "gravity_deg": 1.625380039215088,
+      "vfov_deg": 26.99106788635254,
+      "focal_px": 161.9828643798828
+    },
+    "optimizer_steps": 5,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 7.984682270034682e-06
+  },
+  {
+    "id": "09_photos_img_16_b",
+    "dataset": "photos",
+    "photo": "photos/09_photos_img_16_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.14675691600132268,
+    "K": [
+      [
+        379.3404541015625,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        379.3404235839844,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.0027845538868142457,
+      0.9999343054657789,
+      0.011118948346030178
+    ],
+    "roll_pitch_deg": [
+      0.15955325491356037,
+      -0.6370819404922275
+    ],
+    "uncertainty": {
+      "roll_deg": 0.7071554064750671,
+      "pitch_deg": 2.5349066257476807,
+      "gravity_deg": 2.5529518127441406,
+      "vfov_deg": 30.30565643310547,
+      "focal_px": 162.54873657226562
+    },
+    "optimizer_steps": 5,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 6.045998816261999e-06
+  },
+  {
+    "id": "10_photos_img_17_a",
+    "dataset": "photos",
+    "photo": "photos/10_photos_img_17_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.15262629100470804,
+    "K": [
+      [
+        448.2684631347656,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        448.26849365234375,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.003019968960636258,
+      0.9997748075525578,
+      -0.021005093923212058
+    ],
+    "roll_pitch_deg": [
+      0.1730699234825572,
+      1.2035917480584732
+    ],
+    "uncertainty": {
+      "roll_deg": 0.5582157969474792,
+      "pitch_deg": 1.8601895570755005,
+      "gravity_deg": 1.8629013299942017,
+      "vfov_deg": 22.390684127807617,
+      "focal_px": 155.51724243164062
+    },
+    "optimizer_steps": 5,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.3011848750466015e-05
+  },
+  {
+    "id": "11_photos_img_17_b",
+    "dataset": "photos",
+    "photo": "photos/11_photos_img_17_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.18269195899483748,
+    "K": [
+      [
+        640.083251953125,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        640.083251953125,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.0027281605175470346,
+      0.9996896896644668,
+      -0.024760483007249128
+    ],
+    "roll_pitch_deg": [
+      0.156360215638619,
+      1.418816175207717
+    ],
+    "uncertainty": {
+      "roll_deg": 0.5968753695487976,
+      "pitch_deg": 2.319584369659424,
+      "gravity_deg": 2.3225557804107666,
+      "vfov_deg": 29.281740188598633,
+      "focal_px": 372.90264892578125
+    },
+    "optimizer_steps": 7,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 9.080442396225408e-06
+  },
+  {
+    "id": "12_photos_img_18",
+    "dataset": "photos",
+    "photo": "photos/12_photos_img_18.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.15011691700783558,
+    "K": [
+      [
+        402.0911865234375,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        402.0911865234375,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.0017817220460271314,
+      0.999997539792706,
+      0.0013213156649322093
+    ],
+    "roll_pitch_deg": [
+      0.10208529662918922,
+      -0.07570583303396981
+    ],
+    "uncertainty": {
+      "roll_deg": 0.6391744613647461,
+      "pitch_deg": 1.2146384716033936,
+      "gravity_deg": 1.2356488704681396,
+      "vfov_deg": 11.444705963134766,
+      "focal_px": 65.88597869873047
+    },
+    "optimizer_steps": 4,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.2015941138088237e-05
+  },
+  {
+    "id": "13_photos_img_2",
+    "dataset": "photos",
+    "photo": "photos/13_photos_img_2.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.14456945800338872,
+    "K": [
+      [
+        367.1098327636719,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        367.1098327636719,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.011049875466832748,
+      0.9999382022851031,
+      0.0012214184393724097
+    ],
+    "roll_pitch_deg": [
+      -0.6331245851764777,
+      -0.0699821389961294
+    ],
+    "uncertainty": {
+      "roll_deg": 0.8150878548622131,
+      "pitch_deg": 1.6227318048477173,
+      "gravity_deg": 1.623166799545288,
+      "vfov_deg": 16.40285301208496,
+      "focal_px": 82.58818817138672
+    },
+    "optimizer_steps": 4,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.1282468221907038e-05
+  },
+  {
+    "id": "14_photos_img_3",
+    "dataset": "photos",
+    "photo": "photos/14_photos_img_3.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.1404705839959206,
+    "K": [
+      [
+        484.01531982421875,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        484.01531982421875,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.004744096252050375,
+      0.9999780778400674,
+      0.004619241283510364
+    ],
+    "roll_pitch_deg": [
+      0.27182061246985234,
+      -0.2646639713098248
+    ],
+    "uncertainty": {
+      "roll_deg": 0.5972759127616882,
+      "pitch_deg": 1.3655245304107666,
+      "gravity_deg": 1.3675428628921509,
+      "vfov_deg": 27.531047821044922,
+      "focal_px": 212.11312866210938
+    },
+    "optimizer_steps": 4,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.1573296433198266e-05
+  },
+  {
+    "id": "15_photos_img_4_a",
+    "dataset": "photos",
+    "photo": "photos/15_photos_img_4_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.1413895000005141,
+    "K": [
+      [
+        449.1316223144531,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        449.131591796875,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.001658222238003804,
+      0.999971895565402,
+      -0.00731152366790352
+    ],
+    "roll_pitch_deg": [
+      -0.0950117188960061,
+      0.4189231805297327
+    ],
+    "uncertainty": {
+      "roll_deg": 0.9115599989891052,
+      "pitch_deg": 2.966836929321289,
+      "gravity_deg": 3.017991065979004,
+      "vfov_deg": 14.185014724731445,
+      "focal_px": 98.82846069335938
+    },
+    "optimizer_steps": 4,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.1712768355209846e-05
+  },
+  {
+    "id": "16_photos_img_4_b",
+    "dataset": "photos",
+    "photo": "photos/16_photos_img_4_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.14952258300036192,
+    "K": [
+      [
+        434.88800048828125,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        434.887939453125,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.01095826337573629,
+      0.9998330223171827,
+      0.014623404113805971
+    ],
+    "roll_pitch_deg": [
+      -0.6279419559592112,
+      -0.8378892025673884
+    ],
+    "uncertainty": {
+      "roll_deg": 0.912574291229248,
+      "pitch_deg": 4.3783278465271,
+      "gravity_deg": 4.385456562042236,
+      "vfov_deg": 24.13399314880371,
+      "focal_px": 159.71664428710938
+    },
+    "optimizer_steps": 5,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.0245175872114487e-05
+  },
+  {
+    "id": "17_photos_img_5_a",
+    "dataset": "photos",
+    "photo": "photos/17_photos_img_5_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.19683412500307895,
+    "K": [
+      [
+        529.8046875,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        529.8047485351562,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.0017647558905411317,
+      0.9999450164303749,
+      -0.010336815404378911
+    ],
+    "roll_pitch_deg": [
+      -0.10111851927704779,
+      0.5922664438498965
+    ],
+    "uncertainty": {
+      "roll_deg": 0.6415525078773499,
+      "pitch_deg": 2.0048739910125732,
+      "gravity_deg": 2.011808156967163,
+      "vfov_deg": 35.03227233886719,
+      "focal_px": 320.7974548339844
+    },
+    "optimizer_steps": 8,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 8.891178367775865e-06
+  },
+  {
+    "id": "18_photos_img_5_b",
+    "dataset": "photos",
+    "photo": "photos/18_photos_img_5_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.13474837499961723,
+    "K": [
+      [
+        287.9980163574219,
+        0.0,
+        171.0
+      ],
+      [
+        0.0,
+        287.9980773925781,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.0018483290905657334,
+      0.999781846524727,
+      -0.020804880177022703
+    ],
+    "roll_pitch_deg": [
+      -0.10592444317590878,
+      1.1921178379527506
+    ],
+    "uncertainty": {
+      "roll_deg": 0.5765305757522583,
+      "pitch_deg": 1.4792704582214355,
+      "gravity_deg": 1.4793815612792969,
+      "vfov_deg": 17.49717140197754,
+      "focal_px": 64.27078247070312
+    },
+    "optimizer_steps": 4,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 7.4658914854808245e-06
+  },
+  {
+    "id": "19_photos_img_6",
+    "dataset": "photos",
+    "photo": "photos/19_photos_img_6.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.13992579199839383,
+    "K": [
+      [
+        511.92529296875,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        511.92529296875,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.0006030990493486664,
+      0.9999986667702713,
+      -0.0015174746180621347
+    ],
+    "roll_pitch_deg": [
+      0.03455507203632047,
+      0.08694492450164497
+    ],
+    "uncertainty": {
+      "roll_deg": 0.5485477447509766,
+      "pitch_deg": 1.3705695867538452,
+      "gravity_deg": 1.3856663703918457,
+      "vfov_deg": 18.892772674560547,
+      "focal_px": 159.64894104003906
+    },
+    "optimizer_steps": 3,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 9.054282600118313e-06
+  },
+  {
+    "id": "20_photos_img_7",
+    "dataset": "photos",
+    "photo": "photos/20_photos_img_7.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.1960993749962654,
+    "K": [
+      [
+        622.7183837890625,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        622.7184448242188,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      0.0052968170510713465,
+      0.9999858740177202,
+      -0.0004421471968770268
+    ],
+    "roll_pitch_deg": [
+      0.3034867106732375,
+      0.02533316913000794
+    ],
+    "uncertainty": {
+      "roll_deg": 0.572563886642456,
+      "pitch_deg": 1.694022536277771,
+      "gravity_deg": 1.7031071186065674,
+      "vfov_deg": 22.925722122192383,
+      "focal_px": 271.04986572265625
+    },
+    "optimizer_steps": 7,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.2467446140362881e-05
+  },
+  {
+    "id": "21_photos_img_8",
+    "dataset": "photos",
+    "photo": "photos/21_photos_img_8.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.12875775000429712,
+    "K": [
+      [
+        449.3441162109375,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        449.3441162109375,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.006856311317538757,
+      0.9999502003998385,
+      0.007251738787344116
+    ],
+    "roll_pitch_deg": [
+      -0.3928511092749488,
+      -0.41549766837925584
+    ],
+    "uncertainty": {
+      "roll_deg": 0.6148868203163147,
+      "pitch_deg": 1.362505316734314,
+      "gravity_deg": 1.3870092630386353,
+      "vfov_deg": 17.158527374267578,
+      "focal_px": 117.30087280273438
+    },
+    "optimizer_steps": 3,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 4.06290746468585e-06
+  },
+  {
+    "id": "22_photos_img_9",
+    "dataset": "photos",
+    "photo": "photos/22_photos_img_9.png",
+    "size": [
+      690,
+      460
+    ],
+    "status": "ok",
+    "seconds": 0.16097345799789764,
+    "K": [
+      [
+        567.5263061523438,
+        0.0,
+        345.0
+      ],
+      [
+        0.0,
+        567.5263671875,
+        230.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gravity_camera": [
+      -0.003790643754564837,
+      0.9999912354541249,
+      0.001777648688216521
+    ],
+    "roll_pitch_deg": [
+      -0.2171887520695555,
+      -0.10185182093437262
+    ],
+    "uncertainty": {
+      "roll_deg": 0.6469350457191467,
+      "pitch_deg": 1.4504503011703491,
+      "gravity_deg": 1.4972167015075684,
+      "vfov_deg": 15.605067253112793,
+      "focal_px": 156.99485778808594
+    },
+    "optimizer_steps": 5,
+    "optimizer_reached_step_limit": false,
+    "optimizer_final_cost": 1.1030696441594046e-05
+  }
+]

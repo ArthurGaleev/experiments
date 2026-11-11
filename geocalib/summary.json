@@ -1,0 +1,19 @@
+[
+  {
+    "dataset": "photos",
+    "requested": 23,
+    "completed": 23,
+    "failures": 0,
+    "gravity_reference_frames": 0,
+    "gravity_scored_frames": 0,
+    "mean_gravity_error_deg": null,
+    "median_gravity_error_deg": null,
+    "valid_subset_mean_gravity_error_deg": null,
+    "gravity_recall_at_deg": {
+      "1": null,
+      "5": null,
+      "10": null
+    },
+    "median_seconds": 0.14952258300036192
+  }
+]

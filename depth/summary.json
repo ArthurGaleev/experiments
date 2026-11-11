@@ -1,0 +1,28 @@
+[
+  {
+    "dataset": "photos",
+    "model": "metricanything",
+    "requested": 23,
+    "completed": 23,
+    "failures": 0,
+    "median_seconds": 0.31196099999942817,
+    "macro_abs_rel": null,
+    "macro_rmse_m": null,
+    "macro_delta1": null,
+    "macro_scale_aligned_abs_rel": null,
+    "macro_model_mask_coverage": null
+  },
+  {
+    "dataset": "photos",
+    "model": "moge2",
+    "requested": 23,
+    "completed": 23,
+    "failures": 0,
+    "median_seconds": 0.34059687499757274,
+    "macro_abs_rel": null,
+    "macro_rmse_m": null,
+    "macro_delta1": null,
+    "macro_scale_aligned_abs_rel": null,
+    "macro_model_mask_coverage": null
+  }
+]

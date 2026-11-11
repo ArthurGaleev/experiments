@@ -1,0 +1,1359 @@
+[
+  {
+    "id": "00_photos_img_1",
+    "dataset": "photos",
+    "photo": "photos/00_photos_img_1.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31135087499933434,
+        "K": [
+          [
+            691.0355007648468,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            691.0354733467102,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3404812920016411,
+        "K": [
+          [
+            624.5404601097107,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            624.5404601097107,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "01_photos_img_10",
+    "dataset": "photos",
+    "photo": "photos/01_photos_img_10.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31253375000233063,
+        "K": [
+          [
+            486.7129969596863,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            486.7129969596863,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.34344154200152843,
+        "K": [
+          [
+            429.42966878414154,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            429.42965507507324,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "02_photos_img_11_a",
+    "dataset": "photos",
+    "photo": "photos/02_photos_img_11_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.45246775000123307,
+        "K": [
+          [
+            500.1297376155853,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            500.1297330856323,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3465412089972233,
+        "K": [
+          [
+            501.36538195610046,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            501.3653588294983,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "03_photos_img_11_b",
+    "dataset": "photos",
+    "photo": "photos/03_photos_img_11_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31499075000101584,
+        "K": [
+          [
+            420.9827792644501,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            420.98278522491455,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.34059687499757274,
+        "K": [
+          [
+            364.9462594985962,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            364.9462556838989,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "04_photos_img_12",
+    "dataset": "photos",
+    "photo": "photos/04_photos_img_12.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3170834169977752,
+        "K": [
+          [
+            471.3725906610489,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            471.3726043701172,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3464664580023964,
+        "K": [
+          [
+            455.6381034851074,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            455.6381034851074,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "05_photos_img_13",
+    "dataset": "photos",
+    "photo": "photos/05_photos_img_13.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.315839999999298,
+        "K": [
+          [
+            520.1830977201462,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            520.1830840110779,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3350985000033688,
+        "K": [
+          [
+            494.1026920080185,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            494.1026782989502,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "06_photos_img_14",
+    "dataset": "photos",
+    "photo": "photos/06_photos_img_14.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.311835707998398,
+        "K": [
+          [
+            471.7820119857788,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            471.7820119857788,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3397760420011764,
+        "K": [
+          [
+            440.16226530075073,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            440.16226530075073,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "07_photos_img_15",
+    "dataset": "photos",
+    "photo": "photos/07_photos_img_15.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31103995900048176,
+        "K": [
+          [
+            491.2909483909607,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            491.2909483909607,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3413299170024402,
+        "K": [
+          [
+            467.2286134958267,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            467.228627204895,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "08_photos_img_16_a",
+    "dataset": "photos",
+    "photo": "photos/08_photos_img_16_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31196099999942817,
+        "K": [
+          [
+            413.7736988067627,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            413.77367973327637,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3415744169979007,
+        "K": [
+          [
+            389.23318576812744,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            389.2331862449646,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "09_photos_img_16_b",
+    "dataset": "photos",
+    "photo": "photos/09_photos_img_16_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3125105409999378,
+        "K": [
+          [
+            373.3881711959839,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            373.3881628513336,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.33257162499648985,
+        "K": [
+          [
+            311.4871516227722,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            311.4871406555176,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "10_photos_img_17_a",
+    "dataset": "photos",
+    "photo": "photos/10_photos_img_17_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3119338750002498,
+        "K": [
+          [
+            438.451890707016,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            438.45186710357666,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3329589159984607,
+        "K": [
+          [
+            421.61902928352356,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            421.6190230846405,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "11_photos_img_17_b",
+    "dataset": "photos",
+    "photo": "photos/11_photos_img_17_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31174087500039604,
+        "K": [
+          [
+            393.26325845718384,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            393.26324105262756,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3331887499989534,
+        "K": [
+          [
+            349.3808834552765,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            349.3808698654175,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "12_photos_img_18",
+    "dataset": "photos",
+    "photo": "photos/12_photos_img_18.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3116369159979513,
+        "K": [
+          [
+            468.23902666568756,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            468.23904037475586,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3320244999995339,
+        "K": [
+          [
+            468.1579238176346,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            468.1579375267029,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "13_photos_img_2",
+    "dataset": "photos",
+    "photo": "photos/13_photos_img_2.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31467858299947693,
+        "K": [
+          [
+            470.3743100166321,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            470.3743100166321,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3333753330007312,
+        "K": [
+          [
+            457.5309008359909,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            457.5308871269226,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "14_photos_img_3",
+    "dataset": "photos",
+    "photo": "photos/14_photos_img_3.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3156634170009056,
+        "K": [
+          [
+            463.70318949222565,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            463.70320320129395,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3330244999997376,
+        "K": [
+          [
+            425.1311767101288,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            425.1311767101288,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "15_photos_img_4_a",
+    "dataset": "photos",
+    "photo": "photos/15_photos_img_4_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3142285419999098,
+        "K": [
+          [
+            560.7776634693146,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            560.7776641845703,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.33347587500247755,
+        "K": [
+          [
+            525.0758264064789,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            525.0757956504822,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "16_photos_img_4_b",
+    "dataset": "photos",
+    "photo": "photos/16_photos_img_4_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31189104199802387,
+        "K": [
+          [
+            491.0419135093689,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            491.04188203811646,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.33998158299800707,
+        "K": [
+          [
+            429.7290358543396,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            429.7290337085724,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "17_photos_img_5_a",
+    "dataset": "photos",
+    "photo": "photos/17_photos_img_5_a.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31120562499927473,
+        "K": [
+          [
+            365.3179965019226,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            365.3179907798767,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3420264159976796,
+        "K": [
+          [
+            331.06284749507904,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            331.0628402233124,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "18_photos_img_5_b",
+    "dataset": "photos",
+    "photo": "photos/18_photos_img_5_b.png",
+    "size": [
+      342,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31268954099869006,
+        "K": [
+          [
+            302.9830867052078,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            302.9830765724182,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.34560837499884656,
+        "K": [
+          [
+            283.01237440109253,
+            0.0,
+            170.5
+          ],
+          [
+            0.0,
+            283.01236391067505,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "19_photos_img_6",
+    "dataset": "photos",
+    "photo": "photos/19_photos_img_6.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3113437079991854,
+        "K": [
+          [
+            437.8338485956192,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            437.8338348865509,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.34263600000122096,
+        "K": [
+          [
+            406.040216088295,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            406.0402023792267,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "20_photos_img_7",
+    "dataset": "photos",
+    "photo": "photos/20_photos_img_7.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3113335410016589,
+        "K": [
+          [
+            468.52967262268066,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            468.52967262268066,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.3411705419966893,
+        "K": [
+          [
+            425.15605866909027,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            425.156044960022,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "21_photos_img_8",
+    "dataset": "photos",
+    "photo": "photos/21_photos_img_8.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.3123451249994105,
+        "K": [
+          [
+            404.92402374744415,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            404.92403745651245,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.355396541999653,
+        "K": [
+          [
+            355.02858102321625,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            355.02859473228455,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  },
+  {
+    "id": "22_photos_img_9",
+    "dataset": "photos",
+    "photo": "photos/22_photos_img_9.png",
+    "size": [
+      690,
+      460
+    ],
+    "models": {
+      "metricanything": {
+        "status": "ok",
+        "seconds": 0.31127004199879593,
+        "K": [
+          [
+            644.8978918790817,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            644.8978781700134,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": false
+      },
+      "moge2": {
+        "status": "ok",
+        "seconds": 0.36009850000118604,
+        "K": [
+          [
+            622.0877981185913,
+            0.0,
+            344.5
+          ],
+          [
+            0.0,
+            622.0877981185913,
+            229.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "model_mask_fraction": 1.0,
+        "numeric_fraction": 1.0,
+        "has_normals": true
+      }
+    }
+  }
+]

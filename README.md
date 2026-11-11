@@ -4,8 +4,23 @@
 [Открыть каталог](https://arthurgaleev.github.io/experiments/).
 
 Для каждого инструмента хранится один выбранный запуск в отдельной папке.
-Сейчас доступно [сопоставление SIFT](https://arthurgaleev.github.io/experiments/sift/):
-матрица перекрытий, группы фотографий, ключевые точки и соответствия между парами.
+Доступны:
+
+- [SIFT](https://arthurgaleev.github.io/experiments/sift/): ключевые точки,
+  соответствия и матрица пар.
+- [RoMa v2 и SIFT](https://arthurgaleev.github.io/experiments/roma/): все 253 пары
+  образца, соответствия и оценки перекрытия.
+- [MetricAnything и MoGe-2](https://arthurgaleev.github.io/experiments/depth/):
+  глубина, маски и интерактивные облака отдельных фотографий.
+- [GeoCalib](https://arthurgaleev.github.io/experiments/geocalib/): направление
+  вертикали, калибровка и выровненные по наклону облака.
+- [Совмещение облаков](https://arthurgaleev.github.io/experiments/alignment/):
+  пары, частичная группа, камеры, вид сверху и сохранённые неудачные попытки.
+
+Метрические размеры и правильность совмещения на этом образце не подтверждены
+эталонными глубиной и позами: таких данных у образца нет. Внешние проверочные
+наборы не публикуются. Полные NPZ-массивы хранятся локально; HTML-сцены содержат
+прореженные точки и работают без внешнего сервера вычислений.
 
 Фотографии взяты из [example_house в официальном репозитории Blueprint-Bench / Andon Labs](https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house).
 Пять коллажей вручную разделены на отдельные снимки с удалением разделительной
