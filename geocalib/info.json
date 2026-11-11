@@ -1,6 +1,6 @@
 {
-  "python": "3.13.16",
   "created": "2026-11-10T22:26:47",
+  "python": "3.13.16",
   "versions": {
     "torch": "2.15.0",
     "torchvision": "0.29.2",
@@ -19,7 +19,7 @@
   "failures": 0,
   "status": "complete",
   "title": "GeoCalib: направление вверх",
-  "run": "20261110-222647-275422",
+  "run": "20261111-224914-338265",
   "params": {
     "device": "mps",
     "seed": 0,

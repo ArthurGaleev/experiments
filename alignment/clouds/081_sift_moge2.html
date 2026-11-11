@@ -1,8 +1,10 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>img_11_b ↔ img_9 · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=a742c1e742fb">
-<script src="plotly.min.js" defer></script><script src="cloud-view.js?v=a742c1e742fb" defer></script>
+<title>img_11_b ↔ img_9 · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=932032d184f7">
+<link rel="stylesheet" href="photo-view.css?v=932032d184f7">
+<script src="plotly.min.js" defer></script><script src="photo-view.js?v=932032d184f7" defer></script>
+<script src="cloud-view.js?v=932032d184f7" defer></script>
 </head><body><main>
 <a href="../pair-0081.html">← К отчёту</a><h1>img_11_b ↔ img_9 · SIFT × MoGe-2</h1>
 <p id="scene-note">отклонено; проверочные соответствия: 10/26; медиана ошибки 3D: 0.217 м; гравитация: 1.8°; причина: недостаточная доля согласованных точек, недостаточный пространственный охват, ошибка обратной проекции. Отклонённая гипотеза не используется для сборки группы.</p>
@@ -25,6 +27,15 @@
   </div><span id="counts" class="muted" aria-live="polite"></span>
 </div>
 <p id="plane-note" class="muted" hidden>Упрощённые поверхности без фототекстуры; пропуски видны в режиме «Вместе».</p>
+<div class="toolbar" id="view-controls" role="group" aria-label="Вид и связи">
+  <label>Цвет <select id="colour"><option value="rgb">Из фото</option>
+    <option value="source">По источнику</option><option value="group">По выбранной подгруппе</option>
+    <option value="patch">По плоскому участку</option></select></label>
+  <label><input type="checkbox" id="cameras" checked> Камеры</label>
+  <label id="level-label"><input type="checkbox" id="level" checked> Вертикаль GeoCalib</label>
+  <label id="paths-label"><input type="checkbox" id="paths"> Пути через скрытые фото</label>
+  <button id="top">Вид сверху</button><button id="reset">Сброс вида</button>
+</div>
 <p id="selection-status" role="status"></p>
 <p id="loading" class="muted" role="status"></p>
 <p><a href="#photo-controls">К выбору фотографий ↓</a></p>
@@ -33,16 +44,6 @@
 <button id="none">Снять выбор</button><span class="muted">Нажатие миниатюры — показать / скрыть</span>
 <a href="#scenes">К 3D ↑</a></div>
 <div id="photos"></div>
-<details><summary>Вид и связи</summary>
-<div class="toolbar">
-  <label>Цвет <select id="colour"><option value="rgb">Из фото</option>
-    <option value="source">По источнику</option><option value="group">По выбранной подгруппе</option>
-    <option value="patch">По плоскому участку</option></select></label>
-  <label><input type="checkbox" id="cameras" checked> Камеры</label>
-  <label id="level-label"><input type="checkbox" id="level" checked> Вертикаль GeoCalib</label>
-  <label id="paths-label"><input type="checkbox" id="paths"> Пути через скрытые фото</label>
-  <button id="top">Вид сверху</button><button id="reset">Сброс вида</button>
-</div></details>
 <details><summary>Что означает этот вид</summary>
 <p>Выбор фото меняет только видимость. Позы рассчитаны по полной группе и остаются
 неизменными, даже если выбранный подграф распался. Исходно несвязанные компоненты

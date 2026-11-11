@@ -1,6 +1,6 @@
 {
-  "python": "3.13.16",
   "created": "2026-11-10T03:46:22",
+  "python": "3.13.16",
   "versions": {
     "torch": "2.15.0",
     "torchvision": "0.29.2",
@@ -38,7 +38,7 @@
   "failures": 0,
   "status": "complete",
   "title": "MetricAnything и MoGe-2: геометрия одного фото",
-  "run": "20261110-034622-096298",
+  "run": "20261111-224914-338265",
   "params": {
     "reference_smoke": false,
     "models": [

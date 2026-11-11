@@ -35,6 +35,9 @@ nav a { padding: 4px 0; }
  align-self: flex-start; }
 .card strong { margin-top: 8px; }
 .card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.card-photo { display: flex; flex-direction: column; align-items: flex-start;
+ padding: 0; border: 0; background: none; cursor: zoom-in; }
+.photo-card .photo-report { font-size: 12px; padding: 8px 0 2px; }
 .filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
 .filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
 .table-scroll, .graph { overflow-x: auto; }
@@ -78,24 +81,34 @@ table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
 table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
 table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
 table.m th.hl { color: #000; font-weight: 700; }
-#viewer { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column;
-  align-items: center; justify-content: center; background: rgba(18, 18, 18, 0.95); }
-#viewer.open { display: flex; }
-#viewer img { width: 92vw; height: 80vh; object-fit: contain; }
-#viewer .cap { color: #eee; margin-top: 12px; max-width: 90vw; text-align: center;
-  white-space: pre-line; }
-#viewer button { position: absolute; border: 0; background: none; color: #ccc;
-  font-size: 44px; line-height: 1; padding: 12px 18px; cursor: pointer; }
-#viewer button:hover { color: #fff; }
-#viewer .prev { left: 0; top: 44%; }
-#viewer .next { right: 0; top: 44%; }
-#viewer .close { right: 4px; top: 4px; font-size: 34px; }
 @media(max-width: 600px) {
  main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
  .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
  .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
  .filters input { max-width: 180px; } .card { min-width: 100px; }
 }
+
+body.photo-viewer-open{overflow:hidden}
+dialog.photo-viewer{box-sizing:border-box;position:fixed;inset:0;width:100%;max-width:none;
+ height:100%;height:100dvh;max-height:none;margin:0;padding:56px 12px 16px;border:0;
+ background:rgba(18,22,20,.97);color:#f4f6f4;text-align:center;overflow:auto}
+dialog.photo-viewer[open]{display:flex;flex-direction:column;align-items:center;gap:10px}
+dialog.photo-viewer::backdrop{background:#121614}
+.photo-viewer .photo-stage{display:flex;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:8px}
+.photo-viewer img{display:block;min-width:0;max-width:calc(100% - 104px);max-height:100%;
+ width:auto;height:100%;object-fit:contain}
+.photo-viewer button{flex:none;width:44px;height:44px;padding:0;border:1px solid #ffffff55;
+ border-radius:6px;background:#ffffff0d;color:inherit;font:32px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.photo-viewer button:hover{background:#ffffff26}
+.photo-viewer .photo-close{position:absolute;right:12px;top:8px}
+.photo-viewer .photo-caption{white-space:pre-line;max-width:960px;font:14px/1.45 system-ui}
+.photo-viewer a.photo-report{color:#d0e7d7;font:14px/1.5 system-ui;padding:4px 12px}
+.photo-viewer [hidden]{display:none!important}
+.photo-viewer :focus-visible{outline:3px solid #e9bd6d;outline-offset:3px}
+@media(max-width:600px){.photo-viewer .photo-stage{position:relative}
+ .photo-viewer img{max-width:100%;width:100%}
+ .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
+ .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
 </style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
 <nav><a href='index.html#photos'>← К обзору</a></nav>
 <h1>Перекрытия · img_2</h1><nav data-related aria-label="Тот же источник в других экспериментах"><a href="../depth/photo-img_2.html">Глубина</a> · <a href="../geocalib/photo-img_2.html">Вертикаль</a> · <a href="../alignment/photo-img_2.html">Совмещение</a> · <a href="../planes/photo-img_2.html">Плоские участки</a></nav>
@@ -109,59 +122,70 @@ table.m th.hl { color: #000; font-weight: 700; }
 <p>Пары упорядочены по пространственному охвату. Все результаты доступны, включая слабые.</p>
 <div class='pair-browser'><div class='filters'><label>Фото <select data-photo><option value=''>Все фотографии</option><option>img_2</option></select></label><label>Связь <select data-status><option value=''>Все статусы</option><option value='candidate'>В графе RoMa</option><option value='other'>Вне графа RoMa</option></select></label><label>Поиск <input data-query type='search' placeholder='Имя фото или пары'></label><label>На странице <select data-count><option>20</option><option>50</option><option value='10000'>Все</option></select></label></div><div class='table-scroll'><table class='data-table'><thead><tr><th><button data-sort='0'>Пара</button></th><th><button data-sort='1'>Охват</button></th><th><button data-sort='2'>F и оценка ≥0,2</button></th><th><button data-sort='3'>RoMa: F</button></th><th><button data-sort='4'>SIFT: F</button></th></tr></thead><tbody><tr data-a='img_18' data-b='img_2' data-status='candidate'><td data-value='img_18 img_2'><a href='pair-0198.html'>img_18 ↔ img_2</a></td><td data-value='0.71875'>71.9%</td><td data-value='1781'>1781</td><td data-value='1939'>1939</td><td data-value='12'>12</td></tr><tr data-a='img_2' data-b='img_9' data-status='candidate'><td data-value='img_2 img_9'><a href='pair-0216.html'>img_2 ↔ img_9</a></td><td data-value='0.609375'>60.9%</td><td data-value='1846'>1846</td><td data-value='1935'>1935</td><td data-value='172'>172</td></tr><tr data-a='img_15' data-b='img_2' data-status='candidate'><td data-value='img_15 img_2'><a href='pair-0138.html'>img_15 ↔ img_2</a></td><td data-value='0.59375'>59.4%</td><td data-value='1906'>1906</td><td data-value='2020'>2020</td><td data-value='60'>60</td></tr><tr data-a='img_14' data-b='img_2' data-status='candidate'><td data-value='img_14 img_2'><a href='pair-0123.html'>img_14 ↔ img_2</a></td><td data-value='0.5625'>56.2%</td><td data-value='1857'>1857</td><td data-value='1968'>1968</td><td data-value='26'>26</td></tr><tr data-a='img_11_a' data-b='img_2' data-status='candidate'><td data-value='img_11_a img_2'><a href='pair-0053.html'>img_11_a ↔ img_2</a></td><td data-value='0.46875'>46.9%</td><td data-value='1592'>1592</td><td data-value='1785'>1785</td><td data-value='14'>14</td></tr><tr data-a='img_11_b' data-b='img_2' data-status='candidate'><td data-value='img_11_b img_2'><a href='pair-0072.html'>img_11_b ↔ img_2</a></td><td data-value='0.390625'>39.1%</td><td data-value='1809'>1809</td><td data-value='1954'>1954</td><td data-value='30'>30</td></tr><tr data-a='img_2' data-b='img_3' data-status='candidate'><td data-value='img_2 img_3'><a href='pair-0208.html'>img_2 ↔ img_3</a></td><td data-value='0.359375'>35.9%</td><td data-value='1243'>1243</td><td data-value='1317'>1317</td><td data-value='13'>13</td></tr><tr data-a='img_16_a' data-b='img_2' data-status='other'><td data-value='img_16_a img_2'><a href='pair-0152.html'>img_16_a ↔ img_2</a></td><td data-value='0.15625'>15.6%</td><td data-value='1380'>1380</td><td data-value='1954'>1954</td><td data-value='9'>9</td></tr><tr data-a='img_2' data-b='img_5_b' data-status='other'><td data-value='img_2 img_5_b'><a href='pair-0212.html'>img_2 ↔ img_5_b</a></td><td data-value='0.140625'>14.1%</td><td data-value='415'>415</td><td data-value='611'>611</td><td data-value='10'>10</td></tr><tr data-a='img_2' data-b='img_4_b' data-status='other'><td data-value='img_2 img_4_b'><a href='pair-0210.html'>img_2 ↔ img_4_b</a></td><td data-value='0.125'>12.5%</td><td data-value='809'>809</td><td data-value='1427'>1427</td><td data-value='12'>12</td></tr><tr data-a='img_2' data-b='img_6' data-status='other'><td data-value='img_2 img_6'><a href='pair-0213.html'>img_2 ↔ img_6</a></td><td data-value='0.109375'>10.9%</td><td data-value='1329'>1329</td><td data-value='1972'>1972</td><td data-value='14'>14</td></tr><tr data-a='img_2' data-b='img_8' data-status='other'><td data-value='img_2 img_8'><a href='pair-0215.html'>img_2 ↔ img_8</a></td><td data-value='0.109375'>10.9%</td><td data-value='40'>40</td><td data-value='391'>391</td><td data-value='15'>15</td></tr><tr data-a='img_17_b' data-b='img_2' data-status='other'><td data-value='img_17_b img_2'><a href='pair-0188.html'>img_17_b ↔ img_2</a></td><td data-value='0.046875'>4.7%</td><td data-value='3'>3</td><td data-value='282'>282</td><td data-value='10'>10</td></tr><tr data-a='img_17_a' data-b='img_2' data-status='other'><td data-value='img_17_a img_2'><a href='pair-0177.html'>img_17_a ↔ img_2</a></td><td data-value='0.03125'>3.1%</td><td data-value='8'>8</td><td data-value='253'>253</td><td data-value='11'>11</td></tr><tr data-a='img_2' data-b='img_7' data-status='other'><td data-value='img_2 img_7'><a href='pair-0214.html'>img_2 ↔ img_7</a></td><td data-value='0.03125'>3.1%</td><td data-value='40'>40</td><td data-value='491'>491</td><td data-value='13'>13</td></tr><tr data-a='img_10' data-b='img_2' data-status='other'><td data-value='img_10 img_2'><a href='pair-0033.html'>img_10 ↔ img_2</a></td><td data-value='0.015625'>1.6%</td><td data-value='2'>2</td><td data-value='367'>367</td><td data-value='37'>37</td></tr><tr data-a='img_12' data-b='img_2' data-status='other'><td data-value='img_12 img_2'><a href='pair-0090.html'>img_12 ↔ img_2</a></td><td data-value='0.015625'>1.6%</td><td data-value='4'>4</td><td data-value='630'>630</td><td data-value='12'>12</td></tr><tr data-a='img_1' data-b='img_2' data-status='other'><td data-value='img_1 img_2'><a href='pair-0012.html'>img_1 ↔ img_2</a></td><td data-value='0.0'>0.0%</td><td data-value='0'>0</td><td data-value='422'>422</td><td data-value='11'>11</td></tr><tr data-a='img_13' data-b='img_2' data-status='other'><td data-value='img_13 img_2'><a href='pair-0107.html'>img_13 ↔ img_2</a></td><td data-value='0.0'>0.0%</td><td data-value='0'>0</td><td data-value='549'>549</td><td data-value='18'>18</td></tr><tr data-a='img_16_b' data-b='img_2' data-status='other'><td data-value='img_16_b img_2'><a href='pair-0165.html'>img_16_b ↔ img_2</a></td><td data-value='0.0'>0.0%</td><td data-value='0'>0</td><td data-value='326'>326</td><td data-value='7'>7</td></tr><tr data-a='img_2' data-b='img_4_a' data-status='other'><td data-value='img_2 img_4_a'><a href='pair-0209.html'>img_2 ↔ img_4_a</a></td><td data-value='0.0'>0.0%</td><td data-value='0'>0</td><td data-value='466'>466</td><td data-value='15'>15</td></tr><tr data-a='img_2' data-b='img_5_a' data-status='other'><td data-value='img_2 img_5_a'><a href='pair-0211.html'>img_2 ↔ img_5_a</a></td><td data-value='0.0'>0.0%</td><td data-value='0'>0</td><td data-value='431'>431</td><td data-value='11'>11</td></tr></tbody></table></div><div class='pagination'><button data-prev>← Назад</button><span data-total aria-live='polite'></span><button data-next>Далее →</button></div></div>
 </section>
-</main><div id='viewer' role='dialog' aria-modal='true' aria-label='Просмотр изображения'><button class='prev' title='Назад (←)'>‹</button><img alt=''><div class='cap'></div><button class='next' title='Вперёд (→)'>›</button><button class='close' title='Закрыть (Esc)'>×</button></div><script>const groups = {"s0": [{"src": "photos/13_img_2.jpg", "caption": "img_2"}]};
-
-const viewer = document.getElementById("viewer");
-const shown = viewer.querySelector("img");
-const caption = viewer.querySelector(".cap");
-let group = null;
-let index = 0;
-let returnFocus=null;
-
-function show() {
-  const items = groups[group];
-  shown.src = items[index].src;
-  shown.alt = items[index].caption;
-  caption.textContent = items[index].caption + "\n" + (index + 1) + " / " + items.length;
-}
-function openViewer(g, i) {
-  group = g;
-  index = i;
-  returnFocus=document.activeElement;
-  viewer.classList.add("open");
-  viewer.querySelector('.close').focus();
-  show();
-}
-function step(d) {
-  const n = groups[group].length;
-  index = (index + d + n) % n;
-  show();
-}
-function closeViewer() {
-  viewer.classList.remove("open");
-  returnFocus?.focus();
-}
-document.addEventListener("click", (e) => {
-  if (viewer.classList.contains("open")) {
-    if (e.target === viewer) closeViewer();
-    return;
+</main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
+window.planrecPhotoViewer = function () {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'photo-viewer';
+  dialog.setAttribute('aria-label', 'Просмотр фотографии');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Закрыть (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Предыдущее фото (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Следующее фото (→)">›</button></div>
+    <div class="photo-caption" aria-live="polite"></div>
+    <a class="photo-report" hidden>Отчёт фото ↗</a>`;
+  document.body.append(dialog);
+  const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
+  const report = dialog.querySelector('.photo-report');
+  const previous = dialog.querySelector('.photo-prev'), next = dialog.querySelector('.photo-next');
+  let items = [], index = 0, opener;
+  function show() {
+    const item = items[index];
+    image.src = item.src; image.alt = item.caption || '';
+    caption.textContent = [item.caption, `${index + 1} / ${items.length}`].filter(Boolean).join('\n');
+    report.hidden = !item.href;
+    if (item.href) report.href = item.href; else report.removeAttribute('href');
+    previous.hidden = next.hidden = items.length < 2;
   }
-  const el = e.target.closest("[data-group]");
-  if (el) openViewer(el.dataset.group, Number(el.dataset.index));
-});
-viewer.querySelector(".prev").addEventListener("click", () => step(-1));
-viewer.querySelector(".next").addEventListener("click", () => step(1));
-viewer.querySelector(".close").addEventListener("click", closeViewer);
-document.addEventListener("keydown", (e) => {
-  if (!viewer.classList.contains("open")) return;
-  if (e.key === "ArrowLeft") step(-1);
-  else if (e.key === "ArrowRight") step(1);
-  else if (e.key === "Escape") closeViewer();
-  else if (e.key === 'Tab') {
-    const buttons=Array.from(viewer.querySelectorAll('button'));
-    const i=buttons.indexOf(document.activeElement);
-    buttons[(i+(e.shiftKey?-1:1)+buttons.length)%buttons.length].focus();e.preventDefault();
+  function step(direction) {
+    index = (index + direction + items.length) % items.length;
+    show();
   }
+  previous.onclick = () => step(-1);
+  next.onclick = () => step(1);
+  dialog.querySelector('.photo-close').onclick = () => dialog.close();
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog || event.target.classList.contains('photo-stage')) dialog.close();
+  });
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1);
+    }
+  });
+  dialog.addEventListener('close', () => {
+    document.body.classList.remove('photo-viewer-open');
+    image.removeAttribute('src');
+    if (opener?.isConnected) opener.focus({preventScroll: true});
+  });
+  return {
+    open(photos, selectedIndex, trigger = document.activeElement) {
+      if (!photos?.length || !photos[selectedIndex]) return;
+      items = photos; index = selectedIndex; opener = trigger;
+      show();
+      if (!dialog.open) dialog.showModal();
+      document.body.classList.add('photo-viewer-open');
+      dialog.querySelector('.photo-close').focus({preventScroll: true});
+    },
+  };
+};
+
+const groups = {"s0": [{"src": "photos/13_img_2.jpg", "caption": "img_2"}]};
+
+const photoViewer = window.planrecPhotoViewer();
+function openViewer(group, index, trigger = document.activeElement) {
+  photoViewer.open(groups[group], index, trigger);
+}
+document.addEventListener("click", event => {
+  const target = event.target.closest("[data-group]");
+  if (target) openViewer(target.dataset.group, Number(target.dataset.index), target);
 });
 for (const table of document.querySelectorAll("table.m")) {
   table.addEventListener("mouseover", (e) => {

@@ -1,6 +1,6 @@
 {
-  "python": "3.13.16",
   "created": "2026-11-09T22:38:26",
+  "python": "3.13.16",
   "versions": {
     "torch": "2.15.0",
     "torchvision": "0.29.2",
@@ -13,7 +13,7 @@
   "failures": 0,
   "status": "completed",
   "title": "RoMa и SIFT: связи между фотографиями",
-  "run": "20261109-223826-955235",
+  "run": "20261111-224914-338265",
   "params": {
     "pair": null,
     "all_pairs": true,

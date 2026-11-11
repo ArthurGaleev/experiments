@@ -3,6 +3,7 @@
   'use strict';
   const settings = JSON.parse(document.getElementById('scene-data').textContent);
   const get = id => document.getElementById(id);
+  const photoViewer = window.planrecPhotoViewer();
   const palette = ['#168575', '#ce621c', '#6551c5', '#bd3c8a', '#267bb7', '#7c4f37', '#85801d'];
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
   const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0};
@@ -258,7 +259,7 @@
     for (const card of get('photos').querySelectorAll('.photo')) {
       const id = card.dataset.id, selected = state.selected.has(id), group = groups.membership.get(id);
       card.classList.toggle('selected', selected);
-      card.querySelector('button').setAttribute('aria-pressed', selected);
+      card.querySelector('.photo-toggle').setAttribute('aria-pressed', selected);
       card.style.setProperty('--group-colour', palette[(group || 0) % palette.length]);
       card.querySelector('.badge').textContent = selected ? (state.variant.edges === null ? 'Показано' : `Подгруппа ${(group || 0) + 1}`) : 'Скрыто';
     }
@@ -334,6 +335,8 @@
       if (changed) scheduleDraw();
     }, {rootMargin: '120px'});
     const sorted = [...state.variant.components].sort((a, b) => b.ids.length - a.ids.length);
+    const photoSources = sorted.flatMap(c => state.variant.sources.filter(s => c.ids.includes(s.id) && s.photo));
+    const photoItems = photoSources.map(s => ({src: s.photo, caption: s.name, href: s.href}));
     const isolated = sorted.filter(c => c.ids.length === 1).length;
     let isolatedGrid;
     for (let index = 0; index < sorted.length; index++) {
@@ -385,7 +388,18 @@
         if (source.planes) button.title = `Плоские участки покрывают ${(source.planes.coverage * 100).toFixed(0)}% допустимых пикселей`;
         button.onclick = () => { if (!state.selected.delete(source.id)) state.selected.add(source.id); draw(); };
         card.append(button);
-        if (source.href) { const link = document.createElement('a'); link.href = source.href; link.textContent = 'Отчёт фото ↗'; card.append(link); }
+        const actions = document.createElement('div'); actions.className = 'photo-actions';
+        if (source.photo) {
+          const enlarge = document.createElement('button'); enlarge.className = 'photo-enlarge'; enlarge.textContent = '⤢';
+          enlarge.title = 'Увеличить'; enlarge.setAttribute('aria-label', 'Увеличить ' + source.name);
+          enlarge.onclick = () => photoViewer.open(photoItems, photoSources.indexOf(source), enlarge);
+          actions.append(enlarge);
+        }
+        if (source.href) {
+          const link = document.createElement('a'); link.href = source.href; link.textContent = 'Отчёт ↗';
+          link.setAttribute('aria-label', 'Отчёт фото ' + source.name); actions.append(link);
+        }
+        card.append(actions);
         grid.append(card);
       }
     }

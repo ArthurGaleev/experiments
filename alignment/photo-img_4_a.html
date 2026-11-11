@@ -35,6 +35,9 @@ nav a { padding: 4px 0; }
  align-self: flex-start; }
 .card strong { margin-top: 8px; }
 .card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.card-photo { display: flex; flex-direction: column; align-items: flex-start;
+ padding: 0; border: 0; background: none; cursor: zoom-in; }
+.photo-card .photo-report { font-size: 12px; padding: 8px 0 2px; }
 .filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
 .filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
 .table-scroll, .graph { overflow-x: auto; }
@@ -78,24 +81,34 @@ table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
 table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
 table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
 table.m th.hl { color: #000; font-weight: 700; }
-#viewer { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column;
-  align-items: center; justify-content: center; background: rgba(18, 18, 18, 0.95); }
-#viewer.open { display: flex; }
-#viewer img { width: 92vw; height: 80vh; object-fit: contain; }
-#viewer .cap { color: #eee; margin-top: 12px; max-width: 90vw; text-align: center;
-  white-space: pre-line; }
-#viewer button { position: absolute; border: 0; background: none; color: #ccc;
-  font-size: 44px; line-height: 1; padding: 12px 18px; cursor: pointer; }
-#viewer button:hover { color: #fff; }
-#viewer .prev { left: 0; top: 44%; }
-#viewer .next { right: 0; top: 44%; }
-#viewer .close { right: 4px; top: 4px; font-size: 34px; }
 @media(max-width: 600px) {
  main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
  .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
  .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
  .filters input { max-width: 180px; } .card { min-width: 100px; }
 }
+
+body.photo-viewer-open{overflow:hidden}
+dialog.photo-viewer{box-sizing:border-box;position:fixed;inset:0;width:100%;max-width:none;
+ height:100%;height:100dvh;max-height:none;margin:0;padding:56px 12px 16px;border:0;
+ background:rgba(18,22,20,.97);color:#f4f6f4;text-align:center;overflow:auto}
+dialog.photo-viewer[open]{display:flex;flex-direction:column;align-items:center;gap:10px}
+dialog.photo-viewer::backdrop{background:#121614}
+.photo-viewer .photo-stage{display:flex;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:8px}
+.photo-viewer img{display:block;min-width:0;max-width:calc(100% - 104px);max-height:100%;
+ width:auto;height:100%;object-fit:contain}
+.photo-viewer button{flex:none;width:44px;height:44px;padding:0;border:1px solid #ffffff55;
+ border-radius:6px;background:#ffffff0d;color:inherit;font:32px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.photo-viewer button:hover{background:#ffffff26}
+.photo-viewer .photo-close{position:absolute;right:12px;top:8px}
+.photo-viewer .photo-caption{white-space:pre-line;max-width:960px;font:14px/1.45 system-ui}
+.photo-viewer a.photo-report{color:#d0e7d7;font:14px/1.5 system-ui;padding:4px 12px}
+.photo-viewer [hidden]{display:none!important}
+.photo-viewer :focus-visible{outline:3px solid #e9bd6d;outline-offset:3px}
+@media(max-width:600px){.photo-viewer .photo-stage{position:relative}
+ .photo-viewer img{max-width:100%;width:100%}
+ .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
+ .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
 </style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
 <nav><a href='index.html#photos'>← К обзору</a></nav>
 <h1>Все связи · img_4_a</h1><nav data-related aria-label="Тот же источник в других экспериментах"><a href="../roma/photo-img_4_a.html">Соответствия</a> · <a href="../depth/photo-img_4_a.html">Глубина</a> · <a href="../geocalib/photo-img_4_a.html">Вертикаль</a> · <a href="../planes/photo-img_4_a.html">Плоские участки</a></nav>
@@ -111,59 +124,70 @@ table.m th.hl { color: #000; font-weight: 700; }
 <section class='section' id='section-2'><h2>Все проверенные пары</h2>
 <div class='pair-browser'><div class='filters'><label>Фото <select data-photo><option value=''>Все фотографии</option><option>img_4_a</option></select></label><label>Связь <select data-status><option value=''>Все статусы</option><option value='both'>Принято всеми</option><option value='one'>Принято частью вариантов</option><option value='none'>Не принято ни одним</option><option value='missing'>Нет данных для проверки</option></select></label><label>Поиск <input data-query type='search' placeholder='Имя фото или пары'></label><label>На странице <select data-count><option>20</option><option>50</option><option value='10000'>Все</option></select></label></div><div class='table-scroll'><table class='data-table'><thead><tr><th><button data-sort='0'>Пара</button></th><th><button data-sort='1'>RoMa × MetricAnything</button></th><th><button data-sort='2'>3D, м</button></th><th><button data-sort='3'>RoMa × MoGe-2</button></th><th><button data-sort='4'>3D, м</button></th><th><button data-sort='5'>SIFT × MetricAnything</button></th><th><button data-sort='6'>3D, м</button></th><th><button data-sort='7'>SIFT × MoGe-2</button></th><th><button data-sort='8'>3D, м</button></th></tr></thead><tbody><tr data-a='img_1' data-b='img_4_a' data-status='none'><td data-value='img_1 img_4_a'><a href='pair-0014.html'>img_1 ↔ img_4_a</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_10' data-b='img_4_a' data-status='one'><td data-value='img_10 img_4_a'><a href='pair-0035.html'>img_10 ↔ img_4_a</a></td><td data-value='1'>Принято</td><td data-value='0.08049292905841261'>0.080</td><td data-value='1'>Принято</td><td data-value='0.09032376522295725'>0.090</td><td data-value='0'>Отклонено</td><td data-value='1.8529599052149524'>1.853</td><td data-value='0'>Отклонено</td><td data-value='1.8801731709792342'>1.880</td></tr><tr data-a='img_11_a' data-b='img_4_a' data-status='one'><td data-value='img_11_a img_4_a'><a href='pair-0055.html'>img_11_a ↔ img_4_a</a></td><td data-value='1'>Принято</td><td data-value='0.08620298735898697'>0.086</td><td data-value='1'>Принято</td><td data-value='0.0635614979445815'>0.064</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_11_b' data-b='img_4_a' data-status='none'><td data-value='img_11_b img_4_a'><a href='pair-0074.html'>img_11_b ↔ img_4_a</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_12' data-b='img_4_a' data-status='none'><td data-value='img_12 img_4_a'><a href='pair-0092.html'>img_12 ↔ img_4_a</a></td><td data-value='0'>Отклонено</td><td data-value='0.12982661682138577'>0.130</td><td data-value='0'>Отклонено</td><td data-value='0.14128695380250872'>0.141</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_13' data-b='img_4_a' data-status='one'><td data-value='img_13 img_4_a'><a href='pair-0109.html'>img_13 ↔ img_4_a</a></td><td data-value='1'>Принято</td><td data-value='0.05170815993412242'>0.052</td><td data-value='1'>Принято</td><td data-value='0.05136760487321955'>0.051</td><td data-value='0'>Отклонено</td><td data-value='0.1765538230373016'>0.177</td><td data-value='1'>Принято</td><td data-value='0.19848723476247143'>0.198</td></tr><tr data-a='img_14' data-b='img_4_a' data-status='none'><td data-value='img_14 img_4_a'><a href='pair-0125.html'>img_14 ↔ img_4_a</a></td><td data-value='0'>Отклонено</td><td data-value='0.14367989672413117'>0.144</td><td data-value='0'>Отклонено</td><td data-value='0.14903806862858562'>0.149</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_15' data-b='img_4_a' data-status='none'><td data-value='img_15 img_4_a'><a href='pair-0140.html'>img_15 ↔ img_4_a</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='0'>Отклонено</td><td data-value='0'>—</td><td data-value='0'>Отклонено</td><td data-value='0'>—</td></tr><tr data-a='img_16_a' data-b='img_4_a' data-status='none'><td data-value='img_16_a img_4_a'><a href='pair-0154.html'>img_16_a ↔ img_4_a</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_16_b' data-b='img_4_a' data-status='none'><td data-value='img_16_b img_4_a'><a href='pair-0167.html'>img_16_b ↔ img_4_a</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_17_a' data-b='img_4_a' data-status='none'><td data-value='img_17_a img_4_a'><a href='pair-0179.html'>img_17_a ↔ img_4_a</a></td><td data-value='0'>Отклонено</td><td data-value='0.418635657674806'>0.419</td><td data-value='0'>Отклонено</td><td data-value='0.4828020950224251'>0.483</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_17_b' data-b='img_4_a' data-status='one'><td data-value='img_17_b img_4_a'><a href='pair-0190.html'>img_17_b ↔ img_4_a</a></td><td data-value='1'>Принято</td><td data-value='0.06664226759840208'>0.067</td><td data-value='0'>Отклонено</td><td data-value='0.09445607991880257'>0.094</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_18' data-b='img_4_a' data-status='none'><td data-value='img_18 img_4_a'><a href='pair-0200.html'>img_18 ↔ img_4_a</a></td><td data-value='0'>Отклонено</td><td data-value='2.104028083943677'>2.104</td><td data-value='0'>Отклонено</td><td data-value='2.7641265111102027'>2.764</td><td data-value='0'>Отклонено</td><td data-value='3.3334816366056694'>3.333</td><td data-value='0'>Отклонено</td><td data-value='3.2998979390382916'>3.300</td></tr><tr data-a='img_2' data-b='img_4_a' data-status='none'><td data-value='img_2 img_4_a'><a href='pair-0209.html'>img_2 ↔ img_4_a</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='0'>Отклонено</td><td data-value='2.317674194211861'>2.318</td><td data-value='0'>Отклонено</td><td data-value='2.270777869517116'>2.271</td></tr><tr data-a='img_3' data-b='img_4_a' data-status='none'><td data-value='img_3 img_4_a'><a href='pair-0217.html'>img_3 ↔ img_4_a</a></td><td data-value='0'>Отклонено</td><td data-value='0.2885061948844757'>0.289</td><td data-value='0'>Отклонено</td><td data-value='0.2532537838112965'>0.253</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_4_a' data-b='img_4_b' data-status='none'><td data-value='img_4_a img_4_b'><a href='pair-0225.html'>img_4_a ↔ img_4_b</a></td><td data-value='0'>Отклонено</td><td data-value='0'>—</td><td data-value='0'>Отклонено</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_4_a' data-b='img_5_a' data-status='none'><td data-value='img_4_a img_5_a'><a href='pair-0226.html'>img_4_a ↔ img_5_a</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_4_a' data-b='img_5_b' data-status='none'><td data-value='img_4_a img_5_b'><a href='pair-0227.html'>img_4_a ↔ img_5_b</a></td><td data-value='0'>Отклонено</td><td data-value='1.7928380922073464'>1.793</td><td data-value='0'>Отклонено</td><td data-value='1.7832304709504558'>1.783</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_4_a' data-b='img_6' data-status='none'><td data-value='img_4_a img_6'><a href='pair-0228.html'>img_4_a ↔ img_6</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_4_a' data-b='img_7' data-status='none'><td data-value='img_4_a img_7'><a href='pair-0229.html'>img_4_a ↔ img_7</a></td><td data-value='0'>Отклонено</td><td data-value='1.4737642640260868'>1.474</td><td data-value='0'>Отклонено</td><td data-value='1.616186518986709'>1.616</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_4_a' data-b='img_8' data-status='none'><td data-value='img_4_a img_8'><a href='pair-0230.html'>img_4_a ↔ img_8</a></td><td data-value='0'>Отклонено</td><td data-value='0.07524839475432271'>0.075</td><td data-value='0'>Отклонено</td><td data-value='0.09487406786980115'>0.095</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr><tr data-a='img_4_a' data-b='img_9' data-status='none'><td data-value='img_4_a img_9'><a href='pair-0231.html'>img_4_a ↔ img_9</a></td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td><td data-value='-1'>Мало точек</td><td data-value='0'>—</td></tr></tbody></table></div><div class='pagination'><button data-prev>← Назад</button><span data-total aria-live='polite'></span><button data-next>Далее →</button></div></div>
 </section>
-</main><div id='viewer' role='dialog' aria-modal='true' aria-label='Просмотр изображения'><button class='prev' title='Назад (←)'>‹</button><img alt=''><div class='cap'></div><button class='next' title='Вперёд (→)'>›</button><button class='close' title='Закрыть (Esc)'>×</button></div><script>const groups = {"s0": [{"src": "photos/img_4_a.jpg", "caption": "img_4_a"}]};
-
-const viewer = document.getElementById("viewer");
-const shown = viewer.querySelector("img");
-const caption = viewer.querySelector(".cap");
-let group = null;
-let index = 0;
-let returnFocus=null;
-
-function show() {
-  const items = groups[group];
-  shown.src = items[index].src;
-  shown.alt = items[index].caption;
-  caption.textContent = items[index].caption + "\n" + (index + 1) + " / " + items.length;
-}
-function openViewer(g, i) {
-  group = g;
-  index = i;
-  returnFocus=document.activeElement;
-  viewer.classList.add("open");
-  viewer.querySelector('.close').focus();
-  show();
-}
-function step(d) {
-  const n = groups[group].length;
-  index = (index + d + n) % n;
-  show();
-}
-function closeViewer() {
-  viewer.classList.remove("open");
-  returnFocus?.focus();
-}
-document.addEventListener("click", (e) => {
-  if (viewer.classList.contains("open")) {
-    if (e.target === viewer) closeViewer();
-    return;
+</main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
+window.planrecPhotoViewer = function () {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'photo-viewer';
+  dialog.setAttribute('aria-label', 'Просмотр фотографии');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Закрыть (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Предыдущее фото (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Следующее фото (→)">›</button></div>
+    <div class="photo-caption" aria-live="polite"></div>
+    <a class="photo-report" hidden>Отчёт фото ↗</a>`;
+  document.body.append(dialog);
+  const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
+  const report = dialog.querySelector('.photo-report');
+  const previous = dialog.querySelector('.photo-prev'), next = dialog.querySelector('.photo-next');
+  let items = [], index = 0, opener;
+  function show() {
+    const item = items[index];
+    image.src = item.src; image.alt = item.caption || '';
+    caption.textContent = [item.caption, `${index + 1} / ${items.length}`].filter(Boolean).join('\n');
+    report.hidden = !item.href;
+    if (item.href) report.href = item.href; else report.removeAttribute('href');
+    previous.hidden = next.hidden = items.length < 2;
   }
-  const el = e.target.closest("[data-group]");
-  if (el) openViewer(el.dataset.group, Number(el.dataset.index));
-});
-viewer.querySelector(".prev").addEventListener("click", () => step(-1));
-viewer.querySelector(".next").addEventListener("click", () => step(1));
-viewer.querySelector(".close").addEventListener("click", closeViewer);
-document.addEventListener("keydown", (e) => {
-  if (!viewer.classList.contains("open")) return;
-  if (e.key === "ArrowLeft") step(-1);
-  else if (e.key === "ArrowRight") step(1);
-  else if (e.key === "Escape") closeViewer();
-  else if (e.key === 'Tab') {
-    const buttons=Array.from(viewer.querySelectorAll('button'));
-    const i=buttons.indexOf(document.activeElement);
-    buttons[(i+(e.shiftKey?-1:1)+buttons.length)%buttons.length].focus();e.preventDefault();
+  function step(direction) {
+    index = (index + direction + items.length) % items.length;
+    show();
   }
+  previous.onclick = () => step(-1);
+  next.onclick = () => step(1);
+  dialog.querySelector('.photo-close').onclick = () => dialog.close();
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog || event.target.classList.contains('photo-stage')) dialog.close();
+  });
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1);
+    }
+  });
+  dialog.addEventListener('close', () => {
+    document.body.classList.remove('photo-viewer-open');
+    image.removeAttribute('src');
+    if (opener?.isConnected) opener.focus({preventScroll: true});
+  });
+  return {
+    open(photos, selectedIndex, trigger = document.activeElement) {
+      if (!photos?.length || !photos[selectedIndex]) return;
+      items = photos; index = selectedIndex; opener = trigger;
+      show();
+      if (!dialog.open) dialog.showModal();
+      document.body.classList.add('photo-viewer-open');
+      dialog.querySelector('.photo-close').focus({preventScroll: true});
+    },
+  };
+};
+
+const groups = {"s0": [{"src": "photos/img_4_a.jpg", "caption": "img_4_a"}]};
+
+const photoViewer = window.planrecPhotoViewer();
+function openViewer(group, index, trigger = document.activeElement) {
+  photoViewer.open(groups[group], index, trigger);
+}
+document.addEventListener("click", event => {
+  const target = event.target.closest("[data-group]");
+  if (target) openViewer(target.dataset.group, Number(target.dataset.index), target);
 });
 for (const table of document.querySelectorAll("table.m")) {
   table.addEventListener("mouseover", (e) => {

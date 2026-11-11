@@ -23,7 +23,10 @@ button[aria-pressed=true]{background:#e0eee3;border-color:#31704d;color:#194d32}
 .photo-toggle[aria-pressed=true]{border-color:var(--group-colour,#31704d);background:#f2f7f1}
 .photo-toggle[aria-pressed=true] img{opacity:1}.photo-toggle .name{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis}
 .photo-toggle .badge{font-size:11px;display:block;min-height:16px;color:#465c4c}
-.photo>a{font-size:11px;text-align:center}.photo.selected .name:before{content:'✓ ';font-weight:700}
+.photo-actions{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.photo-actions a{font-size:11px;text-align:center;padding:6px 0;white-space:nowrap}
+.photo-enlarge{font-size:22px;line-height:1;padding:4px;width:34px;min-height:34px;flex:none}
+.photo.selected .name:before{content:'✓ ';font-weight:700}
 details{border-top:1px solid #dce3dc;padding:12px 0;margin-top:16px}summary{cursor:pointer;font-size:14px}
 details p{font-size:13px;color:#52665a}input{accent-color:#31704d} [hidden]{display:none!important}
 @media(max-width:560px){main{padding:18px 12px 32px}.toolbar{gap:8px}.segments button{padding:8px 10px;font-size:13px}
