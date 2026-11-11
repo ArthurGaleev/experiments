@@ -15,14 +15,26 @@ table { width: 100%; border-collapse: collapse; margin: 32px 0; background: whit
 th, td { text-align: left; padding: 16px; border-bottom: 1px solid #dde3dc; }
 th { font-size: 13px; color: #58695d; font-weight: 500; }
 footer { margin-top: 40px; font-size: 14px; color: #58695d; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+ gap: 14px; margin: 28px 0; }
+.card { display: flex; flex-direction: column; gap: 10px; padding: 22px;
+ border: 1px solid #cddcd1; background: white; border-radius: 12px; text-decoration: none; }
+.card:hover { border-color: #23603d; } .card span { color: #58695d; font-size: 14px; }
+.callout { border-left: 4px solid #23603d; background: #eaf1eb; padding: 20px; margin: 24px 0; }
+summary { cursor: pointer; }
 @media (max-width: 540px) { main { padding: 28px 16px; } th, td { padding: 12px 8px; } }
 </style></head><body><main>
 <div class="label">ПЛАН КВАРТИРЫ ПО ФОТОГРАФИЯМ</div>
-<h1>Эксперименты</h1>
-<p>Визуальные проверки инструментов восстановления плана квартиры.
-Для каждого инструмента опубликован один выбранный запуск.</p>
+<h1>От фотографий к геометрии</h1>
+<p>23 фотографии одной квартиры. Четыре проверки: где кадры перекрываются,
+что видно в глубину, куда направлена вертикаль и какие облака удаётся совместить.
+Это исследование инструментов, а не готовый план квартиры.</p>
+<div class="callout"><strong>С чего начать</strong><p><a href="alignment/">Открыть общий результат совмещения →</a><br>Сначала — выводы и группы, затем — конкретная фотография или пара. Связная группа не равна комнате; противоречия показаны рядом с 3D.</p></div><div class="cards"><a class="card" href="roma/"><strong>01 · Связи между фото</strong><span>Графы RoMa и исходного SIFT, матрицы и отчёт по любой паре.</span></a><a class="card" href="depth/"><strong>02 · Геометрия одного фото</strong><span>Сравнение глубины двух моделей и переключение облаков в общем ракурсе.</span></a><a class="card" href="geocalib/"><strong>03 · Направление вверх</strong><span>Вертикаль на фото, калибровки камер и 3D до / после поворота.</span></a><a class="card" href="alignment/"><strong>04 · Совмещение и его границы</strong><span>Все пары, компоненты, одиночные фото и конфликты циклов.</span></a><a class="card" href="sift/"><strong>Исходный эксперимент SIFT</strong><span>Первоначальная группировка и подробная матрица соответствий.</span></a></div>
+<p>В каждом обзоре доступны основные выводы и переход к отдельным фото.
+Матрицы и фильтры открывают все проверенные пары, включая неудачные.</p>
+<details><summary>Запуски и параметры</summary>
 <table><thead><tr><th>Инструмент</th><th>Дата запуска</th><th>Данные запуска</th></tr></thead>
-<tbody><tr><td><a href="alignment/">Совмещение облаков: пара и группа →</a></td><td>2026-11-11</td><td><a href="alignment/info.json">Параметры</a></td></tr><tr><td><a href="depth/">MetricAnything и MoGe-2: глубина →</a></td><td>2026-11-10</td><td><a href="depth/info.json">Параметры</a></td></tr><tr><td><a href="geocalib/">GeoCalib: вертикаль и калибровка →</a></td><td>2026-11-10</td><td><a href="geocalib/info.json">Параметры</a></td></tr><tr><td><a href="roma/">RoMa v2 и SIFT: соответствия →</a></td><td>2026-11-09</td><td><a href="roma/info.json">Параметры</a></td></tr><tr><td><a href="sift/">SIFT →</a></td><td>2026-11-08</td><td><a href="sift/info.json">Параметры</a></td></tr></tbody></table>
+<tbody><tr><td><a href="alignment/">Совмещение: группы и конфликты →</a></td><td>2026-11-11</td><td><a href="alignment/info.json">Параметры</a></td></tr><tr><td><a href="depth/">Глубина: MetricAnything и MoGe-2 →</a></td><td>2026-11-10</td><td><a href="depth/info.json">Параметры</a></td></tr><tr><td><a href="geocalib/">GeoCalib: вертикаль и калибровка →</a></td><td>2026-11-10</td><td><a href="geocalib/info.json">Параметры</a></td></tr><tr><td><a href="roma/">RoMa и SIFT: связи между фотографиями →</a></td><td>2026-11-09</td><td><a href="roma/info.json">Параметры</a></td></tr><tr><td><a href="sift/">SIFT →</a></td><td>2026-11-08</td><td><a href="sift/info.json">Параметры</a></td></tr></tbody></table></details>
 <footer><p>Фотографии: <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">образец Blueprint-Bench / Andon Labs</a>.
 Пять коллажей вручную разделены на отдельные снимки, файлы переименованы:
 из 18 исходных файлов получено 23 фотографии.</p>

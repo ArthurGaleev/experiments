@@ -1,6 +1,6 @@
 {
-  "created": "2026-11-11T04:03:52.222523+03:00",
-  "seconds": 16.154159875004552,
+  "created": "2026-11-11T04:53:43.835520+03:00",
+  "seconds": 245.1355597919901,
   "python": "3.13.16",
   "settings": {
     "min_confidence": 0.2,
@@ -16,36 +16,37 @@
     "seed": 0
   },
   "status": "complete",
-  "accepted": 9,
-  "attempted": 26,
-  "title": "Совмещение облаков: пара и группа",
-  "run": "20261111-040351-894796",
+  "accepted": 63,
+  "attempted": 506,
+  "title": "Совмещение: группы и конфликты",
+  "run": "20261111-045343-183996",
   "params": {
-    "pair": [
-      [
-        "img_2",
-        "img_9"
-      ],
-      [
-        "img_12",
-        "img_6"
-      ],
-      [
-        "img_10",
-        "img_13"
-      ],
-      [
-        "img_12",
-        "img_14"
-      ]
-    ],
+    "pair": null,
     "group": [
       [
         "img_1",
+        "img_10",
+        "img_11_a",
+        "img_11_b",
+        "img_12",
+        "img_13",
+        "img_14",
+        "img_15",
+        "img_16_a",
+        "img_16_b",
+        "img_17_a",
+        "img_17_b",
+        "img_18",
         "img_2",
         "img_3",
-        "img_9",
-        "img_12"
+        "img_4_a",
+        "img_4_b",
+        "img_5_a",
+        "img_5_b",
+        "img_6",
+        "img_7",
+        "img_8",
+        "img_9"
       ]
     ],
     "models": [

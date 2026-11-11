@@ -1,0 +1,237 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Совмещение · img_16_a ↔ img_6</title><style>
+* { box-sizing: border-box; }
+body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
+main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
+h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
+ letter-spacing: -.025em; }
+h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 17px; }
+section, details.section { margin: 28px 0; padding: 24px; background: white;
+ border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
+a { color: #176650; text-underline-offset: 3px; }
+button, select, input { font: inherit; color: inherit; padding: 7px 10px;
+ border: 1px solid #aabbb1; border-radius: 6px; background: white; }
+button, select, summary { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
+[hidden] { display: none !important; }
+nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
+nav a { padding: 4px 0; }
+.eyebrow, .muted { color: #596d64; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
+ border-radius: 4px; }
+.warning { background: #fff5e7; border-left-color: #c67918; }
+.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
+.stats strong { display: block; font-size: 30px; line-height: 1.2; }
+.stats span { display: block; font-size: 13px; color: #596d64; }
+.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
+.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
+ padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
+ background: #fff; }
+.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
+.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
+ align-self: flex-start; }
+.card strong { margin-top: 8px; }
+.card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.table-scroll, .graph { overflow-x: auto; }
+.graph svg { display: block; width: 100%; min-width: 740px; }
+.graph-label { font: 14px system-ui; fill: #20342e; }
+.graph a:hover line { stroke: #d28a19; }
+.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
+ font-variant-numeric: tabular-nums; }
+table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
+ border-bottom: 1px solid #e2e8e3; }
+.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
+ text-align: left; }
+.data-table td { font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: space-between;
+ gap: 12px; margin: 16px 0 0; }
+.switcher > label { font-size: 13px; }
+.switcher > select { margin-bottom: 18px; max-width: 100%; }
+details { margin: 16px 0; }
+summary { font-weight: 600; }
+details[open] > summary { margin-bottom: 16px; }
+p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
+  border: 1px solid #ddd; }
+.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
+figcaption { font-size: 12px; color: #555; margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
+  vertical-align: -2px; border: 1px solid #bbb; }
+.mwrap { overflow-x: auto; }
+table.m { border-collapse: collapse; font-size: 10px; }
+table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
+  border: 1px solid #fff; }
+table.m td[data-index] { cursor: pointer; }
+table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
+table.m td.diag { background: #fff; }
+table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
+table.m th { font-weight: normal; color: #555; white-space: nowrap; }
+table.m th.rh { text-align: right; padding-right: 6px; }
+table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
+table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
+table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
+table.m th.hl { color: #000; font-weight: 700; }
+#viewer { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column;
+  align-items: center; justify-content: center; background: rgba(18, 18, 18, 0.95); }
+#viewer.open { display: flex; }
+#viewer img { width: 92vw; height: 80vh; object-fit: contain; }
+#viewer .cap { color: #eee; margin-top: 12px; max-width: 90vw; text-align: center;
+  white-space: pre-line; }
+#viewer button { position: absolute; border: 0; background: none; color: #ccc;
+  font-size: 44px; line-height: 1; padding: 12px 18px; cursor: pointer; }
+#viewer button:hover { color: #fff; }
+#viewer .prev { left: 0; top: 44%; }
+#viewer .next { right: 0; top: 44%; }
+#viewer .close { right: 4px; top: 4px; font-size: 34px; }
+@media(max-width: 600px) {
+ main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
+ .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
+ .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
+ .filters input { max-width: 180px; } .card { min-width: 100px; }
+}
+</style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
+<nav><a href='index.html#pairs'>← К обзору</a></nav>
+<h1>Совмещение · img_16_a ↔ img_6</h1><nav data-related aria-label="Тот же источник в других экспериментах"><a href="../roma/pair-0158.html">Соответствия</a></nav>
+<section class='section' id='section-0'><h2>Исходные фотографии</h2>
+<p><a href='photo-img_16_a.html'>img_16_a: все связи</a> · <a href='photo-img_6.html'>img_6: все связи</a></p>
+<div class='row' style='--h: 200px'>
+<figure><img src='photos/img_16_a.jpg' loading='lazy' alt='img_16_a' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_16_a</figcaption></figure>
+<figure><img src='photos/img_6.jpg' loading='lazy' alt='img_6' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_6</figcaption></figure>
+</div>
+</section>
+<section class='section' id='section-1'><h2>MetricAnything</h2>
+<p>отклонено; проверочные соответствия: 119/281; медиана ошибки 3D: 0.246 м; гравитация: 3.8°; причина: ошибка обратной проекции</p>
+<p><a href='clouds/158_metricanything.html'>Открыть отклонённую гипотезу в 3D →</a></p><details><summary>Проверки и диагностика масштаба</summary><div class='table-scroll'><table><tr><th>Выборка</th><th>Inliers</th><th>Доля</th><th>Ячейки</th><th>3D, м</th><th>Репроекция / диагональ</th></tr><tr><td>Области подгонки</td><td>86</td><td>0.381</td><td>7</td><td>0.216</td><td>0.0147</td></tr><tr><td>Отложенные области</td><td>119</td><td>0.423</td><td>9</td><td>0.246</td><td>0.0151</td></tr></table></div><p>Отдельная подгонка масштаба: s=0.951; отклонено; проверочные соответствия: 125/281; медиана ошибки 3D: 0.238 м; гравитация: 4.0°; причина: ошибка обратной проекции. Эта подгонка не используется в групповой сцене.</p></details>
+<div class='row' style='--h: 220px'>
+<figure><img src='pairs/158_metricanything.jpg' loading='lazy' alt='До 100 соответствий, согласованных с 3D-гипотезой' role='button' tabindex='0' data-group='s1' data-index='0'><figcaption>До 100 соответствий, согласованных с 3D-гипотезой</figcaption></figure>
+</div>
+</section>
+<section class='section' id='section-2'><h2>MoGe-2</h2>
+<p>принято; проверочные соответствия: 110/281; медиана ошибки 3D: 0.264 м; гравитация: 2.3°</p>
+<p><a href='clouds/158_moge2.html'>Открыть совмещение в 3D →</a></p><details><summary>Проверки и диагностика масштаба</summary><div class='table-scroll'><table><tr><th>Выборка</th><th>Inliers</th><th>Доля</th><th>Ячейки</th><th>3D, м</th><th>Репроекция / диагональ</th></tr><tr><td>Области подгонки</td><td>89</td><td>0.394</td><td>6</td><td>0.314</td><td>0.0120</td></tr><tr><td>Отложенные области</td><td>110</td><td>0.391</td><td>7</td><td>0.264</td><td>0.0133</td></tr></table></div><p>Отдельная подгонка масштаба: s=0.968; отклонено; проверочные соответствия: 125/281; медиана ошибки 3D: 0.199 м; гравитация: 3.6°; причина: ошибка обратной проекции. Эта подгонка не используется в групповой сцене.</p></details>
+<div class='row' style='--h: 220px'>
+<figure><img src='pairs/158_moge2.jpg' loading='lazy' alt='До 100 соответствий, согласованных с 3D-гипотезой' role='button' tabindex='0' data-group='s2' data-index='0'><figcaption>До 100 соответствий, согласованных с 3D-гипотезой</figcaption></figure>
+</div>
+</section>
+</main><div id='viewer' role='dialog' aria-modal='true' aria-label='Просмотр изображения'><button class='prev' title='Назад (←)'>‹</button><img alt=''><div class='cap'></div><button class='next' title='Вперёд (→)'>›</button><button class='close' title='Закрыть (Esc)'>×</button></div><script>const groups = {"s0": [{"src": "photos/img_16_a.jpg", "caption": "img_16_a"}, {"src": "photos/img_6.jpg", "caption": "img_6"}], "s1": [{"src": "pairs/158_metricanything.jpg", "caption": "До 100 соответствий, согласованных с 3D-гипотезой"}], "s2": [{"src": "pairs/158_moge2.jpg", "caption": "До 100 соответствий, согласованных с 3D-гипотезой"}]};
+
+const viewer = document.getElementById("viewer");
+const shown = viewer.querySelector("img");
+const caption = viewer.querySelector(".cap");
+let group = null;
+let index = 0;
+let returnFocus=null;
+
+function show() {
+  const items = groups[group];
+  shown.src = items[index].src;
+  shown.alt = items[index].caption;
+  caption.textContent = items[index].caption + "\n" + (index + 1) + " / " + items.length;
+}
+function openViewer(g, i) {
+  group = g;
+  index = i;
+  returnFocus=document.activeElement;
+  viewer.classList.add("open");
+  viewer.querySelector('.close').focus();
+  show();
+}
+function step(d) {
+  const n = groups[group].length;
+  index = (index + d + n) % n;
+  show();
+}
+function closeViewer() {
+  viewer.classList.remove("open");
+  returnFocus?.focus();
+}
+document.addEventListener("click", (e) => {
+  if (viewer.classList.contains("open")) {
+    if (e.target === viewer) closeViewer();
+    return;
+  }
+  const el = e.target.closest("[data-group]");
+  if (el) openViewer(el.dataset.group, Number(el.dataset.index));
+});
+viewer.querySelector(".prev").addEventListener("click", () => step(-1));
+viewer.querySelector(".next").addEventListener("click", () => step(1));
+viewer.querySelector(".close").addEventListener("click", closeViewer);
+document.addEventListener("keydown", (e) => {
+  if (!viewer.classList.contains("open")) return;
+  if (e.key === "ArrowLeft") step(-1);
+  else if (e.key === "ArrowRight") step(1);
+  else if (e.key === "Escape") closeViewer();
+  else if (e.key === 'Tab') {
+    const buttons=Array.from(viewer.querySelectorAll('button'));
+    const i=buttons.indexOf(document.activeElement);
+    buttons[(i+(e.shiftKey?-1:1)+buttons.length)%buttons.length].focus();e.preventDefault();
+  }
+});
+for (const table of document.querySelectorAll("table.m")) {
+  table.addEventListener("mouseover", (e) => {
+    for (const th of table.querySelectorAll("th.hl")) th.classList.remove("hl");
+    const td = e.target.closest("td[data-r]");
+    if (!td) return;
+    table.querySelector(`th.rh[data-r="${td.dataset.r}"]`).classList.add("hl");
+    table.querySelector(`th.ch[data-c="${td.dataset.c}"]`).classList.add("hl");
+  });
+}
+document.addEventListener('keydown', e => {
+ const el=e.target.closest('img[data-group]');
+ if(el && (e.key==='Enter'||e.key===' ')){e.preventDefault();openViewer(el.dataset.group,
++el.dataset.index);}
+});
+for(const select of document.querySelectorAll('[data-panel-select]')) {
+ select.addEventListener('change',()=>{
+  for(const panel of select.parentElement.querySelectorAll(':scope > [data-panel]')) {
+   panel.hidden=panel.dataset.panel!==select.value;
+  }
+ });
+}
+for(const browser of document.querySelectorAll('.pair-browser')) {
+ const body=browser.querySelector('tbody'),rows=Array.from(body.rows),q=s=>browser.querySelector(s);
+ let page=0,sort=-1,ascending=false;
+ const storageKey='pair-browser:'+location.pathname;
+ try {
+  const saved=JSON.parse(sessionStorage.getItem(storageKey)||'null');
+  if(saved){page=saved.page;sort=saved.sort;ascending=saved.ascending;
+   for(const key of ['photo','status','query','count'])q(`[data-${key}]`).value=saved[key];}
+ } catch {}
+ const hash=new URLSearchParams(location.hash.slice(1));
+ if(hash.has('photo'))q('[data-photo]').value=hash.get('photo');
+ function draw(){
+  const photo=q('[data-photo]').value,status=q('[data-status]').value,
+query=q('[data-query]').value.toLowerCase().trim(),limit=+q('[data-count]').value;
+  let selected=rows.filter(r=>(!photo||r.dataset.a===photo||r.dataset.b===photo)
+   &&(!status||r.dataset.status===status)
+   &&(!query||r.textContent.toLowerCase().includes(query)));
+  if(sort>=0)selected.sort((a,b)=>{let x=a.cells[sort].dataset.value,y=b.cells[sort].dataset.value;
+   const cmp=x!==''&&y!==''&&!isNaN(x)&&!isNaN(y)?Number(x)-Number(y):x.localeCompare(y,
+'ru');return ascending?cmp:-cmp;});
+  page=Math.min(page,Math.max(0,Math.ceil(selected.length/limit)-1));
+  for(const row of rows)row.hidden=true;
+  selected.slice(page*limit,(page+1)*limit).forEach(r=>{r.hidden=false;body.append(r);});
+  const end=Math.min((page+1)*limit,selected.length);
+  q('[data-total]').textContent=selected.length?
+   `${page*limit+1}–${end} из ${selected.length} пар`:'Пары не найдены';
+  q('[data-prev]').disabled=page===0;q('[data-next]').disabled=(page+1)*limit>=selected.length;
+  try{sessionStorage.setItem(storageKey,JSON.stringify({photo,status,query,count:limit,
+   page,sort,ascending}));}catch{}
+ }
+ for(const el of browser.querySelectorAll('.filters select,.filters input')) {
+  el.addEventListener('input',()=>{page=0;draw();});
+ }
+ for(const button of browser.querySelectorAll('[data-sort]'))button.onclick=()=>{
+const n=+button.dataset.sort;ascending=sort===n?!ascending:false;sort=n;page=0;
+  for(const th of browser.querySelectorAll('th'))th.removeAttribute('aria-sort');
+button.parentElement.setAttribute('aria-sort',ascending?'ascending':'descending');draw();};
+ q('[data-prev]').onclick=()=>{page--;draw();};q('[data-next]').onclick=()=>{page++;draw();};draw();
+}
+</script></body></html>

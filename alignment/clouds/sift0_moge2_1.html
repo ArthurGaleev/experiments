@@ -1,0 +1,165 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>SIFT 1 · часть 2 · 9 фото · MoGe-2</title><style>
+* { box-sizing: border-box; }
+body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
+main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
+h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
+ letter-spacing: -.025em; }
+h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 17px; }
+section, details.section { margin: 28px 0; padding: 24px; background: white;
+ border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
+a { color: #176650; text-underline-offset: 3px; }
+button, select, input { font: inherit; color: inherit; padding: 7px 10px;
+ border: 1px solid #aabbb1; border-radius: 6px; background: white; }
+button, select, summary { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
+[hidden] { display: none !important; }
+nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
+nav a { padding: 4px 0; }
+.eyebrow, .muted { color: #596d64; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
+ border-radius: 4px; }
+.warning { background: #fff5e7; border-left-color: #c67918; }
+.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
+.stats strong { display: block; font-size: 30px; line-height: 1.2; }
+.stats span { display: block; font-size: 13px; color: #596d64; }
+.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
+.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
+ padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
+ background: #fff; }
+.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
+.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
+ align-self: flex-start; }
+.card strong { margin-top: 8px; }
+.card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.table-scroll, .graph { overflow-x: auto; }
+.graph svg { display: block; width: 100%; min-width: 740px; }
+.graph-label { font: 14px system-ui; fill: #20342e; }
+.graph a:hover line { stroke: #d28a19; }
+.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
+ font-variant-numeric: tabular-nums; }
+table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
+ border-bottom: 1px solid #e2e8e3; }
+.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
+ text-align: left; }
+.data-table td { font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: space-between;
+ gap: 12px; margin: 16px 0 0; }
+.switcher > label { font-size: 13px; }
+.switcher > select { margin-bottom: 18px; max-width: 100%; }
+details { margin: 16px 0; }
+summary { font-weight: 600; }
+details[open] > summary { margin-bottom: 16px; }
+p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
+  border: 1px solid #ddd; }
+.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
+figcaption { font-size: 12px; color: #555; margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
+  vertical-align: -2px; border: 1px solid #bbb; }
+.mwrap { overflow-x: auto; }
+table.m { border-collapse: collapse; font-size: 10px; }
+table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
+  border: 1px solid #fff; }
+table.m td[data-index] { cursor: pointer; }
+table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
+table.m td.diag { background: #fff; }
+table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
+table.m th { font-weight: normal; color: #555; white-space: nowrap; }
+table.m th.rh { text-align: right; padding-right: 6px; }
+table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
+table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
+table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
+table.m th.hl { color: #000; font-weight: 700; }
+#viewer { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column;
+  align-items: center; justify-content: center; background: rgba(18, 18, 18, 0.95); }
+#viewer.open { display: flex; }
+#viewer img { width: 92vw; height: 80vh; object-fit: contain; }
+#viewer .cap { color: #eee; margin-top: 12px; max-width: 90vw; text-align: center;
+  white-space: pre-line; }
+#viewer button { position: absolute; border: 0; background: none; color: #ccc;
+  font-size: 44px; line-height: 1; padding: 12px 18px; cursor: pointer; }
+#viewer button:hover { color: #fff; }
+#viewer .prev { left: 0; top: 44%; }
+#viewer .next { right: 0; top: 44%; }
+#viewer .close { right: 4px; top: 4px; font-size: 34px; }
+@media(max-width: 600px) {
+ main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
+ .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
+ .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
+ .filters input { max-width: 180px; } .card { min-width: 100px; }
+}
+
+#cloud{height:72vh;min-height:380px}.cloud-controls{position:static}</style><script src='plotly.min.js'></script><script src='data-030792419aba0546d9d39476.js'></script><script src='data-08e49a69a64a7bb44985bf1b.js'></script><script src='data-2a3b3121df5f00b1d32396d8.js'></script><script src='data-2a8d562dc9a53717bb470590.js'></script><script src='data-2ff7a998bed35d777da1b92b.js'></script><script src='data-60dc0ad73c8abbd387cb2e29.js'></script><script src='data-9eae3fa637215405c7cfb730.js'></script><script src='data-cd44067df6903c032dcd5edc.js'></script><script src='data-dad3a0c8c7599a072380c8e6.js'></script></head><body><main><a href='../component-sift0_moge2_1.html'>← К отчёту</a><h1>SIFT 1 · часть 2 · 9 фото · MoGe-2</h1><p class='callout'>Корневая камера: img_11_a. Принятые жёсткие преобразования, максимальное остовное дерево по поддержке. Замыканий циклов: 10, предупреждений: 1. Петли не оптимизированы. Компонента не является распознанной комнатой; невидимые поверхности не достроены.</p><div class='filters cloud-controls'><label>Показать <select id='mode'><option value='all' selected>Все источники</option><option value='one'>Один источник</option><option value='two'>Два источника</option></select></label><label id='label-a'>Источник A <select id='source-a'><option value='0'>img_11_a</option><option value='1'>img_18</option><option value='2'>img_2</option><option value='3'>img_9</option><option value='4'>img_11_b</option><option value='5'>img_14</option><option value='6'>img_15</option><option value='7'>img_3</option><option value='8'>img_17_a</option></select></label><label id='label-b'>Источник B <select id='source-b'><option value='0'>img_11_a</option><option value='1'>img_18</option><option value='2'>img_2</option><option value='3'>img_9</option><option value='4'>img_11_b</option><option value='5'>img_14</option><option value='6'>img_15</option><option value='7'>img_3</option><option value='8'>img_17_a</option></select></label><label>Цвет <select id='colour'><option value='rgb'>Из фотографии</option><option value='source'>По источнику</option></select></label><label><input type='checkbox' id='cameras' checked> Камеры</label><label><input type='checkbox' id='level' checked> Поворот по GeoCalib</label><button id='reset'>Сброс вида</button><button id='top'>Вид сверху</button></div><div id='source-legend' class='legend' aria-live='polite'></div><p id='cloud-status' class='muted' aria-live='polite'></p><div id='cloud'></div><div class='cards' style='--h:64px'><a class='card' href='../photo-img_11_a.html'><img src='../photos/img_11_a.jpg' alt='' loading='lazy'><strong>img_11_a</strong><span></span></a><a class='card' href='../photo-img_18.html'><img src='../photos/img_18.jpg' alt='' loading='lazy'><strong>img_18</strong><span></span></a><a class='card' href='../photo-img_2.html'><img src='../photos/img_2.jpg' alt='' loading='lazy'><strong>img_2</strong><span></span></a><a class='card' href='../photo-img_9.html'><img src='../photos/img_9.jpg' alt='' loading='lazy'><strong>img_9</strong><span></span></a><a class='card' href='../photo-img_11_b.html'><img src='../photos/img_11_b.jpg' alt='' loading='lazy'><strong>img_11_b</strong><span></span></a><a class='card' href='../photo-img_14.html'><img src='../photos/img_14.jpg' alt='' loading='lazy'><strong>img_14</strong><span></span></a><a class='card' href='../photo-img_15.html'><img src='../photos/img_15.jpg' alt='' loading='lazy'><strong>img_15</strong><span></span></a><a class='card' href='../photo-img_3.html'><img src='../photos/img_3.jpg' alt='' loading='lazy'><strong>img_3</strong><span></span></a><a class='card' href='../photo-img_17_a.html'><img src='../photos/img_17_a.jpg' alt='' loading='lazy'><strong>img_17_a</strong><span></span></a></div><details><summary>Координаты и ограничения</summary><p>Взаимные позы взяты из совмещения; каждая компонента имеет отдельную систему координат. Масштаб задан моделью в метрах и не подгоняется при переключении источника. XYZ и K каждой модели сохранены вместе. Показана равномерная подвыборка сетки, не более 25 000 точек на источник; включены и области вне перекрытия кадров. Переключатель GeoCalib применяет один общий поворот ко всей сцене. Нулевая высота проходит через камеру, а не через пол. Полные массивы сохранены локально.</p></details></main><script>
+const s={"sources": [{"key": "030792419aba0546d9d39476", "name": "img_11_a", "pose": [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.10232058663454317, -0.13762418720170325, 0.3], [0.10232058663454317, -0.13762418720170325, 0.3], [0.10232058663454317, 0.13762418720170325, 0.3], [-0.10232058663454317, 0.13762418720170325, 0.3]], "gravity": [0.0009703870562412485, -0.5999699262960729, -0.005928396852937727], "reference": false, "photo": "../photos/img_11_a.jpg", "href": "../photo-img_11_a.html"}, {"key": "2a3b3121df5f00b1d32396d8", "name": "img_18", "pose": [[0.9913423608503977, -0.0028690266482171494, -0.13127106409887568, -0.244487629470771], [0.0027776747411786275, 0.9999957559281862, -0.0008790043492035622, 0.024044103430164263], [0.1312730288619547, 0.0005067659277413074, 0.9913461227450786, -0.2686811236972704], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.2210792442772307, -0.14738615853557832, 0.3], [0.2210792442772307, -0.14738615853557832, 0.3], [0.2210792442772307, 0.1473861585355783, 0.3], [-0.2210792442772307, 0.1473861585355783, 0.3]], "gravity": [-0.0010690332276162785, -0.5999985238756235, -0.0007927893989593254], "reference": false, "photo": "../photos/img_18.jpg", "href": "../photo-img_18.html"}, {"key": "9eae3fa637215405c7cfb730", "name": "img_2", "pose": [[0.059662792115976096, 0.0023450623668219003, -0.9982158343361534, 2.2234134504643883], [0.012982600897104504, 0.9999108392276894, 0.0031250070279373243, 0.07447538613774193], [0.9981341609778083, -0.013145884431025108, 0.05962702752656589, 2.43089106280669], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.22621422905182353, -0.15080949055327683, 0.3], [0.22621422905182353, -0.15080949055327683, 0.3], [0.22621422905182353, 0.1508094905532768, 0.3], [-0.22621422905182353, 0.1508094905532768, 0.3]], "gravity": [0.0066299252800996475, -0.5999629213710617, -0.0007328510636234457], "reference": false, "photo": "../photos/img_2.jpg", "href": "../photo-img_2.html"}, {"key": "2a8d562dc9a53717bb470590", "name": "img_9", "pose": [[-0.20267918241504185, 0.022131469480962923, -0.9789950699948311, 2.1365290803937964], [0.016788272733444694, 0.9996761731825614, 0.019123354038912146, 0.06750317210572429], [0.9791012730633118, -0.012559730478130813, -0.20298509860607722, 2.4604915956161015], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.16637522920883482, -0.11091681947255656, 0.3], [0.1663752292088348, -0.11091681947255656, 0.3], [0.1663752292088348, 0.11091681947255654, 0.3], [-0.16637522920883482, 0.11091681947255654, 0.3]], "gravity": [0.0022743862527389025, -0.599994741272475, -0.0010665892129299128], "reference": false, "photo": "../photos/img_9.jpg", "href": "../photo-img_9.html"}, {"key": "dad3a0c8c7599a072380c8e6", "name": "img_11_b", "pose": [[-0.7584923941467622, 0.03182579185759956, -0.6509042994128637, 1.0684900767995569], [0.0178455809705612, 0.99944658485066, 0.02807239338168042, -0.11357074940286065], [0.6514375052615083, 0.009676931486241908, -0.7586405827107288, 2.7843178728147406], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.14056864172407646, -0.18906893528937832, 0.3], [0.14056864172407646, -0.18906893528937832, 0.3], [0.14056864172407646, 0.18906893528937832, 0.3], [-0.14056864172407646, 0.18906893528937832, 0.3]], "gravity": [0.0009820983162510614, -0.5999981116496605, 0.0011408329144578359], "reference": false, "photo": "../photos/img_11_b.jpg", "href": "../photo-img_11_b.html"}, {"key": "2ff7a998bed35d777da1b92b", "name": "img_14", "pose": [[-0.7473510950468566, 0.035847548479279505, -0.6634615994918556, 0.8939720186544721], [0.015450874590478244, 0.9992111316323659, 0.03658394314937206, -0.1815647079948064], [0.6642496602984869, 0.017089988004468495, -0.7473154093843867, 3.2924228026664872], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.2351405564701947, -0.1567603709801298, 0.3], [0.23514055647019466, -0.1567603709801298, 0.3], [0.23514055647019466, 0.15676037098012977, 0.3], [-0.2351405564701947, 0.15676037098012977, 0.3]], "gravity": [0.004926891454603821, -0.5999779136191383, 0.00149295338856274], "reference": false, "photo": "../photos/img_14.jpg", "href": "../photo-img_14.html"}, {"key": "08e49a69a64a7bb44985bf1b", "name": "img_15", "pose": [[-0.025864020780610064, 0.025381167824664624, -0.9993432086870441, 1.1684520392970683], [0.009097131118332984, 0.9996422123721331, 0.02515331884985989, -0.018376500502655286], [0.9996240766580589, -0.008440590240207138, -0.026085662765604267, 1.8789593277218222], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.22151896739715501, -0.14767930726500894, 0.3], [0.22151896739715501, -0.14767930726500894, 0.3], [0.22151896739715501, 0.1476793072650089, 0.3], [-0.22151896739715501, 0.1476793072650089, 0.3]], "gravity": [0.00016373810026787985, -0.5999951241115296, 0.002413344613768078], "reference": false, "photo": "../photos/img_15.jpg", "href": "../photo-img_15.html"}, {"key": "60dc0ad73c8abbd387cb2e29", "name": "img_3", "pose": [[-0.6720860082375905, 0.014454950645037268, 0.7403319876468328, -1.8222442433563086], [0.013815693312702566, 0.9998801924682742, -0.00698049624998171, -0.06876957610221562], [-0.7403441930275075, 0.0055367058307450225, -0.6722051924367977, 3.27921921071505], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.2434542693408966, -0.16230284622726437, 0.3], [0.2434542693408966, -0.16230284622726437, 0.3], [0.2434542693408966, 0.16230284622726437, 0.3], [-0.2434542693408966, 0.16230284622726437, 0.3]], "gravity": [-0.002846457751230225, -0.5999868467040405, -0.0027715447701062183], "reference": false, "photo": "../photos/img_3.jpg", "href": "../photo-img_3.html"}, {"key": "cd44067df6903c032dcd5edc", "name": "img_17_a", "pose": [[-0.6328689764579895, 0.005575017138618131, 0.7742388377115422, 0.1108417641117283], [-0.008467125879286075, 0.9998644467360845, -0.01412076246126821, -0.2404628296617252], [-0.774212610602773, -0.015492170185204332, -0.6327359846307072, 3.368822662199886], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.12167382503388527, -0.16365485479090483, 0.3], [0.12167382503388528, -0.16365485479090483, 0.3], [0.12167382503388528, 0.16365485479090489, 0.3], [-0.12167382503388527, 0.16365485479090489, 0.3]], "gravity": [-0.0018119813763817548, -0.5998648845315346, 0.012603056353927234], "reference": false, "photo": "../photos/img_17_a.jpg", "href": "../photo-img_17_a.html"}], "rotation": [[0.999998692022785, 0.001617390713210888, 3.3881317890172014e-21], [1.598089002361689e-05, -0.009880648497882871, 0.9999511850734878], [0.001617311760402081, -0.9999498771601216, -0.009880661421562879]], "fixed": [[1, 0, 0], [0, 0, 1], [0, -1, 0]], "ranges": [[-8.589759276304747, 3.9038758891360423], [-3.0475372817477746, 7.118604135154943], [-1.9549908254475095, 3.4668316470223517]], "rawRanges": [[-8.588085360076311, 3.9039131193054946], [-3.036896529625797, 7.0845472232730975], [-1.8975970953156356, 3.5450073704769296]], "gravity": [0.0012938494083216648, -0.7999599017280974, -0.007904529137250304], "referenceGravity": null, "multiview": true}, plot=document.getElementById('cloud');
+const palette=['#168575','#ce621c','#6551c5','#bd3c8a','#ac8b10','#267bb7','#7c4f37'];
+const get=id=>document.getElementById(id);
+const decode=(v,Type)=>new Type(Uint8Array.from(atob(v),c=>c.charCodeAt(0)).buffer);
+const data=s.sources.map(c=>{const d=window.cloudSources[c.key];
+ return {xyz:decode(d.xyz,Float32Array),rgb:decode(d.rgb,Uint8Array)};});
+const rotate=(p,r)=>r.map(row=>row.reduce((v,a,i)=>v+a*p[i],0));
+const pose=(p,m)=>m.slice(0,3).map(row=>row[0]*p[0]+row[1]*p[1]+row[2]*p[2]+row[3]);
+const camera={eye:{x:1.35,y:-1.8,z:.8},up:{x:0,y:0,z:1},center:{x:0,y:0,z:0}};
+if(s.sources.length>1)get('source-b').value='1';
+let rendered=false;
+function draw(){
+ const level=get('level')?.checked, r=level?s.rotation:s.fixed, ranges=level?s.ranges:s.rawRanges;
+ const mode=get('mode').value, a=+get('source-a').value,b=+get('source-b').value;
+ get('top').textContent=level?'Вид сверху':'Вдоль −y камеры';
+ get('label-a').hidden=mode==='all'; get('label-b').hidden=mode!=='two';
+ const traces=[];
+ const legend=get('source-legend');legend.replaceChildren();
+ s.sources.forEach((c,i)=>{
+  const d=data[i],visible=mode==='all'?!c.reference:i===a||(mode==='two'&&i===b);
+  const xyz=[[],[],[]],colours=[];
+  for(let k=0;k<d.xyz.length;k+=3){
+   const p=rotate(pose([d.xyz[k],d.xyz[k+1],d.xyz[k+2]],c.pose),r);
+   p.forEach((v,j)=>xyz[j].push(v));
+   colours.push(`rgb(${d.rgb[k]},${d.rgb[k+1]},${d.rgb[k+2]})`);
+  }
+  const colour=palette[i%palette.length];
+  if(visible){const chip=document.createElement('span');chip.textContent=c.name;
+   chip.style.borderLeft='5px solid '+colour;chip.style.paddingLeft='8px';legend.append(chip);}
+  traces.push({type:'scatter3d',mode:'markers',name:c.name,x:xyz[0],y:xyz[1],z:xyz[2],
+   visible,showlegend:false,marker:{size:2,color:get('colour').value==='rgb'?colours:colour},
+   hovertemplate:'x: %{x:.2f} м<br>y: %{y:.2f} м<br>z: %{z:.2f} м<extra>'+c.name+'</extra>'});
+  const centre=rotate(pose([0,0,0],c.pose),r),corners=c.corners.map(p=>rotate(pose(p,c.pose),r));
+  const lines=[];for(let j=0;j<4;j++)lines.push(centre,corners[j],corners[(j+1)%4],[null,
+null,null]);
+  if(c.gravity)lines.push(centre,rotate(pose(c.gravity,c.pose),r));
+  traces.push({type:'scatter3d',mode:'lines',name:'Камера: '+c.name,
+   x:lines.map(p=>p[0]),y:lines.map(p=>p[1]),z:lines.map(p=>p[2]),
+   visible:visible&&get('cameras').checked,showlegend:false,line:{color:colour,width:5},
+hoverinfo:'name'});
+ });
+ [s.gravity,s.referenceGravity].forEach((g,i)=>{if(!g)return;const end=rotate(g,r);
+  traces.push({type:'scatter3d',mode:'lines',x:[0,end[0]],y:[0,end[1]],z:[0,end[2]],
+   name:i?'Вверх эталона':'Вверх GeoCalib',line:{color:i?'#c532b4':'#168c2a',width:7},
+showlegend:false});});
+ const labels=level?['x по горизонтали, м','y по горизонтали, м',
+'z вверх, м']:['x вправо, м','z вперёд, м','−y к верху кадра, м'];
+ const layout={margin:{l:0,r:0,b:0,t:0},uirevision:'keep-camera',paper_bgcolor:'#fff',
+  scene:{xaxis:{title:{text:labels[0]},range:ranges[0]},
+  yaxis:{title:{text:labels[1]},range:ranges[1]},
+  zaxis:{title:{text:labels[2]},range:ranges[2]},aspectmode:'data',
+camera:rendered?plot.layout.scene.camera:camera}};
+ get('cloud-status').textContent='Загрузка 3D…';
+ Plotly.react(plot,traces,layout,{displayModeBar:false,scrollZoom:true,responsive:true})
+  .then(()=>{rendered=true;
+get('cloud-status').textContent='Перетаскивание — вращение · Shift — перенос · колесо — масштаб';});
+}
+for(const el of document.querySelectorAll('.cloud-controls select,.cloud-controls input')) {
+ el.addEventListener('change',draw);
+}
+get('reset').onclick=()=>Plotly.relayout(plot,{'scene.camera':camera});
+get('top').onclick=()=>Plotly.relayout(plot,{'scene.camera':{eye:{x:0,y:0,z:2.5},up:{x:0,
+y:1,z:0},center:{x:0,y:0,z:0}}});
+draw();
+</script></body></html>

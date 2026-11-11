@@ -1,0 +1,165 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>SIFT 1 · часть 2 · 10 фото · MetricAnything</title><style>
+* { box-sizing: border-box; }
+body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
+main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
+h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
+ letter-spacing: -.025em; }
+h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 17px; }
+section, details.section { margin: 28px 0; padding: 24px; background: white;
+ border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
+a { color: #176650; text-underline-offset: 3px; }
+button, select, input { font: inherit; color: inherit; padding: 7px 10px;
+ border: 1px solid #aabbb1; border-radius: 6px; background: white; }
+button, select, summary { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
+[hidden] { display: none !important; }
+nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
+nav a { padding: 4px 0; }
+.eyebrow, .muted { color: #596d64; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
+ border-radius: 4px; }
+.warning { background: #fff5e7; border-left-color: #c67918; }
+.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
+.stats strong { display: block; font-size: 30px; line-height: 1.2; }
+.stats span { display: block; font-size: 13px; color: #596d64; }
+.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
+.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
+ padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
+ background: #fff; }
+.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
+.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
+ align-self: flex-start; }
+.card strong { margin-top: 8px; }
+.card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.table-scroll, .graph { overflow-x: auto; }
+.graph svg { display: block; width: 100%; min-width: 740px; }
+.graph-label { font: 14px system-ui; fill: #20342e; }
+.graph a:hover line { stroke: #d28a19; }
+.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
+ font-variant-numeric: tabular-nums; }
+table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
+ border-bottom: 1px solid #e2e8e3; }
+.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
+ text-align: left; }
+.data-table td { font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: space-between;
+ gap: 12px; margin: 16px 0 0; }
+.switcher > label { font-size: 13px; }
+.switcher > select { margin-bottom: 18px; max-width: 100%; }
+details { margin: 16px 0; }
+summary { font-weight: 600; }
+details[open] > summary { margin-bottom: 16px; }
+p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
+  border: 1px solid #ddd; }
+.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
+figcaption { font-size: 12px; color: #555; margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
+  vertical-align: -2px; border: 1px solid #bbb; }
+.mwrap { overflow-x: auto; }
+table.m { border-collapse: collapse; font-size: 10px; }
+table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
+  border: 1px solid #fff; }
+table.m td[data-index] { cursor: pointer; }
+table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
+table.m td.diag { background: #fff; }
+table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
+table.m th { font-weight: normal; color: #555; white-space: nowrap; }
+table.m th.rh { text-align: right; padding-right: 6px; }
+table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
+table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
+table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
+table.m th.hl { color: #000; font-weight: 700; }
+#viewer { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column;
+  align-items: center; justify-content: center; background: rgba(18, 18, 18, 0.95); }
+#viewer.open { display: flex; }
+#viewer img { width: 92vw; height: 80vh; object-fit: contain; }
+#viewer .cap { color: #eee; margin-top: 12px; max-width: 90vw; text-align: center;
+  white-space: pre-line; }
+#viewer button { position: absolute; border: 0; background: none; color: #ccc;
+  font-size: 44px; line-height: 1; padding: 12px 18px; cursor: pointer; }
+#viewer button:hover { color: #fff; }
+#viewer .prev { left: 0; top: 44%; }
+#viewer .next { right: 0; top: 44%; }
+#viewer .close { right: 4px; top: 4px; font-size: 34px; }
+@media(max-width: 600px) {
+ main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
+ .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
+ .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
+ .filters input { max-width: 180px; } .card { min-width: 100px; }
+}
+
+#cloud{height:72vh;min-height:380px}.cloud-controls{position:static}</style><script src='plotly.min.js'></script><script src='data-1b2c0a396e52d00cce4b5d13.js'></script><script src='data-3df9ff76b5280e423d735247.js'></script><script src='data-50a4b1a7be3650199eaa748e.js'></script><script src='data-6ebc909f7421be72051e38fe.js'></script><script src='data-77b7dc8a442cf0feb2b7a4ae.js'></script><script src='data-85b9f9a797a79af9635f7d33.js'></script><script src='data-93e22c84dd9279c55727287f.js'></script><script src='data-bad99a3505fa9c6e5a522854.js'></script><script src='data-df6f5a8a34a0c2235e1810da.js'></script><script src='data-fb4f3bac3c21c49db09f512e.js'></script></head><body><main><a href='../component-sift0_metricanything_1.html'>← К отчёту</a><h1>SIFT 1 · часть 2 · 10 фото · MetricAnything</h1><p class='callout'>Корневая камера: img_11_a. Принятые жёсткие преобразования, максимальное остовное дерево по поддержке. Замыканий циклов: 2, предупреждений: 0. Петли не оптимизированы. Компонента не является распознанной комнатой; невидимые поверхности не достроены.</p><div class='filters cloud-controls'><label>Показать <select id='mode'><option value='all' selected>Все источники</option><option value='one'>Один источник</option><option value='two'>Два источника</option></select></label><label id='label-a'>Источник A <select id='source-a'><option value='0'>img_11_a</option><option value='1'>img_18</option><option value='2'>img_2</option><option value='3'>img_9</option><option value='4'>img_15</option><option value='5'>img_14</option><option value='6'>img_11_b</option><option value='7'>img_3</option><option value='8'>img_17_a</option><option value='9'>img_12</option></select></label><label id='label-b'>Источник B <select id='source-b'><option value='0'>img_11_a</option><option value='1'>img_18</option><option value='2'>img_2</option><option value='3'>img_9</option><option value='4'>img_15</option><option value='5'>img_14</option><option value='6'>img_11_b</option><option value='7'>img_3</option><option value='8'>img_17_a</option><option value='9'>img_12</option></select></label><label>Цвет <select id='colour'><option value='rgb'>Из фотографии</option><option value='source'>По источнику</option></select></label><label><input type='checkbox' id='cameras' checked> Камеры</label><label><input type='checkbox' id='level' checked> Поворот по GeoCalib</label><button id='reset'>Сброс вида</button><button id='top'>Вид сверху</button></div><div id='source-legend' class='legend' aria-live='polite'></div><p id='cloud-status' class='muted' aria-live='polite'></p><div id='cloud'></div><div class='cards' style='--h:64px'><a class='card' href='../photo-img_11_a.html'><img src='../photos/img_11_a.jpg' alt='' loading='lazy'><strong>img_11_a</strong><span></span></a><a class='card' href='../photo-img_18.html'><img src='../photos/img_18.jpg' alt='' loading='lazy'><strong>img_18</strong><span></span></a><a class='card' href='../photo-img_2.html'><img src='../photos/img_2.jpg' alt='' loading='lazy'><strong>img_2</strong><span></span></a><a class='card' href='../photo-img_9.html'><img src='../photos/img_9.jpg' alt='' loading='lazy'><strong>img_9</strong><span></span></a><a class='card' href='../photo-img_15.html'><img src='../photos/img_15.jpg' alt='' loading='lazy'><strong>img_15</strong><span></span></a><a class='card' href='../photo-img_14.html'><img src='../photos/img_14.jpg' alt='' loading='lazy'><strong>img_14</strong><span></span></a><a class='card' href='../photo-img_11_b.html'><img src='../photos/img_11_b.jpg' alt='' loading='lazy'><strong>img_11_b</strong><span></span></a><a class='card' href='../photo-img_3.html'><img src='../photos/img_3.jpg' alt='' loading='lazy'><strong>img_3</strong><span></span></a><a class='card' href='../photo-img_17_a.html'><img src='../photos/img_17_a.jpg' alt='' loading='lazy'><strong>img_17_a</strong><span></span></a><a class='card' href='../photo-img_12.html'><img src='../photos/img_12.jpg' alt='' loading='lazy'><strong>img_12</strong><span></span></a></div><details><summary>Координаты и ограничения</summary><p>Взаимные позы взяты из совмещения; каждая компонента имеет отдельную систему координат. Масштаб задан моделью в метрах и не подгоняется при переключении источника. XYZ и K каждой модели сохранены вместе. Показана равномерная подвыборка сетки, не более 25 000 точек на источник; включены и области вне перекрытия кадров. Переключатель GeoCalib применяет один общий поворот ко всей сцене. Нулевая высота проходит через камеру, а не через пол. Полные массивы сохранены локально.</p></details></main><script>
+const s={"sources": [{"key": "fb4f3bac3c21c49db09f512e", "name": "img_11_a", "pose": [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.10257338474728074, -0.1379642029564873, 0.3], [0.10257338474728074, -0.1379642029564873, 0.3], [0.10257338474728074, 0.1379642029564873, 0.3], [-0.10257338474728074, 0.1379642029564873, 0.3]], "gravity": [0.0009703870562412485, -0.5999699262960729, -0.005928396852937727], "reference": false, "photo": "../photos/img_11_a.jpg", "href": "../photo-img_11_a.html"}, {"key": "df6f5a8a34a0c2235e1810da", "name": "img_18", "pose": [[0.990947686487766, -0.003593343319850855, -0.13420048631927284, -0.22561548495168926], [0.0036434580129562286, 0.9999933544126122, 0.00012784490765192376, 0.018259000645719784], [0.13419913508756853, -0.0006156414526895471, 0.9909541932538307, -0.15158398665843473], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.2210409515349876, -0.1473606300422445, 0.3], [0.2210409515349876, -0.1473606300422445, 0.3], [0.2210409515349876, 0.1473606300422445, 0.3], [-0.2210409515349876, 0.1473606300422445, 0.3]], "gravity": [-0.0010690332276162785, -0.5999985238756235, -0.0007927893989593254], "reference": false, "photo": "../photos/img_18.jpg", "href": "../photo-img_18.html"}, {"key": "50a4b1a7be3650199eaa748e", "name": "img_2", "pose": [[0.051751949240765045, -0.009586032757370236, -0.9986139613112547, 2.33105963193615], [0.010357259853800366, 0.9999053021104714, -0.00906167642818623, 0.12259303238426782], [0.9986062602037415, -0.009873944872385633, 0.05184633347262852, 2.5470950230929184], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.2200375271267266, -0.14669168475115107, 0.3], [0.2200375271267266, -0.14669168475115107, 0.3], [0.2200375271267266, 0.1466916847511511, 0.3], [-0.2200375271267266, 0.1466916847511511, 0.3]], "gravity": [0.0066299252800996475, -0.5999629213710617, -0.0007328510636234457], "reference": false, "photo": "../photos/img_2.jpg", "href": "../photo-img_2.html"}, {"key": "bad99a3505fa9c6e5a522854", "name": "img_9", "pose": [[-0.21219864709047742, 0.004860528889272504, -0.9772144643996467, 2.25809829416202], [0.010920589154085997, 0.9999369827091992, 0.002602180422640576, 0.13410360881681038], [0.9771655309646873, -0.010119578515969124, -0.21223835474569688, 2.611164391245712], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.16049052307866163, -0.10699368432688446, 0.3], [0.1604905230786616, -0.10699368432688446, 0.3], [0.1604905230786616, 0.10699368432688446, 0.3], [-0.16049052307866163, 0.10699368432688446, 0.3]], "gravity": [0.0022743862527389025, -0.599994741272475, -0.0010665892129299128], "reference": false, "photo": "../photos/img_9.jpg", "href": "../photo-img_9.html"}, {"key": "1b2c0a396e52d00cce4b5d13", "name": "img_15", "pose": [[-0.05346691932720525, -0.0010139464260598644, -0.9985691064970441, 1.2627340857309097], [0.014388573672954506, 0.9998948845731912, -0.0017857077100139227, 0.06282114319838851], [0.9984659520911654, -0.014463461446442276, -0.05344670988630792, 2.0423786559887587], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.21066946244170676, -0.14044630829447116, 0.3], [0.21066946244170676, -0.14044630829447116, 0.3], [0.21066946244170676, 0.14044630829447116, 0.3], [-0.21066946244170676, 0.14044630829447116, 0.3]], "gravity": [0.00016373810026787985, -0.5999951241115296, 0.002413344613768078], "reference": false, "photo": "../photos/img_15.jpg", "href": "../photo-img_15.html"}, {"key": "85b9f9a797a79af9635f7d33", "name": "img_14", "pose": [[-0.7476598943273685, -0.004857012871352505, -0.664064072089703, 0.8032521467623168], [0.001457182038959716, 0.9999588469015575, -0.008954391314643673, -0.0008347344790314119], [0.6640802353894417, -0.007662501502640066, -0.7476220482542149, 3.27768302517317], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.21938097971212994, -0.14625398647475332, 0.3], [0.21938097971212997, -0.14625398647475332, 0.3], [0.21938097971212997, 0.1462539864747533, 0.3], [-0.21938097971212994, 0.1462539864747533, 0.3]], "gravity": [0.004926891454603821, -0.5999779136191383, 0.00149295338856274], "reference": false, "photo": "../photos/img_14.jpg", "href": "../photo-img_14.html"}, {"key": "3df9ff76b5280e423d735247", "name": "img_11_b", "pose": [[-0.7419771401665278, -0.02568973534150141, -0.6699328033231295, 1.0961438756969828], [0.00522234949989229, 0.9990137863872119, -0.04409287554684772, 0.14493488841941568], [0.670404840776083, -0.03621452894036517, -0.7411112314340036, 2.868361969701436], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.12185771610333428, -0.16390218892949746, 0.3], [0.12185771610333429, -0.16390218892949746, 0.3], [0.12185771610333429, 0.16390218892949748, 0.3], [-0.12185771610333428, 0.16390218892949748, 0.3]], "gravity": [0.0009820983162510614, -0.5999981116496605, 0.0011408329144578359], "reference": false, "photo": "../photos/img_11_b.jpg", "href": "../photo-img_11_b.html"}, {"key": "93e22c84dd9279c55727287f", "name": "img_3", "pose": [[-0.7045721519781067, -0.027362794244702313, 0.7091046186198919, -1.7335058331311148], [-0.03283827959654938, 0.9994430390596283, 0.005937934691052436, 0.02578327593708436], [-0.7088721535298731, -0.019102072305863617, -0.7050782798977313, 3.6398648447858006], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.22320312291432978, -0.14880207754365468, 0.3], [0.22320312291432978, -0.14880207754365468, 0.3], [0.22320312291432978, 0.14880207754365468, 0.3], [-0.22320312291432978, 0.14880207754365468, 0.3]], "gravity": [-0.002846457751230225, -0.5999868467040405, -0.0027715447701062183], "reference": false, "photo": "../photos/img_3.jpg", "href": "../photo-img_3.html"}, {"key": "6ebc909f7421be72051e38fe", "name": "img_17_a", "pose": [[-0.6657178891998042, -0.030166812611585853, 0.745593492069381, 0.1043037303109442], [-0.053913033007371214, 0.9985156583596373, -0.007737239983877518, -0.018522378622472427], [-0.7442533687335947, -0.045348025618316586, -0.6663561207801861, 3.5508399140534554], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.11700257448377588, -0.1573718922804814, 0.3], [0.11700257448377588, -0.1573718922804814, 0.3], [0.11700257448377588, 0.15737189228048132, 0.3], [-0.11700257448377588, 0.15737189228048132, 0.3]], "gravity": [-0.0018119813763817548, -0.5998648845315346, 0.012603056353927234], "reference": false, "photo": "../photos/img_17_a.jpg", "href": "../photo-img_17_a.html"}, {"key": "77b7dc8a442cf0feb2b7a4ae", "name": "img_12", "pose": [[-0.9703905347813508, -0.026838313977660278, 0.24004565171983536, 1.7365862193952413], [-0.03560188587399546, 0.9988456996471615, -0.032245527109818185, 0.034969506129836334], [-0.23890315135840917, -0.039836832193481296, -0.9702259072359444, 2.954379860560126], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.21957152802383456, -0.14638101442531412, 0.3], [0.21957152802383453, -0.14638101442531412, 0.3], [0.21957152802383453, 0.14638101442531412, 0.3], [-0.21957152802383456, 0.14638101442531412, 0.3]], "gravity": [0.0014551857421465687, -0.599993614985041, 0.002354657435444648], "reference": false, "photo": "../photos/img_12.jpg", "href": "../photo-img_12.html"}], "rotation": [[0.999998692022785, 0.001617390713210888, 3.3881317890172014e-21], [1.598089002361689e-05, -0.009880648497882871, 0.9999511850734878], [0.001617311760402081, -0.9999498771601216, -0.009880661421562879]], "fixed": [[1, 0, 0], [0, 0, 1], [0, -1, 0]], "ranges": [[-9.693026173491376, 3.9438718364913727], [-2.6959050983688018, 6.8872947917000005], [-1.6206827858430664, 2.790112795793343]], "rawRanges": [[-9.692964756106646, 3.945740977448926], [-2.689265321015977, 6.894561248720443], [-1.5686225743221982, 2.8593762531660865]], "gravity": [0.0012938494083216648, -0.7999599017280974, -0.007904529137250304], "referenceGravity": null, "multiview": true}, plot=document.getElementById('cloud');
+const palette=['#168575','#ce621c','#6551c5','#bd3c8a','#ac8b10','#267bb7','#7c4f37'];
+const get=id=>document.getElementById(id);
+const decode=(v,Type)=>new Type(Uint8Array.from(atob(v),c=>c.charCodeAt(0)).buffer);
+const data=s.sources.map(c=>{const d=window.cloudSources[c.key];
+ return {xyz:decode(d.xyz,Float32Array),rgb:decode(d.rgb,Uint8Array)};});
+const rotate=(p,r)=>r.map(row=>row.reduce((v,a,i)=>v+a*p[i],0));
+const pose=(p,m)=>m.slice(0,3).map(row=>row[0]*p[0]+row[1]*p[1]+row[2]*p[2]+row[3]);
+const camera={eye:{x:1.35,y:-1.8,z:.8},up:{x:0,y:0,z:1},center:{x:0,y:0,z:0}};
+if(s.sources.length>1)get('source-b').value='1';
+let rendered=false;
+function draw(){
+ const level=get('level')?.checked, r=level?s.rotation:s.fixed, ranges=level?s.ranges:s.rawRanges;
+ const mode=get('mode').value, a=+get('source-a').value,b=+get('source-b').value;
+ get('top').textContent=level?'Вид сверху':'Вдоль −y камеры';
+ get('label-a').hidden=mode==='all'; get('label-b').hidden=mode!=='two';
+ const traces=[];
+ const legend=get('source-legend');legend.replaceChildren();
+ s.sources.forEach((c,i)=>{
+  const d=data[i],visible=mode==='all'?!c.reference:i===a||(mode==='two'&&i===b);
+  const xyz=[[],[],[]],colours=[];
+  for(let k=0;k<d.xyz.length;k+=3){
+   const p=rotate(pose([d.xyz[k],d.xyz[k+1],d.xyz[k+2]],c.pose),r);
+   p.forEach((v,j)=>xyz[j].push(v));
+   colours.push(`rgb(${d.rgb[k]},${d.rgb[k+1]},${d.rgb[k+2]})`);
+  }
+  const colour=palette[i%palette.length];
+  if(visible){const chip=document.createElement('span');chip.textContent=c.name;
+   chip.style.borderLeft='5px solid '+colour;chip.style.paddingLeft='8px';legend.append(chip);}
+  traces.push({type:'scatter3d',mode:'markers',name:c.name,x:xyz[0],y:xyz[1],z:xyz[2],
+   visible,showlegend:false,marker:{size:2,color:get('colour').value==='rgb'?colours:colour},
+   hovertemplate:'x: %{x:.2f} м<br>y: %{y:.2f} м<br>z: %{z:.2f} м<extra>'+c.name+'</extra>'});
+  const centre=rotate(pose([0,0,0],c.pose),r),corners=c.corners.map(p=>rotate(pose(p,c.pose),r));
+  const lines=[];for(let j=0;j<4;j++)lines.push(centre,corners[j],corners[(j+1)%4],[null,
+null,null]);
+  if(c.gravity)lines.push(centre,rotate(pose(c.gravity,c.pose),r));
+  traces.push({type:'scatter3d',mode:'lines',name:'Камера: '+c.name,
+   x:lines.map(p=>p[0]),y:lines.map(p=>p[1]),z:lines.map(p=>p[2]),
+   visible:visible&&get('cameras').checked,showlegend:false,line:{color:colour,width:5},
+hoverinfo:'name'});
+ });
+ [s.gravity,s.referenceGravity].forEach((g,i)=>{if(!g)return;const end=rotate(g,r);
+  traces.push({type:'scatter3d',mode:'lines',x:[0,end[0]],y:[0,end[1]],z:[0,end[2]],
+   name:i?'Вверх эталона':'Вверх GeoCalib',line:{color:i?'#c532b4':'#168c2a',width:7},
+showlegend:false});});
+ const labels=level?['x по горизонтали, м','y по горизонтали, м',
+'z вверх, м']:['x вправо, м','z вперёд, м','−y к верху кадра, м'];
+ const layout={margin:{l:0,r:0,b:0,t:0},uirevision:'keep-camera',paper_bgcolor:'#fff',
+  scene:{xaxis:{title:{text:labels[0]},range:ranges[0]},
+  yaxis:{title:{text:labels[1]},range:ranges[1]},
+  zaxis:{title:{text:labels[2]},range:ranges[2]},aspectmode:'data',
+camera:rendered?plot.layout.scene.camera:camera}};
+ get('cloud-status').textContent='Загрузка 3D…';
+ Plotly.react(plot,traces,layout,{displayModeBar:false,scrollZoom:true,responsive:true})
+  .then(()=>{rendered=true;
+get('cloud-status').textContent='Перетаскивание — вращение · Shift — перенос · колесо — масштаб';});
+}
+for(const el of document.querySelectorAll('.cloud-controls select,.cloud-controls input')) {
+ el.addEventListener('change',draw);
+}
+get('reset').onclick=()=>Plotly.relayout(plot,{'scene.camera':camera});
+get('top').onclick=()=>Plotly.relayout(plot,{'scene.camera':{eye:{x:0,y:0,z:2.5},up:{x:0,
+y:1,z:0},center:{x:0,y:0,z:0}}});
+draw();
+</script></body></html>

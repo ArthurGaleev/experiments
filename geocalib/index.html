@@ -1,7 +1,60 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><title>GeoCalib: вертикаль, наклон и калибровка</title><style>
-body { font: 14px/1.45 system-ui, sans-serif; margin: 24px; color: #222; background: #fafafa; }
-h1 { font-size: 22px; margin: 0 0 8px; }
-h2 { font-size: 17px; margin: 30px 0 8px; }
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>GeoCalib: вертикаль, наклон и калибровка</title><style>
+* { box-sizing: border-box; }
+body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
+main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
+h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
+ letter-spacing: -.025em; }
+h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 17px; }
+section, details.section { margin: 28px 0; padding: 24px; background: white;
+ border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
+a { color: #176650; text-underline-offset: 3px; }
+button, select, input { font: inherit; color: inherit; padding: 7px 10px;
+ border: 1px solid #aabbb1; border-radius: 6px; background: white; }
+button, select, summary { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
+[hidden] { display: none !important; }
+nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
+nav a { padding: 4px 0; }
+.eyebrow, .muted { color: #596d64; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
+ border-radius: 4px; }
+.warning { background: #fff5e7; border-left-color: #c67918; }
+.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
+.stats strong { display: block; font-size: 30px; line-height: 1.2; }
+.stats span { display: block; font-size: 13px; color: #596d64; }
+.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
+.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
+ padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
+ background: #fff; }
+.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
+.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
+ align-self: flex-start; }
+.card strong { margin-top: 8px; }
+.card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.table-scroll, .graph { overflow-x: auto; }
+.graph svg { display: block; width: 100%; min-width: 740px; }
+.graph-label { font: 14px system-ui; fill: #20342e; }
+.graph a:hover line { stroke: #d28a19; }
+.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
+ font-variant-numeric: tabular-nums; }
+table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
+ border-bottom: 1px solid #e2e8e3; }
+.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
+ text-align: left; }
+.data-table td { font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: space-between;
+ gap: 12px; margin: 16px 0 0; }
+.switcher > label { font-size: 13px; }
+.switcher > select { margin-bottom: 18px; max-width: 100%; }
+details { margin: 16px 0; }
+summary { font-weight: 600; }
+details[open] > summary { margin-bottom: 16px; }
 p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
 .row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
@@ -18,6 +71,7 @@ table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align:
 table.m td[data-index] { cursor: pointer; }
 table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
 table.m td.diag { background: #fff; }
+table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
 table.m th { font-weight: normal; color: #555; white-space: nowrap; }
 table.m th.rh { text-align: right; padding-right: 6px; }
 table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
@@ -36,256 +90,47 @@ table.m th.hl { color: #000; font-weight: 700; }
 #viewer .prev { left: 0; top: 44%; }
 #viewer .next { right: 0; top: 44%; }
 #viewer .close { right: 4px; top: 4px; font-size: 34px; }
-</style></head><body><nav style="margin-bottom:20px"><a href="../">← Все эксперименты</a> · <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">Источник фотографий</a> · <a href="../LICENSE">Apache 2.0</a></nav><h1>GeoCalib: вертикаль, наклон и калибровка</h1>
-<h2>Условия проверки</h2>
-<p>Вход GeoCalib — только RGB, pinhole без априорной K и гравитации. Эталон использован после инференса. Отказы остаются в знаменателе долей; средняя ошибка всей выборки при отказах недоступна. Это малый dev-пример, не бенчмарк. Holdout не использован. Вертикаль ARKitScenes получена из трекинга; Structured3D даёт точный синтетический эталон.</p>
-<table><tr><th>Набор</th><th>Готово / всего</th><th>Эталон вертикали</th><th>Средняя ошибка, °</th><th>Медиана, °</th><th>Доля ≤5°</th><th>Медиана времени, с</th></tr><tr><td>photos</td><td>23 / 23</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.150</td></tr></table><p>Зелёный — GeoCalib, пурпурный — эталон. Стрелки направлены вверх; горизонт может находиться за пределами фото. Неопределённости сохранены в единицах углов/пикселей; их калибровка не проверена. Карты уверенности — веса сети, не вероятность верного результата.</p><p>В образце Blueprint пять коллажей вручную разделены на отдельные фото. План и смысл имён не подаются инструменту.</p><p><a href='info.json'>Параметры и хеши</a> · <a href='results.json'>Результаты</a> · <a href='summary.json'>Сводка</a></p>
-<h2>00_photos_img_1</h2>
-<p>Крен -0.37°, тангаж -0.87°; f = 846.1 px. Оценка неопределённости вертикали: 3.02°. Время 0.168 с; шагов оптимизации 6. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/00_photos_img_1.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/00_photos_img_1.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/00_photos_img_1.png' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/00_photos_img_1_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s1' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/00_photos_img_1_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s1' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/00_photos_img_1_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s1' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/00_photos_img_1_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s1' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/00_photos_img_1.jpg' loading='lazy' alt='' data-group='s1' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>01_photos_img_10</h2>
-<p>Крен -0.02°, тангаж 0.03°; f = 443.5 px. Оценка неопределённости вертикали: 1.59°. Время 0.129 с; шагов оптимизации 3. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/01_photos_img_10.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/01_photos_img_10.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/01_photos_img_10.png' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/01_photos_img_10_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s2' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/01_photos_img_10_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s2' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/01_photos_img_10_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s2' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/01_photos_img_10_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s2' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/01_photos_img_10.jpg' loading='lazy' alt='' data-group='s2' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>02_photos_img_11_a</h2>
-<p>Крен -0.09°, тангаж -0.57°; f = 382.8 px. Оценка неопределённости вертикали: 2.46°. Время 0.271 с; шагов оптимизации 4. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/02_photos_img_11_a.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/02_photos_img_11_a.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/02_photos_img_11_a.png' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/02_photos_img_11_a_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s3' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/02_photos_img_11_a_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s3' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/02_photos_img_11_a_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s3' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/02_photos_img_11_a_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s3' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/02_photos_img_11_a.jpg' loading='lazy' alt='' data-group='s3' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>03_photos_img_11_b</h2>
-<p>Крен -0.09°, тангаж 0.11°; f = 299.8 px. Оценка неопределённости вертикали: 2.32°. Время 0.123 с; шагов оптимизации 3. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/03_photos_img_11_b.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/03_photos_img_11_b.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/03_photos_img_11_b.png' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/03_photos_img_11_b_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s4' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/03_photos_img_11_b_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s4' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/03_photos_img_11_b_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s4' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/03_photos_img_11_b_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s4' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/03_photos_img_11_b.jpg' loading='lazy' alt='' data-group='s4' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>04_photos_img_12</h2>
-<p>Крен -0.14°, тангаж 0.22°; f = 485.2 px. Оценка неопределённости вертикали: 0.99°. Время 0.132 с; шагов оптимизации 3. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/04_photos_img_12.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/04_photos_img_12.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/04_photos_img_12.png' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/04_photos_img_12_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s5' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/04_photos_img_12_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s5' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/04_photos_img_12_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s5' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/04_photos_img_12_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s5' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/04_photos_img_12.jpg' loading='lazy' alt='' data-group='s5' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>05_photos_img_13</h2>
-<p>Крен -0.44°, тангаж -0.55°; f = 386.5 px. Оценка неопределённости вертикали: 2.07°. Время 0.174 с; шагов оптимизации 5. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/05_photos_img_13.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/05_photos_img_13.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/05_photos_img_13.png' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/05_photos_img_13_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s6' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/05_photos_img_13_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s6' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/05_photos_img_13_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s6' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/05_photos_img_13_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s6' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/05_photos_img_13.jpg' loading='lazy' alt='' data-group='s6' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>06_photos_img_14</h2>
-<p>Крен -0.47°, тангаж 0.14°; f = 366.2 px. Оценка неопределённости вертикали: 1.23°. Время 0.165 с; шагов оптимизации 5. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/06_photos_img_14.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/06_photos_img_14.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/06_photos_img_14.png' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/06_photos_img_14_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s7' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/06_photos_img_14_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s7' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/06_photos_img_14_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s7' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/06_photos_img_14_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s7' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/06_photos_img_14.jpg' loading='lazy' alt='' data-group='s7' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>07_photos_img_15</h2>
-<p>Крен -0.02°, тангаж 0.23°; f = 471.7 px. Оценка неопределённости вертикали: 1.31°. Время 0.129 с; шагов оптимизации 3. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/07_photos_img_15.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/07_photos_img_15.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/07_photos_img_15.png' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/07_photos_img_15_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s8' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/07_photos_img_15_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s8' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/07_photos_img_15_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s8' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/07_photos_img_15_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s8' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/07_photos_img_15.jpg' loading='lazy' alt='' data-group='s8' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>08_photos_img_16_a</h2>
-<p>Крен 0.06°, тангаж 0.97°; f = 408.5 px. Оценка неопределённости вертикали: 1.63°. Время 0.164 с; шагов оптимизации 5. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/08_photos_img_16_a.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/08_photos_img_16_a.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/08_photos_img_16_a.png' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/08_photos_img_16_a_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s9' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/08_photos_img_16_a_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s9' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/08_photos_img_16_a_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s9' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/08_photos_img_16_a_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s9' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/08_photos_img_16_a.jpg' loading='lazy' alt='' data-group='s9' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>09_photos_img_16_b</h2>
-<p>Крен 0.16°, тангаж -0.64°; f = 379.3 px. Оценка неопределённости вертикали: 2.55°. Время 0.147 с; шагов оптимизации 5. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/09_photos_img_16_b.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/09_photos_img_16_b.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/09_photos_img_16_b.png' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/09_photos_img_16_b_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s10' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/09_photos_img_16_b_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s10' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/09_photos_img_16_b_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s10' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/09_photos_img_16_b_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s10' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/09_photos_img_16_b.jpg' loading='lazy' alt='' data-group='s10' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>10_photos_img_17_a</h2>
-<p>Крен 0.17°, тангаж 1.20°; f = 448.3 px. Оценка неопределённости вертикали: 1.86°. Время 0.153 с; шагов оптимизации 5. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/10_photos_img_17_a.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/10_photos_img_17_a.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/10_photos_img_17_a.png' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/10_photos_img_17_a_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s11' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/10_photos_img_17_a_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s11' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/10_photos_img_17_a_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s11' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/10_photos_img_17_a_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s11' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/10_photos_img_17_a.jpg' loading='lazy' alt='' data-group='s11' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>11_photos_img_17_b</h2>
-<p>Крен 0.16°, тангаж 1.42°; f = 640.1 px. Оценка неопределённости вертикали: 2.32°. Время 0.183 с; шагов оптимизации 7. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/11_photos_img_17_b.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/11_photos_img_17_b.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/11_photos_img_17_b.png' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/11_photos_img_17_b_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s12' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/11_photos_img_17_b_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s12' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/11_photos_img_17_b_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s12' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/11_photos_img_17_b_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s12' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/11_photos_img_17_b.jpg' loading='lazy' alt='' data-group='s12' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>12_photos_img_18</h2>
-<p>Крен 0.10°, тангаж -0.08°; f = 402.1 px. Оценка неопределённости вертикали: 1.24°. Время 0.150 с; шагов оптимизации 4. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/12_photos_img_18.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/12_photos_img_18.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/12_photos_img_18.png' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/12_photos_img_18_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s13' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/12_photos_img_18_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s13' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/12_photos_img_18_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s13' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/12_photos_img_18_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s13' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/12_photos_img_18.jpg' loading='lazy' alt='' data-group='s13' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>13_photos_img_2</h2>
-<p>Крен -0.63°, тангаж -0.07°; f = 367.1 px. Оценка неопределённости вертикали: 1.62°. Время 0.145 с; шагов оптимизации 4. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/13_photos_img_2.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/13_photos_img_2.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/13_photos_img_2.png' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/13_photos_img_2_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s14' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/13_photos_img_2_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s14' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/13_photos_img_2_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s14' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/13_photos_img_2_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s14' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/13_photos_img_2.jpg' loading='lazy' alt='' data-group='s14' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>14_photos_img_3</h2>
-<p>Крен 0.27°, тангаж -0.26°; f = 484.0 px. Оценка неопределённости вертикали: 1.37°. Время 0.140 с; шагов оптимизации 4. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/14_photos_img_3.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/14_photos_img_3.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/14_photos_img_3.png' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/14_photos_img_3_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s15' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/14_photos_img_3_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s15' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/14_photos_img_3_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s15' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/14_photos_img_3_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s15' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/14_photos_img_3.jpg' loading='lazy' alt='' data-group='s15' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>15_photos_img_4_a</h2>
-<p>Крен -0.10°, тангаж 0.42°; f = 449.1 px. Оценка неопределённости вертикали: 3.02°. Время 0.141 с; шагов оптимизации 4. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/15_photos_img_4_a.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/15_photos_img_4_a.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/15_photos_img_4_a.png' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/15_photos_img_4_a_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s16' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/15_photos_img_4_a_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s16' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/15_photos_img_4_a_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s16' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/15_photos_img_4_a_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s16' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/15_photos_img_4_a.jpg' loading='lazy' alt='' data-group='s16' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>16_photos_img_4_b</h2>
-<p>Крен -0.63°, тангаж -0.84°; f = 434.9 px. Оценка неопределённости вертикали: 4.39°. Время 0.150 с; шагов оптимизации 5. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/16_photos_img_4_b.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/16_photos_img_4_b.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/16_photos_img_4_b.png' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/16_photos_img_4_b_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s17' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/16_photos_img_4_b_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s17' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/16_photos_img_4_b_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s17' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/16_photos_img_4_b_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s17' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/16_photos_img_4_b.jpg' loading='lazy' alt='' data-group='s17' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>17_photos_img_5_a</h2>
-<p>Крен -0.10°, тангаж 0.59°; f = 529.8 px. Оценка неопределённости вертикали: 2.01°. Время 0.197 с; шагов оптимизации 8. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/17_photos_img_5_a.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/17_photos_img_5_a.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/17_photos_img_5_a.png' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/17_photos_img_5_a_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s18' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/17_photos_img_5_a_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s18' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/17_photos_img_5_a_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s18' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/17_photos_img_5_a_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s18' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/17_photos_img_5_a.jpg' loading='lazy' alt='' data-group='s18' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>18_photos_img_5_b</h2>
-<p>Крен -0.11°, тангаж 1.19°; f = 288.0 px. Оценка неопределённости вертикали: 1.48°. Время 0.135 с; шагов оптимизации 4. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/18_photos_img_5_b.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/18_photos_img_5_b.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/18_photos_img_5_b.png' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/18_photos_img_5_b_vertical.jpg' width='342' height='460' loading='lazy' alt='' data-group='s19' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/18_photos_img_5_b_network.jpg' width='320' height='416' loading='lazy' alt='' data-group='s19' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/18_photos_img_5_b_up_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s19' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/18_photos_img_5_b_latitude_confidence.png' width='320' height='416' loading='lazy' alt='' data-group='s19' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/18_photos_img_5_b.jpg' loading='lazy' alt='' data-group='s19' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>19_photos_img_6</h2>
-<p>Крен 0.03°, тангаж 0.09°; f = 511.9 px. Оценка неопределённости вертикали: 1.39°. Время 0.140 с; шагов оптимизации 3. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/19_photos_img_6.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/19_photos_img_6.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/19_photos_img_6.png' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/19_photos_img_6_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s20' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/19_photos_img_6_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s20' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/19_photos_img_6_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s20' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/19_photos_img_6_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s20' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/19_photos_img_6.jpg' loading='lazy' alt='' data-group='s20' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>20_photos_img_7</h2>
-<p>Крен 0.30°, тангаж 0.03°; f = 622.7 px. Оценка неопределённости вертикали: 1.70°. Время 0.196 с; шагов оптимизации 7. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/20_photos_img_7.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/20_photos_img_7.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/20_photos_img_7.png' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/20_photos_img_7_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s21' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/20_photos_img_7_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s21' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/20_photos_img_7_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s21' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/20_photos_img_7_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s21' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/20_photos_img_7.jpg' loading='lazy' alt='' data-group='s21' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>21_photos_img_8</h2>
-<p>Крен -0.39°, тангаж -0.42°; f = 449.3 px. Оценка неопределённости вертикали: 1.39°. Время 0.129 с; шагов оптимизации 3. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/21_photos_img_8.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/21_photos_img_8.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/21_photos_img_8.png' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/21_photos_img_8_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s22' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/21_photos_img_8_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s22' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/21_photos_img_8_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s22' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/21_photos_img_8_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s22' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/21_photos_img_8.jpg' loading='lazy' alt='' data-group='s22' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div>
-<h2>22_photos_img_9</h2>
-<p>Крен -0.22°, тангаж -0.10°; f = 567.5 px. Оценка неопределённости вертикали: 1.50°. Время 0.161 с; шагов оптимизации 5. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/22_photos_img_9.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/22_photos_img_9.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
-<div class='row' style='--h: 240px'>
-<figure><img src='photos/22_photos_img_9.png' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/22_photos_img_9_vertical.jpg' width='690' height='460' loading='lazy' alt='' data-group='s23' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
-<figure><img src='panels/22_photos_img_9_network.jpg' width='480' height='320' loading='lazy' alt='' data-group='s23' data-index='2'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/22_photos_img_9_up_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s23' data-index='3'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/22_photos_img_9_latitude_confidence.png' width='480' height='320' loading='lazy' alt='' data-group='s23' data-index='4'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='clouds/22_photos_img_9.jpg' loading='lazy' alt='' data-group='s23' data-index='5'><figcaption>После поворота по GeoCalib</figcaption></figure>
-</div><div id='viewer'><button class='prev' title='Назад (←)'>‹</button><img alt=''><div class='cap'></div><button class='next' title='Вперёд (→)'>›</button><button class='close' title='Закрыть (Esc)'>×</button></div><script>const groups = {"s1": [{"src": "photos/00_photos_img_1.png", "caption": "Исходное RGB"}, {"src": "panels/00_photos_img_1_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/00_photos_img_1_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/00_photos_img_1_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/00_photos_img_1_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/00_photos_img_1.jpg", "caption": "После поворота по GeoCalib"}], "s2": [{"src": "photos/01_photos_img_10.png", "caption": "Исходное RGB"}, {"src": "panels/01_photos_img_10_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/01_photos_img_10_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/01_photos_img_10_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/01_photos_img_10_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/01_photos_img_10.jpg", "caption": "После поворота по GeoCalib"}], "s3": [{"src": "photos/02_photos_img_11_a.png", "caption": "Исходное RGB"}, {"src": "panels/02_photos_img_11_a_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/02_photos_img_11_a_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/02_photos_img_11_a_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/02_photos_img_11_a_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/02_photos_img_11_a.jpg", "caption": "После поворота по GeoCalib"}], "s4": [{"src": "photos/03_photos_img_11_b.png", "caption": "Исходное RGB"}, {"src": "panels/03_photos_img_11_b_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/03_photos_img_11_b_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/03_photos_img_11_b_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/03_photos_img_11_b_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/03_photos_img_11_b.jpg", "caption": "После поворота по GeoCalib"}], "s5": [{"src": "photos/04_photos_img_12.png", "caption": "Исходное RGB"}, {"src": "panels/04_photos_img_12_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/04_photos_img_12_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/04_photos_img_12_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/04_photos_img_12_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/04_photos_img_12.jpg", "caption": "После поворота по GeoCalib"}], "s6": [{"src": "photos/05_photos_img_13.png", "caption": "Исходное RGB"}, {"src": "panels/05_photos_img_13_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/05_photos_img_13_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/05_photos_img_13_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/05_photos_img_13_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/05_photos_img_13.jpg", "caption": "После поворота по GeoCalib"}], "s7": [{"src": "photos/06_photos_img_14.png", "caption": "Исходное RGB"}, {"src": "panels/06_photos_img_14_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/06_photos_img_14_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/06_photos_img_14_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/06_photos_img_14_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/06_photos_img_14.jpg", "caption": "После поворота по GeoCalib"}], "s8": [{"src": "photos/07_photos_img_15.png", "caption": "Исходное RGB"}, {"src": "panels/07_photos_img_15_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/07_photos_img_15_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/07_photos_img_15_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/07_photos_img_15_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/07_photos_img_15.jpg", "caption": "После поворота по GeoCalib"}], "s9": [{"src": "photos/08_photos_img_16_a.png", "caption": "Исходное RGB"}, {"src": "panels/08_photos_img_16_a_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/08_photos_img_16_a_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/08_photos_img_16_a_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/08_photos_img_16_a_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/08_photos_img_16_a.jpg", "caption": "После поворота по GeoCalib"}], "s10": [{"src": "photos/09_photos_img_16_b.png", "caption": "Исходное RGB"}, {"src": "panels/09_photos_img_16_b_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/09_photos_img_16_b_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/09_photos_img_16_b_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/09_photos_img_16_b_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/09_photos_img_16_b.jpg", "caption": "После поворота по GeoCalib"}], "s11": [{"src": "photos/10_photos_img_17_a.png", "caption": "Исходное RGB"}, {"src": "panels/10_photos_img_17_a_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/10_photos_img_17_a_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/10_photos_img_17_a_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/10_photos_img_17_a_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/10_photos_img_17_a.jpg", "caption": "После поворота по GeoCalib"}], "s12": [{"src": "photos/11_photos_img_17_b.png", "caption": "Исходное RGB"}, {"src": "panels/11_photos_img_17_b_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/11_photos_img_17_b_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/11_photos_img_17_b_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/11_photos_img_17_b_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/11_photos_img_17_b.jpg", "caption": "После поворота по GeoCalib"}], "s13": [{"src": "photos/12_photos_img_18.png", "caption": "Исходное RGB"}, {"src": "panels/12_photos_img_18_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/12_photos_img_18_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/12_photos_img_18_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/12_photos_img_18_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/12_photos_img_18.jpg", "caption": "После поворота по GeoCalib"}], "s14": [{"src": "photos/13_photos_img_2.png", "caption": "Исходное RGB"}, {"src": "panels/13_photos_img_2_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/13_photos_img_2_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/13_photos_img_2_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/13_photos_img_2_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/13_photos_img_2.jpg", "caption": "После поворота по GeoCalib"}], "s15": [{"src": "photos/14_photos_img_3.png", "caption": "Исходное RGB"}, {"src": "panels/14_photos_img_3_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/14_photos_img_3_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/14_photos_img_3_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/14_photos_img_3_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/14_photos_img_3.jpg", "caption": "После поворота по GeoCalib"}], "s16": [{"src": "photos/15_photos_img_4_a.png", "caption": "Исходное RGB"}, {"src": "panels/15_photos_img_4_a_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/15_photos_img_4_a_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/15_photos_img_4_a_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/15_photos_img_4_a_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/15_photos_img_4_a.jpg", "caption": "После поворота по GeoCalib"}], "s17": [{"src": "photos/16_photos_img_4_b.png", "caption": "Исходное RGB"}, {"src": "panels/16_photos_img_4_b_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/16_photos_img_4_b_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/16_photos_img_4_b_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/16_photos_img_4_b_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/16_photos_img_4_b.jpg", "caption": "После поворота по GeoCalib"}], "s18": [{"src": "photos/17_photos_img_5_a.png", "caption": "Исходное RGB"}, {"src": "panels/17_photos_img_5_a_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/17_photos_img_5_a_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/17_photos_img_5_a_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/17_photos_img_5_a_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/17_photos_img_5_a.jpg", "caption": "После поворота по GeoCalib"}], "s19": [{"src": "photos/18_photos_img_5_b.png", "caption": "Исходное RGB"}, {"src": "panels/18_photos_img_5_b_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/18_photos_img_5_b_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/18_photos_img_5_b_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/18_photos_img_5_b_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/18_photos_img_5_b.jpg", "caption": "После поворота по GeoCalib"}], "s20": [{"src": "photos/19_photos_img_6.png", "caption": "Исходное RGB"}, {"src": "panels/19_photos_img_6_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/19_photos_img_6_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/19_photos_img_6_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/19_photos_img_6_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/19_photos_img_6.jpg", "caption": "После поворота по GeoCalib"}], "s21": [{"src": "photos/20_photos_img_7.png", "caption": "Исходное RGB"}, {"src": "panels/20_photos_img_7_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/20_photos_img_7_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/20_photos_img_7_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/20_photos_img_7_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/20_photos_img_7.jpg", "caption": "После поворота по GeoCalib"}], "s22": [{"src": "photos/21_photos_img_8.png", "caption": "Исходное RGB"}, {"src": "panels/21_photos_img_8_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/21_photos_img_8_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/21_photos_img_8_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/21_photos_img_8_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/21_photos_img_8.jpg", "caption": "После поворота по GeoCalib"}], "s23": [{"src": "photos/22_photos_img_9.png", "caption": "Исходное RGB"}, {"src": "panels/22_photos_img_9_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}, {"src": "panels/22_photos_img_9_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/22_photos_img_9_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/22_photos_img_9_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}, {"src": "clouds/22_photos_img_9.jpg", "caption": "После поворота по GeoCalib"}]};
+@media(max-width: 600px) {
+ main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
+ .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
+ .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
+ .filters input { max-width: 180px; } .card { min-width: 100px; }
+}
+</style></head><body><main><nav style="margin-bottom:20px"><a href="../">← Все эксперименты</a> · <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">Источник фотографий</a> · <a href="../LICENSE">Apache 2.0</a></nav><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
+<h1>GeoCalib: вертикаль, наклон и калибровка</h1>
+<nav aria-label='Разделы'><a href='#summary'>Что изменяет вертикаль</a><a href='#photos'>Все фотографии</a></nav>
+<section class='section' id='summary'><h2>Что изменяет вертикаль</h2>
+<p>GeoCalib оценил направление гравитации и параметры камеры по RGB. Облако поворачивается целиком; глубина, масштаб и форма поверхностей от этого не улучшаются. Направление по горизонтали и высота пола неизвестны. Эталонной вертикали у образца нет. Пять коллажей разделены вручную; план не использован.</p>
+<div class='stats'><div><strong>23</strong><span>фото проверено</span></div><div><strong>23</strong><span>оценок вертикали</span></div></div><p class='callout'>В отчёте по фото доступны стрелки вертикали, сравнение калибровок и переключатель «Поворот по GeoCalib» в одной 3D-сцене. Оценка неопределённости сети не является измеренной ошибкой.</p>
+</section>
+<section class='section' id='photos'><h2>Все фотографии</h2>
+<p>Нажатие открывает оценку и сравнение до / после.</p>
+<div class='cards' style='--h:130px'><a class='card' href='photo-img_1.html'><img src='panels/00_photos_img_1_vertical.jpg' alt='' loading='lazy'><strong>img_1</strong><span>Крен -0.37° · тангаж -0.87°</span></a><a class='card' href='photo-img_10.html'><img src='panels/01_photos_img_10_vertical.jpg' alt='' loading='lazy'><strong>img_10</strong><span>Крен -0.02° · тангаж 0.03°</span></a><a class='card' href='photo-img_11_a.html'><img src='panels/02_photos_img_11_a_vertical.jpg' alt='' loading='lazy'><strong>img_11_a</strong><span>Крен -0.09° · тангаж -0.57°</span></a><a class='card' href='photo-img_11_b.html'><img src='panels/03_photos_img_11_b_vertical.jpg' alt='' loading='lazy'><strong>img_11_b</strong><span>Крен -0.09° · тангаж 0.11°</span></a><a class='card' href='photo-img_12.html'><img src='panels/04_photos_img_12_vertical.jpg' alt='' loading='lazy'><strong>img_12</strong><span>Крен -0.14° · тангаж 0.22°</span></a><a class='card' href='photo-img_13.html'><img src='panels/05_photos_img_13_vertical.jpg' alt='' loading='lazy'><strong>img_13</strong><span>Крен -0.44° · тангаж -0.55°</span></a><a class='card' href='photo-img_14.html'><img src='panels/06_photos_img_14_vertical.jpg' alt='' loading='lazy'><strong>img_14</strong><span>Крен -0.47° · тангаж 0.14°</span></a><a class='card' href='photo-img_15.html'><img src='panels/07_photos_img_15_vertical.jpg' alt='' loading='lazy'><strong>img_15</strong><span>Крен -0.02° · тангаж 0.23°</span></a><a class='card' href='photo-img_16_a.html'><img src='panels/08_photos_img_16_a_vertical.jpg' alt='' loading='lazy'><strong>img_16_a</strong><span>Крен 0.06° · тангаж 0.97°</span></a><a class='card' href='photo-img_16_b.html'><img src='panels/09_photos_img_16_b_vertical.jpg' alt='' loading='lazy'><strong>img_16_b</strong><span>Крен 0.16° · тангаж -0.64°</span></a><a class='card' href='photo-img_17_a.html'><img src='panels/10_photos_img_17_a_vertical.jpg' alt='' loading='lazy'><strong>img_17_a</strong><span>Крен 0.17° · тангаж 1.20°</span></a><a class='card' href='photo-img_17_b.html'><img src='panels/11_photos_img_17_b_vertical.jpg' alt='' loading='lazy'><strong>img_17_b</strong><span>Крен 0.16° · тангаж 1.42°</span></a><a class='card' href='photo-img_18.html'><img src='panels/12_photos_img_18_vertical.jpg' alt='' loading='lazy'><strong>img_18</strong><span>Крен 0.10° · тангаж -0.08°</span></a><a class='card' href='photo-img_2.html'><img src='panels/13_photos_img_2_vertical.jpg' alt='' loading='lazy'><strong>img_2</strong><span>Крен -0.63° · тангаж -0.07°</span></a><a class='card' href='photo-img_3.html'><img src='panels/14_photos_img_3_vertical.jpg' alt='' loading='lazy'><strong>img_3</strong><span>Крен 0.27° · тангаж -0.26°</span></a><a class='card' href='photo-img_4_a.html'><img src='panels/15_photos_img_4_a_vertical.jpg' alt='' loading='lazy'><strong>img_4_a</strong><span>Крен -0.10° · тангаж 0.42°</span></a><a class='card' href='photo-img_4_b.html'><img src='panels/16_photos_img_4_b_vertical.jpg' alt='' loading='lazy'><strong>img_4_b</strong><span>Крен -0.63° · тангаж -0.84°</span></a><a class='card' href='photo-img_5_a.html'><img src='panels/17_photos_img_5_a_vertical.jpg' alt='' loading='lazy'><strong>img_5_a</strong><span>Крен -0.10° · тангаж 0.59°</span></a><a class='card' href='photo-img_5_b.html'><img src='panels/18_photos_img_5_b_vertical.jpg' alt='' loading='lazy'><strong>img_5_b</strong><span>Крен -0.11° · тангаж 1.19°</span></a><a class='card' href='photo-img_6.html'><img src='panels/19_photos_img_6_vertical.jpg' alt='' loading='lazy'><strong>img_6</strong><span>Крен 0.03° · тангаж 0.09°</span></a><a class='card' href='photo-img_7.html'><img src='panels/20_photos_img_7_vertical.jpg' alt='' loading='lazy'><strong>img_7</strong><span>Крен 0.30° · тангаж 0.03°</span></a><a class='card' href='photo-img_8.html'><img src='panels/21_photos_img_8_vertical.jpg' alt='' loading='lazy'><strong>img_8</strong><span>Крен -0.39° · тангаж -0.42°</span></a><a class='card' href='photo-img_9.html'><img src='panels/22_photos_img_9_vertical.jpg' alt='' loading='lazy'><strong>img_9</strong><span>Крен -0.22° · тангаж -0.10°</span></a></div>
+</section>
+<details class='section' id='section-2'><summary>Данные запуска</summary>
+<p><a href='info.json'>Параметры и хеши</a> · <a href='results.json'>Результаты</a> · <a href='summary.json'>Сводка</a></p>
+</details>
+</main><div id='viewer' role='dialog' aria-modal='true' aria-label='Просмотр изображения'><button class='prev' title='Назад (←)'>‹</button><img alt=''><div class='cap'></div><button class='next' title='Вперёд (→)'>›</button><button class='close' title='Закрыть (Esc)'>×</button></div><script>const groups = {};
 
 const viewer = document.getElementById("viewer");
 const shown = viewer.querySelector("img");
 const caption = viewer.querySelector(".cap");
 let group = null;
 let index = 0;
+let returnFocus=null;
 
 function show() {
   const items = groups[group];
   shown.src = items[index].src;
+  shown.alt = items[index].caption;
   caption.textContent = items[index].caption + "\n" + (index + 1) + " / " + items.length;
 }
 function openViewer(g, i) {
   group = g;
   index = i;
+  returnFocus=document.activeElement;
   viewer.classList.add("open");
+  viewer.querySelector('.close').focus();
   show();
 }
 function step(d) {
@@ -295,6 +140,7 @@ function step(d) {
 }
 function closeViewer() {
   viewer.classList.remove("open");
+  returnFocus?.focus();
 }
 document.addEventListener("click", (e) => {
   if (viewer.classList.contains("open")) {
@@ -312,6 +158,11 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") step(-1);
   else if (e.key === "ArrowRight") step(1);
   else if (e.key === "Escape") closeViewer();
+  else if (e.key === 'Tab') {
+    const buttons=Array.from(viewer.querySelectorAll('button'));
+    const i=buttons.indexOf(document.activeElement);
+    buttons[(i+(e.shiftKey?-1:1)+buttons.length)%buttons.length].focus();e.preventDefault();
+  }
 });
 for (const table of document.querySelectorAll("table.m")) {
   table.addEventListener("mouseover", (e) => {
@@ -321,5 +172,56 @@ for (const table of document.querySelectorAll("table.m")) {
     table.querySelector(`th.rh[data-r="${td.dataset.r}"]`).classList.add("hl");
     table.querySelector(`th.ch[data-c="${td.dataset.c}"]`).classList.add("hl");
   });
+}
+document.addEventListener('keydown', e => {
+ const el=e.target.closest('img[data-group]');
+ if(el && (e.key==='Enter'||e.key===' ')){e.preventDefault();openViewer(el.dataset.group,
++el.dataset.index);}
+});
+for(const select of document.querySelectorAll('[data-panel-select]')) {
+ select.addEventListener('change',()=>{
+  for(const panel of select.parentElement.querySelectorAll(':scope > [data-panel]')) {
+   panel.hidden=panel.dataset.panel!==select.value;
+  }
+ });
+}
+for(const browser of document.querySelectorAll('.pair-browser')) {
+ const body=browser.querySelector('tbody'),rows=Array.from(body.rows),q=s=>browser.querySelector(s);
+ let page=0,sort=-1,ascending=false;
+ const storageKey='pair-browser:'+location.pathname;
+ try {
+  const saved=JSON.parse(sessionStorage.getItem(storageKey)||'null');
+  if(saved){page=saved.page;sort=saved.sort;ascending=saved.ascending;
+   for(const key of ['photo','status','query','count'])q(`[data-${key}]`).value=saved[key];}
+ } catch {}
+ const hash=new URLSearchParams(location.hash.slice(1));
+ if(hash.has('photo'))q('[data-photo]').value=hash.get('photo');
+ function draw(){
+  const photo=q('[data-photo]').value,status=q('[data-status]').value,
+query=q('[data-query]').value.toLowerCase().trim(),limit=+q('[data-count]').value;
+  let selected=rows.filter(r=>(!photo||r.dataset.a===photo||r.dataset.b===photo)
+   &&(!status||r.dataset.status===status)
+   &&(!query||r.textContent.toLowerCase().includes(query)));
+  if(sort>=0)selected.sort((a,b)=>{let x=a.cells[sort].dataset.value,y=b.cells[sort].dataset.value;
+   const cmp=x!==''&&y!==''&&!isNaN(x)&&!isNaN(y)?Number(x)-Number(y):x.localeCompare(y,
+'ru');return ascending?cmp:-cmp;});
+  page=Math.min(page,Math.max(0,Math.ceil(selected.length/limit)-1));
+  for(const row of rows)row.hidden=true;
+  selected.slice(page*limit,(page+1)*limit).forEach(r=>{r.hidden=false;body.append(r);});
+  const end=Math.min((page+1)*limit,selected.length);
+  q('[data-total]').textContent=selected.length?
+   `${page*limit+1}–${end} из ${selected.length} пар`:'Пары не найдены';
+  q('[data-prev]').disabled=page===0;q('[data-next]').disabled=(page+1)*limit>=selected.length;
+  try{sessionStorage.setItem(storageKey,JSON.stringify({photo,status,query,count:limit,
+   page,sort,ascending}));}catch{}
+ }
+ for(const el of browser.querySelectorAll('.filters select,.filters input')) {
+  el.addEventListener('input',()=>{page=0;draw();});
+ }
+ for(const button of browser.querySelectorAll('[data-sort]'))button.onclick=()=>{
+const n=+button.dataset.sort;ascending=sort===n?!ascending:false;sort=n;page=0;
+  for(const th of browser.querySelectorAll('th'))th.removeAttribute('aria-sort');
+button.parentElement.setAttribute('aria-sort',ascending?'ascending':'descending');draw();};
+ q('[data-prev]').onclick=()=>{page--;draw();};q('[data-next]').onclick=()=>{page++;draw();};draw();
 }
 </script></body></html>
