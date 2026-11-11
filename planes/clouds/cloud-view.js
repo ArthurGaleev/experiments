@@ -33,15 +33,28 @@
     return camera ? structuredClone(camera) : undefined;
   }
 
-  // Plotly keeps single-finger rotation. Two-finger spacing zooms; the midpoint pans.
-  function enablePinch(plot) {
-    let active = false, start, pending, frame = 0, busy = false;
-    const touches = event => [...event.touches].filter(touch => plot.contains(touch.target));
+  function fixedAspect(ranges) {
+    const spans = ranges.map(([lo, hi]) => Math.max(hi - lo, 1e-9));
+    const unit = Math.cbrt(spans[0] * spans[1] * spans[2]);
+    return Object.fromEntries(['x', 'y', 'z'].map((axis, i) => [axis, spans[i] / unit]));
+  }
+
+  // Single-finger orbit stays with Plotly; custom gestures only move the view camera.
+  function enableNavigation(plot) {
+    let active = false, touchCount = 0, start, native, mouse, pending, frame = 0, busy = false;
+    const touches = event => [...event.touches].filter(touch => plot.contains(touch.target))
+      .sort((a, b) => a.identifier - b.identifier);
     const distance = pair => Math.hypot(pair[0].clientX - pair[1].clientX, pair[0].clientY - pair[1].clientY);
+    const angle = pair => Math.atan2(pair[1].clientY - pair[0].clientY, pair[1].clientX - pair[0].clientX);
     const midpoint = pair => [(pair[0].clientX + pair[1].clientX) / 2, (pair[0].clientY + pair[1].clientY) / 2];
     const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
     const stop = event => { event.preventDefault(); event.stopImmediatePropagation(); };
     const options = {capture: true, passive: false};
+    function snapshot() {
+      const camera = pending || currentCamera(plot);
+      return camera && {camera: structuredClone(camera), height: Math.max(1, plot.getBoundingClientRect().height),
+        fovy: plot._fullLayout?.scene?._scene?.glplot?.fovy || Math.PI / 4};
+    }
     function flush() {
       frame = 0;
       if (!pending || !plot.data) { pending = null; return; }
@@ -51,13 +64,33 @@
         if (pending && !frame) frame = requestAnimationFrame(flush);
       });
     }
+    function move(base, {zoom = 1, rotation = 0, dx = 0, dy = 0}) {
+      if (!(zoom > 0) || ![zoom, rotation, dx, dy].every(Number.isFinite)) return;
+      const camera = base.camera, centre = camera.center || {x: 0, y: 0, z: 0};
+      const axes = ['x', 'y', 'z'], vector = axes.map(axis => camera.eye[axis] - centre[axis]);
+      const radius = Math.hypot(...vector);
+      if (radius < 1e-6) return;
+      const scale = Math.min(20, Math.max(.1, radius / zoom)) / radius;
+      const forward = vector.map(v => -v / radius), originalUp = axes.map(axis => camera.up[axis]);
+      const crossedUp = cross(forward, originalUp), rightLength = Math.hypot(...crossedUp);
+      if (rightLength < 1e-6) return;
+      const right = crossedUp.map(v => v / rightLength), up = cross(right, forward);
+      const pixelScale = 2 * radius * Math.tan(base.fovy / 2) / base.height;
+      const centreNext = Object.fromEntries(axes.map((axis, i) => [axis,
+        centre[axis] + (-right[i] * dx + up[i] * dy) * pixelScale]));
+      const eye = Object.fromEntries(axes.map((axis, i) => [axis, centreNext[axis] + vector[i] * scale]));
+      // Rotate up opposite to the screen-space angle: the scene follows the fingers.
+      const cosine = Math.cos(rotation), sine = Math.sin(rotation);
+      // Canonical screen-up survives Plotly recreating a previously hidden scene.
+      const rolledUp = rotation ? Object.fromEntries(axes.map((axis, i) => [axis,
+        up[i] * cosine - right[i] * sine])) : camera.up;
+      pending = {...camera, center: centreNext, eye, up: rolledUp};
+      if (!frame && !busy) frame = requestAnimationFrame(flush);
+    }
     plot.addEventListener('touchstart', event => {
-      const pair = touches(event);
-      const camera = currentCamera(plot);
-      if (pair.length === 2 && camera) {
-        start = {distance: distance(pair), camera, midpoint: midpoint(pair),
-          height: Math.max(1, plot.getBoundingClientRect().height),
-          fovy: plot._fullLayout?.scene?._scene?.glplot?.fovy || Math.PI / 4};
+      const pair = touches(event), base = snapshot(); touchCount = pair.length; native = null;
+      if (pair.length === 2 && base) {
+        start = {...base, distance: distance(pair), angle: angle(pair), midpoint: midpoint(pair)};
         active = true;
       } else if (active) start = null;
       if (active) stop(event);
@@ -67,32 +100,54 @@
       stop(event);
       const pair = touches(event);
       if (!start || pair.length !== 2 || distance(pair) < 1 || start.distance < 1) return;
-      const camera = start.camera, centre = camera.center || {x: 0, y: 0, z: 0};
-      const axes = ['x', 'y', 'z'], vector = axes.map(axis => camera.eye[axis] - centre[axis]);
-      const radius = Math.hypot(...vector);
-      if (radius < 1e-6) return;
-      const scale = Math.min(20, Math.max(.1, radius * start.distance / distance(pair))) / radius;
-      const forward = vector.map(v => -v / radius), right = cross(forward, axes.map(axis => camera.up[axis]));
-      const rightLength = Math.hypot(...right);
-      if (rightLength < 1e-6) return;
-      for (let i = 0; i < 3; i++) right[i] /= rightLength;
-      const up = cross(right, forward), middle = midpoint(pair);
-      const dx = middle[0] - start.midpoint[0], dy = middle[1] - start.midpoint[1];
-      const pixelScale = 2 * radius * Math.tan(start.fovy / 2) / start.height;
-      const centreNext = Object.fromEntries(axes.map((axis, i) => [axis,
-        centre[axis] + (-right[i] * dx + up[i] * dy) * pixelScale]));
-      const eye = Object.fromEntries(axes.map((axis, i) => [axis, centreNext[axis] + vector[i] * scale]));
-      pending = {...camera, center: centreNext, eye};
-      if (!frame && !busy) frame = requestAnimationFrame(flush);
+      const middle = midpoint(pair);
+      move(start, {zoom: distance(pair) / start.distance, rotation: angle(pair) - start.angle,
+        dx: middle[0] - start.midpoint[0], dy: middle[1] - start.midpoint[1]});
     }, options);
     const end = event => {
       if (active) event.preventDefault();
       // Let Plotly see releases so its preceding one-finger drag cannot stay active.
-      if (touches(event).length < 2) start = null;
-      if (!touches(event).length) active = false;
+      touchCount = touches(event).length;
+      if (touchCount < 2) start = null;
+      if (!touchCount) active = false;
     };
     plot.addEventListener('touchend', end, options);
     plot.addEventListener('touchcancel', end, options);
+
+    // WebKit exposes trackpad rotation. On touchscreens, avoid handling both streams.
+    plot.addEventListener('gesturestart', event => {
+      stop(event);
+      const base = snapshot();
+      if (!touchCount && base) native = {...base, rotation: event.rotation || 0, scale: event.scale || 1};
+    }, options);
+    plot.addEventListener('gesturechange', event => {
+      if (!native && !touchCount) return;
+      stop(event);
+      if (native && !touchCount) move(native, {zoom: event.scale / native.scale,
+        rotation: (event.rotation - native.rotation) * Math.PI / 180});
+    }, options);
+    plot.addEventListener('gestureend', event => { if (native || touchCount) stop(event); native = null; }, options);
+    plot.addEventListener('wheel', event => { if (native) stop(event); }, options);
+
+    // Alt + horizontal mouse drag provides the same roll where trackpad rotation is unavailable.
+    plot.addEventListener('pointerdown', event => {
+      if (event.pointerType !== 'mouse' || event.button !== 0 || !event.altKey) return;
+      const base = snapshot(); if (!base) return;
+      stop(event); mouse = {...base, id: event.pointerId, x: event.clientX};
+      plot.setPointerCapture(event.pointerId);
+    }, options);
+    plot.addEventListener('pointermove', event => {
+      if (!mouse || event.pointerId !== mouse.id) return;
+      stop(event); move(mouse, {rotation: (event.clientX - mouse.x) * Math.PI / 720});
+    }, options);
+    const mouseEnd = event => {
+      if (!mouse || event.pointerId !== mouse.id) return;
+      stop(event); mouse = null;
+      if (plot.hasPointerCapture(event.pointerId)) plot.releasePointerCapture(event.pointerId);
+    };
+    plot.addEventListener('pointerup', mouseEnd, options);
+    plot.addEventListener('pointercancel', mouseEnd, options);
+    plot.addEventListener('lostpointercapture', () => { mouse = null; }, options);
   }
 
   function load(asset) {
@@ -306,8 +361,8 @@
         const ranges = level ? component.ranges : component.rawRanges;
         const labels = level ? ['x, м', 'y, м', 'z вверх, м'] : ['x камеры, м', 'z камеры, м', '−y камеры, м'];
         const camera = currentCamera(view.plot) || cameras.get(view.key) || defaultCamera;
-        const scene = {aspectmode: 'data', camera};
-        ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i]}; });
+        const scene = {aspectmode: 'manual', aspectratio: fixedAspect(ranges), camera};
+        ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i].slice(), autorange: false}; });
         await Plotly.react(view.plot, data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: 'fixed-camera', paper_bgcolor: '#fff'},
           {displayModeBar: false, scrollZoom: true, responsive: true, plotGlPixelRatio: 1});
       }
@@ -356,7 +411,7 @@
         link.href = note.href; link.textContent = note.text; row.append(link); header.append(row);
       }
       section.append(header, plot); get('scenes').append(section);
-      enablePinch(plot);
+      enableNavigation(plot);
       plot.dataset.component = component.id;
       plots.set(component.id, {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0});
       observer.observe(plot);
