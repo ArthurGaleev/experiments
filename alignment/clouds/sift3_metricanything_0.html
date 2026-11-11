@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIFT 4 · часть 1 · 1 фото · MetricAnything</title><link rel="stylesheet" href="cloud-view.css">
+<title>SIFT 4 · часть 1 · 1 фото · RoMa × MetricAnything</title><link rel="stylesheet" href="cloud-view.css">
 <script src="plotly.min.js" defer></script><script src="cloud-view.js" defer></script>
 </head><body><main>
-<a href="../component-sift3_metricanything_0.html">← К отчёту</a><h1>SIFT 4 · часть 1 · 1 фото · MetricAnything</h1>
+<a href="../component-sift3_metricanything_0.html">← К отчёту</a><h1>SIFT 4 · часть 1 · 1 фото · RoMa × MetricAnything</h1>
 <p id="scene-note">Корневая камера: img_5_a. Принятые жёсткие преобразования, максимальное остовное дерево по поддержке. Замыканий циклов: 0, предупреждений: 0. Петли не оптимизированы. Компонента не является распознанной комнатой; невидимые поверхности не достроены.</p>
 <div class="toolbar">
-  <label id="model-control" hidden>Модель <select id="model"></select></label>
+  <label id="matcher-control" hidden>Сопоставление <select id="matcher"></select></label>
+  <label id="model-control" hidden><span id="model-label">Модель</span> <select id="model"></select></label>
   <div class="segments" id="representation" role="group" aria-label="Представление">
     <button data-mode="points" aria-pressed="true">Точки</button>
     <button data-mode="planes" aria-pressed="false">Участки · экспериментально</button>
@@ -26,12 +27,16 @@
 <p id="plane-note" class="muted" hidden>Упрощённые поверхности без фототекстуры; пропуски видны в режиме «Вместе».</p>
 <p id="selection-status" role="status"></p>
 <p id="loading" class="muted" role="status"></p>
+<p class="muted touch-hint">Один палец — вращение · два пальца — масштаб. Прокрутка страницы — вне 3D.</p>
+<p><a href="#photo-controls">К выбору фотографий ↓</a></p>
 <div id="scenes"></div>
-<div class="toolbar"><strong>Фотографии</strong><button id="all">Все</button>
-<button id="none">Снять выбор</button><span class="muted">Нажатие миниатюры — показать / скрыть</span></div>
+<div class="toolbar" id="photo-controls"><strong>Фотографии</strong><button id="all">Все</button>
+<button id="none">Снять выбор</button><span class="muted">Нажатие миниатюры — показать / скрыть</span>
+<a href="#scenes">К 3D ↑</a></div>
 <div id="photos"></div>
 <details><summary>Вид и связи</summary>
-<p>Перетаскивание — вращение · Shift — перенос · колесо / жест — масштаб.</p><div class="toolbar">
+<p>Перетаскивание / один палец — вращение · Shift — перенос · колесо / два пальца — масштаб.
+Прокрутка и масштаб страницы доступны вне области 3D.</p><div class="toolbar">
   <label>Цвет <select id="colour"><option value="rgb">Из фото</option>
     <option value="source">По источнику</option><option value="group">По выбранной подгруппе</option>
     <option value="patch">По плоскому участку</option></select></label>
@@ -44,6 +49,10 @@
 <p>Выбор фото меняет только видимость. Позы рассчитаны по полной группе и остаются
 неизменными, даже если выбранный подграф распался. Исходно несвязанные компоненты
 показаны отдельно: их взаимное положение неизвестно. Связная компонента не равна комнате.</p>
+<p>Смена сопоставителя или глубины загружает другой результат: его связи, группы и позы.
+При первом выборе сочетания открыта крупнейшая группа, затем выбор фото запоминается
+отдельно для каждого сочетания. Области 3D вне экрана освобождают ресурсы;
+при возврате сохранённый ракурс восстанавливается.</p>
 <p>Циклы проверяют согласованность путей, но позы здесь не оптимизируются.
 Цвет подгрупп показывает связность выбранных фото, а не правильность геометрии.</p>
 <p>Масштаб задан моделью в метрах; нулевая высота проходит через камеру, а не пол.
@@ -59,4 +68,4 @@ GeoCalib задаёт общий поворот каждой компонент�
 проверить пропуски по исходному облаку.</p>
 </details>
 <noscript>Для интерактивного просмотра требуется JavaScript.</noscript>
-</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","sources":[{"id":"img_5_a","name":"img_5_a","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.140425603149091,-0.18887654520572497,0.3],[0.14042560314909103,-0.18887654520572497,0.3],[0.14042560314909103,0.18887654520572494,0.3],[-0.140425603149091,0.18887654520572494,0.3]],"chunks":[{"key":"47c8c4b9daa6c56dafd516a7","url":"points-47c8c4b9daa6c56dafd516a7.js","bytes":20109,"start":0,"end":1000},{"key":"d1b8a7f37a03b8e6fffedb4b","url":"points-d1b8a7f37a03b8e6fffedb4b.js","bytes":20109,"start":1000,"end":2000},{"key":"b8ea9373f08fd1ccbe368ee1","url":"points-b8ea9373f08fd1ccbe368ee1.js","bytes":60109,"start":2000,"end":5000},{"key":"8d5c5ff87b494360a8efe5d7","url":"points-8d5c5ff87b494360a8efe5d7.js","bytes":100109,"start":5000,"end":10000},{"key":"dfbf5d7e53e087e8b3abc8a7","url":"points-dfbf5d7e53e087e8b3abc8a7.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_5_a.jpg","href":"../photo-img_5_a.html","reference":false,"planes":{"key":"d248e2181ee147ac9753da5a","url":"planes-d248e2181ee147ac9753da5a.js","bytes":29943,"count":21,"coverage":0.6730739893211289,"triangles":486}}],"components":[{"id":"0","ids":["img_5_a"],"rotation":[[0.9999984426507085,0.0017648501799625439,-3.3881317890172014e-21],[-1.8242930526657714e-05,0.010336799306346765,0.999946573696463],[0.0017647558905411317,-0.9999450164303749,0.010336815404378911]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[0.0017647558905411317,-0.9999450164303749,0.010336815404378911],"ranges":[[-0.7553470109395806,1.146860542317474],[-0.1269516943086771,3.300744052025604],[-1.3897126032870692,1.3346491684343715]],"rawRanges":[[-0.7555964088439941,1.1484337544441223],[-0.1274259090423584,3.3130736351013184],[-1.4210698986053467,1.3160106325149536]],"warnings":0}],"edges":[],"treeEdges":[],"initial":["img_5_a"]}],"defaultLimit":2000,"multiview":true}</script></body></html>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","sources":[{"id":"img_5_a","name":"img_5_a","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.140425603149091,-0.18887654520572497,0.3],[0.14042560314909103,-0.18887654520572497,0.3],[0.14042560314909103,0.18887654520572494,0.3],[-0.140425603149091,0.18887654520572494,0.3]],"chunks":[{"key":"47c8c4b9daa6c56dafd516a7","url":"points-47c8c4b9daa6c56dafd516a7.js","bytes":20109,"start":0,"end":1000},{"key":"d1b8a7f37a03b8e6fffedb4b","url":"points-d1b8a7f37a03b8e6fffedb4b.js","bytes":20109,"start":1000,"end":2000},{"key":"b8ea9373f08fd1ccbe368ee1","url":"points-b8ea9373f08fd1ccbe368ee1.js","bytes":60109,"start":2000,"end":5000},{"key":"8d5c5ff87b494360a8efe5d7","url":"points-8d5c5ff87b494360a8efe5d7.js","bytes":100109,"start":5000,"end":10000},{"key":"dfbf5d7e53e087e8b3abc8a7","url":"points-dfbf5d7e53e087e8b3abc8a7.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_5_a.jpg","href":"../photo-img_5_a.html","reference":false,"planes":{"key":"d248e2181ee147ac9753da5a","url":"planes-d248e2181ee147ac9753da5a.js","bytes":29943,"count":21,"coverage":0.6730739893211289,"triangles":486}}],"components":[{"id":"0","ids":["img_5_a"],"rotation":[[0.9999984426507085,0.0017648501799625439,-3.3881317890172014e-21],[-1.8242930526657714e-05,0.010336799306346765,0.999946573696463],[0.0017647558905411317,-0.9999450164303749,0.010336815404378911]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[0.0017647558905411317,-0.9999450164303749,0.010336815404378911],"ranges":[[-0.7553470109395806,1.146860542317474],[-0.1269516943086771,3.300744052025604],[-1.3897126032870692,1.3346491684343715]],"rawRanges":[[-0.7555964088439941,1.1484337544441223],[-0.1274259090423584,3.3130736351013184],[-1.4210698986053467,1.3160106325149536]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":[],"treeEdges":[],"initial":["img_5_a"]}],"defaultLimit":2000,"multiview":true}</script></body></html>

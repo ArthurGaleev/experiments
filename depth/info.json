@@ -37,7 +37,7 @@
   "axes": "x_right_y_down_z_forward",
   "failures": 0,
   "status": "complete",
-  "title": "Глубина одного фото: MetricAnything и MoGe-2",
+  "title": "MetricAnything и MoGe-2: геометрия одного фото",
   "run": "20261110-034622-096298",
   "params": {
     "reference_smoke": false,

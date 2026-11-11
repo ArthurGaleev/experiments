@@ -7,7 +7,8 @@
 <a href="../photo-img_17_b.html">← К отчёту</a><h1>Вертикаль в 3D · img_17_b</h1>
 <p id="scene-note">Показана предсказанная видимая геометрия; скрытые поверхности не восстановлены.</p>
 <div class="toolbar">
-  <label id="model-control" hidden>Модель <select id="model"></select></label>
+  <label id="matcher-control" hidden>Сопоставление <select id="matcher"></select></label>
+  <label id="model-control" hidden><span id="model-label">Модель</span> <select id="model"></select></label>
   <div class="segments" id="representation" role="group" aria-label="Представление">
     <button data-mode="points" aria-pressed="true">Точки</button>
     <button data-mode="planes" aria-pressed="false">Участки · экспериментально</button>
@@ -26,12 +27,16 @@
 <p id="plane-note" class="muted" hidden>Упрощённые поверхности без фототекстуры; пропуски видны в режиме «Вместе».</p>
 <p id="selection-status" role="status"></p>
 <p id="loading" class="muted" role="status"></p>
+<p class="muted touch-hint">Один палец — вращение · два пальца — масштаб. Прокрутка страницы — вне 3D.</p>
+<p><a href="#photo-controls">К выбору фотографий ↓</a></p>
 <div id="scenes"></div>
-<div class="toolbar"><strong>Фотографии</strong><button id="all">Все</button>
-<button id="none">Снять выбор</button><span class="muted">Нажатие миниатюры — показать / скрыть</span></div>
+<div class="toolbar" id="photo-controls"><strong>Фотографии</strong><button id="all">Все</button>
+<button id="none">Снять выбор</button><span class="muted">Нажатие миниатюры — показать / скрыть</span>
+<a href="#scenes">К 3D ↑</a></div>
 <div id="photos"></div>
 <details><summary>Вид и связи</summary>
-<p>Перетаскивание — вращение · Shift — перенос · колесо / жест — масштаб.</p><div class="toolbar">
+<p>Перетаскивание / один палец — вращение · Shift — перенос · колесо / два пальца — масштаб.
+Прокрутка и масштаб страницы доступны вне области 3D.</p><div class="toolbar">
   <label>Цвет <select id="colour"><option value="rgb">Из фото</option>
     <option value="source">По источнику</option><option value="group">По выбранной подгруппе</option>
     <option value="patch">По плоскому участку</option></select></label>
@@ -44,6 +49,10 @@
 <p>Выбор фото меняет только видимость. Позы рассчитаны по полной группе и остаются
 неизменными, даже если выбранный подграф распался. Исходно несвязанные компоненты
 показаны отдельно: их взаимное положение неизвестно. Связная компонента не равна комнате.</p>
+<p>Смена сопоставителя или глубины загружает другой результат: его связи, группы и позы.
+При первом выборе сочетания открыта крупнейшая группа, затем выбор фото запоминается
+отдельно для каждого сочетания. Области 3D вне экрана освобождают ресурсы;
+при возврате сохранённый ракурс восстанавливается.</p>
 <p>Циклы проверяют согласованность путей, но позы здесь не оптимизируются.
 Цвет подгрупп показывает связность выбранных фото, а не правильность геометрии.</p>
 <p>Масштаб задан моделью в метрах; нулевая высота проходит через камеру, а не пол.
@@ -59,4 +68,4 @@ GeoCalib задаёт общий поворот каждой компонент�
 проверить пропуски по исходному облаку.</p>
 </details>
 <noscript>Для интерактивного просмотра требуется JavaScript.</noscript>
-</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","sources":[{"id":"0","name":"MetricAnything","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.1304469687843601,-0.17545499501888664,0.3],[0.1304469687843601,-0.17545499501888664,0.3],[0.1304469687843601,0.1754549950188867,0.3],[-0.1304469687843601,0.1754549950188867,0.3]],"chunks":[{"key":"04b448b61b129bd912a2f313","url":"points-04b448b61b129bd912a2f313.js","bytes":20109,"start":0,"end":1000},{"key":"a4d9f2ac2b54e7b3e8b742b1","url":"points-a4d9f2ac2b54e7b3e8b742b1.js","bytes":20109,"start":1000,"end":2000},{"key":"3fcde23c3ac8b19a740759b6","url":"points-3fcde23c3ac8b19a740759b6.js","bytes":60109,"start":2000,"end":5000},{"key":"02367ff46a61766be5f85209","url":"points-02367ff46a61766be5f85209.js","bytes":100109,"start":5000,"end":10000},{"key":"a13afb818ddcc6b5cc7cdba5","url":"points-a13afb818ddcc6b5cc7cdba5.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":null,"href":null,"reference":false},{"id":"1","name":"MoGe-2 с нормалями","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.1468311588563683,-0.1974922096524031,0.3],[0.1468311588563683,-0.1974922096524031,0.3],[0.1468311588563683,0.1974922096524031,0.3],[-0.1468311588563683,0.1974922096524031,0.3]],"chunks":[{"key":"b0f82fd6eb04827af8b700ea","url":"points-b0f82fd6eb04827af8b700ea.js","bytes":20109,"start":0,"end":1000},{"key":"70f27efd73a130e8e6681adf","url":"points-70f27efd73a130e8e6681adf.js","bytes":20109,"start":1000,"end":2000},{"key":"20d99abf71f59cbbefcedbd3","url":"points-20d99abf71f59cbbefcedbd3.js","bytes":60109,"start":2000,"end":5000},{"key":"1408dd14b23965f0375dc020","url":"points-1408dd14b23965f0375dc020.js","bytes":100109,"start":5000,"end":10000},{"key":"3f4d63951eb322632cbb3379","url":"points-3f4d63951eb322632cbb3379.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":null,"href":null,"reference":false}],"components":[{"id":"0","ids":["0","1"],"rotation":[[0.9999962762802228,-0.0027289971946769095,0.0],[6.757128866562818e-05,0.024760390806148867,0.9996934122425976],[-0.002728160517547035,-0.999689689664467,0.024760483007249135]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[-0.002728160517547035,-0.999689689664467,0.024760483007249135],"ranges":[[-1.1813819663202514,1.0001750709339094],[-0.16205760245729722,4.2134976638897275],[-1.44102414737721,1.7549499499992776]],"rawRanges":[[-1.180242965221405,1.001054654121399],[-0.16300498962402343,4.2381297302246095],[-1.5252435684204102,1.6941906690597535]],"warnings":0}],"edges":null,"treeEdges":[],"initial":["0","1"]}],"defaultLimit":2000,"multiview":false}</script></body></html>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","sources":[{"id":"0","name":"MetricAnything","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.1304469687843601,-0.17545499501888664,0.3],[0.1304469687843601,-0.17545499501888664,0.3],[0.1304469687843601,0.1754549950188867,0.3],[-0.1304469687843601,0.1754549950188867,0.3]],"chunks":[{"key":"04b448b61b129bd912a2f313","url":"points-04b448b61b129bd912a2f313.js","bytes":20109,"start":0,"end":1000},{"key":"a4d9f2ac2b54e7b3e8b742b1","url":"points-a4d9f2ac2b54e7b3e8b742b1.js","bytes":20109,"start":1000,"end":2000},{"key":"3fcde23c3ac8b19a740759b6","url":"points-3fcde23c3ac8b19a740759b6.js","bytes":60109,"start":2000,"end":5000},{"key":"02367ff46a61766be5f85209","url":"points-02367ff46a61766be5f85209.js","bytes":100109,"start":5000,"end":10000},{"key":"a13afb818ddcc6b5cc7cdba5","url":"points-a13afb818ddcc6b5cc7cdba5.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":null,"href":null,"reference":false},{"id":"1","name":"MoGe-2 с нормалями","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.1468311588563683,-0.1974922096524031,0.3],[0.1468311588563683,-0.1974922096524031,0.3],[0.1468311588563683,0.1974922096524031,0.3],[-0.1468311588563683,0.1974922096524031,0.3]],"chunks":[{"key":"b0f82fd6eb04827af8b700ea","url":"points-b0f82fd6eb04827af8b700ea.js","bytes":20109,"start":0,"end":1000},{"key":"70f27efd73a130e8e6681adf","url":"points-70f27efd73a130e8e6681adf.js","bytes":20109,"start":1000,"end":2000},{"key":"20d99abf71f59cbbefcedbd3","url":"points-20d99abf71f59cbbefcedbd3.js","bytes":60109,"start":2000,"end":5000},{"key":"1408dd14b23965f0375dc020","url":"points-1408dd14b23965f0375dc020.js","bytes":100109,"start":5000,"end":10000},{"key":"3f4d63951eb322632cbb3379","url":"points-3f4d63951eb322632cbb3379.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":null,"href":null,"reference":false}],"components":[{"id":"0","ids":["0","1"],"rotation":[[0.9999962762802228,-0.0027289971946769095,0.0],[6.757128866562818e-05,0.024760390806148867,0.9996934122425976],[-0.002728160517547035,-0.999689689664467,0.024760483007249135]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[-0.002728160517547035,-0.999689689664467,0.024760483007249135],"ranges":[[-1.1813819663202514,1.0001750709339094],[-0.16205760245729722,4.2134976638897275],[-1.44102414737721,1.7549499499992776]],"rawRanges":[[-1.180242965221405,1.001054654121399],[-0.16300498962402343,4.2381297302246095],[-1.5252435684204102,1.6941906690597535]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":null,"treeEdges":[],"initial":["0","1"]}],"defaultLimit":2000,"multiview":false}</script></body></html>

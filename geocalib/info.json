@@ -18,7 +18,7 @@
   "axes": "x_right_y_down_z_forward; gravity_points_down",
   "failures": 0,
   "status": "complete",
-  "title": "GeoCalib: вертикаль и калибровка",
+  "title": "GeoCalib: направление вверх",
   "run": "20261110-222647-275422",
   "params": {
     "device": "mps",

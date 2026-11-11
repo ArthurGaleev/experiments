@@ -1,6 +1,6 @@
 {
-  "created": "2026-11-11T04:53:43.835520+03:00",
-  "seconds": 245.1355597919901,
+  "created": "2026-11-11T18:38:11.660633+03:00",
+  "seconds": 57.37119308399997,
   "python": "3.13.16",
   "settings": {
     "min_confidence": 0.2,
@@ -16,43 +16,35 @@
     "seed": 0
   },
   "status": "complete",
-  "accepted": 63,
-  "attempted": 506,
-  "title": "Совмещение облаков: пары и группы",
-  "run": "20261111-045343-183996",
+  "accepted": 75,
+  "attempted": 1012,
+  "matching_filters": {
+    "roma": {
+      "confidence_min": 0.2,
+      "F_filter": false
+    },
+    "sift": {
+      "descriptor_ratio": 0.8,
+      "F_filter": false,
+      "z_filter": false
+    }
+  },
+  "title": "RoMa / SIFT × глубина: совмещение фотографий",
+  "run": "20261111-183810-805919",
   "params": {
     "pair": null,
-    "group": [
-      [
-        "img_1",
-        "img_10",
-        "img_11_a",
-        "img_11_b",
-        "img_12",
-        "img_13",
-        "img_14",
-        "img_15",
-        "img_16_a",
-        "img_16_b",
-        "img_17_a",
-        "img_17_b",
-        "img_18",
-        "img_2",
-        "img_3",
-        "img_4_a",
-        "img_4_b",
-        "img_5_a",
-        "img_5_b",
-        "img_6",
-        "img_7",
-        "img_8",
-        "img_9"
-      ]
-    ],
+    "group": null,
+    "all_photos": true,
     "models": [
       "metricanything",
       "moge2"
-    ]
+    ],
+    "matchers": [
+      "roma",
+      "sift"
+    ],
+    "sift_ratio": 0.8,
+    "no_render": true
   },
   "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
   "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"

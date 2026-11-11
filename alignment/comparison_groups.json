@@ -14,6 +14,8 @@
       "img_9"
     ],
     "model": "metricanything",
+    "matcher": "roma",
+    "branch": "roma_metricanything",
     "poses": {
       "img_1": [
         [
@@ -392,6 +394,8 @@
       "img_9"
     ],
     "model": "moge2",
+    "matcher": "roma",
+    "branch": "roma_moge2",
     "poses": {
       "img_1": [
         [
@@ -809,6 +813,8 @@
       "img_4_a"
     ],
     "model": "metricanything",
+    "matcher": "roma",
+    "branch": "roma_metricanything",
     "poses": {
       "img_13": [
         [
@@ -887,6 +893,8 @@
       "img_4_a"
     ],
     "model": "moge2",
+    "matcher": "roma",
+    "branch": "roma_moge2",
     "poses": {
       "img_13": [
         [
@@ -965,6 +973,8 @@
       "img_7"
     ],
     "model": "metricanything",
+    "matcher": "roma",
+    "branch": "roma_metricanything",
     "poses": {
       "img_17_b": [
         [
@@ -1043,6 +1053,8 @@
       "img_7"
     ],
     "model": "moge2",
+    "matcher": "roma",
+    "branch": "roma_moge2",
     "poses": {
       "img_17_b": [
         [
@@ -1121,6 +1133,8 @@
       "img_5_b"
     ],
     "model": "metricanything",
+    "matcher": "roma",
+    "branch": "roma_metricanything",
     "poses": {
       "img_5_a": [
         [
@@ -1197,6 +1211,8 @@
       "img_5_b"
     ],
     "model": "moge2",
+    "matcher": "roma",
+    "branch": "roma_moge2",
     "poses": {
       "img_5_a": [
         [

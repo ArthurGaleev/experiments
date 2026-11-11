@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>img_10 ↔ img_11_a · SIFT × MetricAnything</title><link rel="stylesheet" href="cloud-view.css">
+<script src="plotly.min.js" defer></script><script src="cloud-view.js" defer></script>
+</head><body><main>
+<a href="../pair-0022.html">← К отчёту</a><h1>img_10 ↔ img_11_a · SIFT × MetricAnything</h1>
+<p id="scene-note">отклонено; проверочные соответствия: 0/23; медиана ошибки 3D: 2.359 м; гравитация: 97.2°; причина: недостаточная доля согласованных точек, недостаточный пространственный охват, ошибка обратной проекции, расхождение вертикалей. Отклонённая гипотеза не используется для сборки группы.</p>
+<div class="toolbar">
+  <label id="matcher-control" hidden>Сопоставление <select id="matcher"></select></label>
+  <label id="model-control" hidden><span id="model-label">Модель</span> <select id="model"></select></label>
+  <div class="segments" id="representation" role="group" aria-label="Представление">
+    <button data-mode="points" aria-pressed="true">Точки</button>
+    <button data-mode="planes" aria-pressed="false">Участки · экспериментально</button>
+    <button data-mode="both" aria-pressed="false" title="Плоские участки и исходные точки">Вместе</button>
+  </div>
+</div>
+<div class="toolbar" id="detail-control"><span>До точек на фото</span>
+  <div class="segments" id="detail" role="group" aria-label="Количество точек на фото">
+    <button data-limit="1000" aria-pressed="false">1k</button>
+    <button data-limit="2000" aria-pressed="true">2k</button>
+    <button data-limit="5000" aria-pressed="false">5k</button>
+    <button data-limit="10000" aria-pressed="false">10k</button>
+    <button data-limit="25000" aria-pressed="false">25k</button>
+  </div><span id="counts" class="muted" aria-live="polite"></span>
+</div>
+<p id="plane-note" class="muted" hidden>Упрощённые поверхности без фототекстуры; пропуски видны в режиме «Вместе».</p>
+<p id="selection-status" role="status"></p>
+<p id="loading" class="muted" role="status"></p>
+<p class="muted touch-hint">Один палец — вращение · два пальца — масштаб. Прокрутка страницы — вне 3D.</p>
+<p><a href="#photo-controls">К выбору фотографий ↓</a></p>
+<div id="scenes"></div>
+<div class="toolbar" id="photo-controls"><strong>Фотографии</strong><button id="all">Все</button>
+<button id="none">Снять выбор</button><span class="muted">Нажатие миниатюры — показать / скрыть</span>
+<a href="#scenes">К 3D ↑</a></div>
+<div id="photos"></div>
+<details><summary>Вид и связи</summary>
+<p>Перетаскивание / один палец — вращение · Shift — перенос · колесо / два пальца — масштаб.
+Прокрутка и масштаб страницы доступны вне области 3D.</p><div class="toolbar">
+  <label>Цвет <select id="colour"><option value="rgb">Из фото</option>
+    <option value="source">По источнику</option><option value="group">По выбранной подгруппе</option>
+    <option value="patch">По плоскому участку</option></select></label>
+  <label><input type="checkbox" id="cameras" checked> Камеры</label>
+  <label id="level-label"><input type="checkbox" id="level" checked> Вертикаль GeoCalib</label>
+  <label id="paths-label"><input type="checkbox" id="paths"> Пути через скрытые фото</label>
+  <button id="top">Вид сверху</button><button id="reset">Сброс вида</button>
+</div></details>
+<details><summary>Что означает этот вид</summary>
+<p>Выбор фото меняет только видимость. Позы рассчитаны по полной группе и остаются
+неизменными, даже если выбранный подграф распался. Исходно несвязанные компоненты
+показаны отдельно: их взаимное положение неизвестно. Связная компонента не равна комнате.</p>
+<p>Смена сопоставителя или глубины загружает другой результат: его связи, группы и позы.
+При первом выборе сочетания открыта крупнейшая группа, затем выбор фото запоминается
+отдельно для каждого сочетания. Области 3D вне экрана освобождают ресурсы;
+при возврате сохранённый ракурс восстанавливается.</p>
+<p>Циклы проверяют согласованность путей, но позы здесь не оптимизируются.
+Цвет подгрупп показывает связность выбранных фото, а не правильность геометрии.</p>
+<p>Масштаб задан моделью в метрах; нулевая высота проходит через камеру, а не пол.
+GeoCalib задаёт общий поворот каждой компоненты. При его выключении вертикаль мира
+не определена. XYZ и K каждой модели используются вместе.</p>
+<p>Точки — вложенные равномерные выборки пикселей. Подробные уровни загружаются
+по запросу. Переключение фото не меняет выборки остальных источников.</p>
+<p>Плоские участки — экспериментальная аппроксимация предсказанной геометрии.
+Поверхности разных фото не объединены; двойные стены сохраняются. Отрисованы только
+полностью поддержанные блоки сетки; граничные полосы и неплоские области могут отсутствовать.
+Цвет интерполируется между вершинами треугольников: мелкие детали фото теряются.
+Это проверка плоских опор, а не детальная модель. Режим «Вместе» позволяет
+проверить пропуски по исходному облаку.</p>
+</details>
+<noscript>Для интерактивного просмотра требуется JavaScript.</noscript>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","sources":[{"id":"img_10","name":"img_10","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.21265098866585794,-0.14176732577723863,0.3],[0.21265098866585794,-0.14176732577723863,0.3],[0.21265098866585794,0.14176732577723866,0.3],[-0.21265098866585794,0.14176732577723866,0.3]],"chunks":[{"key":"d9d1d50f97a68a0eda7eef22","url":"points-d9d1d50f97a68a0eda7eef22.js","bytes":20109,"start":0,"end":1000},{"key":"50f2e142183364044e896ef4","url":"points-50f2e142183364044e896ef4.js","bytes":20109,"start":1000,"end":2000},{"key":"8d1063a266a11dd5002b2d9f","url":"points-8d1063a266a11dd5002b2d9f.js","bytes":60109,"start":2000,"end":5000},{"key":"cb9273ec1c0be4c2175d97fb","url":"points-cb9273ec1c0be4c2175d97fb.js","bytes":100109,"start":5000,"end":10000},{"key":"cafd43b4b4dceb55ebaa4cbe","url":"points-cafd43b4b4dceb55ebaa4cbe.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_10.jpg","href":"../photo-img_10.html","reference":false,"planes":{"key":"5e8eb285ae6d9e0a17e92a9b","url":"planes-5e8eb285ae6d9e0a17e92a9b.js","bytes":48223,"count":37,"coverage":0.7391556395715186,"triangles":784}},{"id":"img_11_a","name":"img_11_a","pose":[[-0.13112529939380754,-0.9905710919079075,-0.03968712304085163,-0.49714871401845034],[0.8027235908369169,-0.12958116172151982,0.5821027050622487,-3.1506812366498202],[-0.5817568156650766,0.04447060156189383,0.8121461525020933,0.7643065621901679],[0.0,0.0,0.0,1.0]],"corners":[[-0.10257338474728074,-0.1379642029564873,0.3],[0.10257338474728074,-0.1379642029564873,0.3],[0.10257338474728074,0.1379642029564873,0.3],[-0.10257338474728074,0.1379642029564873,0.3]],"chunks":[{"key":"798fa00865d3518dcfd83577","url":"points-798fa00865d3518dcfd83577.js","bytes":20109,"start":0,"end":1000},{"key":"539f8a6af3d244eead145890","url":"points-539f8a6af3d244eead145890.js","bytes":20109,"start":1000,"end":2000},{"key":"33bc9e21d45dc456c427f70d","url":"points-33bc9e21d45dc456c427f70d.js","bytes":60109,"start":2000,"end":5000},{"key":"1e426697b0d5961cf48d26a2","url":"points-1e426697b0d5961cf48d26a2.js","bytes":100109,"start":5000,"end":10000},{"key":"36a2d9a2162ccbe182eb6067","url":"points-36a2d9a2162ccbe182eb6067.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_11_a.jpg","href":"../photo-img_11_a.html","reference":false,"planes":{"key":"74cb448d2f042b5ef328acbd","url":"planes-74cb448d2f042b5ef328acbd.js","bytes":32151,"count":26,"coverage":0.7463005339435546,"triangles":522}}],"components":[{"id":"0","ids":["img_10","img_11_a"],"rotation":[[0.9999999296885397,0.00037499722087620384,0.0],[-2.0771320958906278e-07,0.0005539059582871285,0.9999998465940614],[0.00037499716334940314,-0.9999997762826118,0.0005539059972330681]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[0.00037499716334940314,-0.9999997762826118,0.0005539059972330681],"ranges":[[-2.1081901957471785,1.7281232700332474],[-0.19787558553222917,5.1447652238379575],[-1.4160801237879477,2.7098801245327517]],"rawRanges":[[-2.108222187812113,1.7284592917811787],[-0.19788273193397707,5.144951030283404],[-1.4180313227582308,2.7087357469615023]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":null,"treeEdges":[],"initial":["img_10","img_11_a"]}],"defaultLimit":2000,"multiview":true}</script></body></html>

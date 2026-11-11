@@ -6,7 +6,17 @@
   const palette = ['#168575', '#ce621c', '#6551c5', '#bd3c8a', '#267bb7', '#7c4f37', '#85801d'];
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
   const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0};
-  const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map();
+  const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
+  let observer, scheduled = false;
+  function scheduleDraw() {
+    if (!scheduled) {
+      scheduled = true;
+      requestAnimationFrame(() => { scheduled = false; draw(); });
+    }
+  }
+  function release(view) {
+    if (view.plot.data) { cameras.set(view.key, view.plot.layout.scene.camera); Plotly.purge(view.plot); }
+  }
   const diagnostics = new URLSearchParams(location.search).has('qa');
   let loadedBytes = 0;
   const decode = (value, Type) => new Type(Uint8Array.from(atob(value), c => c.charCodeAt(0)).buffer);
@@ -14,6 +24,54 @@
   const pose = (p, m) => m.slice(0, 3).map(row => row[0] * p[0] + row[1] * p[1] + row[2] * p[2] + row[3]);
   const position = (p, source, component) => rotate(pose(p, source.pose), get('level').checked ? component.rotation : component.fixed);
   const sourceColour = source => palette[state.variant.sources.indexOf(source) % palette.length];
+
+  // Plotly keeps single-finger rotation; two fingers change only the camera distance.
+  function enablePinch(plot) {
+    let active = false, start, pending, frame = 0, busy = false;
+    const touches = event => [...event.touches].filter(touch => plot.contains(touch.target));
+    const distance = pair => Math.hypot(pair[0].clientX - pair[1].clientX, pair[0].clientY - pair[1].clientY);
+    const stop = event => { event.preventDefault(); event.stopImmediatePropagation(); };
+    const options = {capture: true, passive: false};
+    function flush() {
+      frame = 0;
+      if (!pending || !plot.data) { pending = null; return; }
+      const camera = pending; pending = null; busy = true;
+      Promise.resolve(Plotly.relayout(plot, {'scene.camera': camera})).finally(() => {
+        busy = false;
+        if (pending && !frame) frame = requestAnimationFrame(flush);
+      });
+    }
+    plot.addEventListener('touchstart', event => {
+      const pair = touches(event);
+      if (pair.length === 2 && plot.layout?.scene?.camera) {
+        start = {distance: distance(pair), camera: structuredClone(plot.layout.scene.camera)};
+        active = true;
+      } else if (active) start = null;
+      if (active) stop(event);
+    }, options);
+    plot.addEventListener('touchmove', event => {
+      if (!active) return;
+      stop(event);
+      const pair = touches(event);
+      if (!start || pair.length !== 2 || distance(pair) < 1 || start.distance < 1) return;
+      const camera = start.camera, centre = camera.center || {x: 0, y: 0, z: 0};
+      const axes = ['x', 'y', 'z'], vector = axes.map(axis => camera.eye[axis] - centre[axis]);
+      const radius = Math.hypot(...vector);
+      if (radius < 1e-6) return;
+      const scale = Math.min(20, Math.max(.1, radius * start.distance / distance(pair))) / radius;
+      const eye = Object.fromEntries(axes.map((axis, i) => [axis, centre[axis] + vector[i] * scale]));
+      pending = {...camera, eye};
+      if (!frame && !busy) frame = requestAnimationFrame(flush);
+    }, options);
+    const end = event => {
+      if (active) event.preventDefault();
+      // Let Plotly see releases so its preceding one-finger drag cannot stay active.
+      if (touches(event).length < 2) start = null;
+      if (!touches(event).length) active = false;
+    };
+    plot.addEventListener('touchend', end, options);
+    plot.addEventListener('touchcancel', end, options);
+  }
 
   function load(asset) {
     if (!assets.has(asset.key)) {
@@ -218,16 +276,14 @@
       for (const component of state.variant.components) {
         const view = plots.get(component.id), visible = component.ids.some(id => state.selected.has(id));
         view.section.hidden = !visible;
-        if (!visible) {
-          if (view.plot.data) { cameras.set(component.id, view.plot.layout.scene.camera); Plotly.purge(view.plot); }
-          continue;
-        }
+        // Many SIFT components can be isolated. Only nearby plots keep WebGL contexts.
+        if (!visible || !view.nearby) { release(view); continue; }
         const data = await traces(component, groups);
         if (version !== state.version) return;
         const level = get('level').checked && component.levelled;
         const ranges = level ? component.ranges : component.rawRanges;
         const labels = level ? ['x, м', 'y, м', 'z вверх, м'] : ['x камеры, м', 'z камеры, м', '−y камеры, м'];
-        const camera = view.plot.layout?.scene?.camera || cameras.get(component.id) || defaultCamera;
+        const camera = view.plot.layout?.scene?.camera || cameras.get(view.key) || defaultCamera;
         const scene = {aspectmode: 'data', camera};
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i]}; });
         await Plotly.react(view.plot, data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: 'fixed-camera', paper_bgcolor: '#fff'},
@@ -245,27 +301,60 @@
   }
 
   function build() {
-    for (const [id, view] of plots) if (view.plot.data) { cameras.set(id, view.plot.layout.scene.camera); Plotly.purge(view.plot); }
+    observer?.disconnect();
+    for (const view of plots.values()) release(view);
     plots.clear(); geometry.clear(); get('scenes').replaceChildren(); get('photos').replaceChildren();
+    observer = new IntersectionObserver(entries => {
+      let changed = false;
+      for (const entry of entries) {
+        const view = plots.get(entry.target.dataset.component);
+        if (view && view.nearby !== entry.isIntersecting) { view.nearby = entry.isIntersecting; changed = true; }
+      }
+      if (changed) scheduleDraw();
+    }, {rootMargin: '120px'});
     const sorted = [...state.variant.components].sort((a, b) => b.ids.length - a.ids.length);
+    const isolated = sorted.filter(c => c.ids.length === 1).length;
+    let isolatedGrid;
     for (let index = 0; index < sorted.length; index++) {
       const component = sorted[index], section = document.createElement('section'), header = document.createElement('header'), plot = document.createElement('div');
       section.className = 'scene' + (index ? ' secondary' : ''); plot.className = 'plot';
       const title = document.createElement('h2'); title.textContent = `Группа ${Number(component.id) + 1} · ${settings.multiview ? 'фото' : 'источники'}: ${component.ids.length}`; header.append(title);
       if (index) { const note = document.createElement('p'); note.textContent = 'Отдельная система координат · положение относительно других групп неизвестно'; header.append(note); }
-      if (component.warnings) { const warning = document.createElement('p'); warning.className = 'warning'; warning.textContent = `Расхождения в циклах полной группы: ${component.warnings}. Позы не оптимизированы.`; header.append(warning); }
-      section.append(header, plot); get('scenes').append(section); plots.set(component.id, {section, plot});
-      const group = document.createElement('div'); group.className = 'photo-group'; group.dataset.component = component.id;
-      const heading = document.createElement('div'); heading.className = 'group-heading';
-      const label = document.createElement('span'); label.textContent = title.textContent + (index ? ' · нет принятой связи с основной группой' : ''); heading.append(label);
-      if (settings.multiview) {
-        const only = document.createElement('button'); only.className = 'group-only'; only.textContent = 'Только эту группу';
-        only.setAttribute('aria-label', `Показать только группу ${Number(component.id) + 1}`);
-        only.onclick = () => { state.selected = new Set(component.ids); draw(); };
-        heading.append(only);
+      if (component.warnings) {
+        const warning = document.createElement('p'); warning.className = 'warning';
+        warning.textContent = `Расхождения путей: ${component.warnings}${component.cycleChecks == null ? '' : ' из ' + component.cycleChecks}. Совместное уточнение поз не выполнено.`;
+        header.append(warning);
+      } else if (settings.multiview && component.cycleChecks === 0) {
+        const note = document.createElement('p'); note.textContent = 'Замкнутых путей нет: альтернативная проверка размещения недоступна.'; header.append(note);
       }
-      group.append(heading);
-      const grid = document.createElement('div'); grid.className = 'photo-grid'; group.append(grid);
+      for (const note of component.notes || []) {
+        const row = document.createElement('p'), link = document.createElement('a'); row.className = 'warning';
+        link.href = note.href; link.textContent = note.text; row.append(link); header.append(row);
+      }
+      section.append(header, plot); get('scenes').append(section);
+      enablePinch(plot);
+      plot.dataset.component = component.id;
+      plots.set(component.id, {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0});
+      observer.observe(plot);
+      const singleton = component.ids.length === 1 && isolated > 1;
+      let grid = singleton ? isolatedGrid : null;
+      if (!grid) {
+        const group = document.createElement('div'); group.className = 'photo-group'; group.dataset.component = component.id;
+        const heading = document.createElement('div'); heading.className = 'group-heading';
+        const label = document.createElement('span');
+        label.textContent = singleton ? `Без принятых связей · фото: ${isolated} · каждое показано отдельно` : title.textContent + (index ? ' · нет принятой связи с основной группой' : '');
+        heading.append(label);
+        if (settings.multiview && !singleton) {
+          const only = document.createElement('button'); only.className = 'group-only'; only.textContent = 'Только эту группу';
+          only.setAttribute('aria-label', `Показать только группу ${Number(component.id) + 1}`);
+          only.onclick = () => { state.selected = new Set(component.ids); draw(); };
+          heading.append(only);
+        }
+        group.append(heading);
+        grid = document.createElement('div'); grid.className = 'photo-grid'; group.append(grid);
+        get('photos').append(group);
+        if (singleton) isolatedGrid = grid;
+      }
       for (const source of state.variant.sources.filter(s => component.ids.includes(s.id))) {
         const card = document.createElement('div'); card.className = 'photo'; card.dataset.id = source.id;
         const button = document.createElement('button'); button.className = 'photo-toggle'; button.setAttribute('aria-label', 'Показать или скрыть ' + source.name);
@@ -278,7 +367,6 @@
         if (source.href) { const link = document.createElement('a'); link.href = source.href; link.textContent = 'Отчёт фото ↗'; card.append(link); }
         grid.append(card);
       }
-      get('photos').append(group);
     }
     const hasPlanes = state.variant.sources.some(s => s.planes);
     get('representation').hidden = !hasPlanes;
@@ -288,13 +376,34 @@
     draw();
   }
 
-  for (const variant of settings.variants) { const option = document.createElement('option'); option.value = variant.id; option.textContent = variant.label; get('model').append(option); }
-  get('model-control').hidden = settings.variants.length < 2;
-  get('model').onchange = () => {
-    state.variant = settings.variants.find(v => v.id === get('model').value);
-    const ids = new Set(state.variant.sources.map(s => s.id));
-    state.selected = new Set([...state.selected].filter(id => ids.has(id))); build();
-  };
+  function options(select, items, current) {
+    select.replaceChildren();
+    for (const [id, label] of items) {
+      const option = document.createElement('option'); option.value = id; option.textContent = label; select.append(option);
+    }
+    select.value = current;
+  }
+  const matchers = new Map(settings.variants.filter(v => v.matcher).map(v => [v.matcher, v.matcherLabel]));
+  function updateControls() {
+    get('matcher-control').hidden = matchers.size < 2;
+    options(get('matcher'), matchers, state.variant.matcher);
+    const choices = settings.variants.filter(v => v.matcher === state.variant.matcher);
+    options(get('model'), new Map(choices.map(v => [v.model, v.label])), state.variant.model);
+    get('model-control').hidden = choices.length < 2;
+    get('model-label').textContent = matchers.size ? 'Глубина' : 'Модель';
+  }
+  function chooseVariant(next) {
+    if (!next || next.id === state.variant.id) return;
+    selections.set(state.variant.id, new Set(state.selected));
+    state.variant = next;
+    state.selected = new Set(selections.get(next.id) || next.initial);
+    updateControls(); build();
+  }
+  get('matcher').onchange = () => chooseVariant(
+    settings.variants.find(v => v.matcher === get('matcher').value && v.model === state.variant.model)
+    || settings.variants.find(v => v.matcher === get('matcher').value));
+  get('model').onchange = () => chooseVariant(settings.variants.find(v => v.matcher === state.variant.matcher && v.model === get('model').value));
+  updateControls();
   get('all').onclick = () => { state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
   get('none').onclick = () => { state.selected.clear(); draw(); };
   for (const button of get('detail').querySelectorAll('button')) button.onclick = () => {
