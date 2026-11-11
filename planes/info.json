@@ -1,0 +1,23 @@
+{
+  "created": "2026-11-11T16:40:22.218536+03:00",
+  "seconds": 9.93232691600133,
+  "python": "3.13.16",
+  "settings": {
+    "base_error_m": 0.02,
+    "relative_error": 0.01,
+    "iterations": 512,
+    "max_planes": 12,
+    "max_samples": 8000,
+    "min_samples": 80,
+    "min_patch_pixels": 200,
+    "mesh_cell_pixels": 4,
+    "seed": 0
+  },
+  "title": "Плоские участки: эксперимент",
+  "run": "20261111-164022-218536",
+  "params": {
+    "limit": null
+  },
+  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}

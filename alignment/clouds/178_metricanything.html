@@ -1,165 +1,62 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>img_17_a ↔ img_3 · MetricAnything</title><style>
-* { box-sizing: border-box; }
-body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
-main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
-h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
- letter-spacing: -.025em; }
-h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
-h3 { font-size: 17px; }
-section, details.section { margin: 28px 0; padding: 24px; background: white;
- border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
-a { color: #176650; text-underline-offset: 3px; }
-button, select, input { font: inherit; color: inherit; padding: 7px 10px;
- border: 1px solid #aabbb1; border-radius: 6px; background: white; }
-button, select, summary { cursor: pointer; }
-button:disabled { opacity: .4; cursor: default; }
-:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
-[hidden] { display: none !important; }
-nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
-nav a { padding: 4px 0; }
-.eyebrow, .muted { color: #596d64; }
-.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
-.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
- border-radius: 4px; }
-.warning { background: #fff5e7; border-left-color: #c67918; }
-.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
-.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
-.stats strong { display: block; font-size: 30px; line-height: 1.2; }
-.stats span { display: block; font-size: 13px; color: #596d64; }
-.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
-.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
- padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
- background: #fff; }
-.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
-.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
- align-self: flex-start; }
-.card strong { margin-top: 8px; }
-.card span { font-size: 12px; color: #596d64; max-width: 270px; }
-.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
-.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
-.table-scroll, .graph { overflow-x: auto; }
-.graph svg { display: block; width: 100%; min-width: 740px; }
-.graph-label { font: 14px system-ui; fill: #20342e; }
-.graph a:hover line { stroke: #d28a19; }
-.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
- font-variant-numeric: tabular-nums; }
-table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
- border-bottom: 1px solid #e2e8e3; }
-.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
- text-align: left; }
-.data-table td { font-size: 13px; }
-.pagination { display: flex; align-items: center; justify-content: space-between;
- gap: 12px; margin: 16px 0 0; }
-.switcher > label { font-size: 13px; }
-.switcher > select { margin-bottom: 18px; max-width: 100%; }
-details { margin: 16px 0; }
-summary { font-weight: 600; }
-details[open] > summary { margin-bottom: 16px; }
-p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
-.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
-.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
-  border: 1px solid #ddd; }
-.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
-figcaption { font-size: 12px; color: #555; margin-top: 4px; }
-.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
-.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
-  vertical-align: -2px; border: 1px solid #bbb; }
-.mwrap { overflow-x: auto; }
-table.m { border-collapse: collapse; font-size: 10px; }
-table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
-  border: 1px solid #fff; }
-table.m td[data-index] { cursor: pointer; }
-table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
-table.m td.diag { background: #fff; }
-table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
-table.m th { font-weight: normal; color: #555; white-space: nowrap; }
-table.m th.rh { text-align: right; padding-right: 6px; }
-table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
-table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
-table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
-table.m th.hl { color: #000; font-weight: 700; }
-#viewer { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column;
-  align-items: center; justify-content: center; background: rgba(18, 18, 18, 0.95); }
-#viewer.open { display: flex; }
-#viewer img { width: 92vw; height: 80vh; object-fit: contain; }
-#viewer .cap { color: #eee; margin-top: 12px; max-width: 90vw; text-align: center;
-  white-space: pre-line; }
-#viewer button { position: absolute; border: 0; background: none; color: #ccc;
-  font-size: 44px; line-height: 1; padding: 12px 18px; cursor: pointer; }
-#viewer button:hover { color: #fff; }
-#viewer .prev { left: 0; top: 44%; }
-#viewer .next { right: 0; top: 44%; }
-#viewer .close { right: 4px; top: 4px; font-size: 34px; }
-@media(max-width: 600px) {
- main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
- .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
- .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
- .filters input { max-width: 180px; } .card { min-width: 100px; }
-}
-
-#cloud{height:72vh;min-height:380px}.cloud-controls{position:static}</style><script src='plotly.min.js'></script><script src='data-6ebc909f7421be72051e38fe.js'></script><script src='data-93e22c84dd9279c55727287f.js'></script></head><body><main><a href='../pair-0178.html'>← К отчёту</a><h1>img_17_a ↔ img_3 · MetricAnything</h1><p class='callout'>принято; проверочные соответствия: 642/979; медиана ошибки 3D: 0.093 м; гравитация: 1.3°. Отклонённая гипотеза не используется для сборки группы.</p><div class='filters cloud-controls'><label>Показать <select id='mode'><option value='all' selected>Все источники</option><option value='one'>Один источник</option><option value='two'>Два источника</option></select></label><label id='label-a'>Источник A <select id='source-a'><option value='0'>img_17_a</option><option value='1'>img_3</option></select></label><label id='label-b'>Источник B <select id='source-b'><option value='0'>img_17_a</option><option value='1'>img_3</option></select></label><label>Цвет <select id='colour'><option value='rgb'>Из фотографии</option><option value='source'>По источнику</option></select></label><label><input type='checkbox' id='cameras' checked> Камеры</label><label><input type='checkbox' id='level' checked> Поворот по GeoCalib</label><button id='reset'>Сброс вида</button><button id='top'>Вид сверху</button></div><div id='source-legend' class='legend' aria-live='polite'></div><p id='cloud-status' class='muted' aria-live='polite'></p><div id='cloud'></div><div class='cards' style='--h:64px'><a class='card' href='../photo-img_17_a.html'><img src='../photos/img_17_a.jpg' alt='' loading='lazy'><strong>img_17_a</strong><span></span></a><a class='card' href='../photo-img_3.html'><img src='../photos/img_3.jpg' alt='' loading='lazy'><strong>img_3</strong><span></span></a></div><details><summary>Координаты и ограничения</summary><p>Взаимные позы взяты из совмещения; каждая компонента имеет отдельную систему координат. Масштаб задан моделью в метрах и не подгоняется при переключении источника. XYZ и K каждой модели сохранены вместе. Показана равномерная подвыборка сетки, не более 25 000 точек на источник; включены и области вне перекрытия кадров. Переключатель GeoCalib применяет один общий поворот ко всей сцене. Нулевая высота проходит через камеру, а не через пол. Полные массивы сохранены локально.</p></details></main><script>
-const s={"sources": [{"key": "6ebc909f7421be72051e38fe", "name": "img_17_a", "pose": [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.11700257448377588, -0.1573718922804814, 0.3], [0.11700257448377588, -0.1573718922804814, 0.3], [0.11700257448377588, 0.15737189228048132, 0.3], [-0.11700257448377588, 0.15737189228048132, 0.3]], "gravity": [-0.0018119813763817548, -0.5998648845315346, 0.012603056353927234], "reference": false, "photo": "../photos/img_17_a.jpg", "href": "../photo-img_17_a.html"}, {"key": "93e22c84dd9279c55727287f", "name": "img_3", "pose": [[0.9983971853216682, -0.02145032226318595, 0.05237312303631278, 1.1548169465103564], [0.02061111228770252, 0.9996512136903782, 0.016511602515138248, 0.09564364170820634], [-0.052709035203037304, -0.01540566915650488, 0.9984910730526368, -1.4299239611427708], [0.0, 0.0, 0.0, 1.0]], "corners": [[-0.22320312291432978, -0.14880207754365468, 0.3], [0.22320312291432978, -0.14880207754365468, 0.3], [0.22320312291432978, 0.14880207754365468, 0.3], [-0.22320312291432978, 0.14880207754365468, 0.3]], "gravity": [-0.002846457751230225, -0.5999868467040405, -0.0027715447701062183], "reference": false, "photo": "../photos/img_3.jpg", "href": "../photo-img_3.html"}], "rotation": [[0.9999954378704612, -0.0030206354074268854, -1.3552527156068805e-20], [6.344873044078166e-05, 0.021004998095252605, 0.9997793686755478], [-0.003019968960636258, -0.9997748075525578, 0.021005093923212058]], "fixed": [[1, 0, 0], [0, 0, 1], [0, -1, 0]], "ranges": [[-1.438054815781811, 3.897146800500991], [-0.7385049204543116, 5.214382121662059], [-1.3221470915741786, 1.7261973712259278]], "rawRanges": [[-1.437703190268905, 3.8960783316923107], [-0.7462371705432853, 5.191203525108544], [-1.3815460605157164, 1.6761666192259383]], "gravity": [-0.0024159751685090066, -0.7998198460420463, 0.016804075138569647], "referenceGravity": null, "multiview": true}, plot=document.getElementById('cloud');
-const palette=['#168575','#ce621c','#6551c5','#bd3c8a','#ac8b10','#267bb7','#7c4f37'];
-const get=id=>document.getElementById(id);
-const decode=(v,Type)=>new Type(Uint8Array.from(atob(v),c=>c.charCodeAt(0)).buffer);
-const data=s.sources.map(c=>{const d=window.cloudSources[c.key];
- return {xyz:decode(d.xyz,Float32Array),rgb:decode(d.rgb,Uint8Array)};});
-const rotate=(p,r)=>r.map(row=>row.reduce((v,a,i)=>v+a*p[i],0));
-const pose=(p,m)=>m.slice(0,3).map(row=>row[0]*p[0]+row[1]*p[1]+row[2]*p[2]+row[3]);
-const camera={eye:{x:1.35,y:-1.8,z:.8},up:{x:0,y:0,z:1},center:{x:0,y:0,z:0}};
-if(s.sources.length>1)get('source-b').value='1';
-let rendered=false;
-function draw(){
- const level=get('level')?.checked, r=level?s.rotation:s.fixed, ranges=level?s.ranges:s.rawRanges;
- const mode=get('mode').value, a=+get('source-a').value,b=+get('source-b').value;
- get('top').textContent=level?'Вид сверху':'Вдоль −y камеры';
- get('label-a').hidden=mode==='all'; get('label-b').hidden=mode!=='two';
- const traces=[];
- const legend=get('source-legend');legend.replaceChildren();
- s.sources.forEach((c,i)=>{
-  const d=data[i],visible=mode==='all'?!c.reference:i===a||(mode==='two'&&i===b);
-  const xyz=[[],[],[]],colours=[];
-  for(let k=0;k<d.xyz.length;k+=3){
-   const p=rotate(pose([d.xyz[k],d.xyz[k+1],d.xyz[k+2]],c.pose),r);
-   p.forEach((v,j)=>xyz[j].push(v));
-   colours.push(`rgb(${d.rgb[k]},${d.rgb[k+1]},${d.rgb[k+2]})`);
-  }
-  const colour=palette[i%palette.length];
-  if(visible){const chip=document.createElement('span');chip.textContent=c.name;
-   chip.style.borderLeft='5px solid '+colour;chip.style.paddingLeft='8px';legend.append(chip);}
-  traces.push({type:'scatter3d',mode:'markers',name:c.name,x:xyz[0],y:xyz[1],z:xyz[2],
-   visible,showlegend:false,marker:{size:2,color:get('colour').value==='rgb'?colours:colour},
-   hovertemplate:'x: %{x:.2f} м<br>y: %{y:.2f} м<br>z: %{z:.2f} м<extra>'+c.name+'</extra>'});
-  const centre=rotate(pose([0,0,0],c.pose),r),corners=c.corners.map(p=>rotate(pose(p,c.pose),r));
-  const lines=[];for(let j=0;j<4;j++)lines.push(centre,corners[j],corners[(j+1)%4],[null,
-null,null]);
-  if(c.gravity)lines.push(centre,rotate(pose(c.gravity,c.pose),r));
-  traces.push({type:'scatter3d',mode:'lines',name:'Камера: '+c.name,
-   x:lines.map(p=>p[0]),y:lines.map(p=>p[1]),z:lines.map(p=>p[2]),
-   visible:visible&&get('cameras').checked,showlegend:false,line:{color:colour,width:5},
-hoverinfo:'name'});
- });
- [s.gravity,s.referenceGravity].forEach((g,i)=>{if(!g)return;const end=rotate(g,r);
-  traces.push({type:'scatter3d',mode:'lines',x:[0,end[0]],y:[0,end[1]],z:[0,end[2]],
-   name:i?'Вверх эталона':'Вверх GeoCalib',line:{color:i?'#c532b4':'#168c2a',width:7},
-showlegend:false});});
- const labels=level?['x по горизонтали, м','y по горизонтали, м',
-'z вверх, м']:['x вправо, м','z вперёд, м','−y к верху кадра, м'];
- const layout={margin:{l:0,r:0,b:0,t:0},uirevision:'keep-camera',paper_bgcolor:'#fff',
-  scene:{xaxis:{title:{text:labels[0]},range:ranges[0]},
-  yaxis:{title:{text:labels[1]},range:ranges[1]},
-  zaxis:{title:{text:labels[2]},range:ranges[2]},aspectmode:'data',
-camera:rendered?plot.layout.scene.camera:camera}};
- get('cloud-status').textContent='Загрузка 3D…';
- Plotly.react(plot,traces,layout,{displayModeBar:false,scrollZoom:true,responsive:true})
-  .then(()=>{rendered=true;
-get('cloud-status').textContent='Перетаскивание — вращение · Shift — перенос · колесо — масштаб';});
-}
-for(const el of document.querySelectorAll('.cloud-controls select,.cloud-controls input')) {
- el.addEventListener('change',draw);
-}
-get('reset').onclick=()=>Plotly.relayout(plot,{'scene.camera':camera});
-get('top').onclick=()=>Plotly.relayout(plot,{'scene.camera':{eye:{x:0,y:0,z:2.5},up:{x:0,
-y:1,z:0},center:{x:0,y:0,z:0}}});
-draw();
-</script></body></html>
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>img_17_a ↔ img_3 · MetricAnything</title><link rel="stylesheet" href="cloud-view.css">
+<script src="plotly.min.js" defer></script><script src="cloud-view.js" defer></script>
+</head><body><main>
+<a href="../pair-0178.html">← К отчёту</a><h1>img_17_a ↔ img_3 · MetricAnything</h1>
+<p id="scene-note">принято; проверочные соответствия: 642/979; медиана ошибки 3D: 0.093 м; гравитация: 1.3°. Отклонённая гипотеза не используется для сборки группы.</p>
+<div class="toolbar">
+  <label id="model-control" hidden>Модель <select id="model"></select></label>
+  <div class="segments" id="representation" role="group" aria-label="Представление">
+    <button data-mode="points" aria-pressed="true">Точки</button>
+    <button data-mode="planes" aria-pressed="false">Участки · экспериментально</button>
+    <button data-mode="both" aria-pressed="false" title="Плоские участки и исходные точки">Вместе</button>
+  </div>
+</div>
+<div class="toolbar" id="detail-control"><span>До точек на фото</span>
+  <div class="segments" id="detail" role="group" aria-label="Количество точек на фото">
+    <button data-limit="1000" aria-pressed="false">1k</button>
+    <button data-limit="2000" aria-pressed="true">2k</button>
+    <button data-limit="5000" aria-pressed="false">5k</button>
+    <button data-limit="10000" aria-pressed="false">10k</button>
+    <button data-limit="25000" aria-pressed="false">25k</button>
+  </div><span id="counts" class="muted" aria-live="polite"></span>
+</div>
+<p id="plane-note" class="muted" hidden>Упрощённые поверхности без фототекстуры; пропуски видны в режиме «Вместе».</p>
+<p id="selection-status" role="status"></p>
+<p id="loading" class="muted" role="status"></p>
+<div id="scenes"></div>
+<div class="toolbar"><strong>Фотографии</strong><button id="all">Все</button>
+<button id="none">Снять выбор</button><span class="muted">Нажатие миниатюры — показать / скрыть</span></div>
+<div id="photos"></div>
+<details><summary>Вид и связи</summary>
+<p>Перетаскивание — вращение · Shift — перенос · колесо / жест — масштаб.</p><div class="toolbar">
+  <label>Цвет <select id="colour"><option value="rgb">Из фото</option>
+    <option value="source">По источнику</option><option value="group">По выбранной подгруппе</option>
+    <option value="patch">По плоскому участку</option></select></label>
+  <label><input type="checkbox" id="cameras" checked> Камеры</label>
+  <label id="level-label"><input type="checkbox" id="level" checked> Вертикаль GeoCalib</label>
+  <label id="paths-label"><input type="checkbox" id="paths"> Пути через скрытые фото</label>
+  <button id="top">Вид сверху</button><button id="reset">Сброс вида</button>
+</div></details>
+<details><summary>Что означает этот вид</summary>
+<p>Выбор фото меняет только видимость. Позы рассчитаны по полной группе и остаются
+неизменными, даже если выбранный подграф распался. Исходно несвязанные компоненты
+показаны отдельно: их взаимное положение неизвестно. Связная компонента не равна комнате.</p>
+<p>Циклы проверяют согласованность путей, но позы здесь не оптимизируются.
+Цвет подгрупп показывает связность выбранных фото, а не правильность геометрии.</p>
+<p>Масштаб задан моделью в метрах; нулевая высота проходит через камеру, а не пол.
+GeoCalib задаёт общий поворот каждой компоненты. При его выключении вертикаль мира
+не определена. XYZ и K каждой модели используются вместе.</p>
+<p>Точки — вложенные равномерные выборки пикселей. Подробные уровни загружаются
+по запросу. Переключение фото не меняет выборки остальных источников.</p>
+<p>Плоские участки — экспериментальная аппроксимация предсказанной геометрии.
+Поверхности разных фото не объединены; двойные стены сохраняются. Отрисованы только
+полностью поддержанные блоки сетки; граничные полосы и неплоские области могут отсутствовать.
+Цвет интерполируется между вершинами треугольников: мелкие детали фото теряются.
+Это проверка плоских опор, а не детальная модель. Режим «Вместе» позволяет
+проверить пропуски по исходному облаку.</p>
+</details>
+<noscript>Для интерактивного просмотра требуется JavaScript.</noscript>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","sources":[{"id":"img_17_a","name":"img_17_a","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.11700257448377588,-0.1573718922804814,0.3],[0.11700257448377588,-0.1573718922804814,0.3],[0.11700257448377588,0.15737189228048132,0.3],[-0.11700257448377588,0.15737189228048132,0.3]],"chunks":[{"key":"7235eea63b8cb7ca45f172d6","url":"points-7235eea63b8cb7ca45f172d6.js","bytes":20109,"start":0,"end":1000},{"key":"c69c2e2df5f0972f4ebd3d7c","url":"points-c69c2e2df5f0972f4ebd3d7c.js","bytes":20109,"start":1000,"end":2000},{"key":"33671ff4011780023e6e517e","url":"points-33671ff4011780023e6e517e.js","bytes":60109,"start":2000,"end":5000},{"key":"38138700caec78fcd0be55a4","url":"points-38138700caec78fcd0be55a4.js","bytes":100109,"start":5000,"end":10000},{"key":"cfa3019cc14c1cd19b47a353","url":"points-cfa3019cc14c1cd19b47a353.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_17_a.jpg","href":"../photo-img_17_a.html","reference":false,"planes":{"key":"ae8e178385845b3efa7e577b","url":"planes-ae8e178385845b3efa7e577b.js","bytes":25039,"count":30,"coverage":0.6826341215357233,"triangles":406}},{"id":"img_3","name":"img_3","pose":[[0.9983971853216682,-0.02145032226318595,0.05237312303631278,1.1548169465103564],[0.02061111228770252,0.9996512136903782,0.016511602515138248,0.09564364170820634],[-0.052709035203037304,-0.01540566915650488,0.9984910730526368,-1.4299239611427708],[0.0,0.0,0.0,1.0]],"corners":[[-0.22320312291432978,-0.14880207754365468,0.3],[0.22320312291432978,-0.14880207754365468,0.3],[0.22320312291432978,0.14880207754365468,0.3],[-0.22320312291432978,0.14880207754365468,0.3]],"chunks":[{"key":"c678cc50c7564044deff543b","url":"points-c678cc50c7564044deff543b.js","bytes":20109,"start":0,"end":1000},{"key":"94040104dad339dece2a529a","url":"points-94040104dad339dece2a529a.js","bytes":20109,"start":1000,"end":2000},{"key":"d7601104afec053528e78da4","url":"points-d7601104afec053528e78da4.js","bytes":60109,"start":2000,"end":5000},{"key":"a5ad46657e872dcbfe976a88","url":"points-a5ad46657e872dcbfe976a88.js","bytes":100109,"start":5000,"end":10000},{"key":"d70c2bb24cad1f8850b70715","url":"points-d70c2bb24cad1f8850b70715.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_3.jpg","href":"../photo-img_3.html","reference":false,"planes":{"key":"ea52bb1fe2b8d78a067689b5","url":"planes-ea52bb1fe2b8d78a067689b5.js","bytes":46995,"count":50,"coverage":0.664700693131695,"triangles":764}}],"components":[{"id":"0","ids":["img_17_a","img_3"],"rotation":[[0.9999954378704612,-0.0030206354074268854,-1.3552527156068805e-20],[6.344873044078166e-05,0.021004998095252605,0.9997793686755478],[-0.003019968960636258,-0.9997748075525578,0.021005093923212058]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[-0.003019968960636258,-0.9997748075525578,0.021005093923212058],"ranges":[[-1.4248537930983562,3.8958394886225136],[-0.7618015358594795,5.342769377618135],[-1.310708694943489,1.7254291032247704]],"rawRanges":[[-1.427085335926534,3.8949037917299614],[-0.7693498352065431,5.325199193068775],[-1.3739356825369469,1.675873912380601]],"warnings":0}],"edges":[["img_17_a","img_3"]],"treeEdges":[],"initial":["img_17_a","img_3"]}],"defaultLimit":2000,"multiview":true}</script></body></html>
