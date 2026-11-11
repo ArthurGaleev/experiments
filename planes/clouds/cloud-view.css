@@ -14,7 +14,6 @@ button[aria-pressed=true]{background:#e0eee3;border-color:#31704d;color:#194d32}
 #loading:empty{display:none}.scene{background:#fff;border:1px solid #e0e6e0;border-radius:7px;margin:12px 0;overflow:hidden}
 .scene header{padding:10px 14px;border-bottom:1px solid #edf0eb}.scene header p{margin:4px 0 0;font-size:13px}
 .plot{height:58vh;min-height:330px;touch-action:none}.scene.secondary .plot{height:340px;min-height:260px}
-.touch-hint{display:none}@media(pointer:coarse){.touch-hint{display:block}}
 .scene-empty{padding:40px 16px;text-align:center;color:#647369}.warning{color:#8a5513}
 .photo-group{margin:18px 0}.group-heading{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:13px;margin:0 0 8px}
 .group-only{font-size:12px;padding:4px 8px}

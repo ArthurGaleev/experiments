@@ -15,7 +15,7 @@
     }
   }
   function release(view) {
-    if (view.plot.data) { cameras.set(view.key, view.plot.layout.scene.camera); Plotly.purge(view.plot); }
+    if (view.plot.data) { cameras.set(view.key, currentCamera(view.plot)); Plotly.purge(view.plot); }
   }
   const diagnostics = new URLSearchParams(location.search).has('qa');
   let loadedBytes = 0;
@@ -25,11 +25,20 @@
   const position = (p, source, component) => rotate(pose(p, source.pose), get('level').checked ? component.rotation : component.fixed);
   const sourceColour = source => palette[state.variant.sources.indexOf(source) % palette.length];
 
-  // Plotly keeps single-finger rotation; two fingers change only the camera distance.
+  // Plotly's touch rotation can leave layout.scene.camera stale. Keep this
+  // access to the bundled GL scene in one place, including when suspending views.
+  function currentCamera(plot) {
+    const camera = plot._fullLayout?.scene?._scene?.getCamera?.() || plot.layout?.scene?.camera;
+    return camera ? structuredClone(camera) : undefined;
+  }
+
+  // Plotly keeps single-finger rotation. Two-finger spacing zooms; the midpoint pans.
   function enablePinch(plot) {
     let active = false, start, pending, frame = 0, busy = false;
     const touches = event => [...event.touches].filter(touch => plot.contains(touch.target));
     const distance = pair => Math.hypot(pair[0].clientX - pair[1].clientX, pair[0].clientY - pair[1].clientY);
+    const midpoint = pair => [(pair[0].clientX + pair[1].clientX) / 2, (pair[0].clientY + pair[1].clientY) / 2];
+    const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
     const stop = event => { event.preventDefault(); event.stopImmediatePropagation(); };
     const options = {capture: true, passive: false};
     function flush() {
@@ -43,8 +52,11 @@
     }
     plot.addEventListener('touchstart', event => {
       const pair = touches(event);
-      if (pair.length === 2 && plot.layout?.scene?.camera) {
-        start = {distance: distance(pair), camera: structuredClone(plot.layout.scene.camera)};
+      const camera = currentCamera(plot);
+      if (pair.length === 2 && camera) {
+        start = {distance: distance(pair), camera, midpoint: midpoint(pair),
+          height: Math.max(1, plot.getBoundingClientRect().height),
+          fovy: plot._fullLayout?.scene?._scene?.glplot?.fovy || Math.PI / 4};
         active = true;
       } else if (active) start = null;
       if (active) stop(event);
@@ -59,8 +71,17 @@
       const radius = Math.hypot(...vector);
       if (radius < 1e-6) return;
       const scale = Math.min(20, Math.max(.1, radius * start.distance / distance(pair))) / radius;
-      const eye = Object.fromEntries(axes.map((axis, i) => [axis, centre[axis] + vector[i] * scale]));
-      pending = {...camera, eye};
+      const forward = vector.map(v => -v / radius), right = cross(forward, axes.map(axis => camera.up[axis]));
+      const rightLength = Math.hypot(...right);
+      if (rightLength < 1e-6) return;
+      for (let i = 0; i < 3; i++) right[i] /= rightLength;
+      const up = cross(right, forward), middle = midpoint(pair);
+      const dx = middle[0] - start.midpoint[0], dy = middle[1] - start.midpoint[1];
+      const pixelScale = 2 * radius * Math.tan(start.fovy / 2) / start.height;
+      const centreNext = Object.fromEntries(axes.map((axis, i) => [axis,
+        centre[axis] + (-right[i] * dx + up[i] * dy) * pixelScale]));
+      const eye = Object.fromEntries(axes.map((axis, i) => [axis, centreNext[axis] + vector[i] * scale]));
+      pending = {...camera, center: centreNext, eye};
       if (!frame && !busy) frame = requestAnimationFrame(flush);
     }, options);
     const end = event => {
@@ -283,7 +304,7 @@
         const level = get('level').checked && component.levelled;
         const ranges = level ? component.ranges : component.rawRanges;
         const labels = level ? ['x, м', 'y, м', 'z вверх, м'] : ['x камеры, м', 'z камеры, м', '−y камеры, м'];
-        const camera = view.plot.layout?.scene?.camera || cameras.get(view.key) || defaultCamera;
+        const camera = currentCamera(view.plot) || cameras.get(view.key) || defaultCamera;
         const scene = {aspectmode: 'data', camera};
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i]}; });
         await Plotly.react(view.plot, data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: 'fixed-camera', paper_bgcolor: '#fff'},
