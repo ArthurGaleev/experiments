@@ -8,7 +8,12 @@
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
   const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0};
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
-  let observer, scheduled = false;
+  let observer, expanded, scheduled = false;
+  const sceneDialog = document.createElement('dialog');
+  sceneDialog.className = 'scene-viewer';
+  sceneDialog.setAttribute('aria-label', 'Увеличенный 3D-вид');
+  document.body.append(sceneDialog);
+  sceneDialog.addEventListener('close', () => { if (!sceneDialog.open) collapseScene(); });
   function scheduleDraw() {
     if (!scheduled) {
       scheduled = true;
@@ -37,6 +42,44 @@
     const spans = ranges.map(([lo, hi]) => Math.max(hi - lo, 1e-9));
     const unit = Math.cbrt(spans[0] * spans[1] * spans[2]);
     return Object.fromEntries(['x', 'y', 'z'].map((axis, i) => [axis, spans[i] / unit]));
+  }
+
+  function resizeScene(view) {
+    requestAnimationFrame(() => {
+      if (!view.plot.isConnected || !view.plot.data) return;
+      Plotly.Plots.resize(view.plot);
+    });
+  }
+
+  function collapseScene() {
+    if (!expanded) return;
+    const {view, placeholder, button} = expanded;
+    expanded = null;
+    if (sceneDialog.open) sceneDialog.close();
+    placeholder.replaceWith(view.section);
+    document.body.classList.remove('scene-viewer-open');
+    button.textContent = '⤢'; button.title = 'Развернуть 3D';
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-label', 'Развернуть 3D');
+    button.focus({preventScroll: true});
+    resizeScene(view);
+  }
+
+  function expandScene(view, button) {
+    if (expanded) { collapseScene(); return; }
+    const placeholder = document.createElement('div');
+    placeholder.className = 'scene-placeholder';
+    placeholder.style.height = view.section.getBoundingClientRect().height + 'px';
+    view.section.before(placeholder);
+    expanded = {view, placeholder, button}; view.nearby = true;
+    sceneDialog.append(view.section);
+    document.body.classList.add('scene-viewer-open');
+    button.textContent = '⤡'; button.title = 'Свернуть 3D (Esc)';
+    button.setAttribute('aria-expanded', 'true');
+    button.setAttribute('aria-label', 'Свернуть 3D');
+    sceneDialog.showModal();
+    button.focus({preventScroll: true});
+    resizeScene(view);
   }
 
   // Single-finger orbit stays with Plotly; custom gestures only move the view camera.
@@ -378,6 +421,7 @@
   }
 
   function build() {
+    collapseScene();
     observer?.disconnect();
     for (const view of plots.values()) release(view);
     plots.clear(); geometry.clear(); get('scenes').replaceChildren(); get('photos').replaceChildren();
@@ -385,7 +429,8 @@
       let changed = false;
       for (const entry of entries) {
         const view = plots.get(entry.target.dataset.component);
-        if (view && view.nearby !== entry.isIntersecting) { view.nearby = entry.isIntersecting; changed = true; }
+        const nearby = expanded?.view === view || entry.isIntersecting;
+        if (view && view.nearby !== nearby) { view.nearby = nearby; changed = true; }
       }
       if (changed) scheduleDraw();
     }, {rootMargin: '120px'});
@@ -397,7 +442,12 @@
     for (let index = 0; index < sorted.length; index++) {
       const component = sorted[index], section = document.createElement('section'), header = document.createElement('header'), plot = document.createElement('div');
       section.className = 'scene' + (index ? ' secondary' : ''); plot.className = 'plot';
-      const title = document.createElement('h2'); title.textContent = `Группа ${Number(component.id) + 1} · ${settings.multiview ? 'фото' : 'источники'}: ${component.ids.length}`; header.append(title);
+      const title = document.createElement('h2'); title.textContent = `Группа ${Number(component.id) + 1} · ${settings.multiview ? 'фото' : 'источники'}: ${component.ids.length}`;
+      const heading = document.createElement('div'); heading.className = 'scene-heading';
+      const expand = document.createElement('button'); expand.className = 'scene-expand';
+      expand.textContent = '⤢'; expand.title = 'Развернуть 3D';
+      expand.setAttribute('aria-label', 'Развернуть 3D'); expand.setAttribute('aria-haspopup', 'dialog');
+      expand.setAttribute('aria-expanded', 'false'); heading.append(title, expand); header.append(heading);
       if (index) { const note = document.createElement('p'); note.textContent = 'Отдельная система координат · положение относительно других групп неизвестно'; header.append(note); }
       if (component.warnings) {
         const warning = document.createElement('p'); warning.className = 'warning';
@@ -413,7 +463,9 @@
       section.append(header, plot); get('scenes').append(section);
       enableNavigation(plot);
       plot.dataset.component = component.id;
-      plots.set(component.id, {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0});
+      const view = {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0};
+      plots.set(component.id, view);
+      expand.onclick = () => expandScene(view, expand);
       observer.observe(plot);
       const singleton = component.ids.length === 1 && isolated > 1;
       let grid = singleton ? isolatedGrid : null;
