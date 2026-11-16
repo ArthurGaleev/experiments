@@ -38,7 +38,7 @@
   "failures": 0,
   "status": "complete",
   "title": "MetricAnything и MoGe-2: геометрия одного фото",
-  "run": "20261112-132956-094936",
+  "run": "20261116-233614-515867",
   "params": {
     "reference_smoke": false,
     "models": [

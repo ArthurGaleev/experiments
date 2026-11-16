@@ -8,7 +8,7 @@
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
   const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0};
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
-  let observer, expanded, scheduled = false;
+  let observer, expanded, scheduled = false, drawing = false;
   const sceneDialog = document.createElement('dialog');
   sceneDialog.className = 'scene-viewer';
   sceneDialog.setAttribute('aria-label', 'Увеличенный 3D-вид');
@@ -21,6 +21,8 @@
     }
   }
   function release(view) {
+    // A variant can disappear while Plotly.react is still using its DOM node.
+    if (view.rendering) { view.disposed = true; return; }
     if (view.plot.data) { cameras.set(view.key, currentCamera(view.plot)); Plotly.purge(view.plot); }
   }
   const diagnostics = new URLSearchParams(location.search).has('qa');
@@ -199,16 +201,22 @@
       assets.set(asset.key, new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = asset.url;
-        script.onload = () => {
-          const raw = window.planrecData[asset.key];
-          const data = {xyz: decode(raw.xyz, Float32Array), rgb: decode(raw.rgb, Uint8Array)};
-          if (raw.triangles) data.triangles = decode(raw.triangles, Uint32Array);
-          if (raw.patch) data.patch = decode(raw.patch, Uint16Array);
-          delete window.planrecData[asset.key]; // Do not retain duplicate base64 strings.
-          script.remove();
-          resolve(data);
+        const fail = error => {
+          assets.delete(asset.key); script.remove(); reject(error);
         };
-        script.onerror = () => { assets.delete(asset.key); script.remove(); reject(new Error(asset.url)); };
+        script.onload = () => {
+          try {
+            const raw = window.planrecData?.[asset.key];
+            if (!raw) throw new Error(asset.url);
+            const data = {xyz: decode(raw.xyz, Float32Array), rgb: decode(raw.rgb, Uint8Array)};
+            if (raw.triangles) data.triangles = decode(raw.triangles, Uint32Array);
+            if (raw.patch) data.patch = decode(raw.patch, Uint16Array);
+            script.remove();
+            resolve(data);
+          } catch (error) { fail(error); }
+          finally { if (window.planrecData) delete window.planrecData[asset.key]; }
+        };
+        script.onerror = () => fail(new Error(asset.url));
         document.head.append(script);
       }));
     }
@@ -387,8 +395,21 @@
   }
 
   async function draw() {
+    ++state.version; // Invalidate an in-flight draw as soon as controls change.
+    if (drawing) return;
+    drawing = true;
+    try {
+      let version;
+      do {
+        version = state.version;
+        await drawVersion(version);
+      } while (version !== state.version);
+    } finally { drawing = false; }
+  }
+
+  async function drawVersion(version) {
     const started = performance.now();
-    const version = ++state.version, groups = selectionGroups();
+    const groups = selectionGroups();
     updateSelection(groups);
     get('top').textContent = get('level').checked && state.variant.components.every(c => c.levelled) ? 'Вид сверху' : 'Вдоль −y камеры';
     get('loading').textContent = 'Подготовка 3D…';
@@ -406,8 +427,15 @@
         const camera = currentCamera(view.plot) || cameras.get(view.key) || defaultCamera;
         const scene = {aspectmode: 'manual', aspectratio: fixedAspect(ranges), camera};
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i].slice(), autorange: false}; });
-        await Plotly.react(view.plot, data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: 'fixed-camera', paper_bgcolor: '#fff'},
-          {displayModeBar: false, scrollZoom: true, responsive: true, plotGlPixelRatio: 1});
+        view.rendering = true;
+        try {
+          await Plotly.react(view.plot, data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: 'fixed-camera', paper_bgcolor: '#fff'},
+            {displayModeBar: false, scrollZoom: true, responsive: true, plotGlPixelRatio: 1});
+        } finally {
+          view.rendering = false;
+          if (view.disposed) release(view);
+        }
+        if (version !== state.version) return;
       }
       if (version === state.version) get('loading').textContent = state.selected.size ? '' : 'Выберите фотографии ниже.';
       if (diagnostics && version === state.version) console.info('planrec-viewer ' + JSON.stringify({
@@ -513,6 +541,9 @@
     const hasPlanes = state.variant.sources.some(s => s.planes);
     get('representation').hidden = !hasPlanes;
     if (!hasPlanes) state.mode = 'points';
+    for (const button of get('representation').querySelectorAll('button')) {
+      button.setAttribute('aria-pressed', button.dataset.mode === state.mode);
+    }
     get('level-label').hidden = !state.variant.components.some(c => c.levelled);
     get('paths-label').hidden = !state.variant.treeEdges.length;
     draw();

@@ -53,3 +53,14 @@ SIFT принимает 5/7 пар, RoMa — 26/37, но у SIFT 197 из 253 п
 полосы; файлы переименованы. Из 18 исходных JPEG-файлов получено 23 фотографии.
 
 Лицензия — [Apache 2.0](LICENSE), как в исходном репозитории Blueprint-Bench.
+
+## Сопровождение
+
+Генераторы и проверки находятся в [исходном проекте photo2plan](https://github.com/ArthurGaleev/photo2plan).
+Порядок обновления описан в [руководстве визуализаций](https://github.com/ArthurGaleev/photo2plan/blob/main/docs/visualization.md).
+Из корня исходного проекта команда
+`uv run python scripts/refresh_experiments.py --export` создаёт копии выбранных
+запусков, перерисовывает страницы и проверяет сохранность данных перед заменой
+галерей в этом checkout. Модели повторно не запускаются. Затем выполняется
+`uv run python scripts/check_gallery.py outputs/experiments --public`.
+Коммит и отправка этого отдельного репозитория выполняются отдельно.
