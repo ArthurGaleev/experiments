@@ -57,7 +57,7 @@ SIFT принимает 5/7 пар, RoMa — 26/37, но у SIFT 197 из 253 п
 ## Сопровождение
 
 Генераторы и проверки находятся в [исходном проекте photo2plan](https://github.com/ArthurGaleev/photo2plan).
-Порядок обновления описан в [руководстве визуализаций](https://github.com/ArthurGaleev/photo2plan/blob/main/docs/visualization.md).
+Порядок обновления описан в `docs/visualization.md` локального исходного проекта.
 Из корня исходного проекта команда
 `uv run python scripts/refresh_experiments.py --export` создаёт копии выбранных
 запусков, перерисовывает страницы и проверяет сохранность данных перед заменой
