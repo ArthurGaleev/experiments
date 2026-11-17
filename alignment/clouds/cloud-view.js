@@ -561,21 +561,46 @@
     get('matcher-control').hidden = matchers.size < 2;
     options(get('matcher'), matchers, state.variant.matcher);
     const choices = settings.variants.filter(v => v.matcher === state.variant.matcher);
-    options(get('model'), new Map(choices.map(v => [v.model, v.label])), state.variant.model);
-    get('model-control').hidden = choices.length < 2;
+    const models = new Map(choices.map(v => [v.model, v.label]));
+    options(get('model'), models, state.variant.model);
+    get('model-control').hidden = models.size < 2;
     get('model-label').textContent = matchers.size ? 'Глубина' : 'Модель';
+    const reviewed = choices.find(v => v.model === state.variant.model && v.vlm);
+    const visible = settings.multiview && !!state.variant.matcher;
+    get('vlm-control').hidden = !visible;
+    get('vlm-status').hidden = !visible;
+    get('vlm').disabled = !reviewed;
+    get('vlm').checked = !!state.variant.vlm;
+    const status = get('vlm-status'); status.replaceChildren();
+    if (reviewed) {
+      const result = reviewed.review;
+      status.append(document.createTextNode(state.variant.vlm
+        ? `Эксперимент VLM: удалено связей ${result.removed}; сохранено ${result.kept}, из них не подтверждено VLM ${result.unresolved}. `
+        : 'Исходная геометрия. Сохранённый эксперимент VLM доступен. '));
+      status.append(document.createTextNode(`Проверено пар: ${result.checkedPairs}/${result.possiblePairs}. `));
+      const link = document.createElement('a'); link.href = result.href;
+      link.textContent = 'Решения и основания ↗'; status.append(link);
+    } else {
+      status.textContent = 'Для этого сочетания сохранённая проверка VLM отсутствует.';
+    }
   }
   function chooseVariant(next) {
     if (!next || next.id === state.variant.id) return;
     selections.set(state.variant.id, new Set(state.selected));
+    const sameInputs = next.matcher === state.variant.matcher && next.model === state.variant.model;
+    const selection = selections.get(next.id) || (sameInputs ? state.selected : next.initial);
     state.variant = next;
-    state.selected = new Set(selections.get(next.id) || next.initial);
+    state.selected = new Set(selection);
     updateControls(); build();
   }
-  get('matcher').onchange = () => chooseVariant(
-    settings.variants.find(v => v.matcher === get('matcher').value && v.model === state.variant.model)
-    || settings.variants.find(v => v.matcher === get('matcher').value));
-  get('model').onchange = () => chooseVariant(settings.variants.find(v => v.matcher === state.variant.matcher && v.model === get('model').value));
+  function variantFor(matcher, model, vlm) {
+    const choices = settings.variants.filter(v => v.matcher === matcher && v.model === model);
+    return choices.find(v => !!v.vlm === !!vlm) || choices.find(v => !v.vlm)
+      || settings.variants.find(v => v.matcher === matcher && !v.vlm);
+  }
+  get('matcher').onchange = () => chooseVariant(variantFor(get('matcher').value, state.variant.model, state.variant.vlm));
+  get('model').onchange = () => chooseVariant(variantFor(state.variant.matcher, get('model').value, state.variant.vlm));
+  get('vlm').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, get('vlm').checked));
   updateControls();
   get('all').onclick = () => { state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
   get('none').onclick = () => { state.selected.clear(); draw(); };
