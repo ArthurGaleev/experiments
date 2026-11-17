@@ -1,0 +1,143 @@
+{
+  "groups": [
+    {
+      "id": "group-00",
+      "source_group": "photos",
+      "frames": [
+        {
+          "id": "img_1",
+          "photo": "photos/0000.jpg",
+          "sha256": "6e19bb3781ffd42655550078f9734a309c8ed163a191c75e1fc992f6f5c5ee5e"
+        },
+        {
+          "id": "img_10",
+          "photo": "photos/0001.jpg",
+          "sha256": "d092fee3efa5b500992bd26e07cb2780e16e8e838b1af241c8114e301230400c"
+        },
+        {
+          "id": "img_11_a",
+          "photo": "photos/0002.jpg",
+          "sha256": "cb19242fbe570a240f10a0ab27422556971f5b769a3a81a0894b1177ee0eb1a5"
+        },
+        {
+          "id": "img_11_b",
+          "photo": "photos/0003.jpg",
+          "sha256": "5df39ef3693fdcad1a0d28be4b529806d9ea7d8fe20eb9479bbec253bf677cfc"
+        },
+        {
+          "id": "img_12",
+          "photo": "photos/0004.jpg",
+          "sha256": "8127a13b97ab6ff06b74e9f325b68793fc79a21c744f9ce71bb0d91ac4562176"
+        },
+        {
+          "id": "img_13",
+          "photo": "photos/0005.jpg",
+          "sha256": "72f9d0bdba2402e3dd79574ca6781f2faee92579853f5370fd8a961c1f17b9b8"
+        },
+        {
+          "id": "img_14",
+          "photo": "photos/0006.jpg",
+          "sha256": "8626edbc947dac2f888e7dac134f0cc4cd933fafc8cecb9b98e812f03c826c79"
+        },
+        {
+          "id": "img_15",
+          "photo": "photos/0007.jpg",
+          "sha256": "c253fb9f21655a8cfb6528db39e9d71f953bf1b098b34b54d3672cd2b6451f4e"
+        },
+        {
+          "id": "img_16_a",
+          "photo": "photos/0008.jpg",
+          "sha256": "b6f6700a09ef80ded662a3e2b00ba140bae21b8e3c64397e8d2e8b2f63fe2c44"
+        },
+        {
+          "id": "img_17_a",
+          "photo": "photos/0010.jpg",
+          "sha256": "510c0df98a6f157e8b958824693196756dcf35a53b22dd73a72b2f457c5dad14"
+        },
+        {
+          "id": "img_17_b",
+          "photo": "photos/0011.jpg",
+          "sha256": "dfa5dbcc89fad4c40c9291b0fb8039ce9f632c4931b6eaa14cf374bca70355c5"
+        },
+        {
+          "id": "img_18",
+          "photo": "photos/0012.jpg",
+          "sha256": "c20b9e7985ef019e39171619cda0411958c1339c15a957f2a43b0738fe73b97f"
+        },
+        {
+          "id": "img_2",
+          "photo": "photos/0013.jpg",
+          "sha256": "340e25b7f02f80f30067357ec1eab15b5ddf5d197ac8077c81c5f1f61a2155f7"
+        },
+        {
+          "id": "img_3",
+          "photo": "photos/0014.jpg",
+          "sha256": "958a46b582f2d797c5f1347df168d7c1d147c84d50fb43731859e5e8343e3154"
+        },
+        {
+          "id": "img_4_a",
+          "photo": "photos/0015.jpg",
+          "sha256": "cf812646043123443eb801f75aede9b09803c73de5d7cf33c354c3653cc0bd70"
+        },
+        {
+          "id": "img_4_b",
+          "photo": "photos/0016.jpg",
+          "sha256": "9ef04537af5b36cf263394b9c18e472208fbb65f343776f8cf354a6dcbba3940"
+        },
+        {
+          "id": "img_6",
+          "photo": "photos/0019.jpg",
+          "sha256": "de5e6c0edfba7bd7d5c7b070ab88a8e23c5f0db07591f3898cb1f82d2c92821a"
+        },
+        {
+          "id": "img_7",
+          "photo": "photos/0020.jpg",
+          "sha256": "4fb6a7fd66ba4d86241a3e778ae45fbf4259d86b53a6e296a491ed9661e38459"
+        },
+        {
+          "id": "img_8",
+          "photo": "photos/0021.jpg",
+          "sha256": "029d856d1ea91b7350fbd01d4c2759b4a91575f03ead84478fd6679626db8ec9"
+        },
+        {
+          "id": "img_9",
+          "photo": "photos/0022.jpg",
+          "sha256": "32854dcfdb15063665141c92815507fb2fe444659a7703dd049e377c82b8af2b"
+        }
+      ],
+      "seconds": 0.7954003340000781,
+      "status": "ok"
+    },
+    {
+      "id": "group-01",
+      "source_group": "photos",
+      "frames": [
+        {
+          "id": "img_5_a",
+          "photo": "photos/0017.jpg",
+          "sha256": "358a5a858ca3a20bc1104657063ca64a4713ea17da7cae77249dc94dabff76bc"
+        },
+        {
+          "id": "img_5_b",
+          "photo": "photos/0018.jpg",
+          "sha256": "4faa11de7623c73792eed3641bb6a0942b3f7477fa1b02b76d04550619fe30b5"
+        }
+      ],
+      "seconds": 0.09565245900012087,
+      "status": "ok"
+    },
+    {
+      "id": "group-02",
+      "source_group": "photos",
+      "frames": [
+        {
+          "id": "img_16_b",
+          "photo": "photos/0009.jpg",
+          "sha256": "4985c608733cf27698d59077ca038ccd46de40d5a3bbadfe8d77a30210070722"
+        }
+      ],
+      "seconds": 0.24883108300036838,
+      "status": "ok"
+    }
+  ]
+}

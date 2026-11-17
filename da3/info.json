@@ -1,0 +1,28 @@
+{
+  "created": "2026-11-17T22:50:58.479940+03:00",
+  "model_id": "depth-anything/DA3-SMALL",
+  "model_revision": "e08cab65ca0ec38e7826075418411ab90cab4da3",
+  "source_revision": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "scale_basis": "independent relative scale per group",
+  "selection": "recovered_components",
+  "checkpoint": "checkpoint",
+  "weights_sha256": {
+    "model.safetensors": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf",
+    "config.json": "a486e29e82b7ab4a7d4cefc1ea4526cfe2ae438a572c8ca98917cfbcde7447d2"
+  },
+  "units": "relative",
+  "axes": "OpenCV x right, y down, z forward; extrinsics are world to camera",
+  "device": "mps",
+  "failures": 0,
+  "status": "complete",
+  "title": "Совместная реконструкция DA3",
+  "run": "20261117-225058-479940",
+  "params": {
+    "process_res": 504,
+    "process_res_method": "upper_bound_resize",
+    "ref_view_strategy": "saddle_balanced",
+    "use_ray_pose": false
+  },
+  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
