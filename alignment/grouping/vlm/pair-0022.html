@@ -1,4 +1,4 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_14 ↔ img_3</title><style>
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_10 ↔ img_11_a</title><style>
 * { box-sizing: border-box; }
 body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
 main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
@@ -111,22 +111,22 @@ dialog.photo-viewer::backdrop{background:#121614}
  .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
 </style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
 <nav><a href='index.html'>← К обзору</a></nav>
-<h1>VLM · img_14 ↔ img_3</h1>
+<h1>VLM · img_10 ↔ img_11_a</h1>
 <section class='section' id='section-0'><h2>Изображения</h2>
-<p>Перекрытие: да · Одна комната: да · Связь через проём: неизвестно</p>
+<p>Перекрытие: нет · Одна комната: нет · Связь через проём: неизвестно</p>
 
 <div class='row' style='--h: 180px'>
-<figure><img src='photos/0006.png' width='690' height='460' loading='lazy' alt='img_14' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_14</figcaption></figure>
-<figure><img src='photos/0014.png' width='690' height='460' loading='lazy' alt='img_3' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_3</figcaption></figure>
+<figure><img src='photos/0001.png' width='690' height='460' loading='lazy' alt='img_10' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_10</figcaption></figure>
+<figure><img src='photos/0002.png' width='342' height='460' loading='lazy' alt='img_11_a' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_11_a</figcaption></figure>
 </div>
 </section>
-<section class='section' id='section-1'><h2>Порядок A → B: img_14 → img_3</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>да</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>white sofa with beige pillows and white throw blanket; round glass-top coffee table with black metal base; tall green potted plant (Philodendron); light wood dining table and chairs; white rug on light wood floor; wall-mounted flat-screen TV</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>The two images are opposite views of the same living/dining space. Image A shows the sofa and TV wall, while Image B shows the kitchen and hallway wall. The same physical objects are visible in both: the sofa, coffee table, and plant appear in both frames, and the dining table is visible in both. The TV is on the wall between the two camera positions. There are no visual contradictions; the different angles simply capture different sides of the same room.</dd></dl><details><summary>Сохранённый запрос и ответ · 8.2 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-1'><h2>Порядок A → B: img_10 → img_11_a</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>white walls; white curtains; white radiators; light wood flooring</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a bed and wardrobe, while Image B shows a dining table and chairs; Image A features a large central window with a radiator below, while Image B features a window on the right wall with a radiator below; Image B has a framed painting on the wall, which is not visible in Image A</dd><dt><strong>Основание</strong></dt><dd>The two images depict different functional spaces within a residence. Image A is a bedroom, characterized by a bed and a large wardrobe. Image B is a dining area, featuring a table, chairs, and a painting. While they share a similar aesthetic (white walls, light wood floors, white radiators), the distinct furniture and room layouts indicate they are separate rooms. There is no visual overlap of specific objects, and no doorway is visible in either frame to confirm a direct connection, making that relationship unknown.</dd></dl><details><summary>Сохранённый запрос и ответ · 8.9 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0022-ab&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
-    &quot;img_14&quot;,
-    &quot;img_3&quot;
+    &quot;img_10&quot;,
+    &quot;img_11_a&quot;
   ],
   &quot;request&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
@@ -140,16 +140,16 @@ dialog.photo-viewer::backdrop{background:#121614}
         &quot;content&quot;: &quot;Compare image A (first) and image B (second). Decide three SEPARATE relations:\noverlap: do they visibly share the SAME physical surface or identifiable object?\nsame_room: are the cameras likely located in the SAME room?\ndoorway_connection: is there visual evidence of a direct doorway/opening joining the spaces containing these cameras?\nUse yes/no/unknown. Similar white corners, generic doors, furniture categories or the same room type alone do NOT identify a physical location. Different room types do NOT rule out shared surfaces visible through a door. Opposite views of one room may have no visible overlap. Missing evidence means unknown, not no. List specific shared landmarks and genuine visual contradictions with A/B references; do not invent contradictions from objects merely outside the other field of view. Give a short evidence explanation, not a reconstruction or numerical confidence.\nJSON schema:\n{\&quot;type\&quot;: \&quot;object\&quot;, \&quot;properties\&quot;: {\&quot;overlap\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;same_room\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;doorway_connection\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;shared_landmarks\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;contradictions\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;explanation\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}}, \&quot;required\&quot;: [\&quot;overlap\&quot;, \&quot;same_room\&quot;, \&quot;doorway_connection\&quot;, \&quot;shared_landmarks\&quot;, \&quot;contradictions\&quot;, \&quot;explanation\&quot;], \&quot;additionalProperties\&quot;: false}&quot;,
         &quot;images&quot;: [
           {
-            &quot;sha256&quot;: &quot;05ca5b83c6a91c068c4de5a25bea74a7be9eb5680dbec35abef47f9ea8525f76&quot;,
+            &quot;sha256&quot;: &quot;db8bdbec3e9a92e97623085c9148e1e5fe8d7920ed0a7c8b2b701309797b5ea9&quot;,
             &quot;size&quot;: [
               690,
               460
             ]
           },
           {
-            &quot;sha256&quot;: &quot;cc6eddc7db7f79e59bb1ee0c606593fe7a4322fe894d25e20ac973f91d8d4411&quot;,
+            &quot;sha256&quot;: &quot;a3c0e83d35cb7e611e7a3e9f76ee2ce0708859114b6ad33e820f01d8fdee9151&quot;,
             &quot;size&quot;: [
-              690,
+              342,
               460
             ]
           }
@@ -235,47 +235,49 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:35:14.379484Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:14:47.960102Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;yes\&quot;,\n  \&quot;same_room\&quot;: \&quot;yes\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [\n    \&quot;white sofa with beige pillows and white throw blanket\&quot;,\n    \&quot;round glass-top coffee table with black metal base\&quot;,\n    \&quot;tall green potted plant (Philodendron)\&quot;,\n    \&quot;light wood dining table and chairs\&quot;,\n    \&quot;white rug on light wood floor\&quot;,\n    \&quot;wall-mounted flat-screen TV\&quot;\n  ],\n  \&quot;contradictions\&quot;: [],\n  \&quot;explanation\&quot;: \&quot;The two images are opposite views of the same living/dining space. Image A shows the sofa and TV wall, while Image B shows the kitchen and hallway wall. The same physical objects are visible in both: the sofa, coffee table, and plant appear in both frames, and the dining table is visible in both. The TV is on the wall between the two camera positions. There are no visual contradictions; the different angles simply capture different sides of the same room.\&quot;\n}&quot;
+      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;no\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [\n    \&quot;white walls\&quot;,\n    \&quot;white curtains\&quot;,\n    \&quot;white radiators\&quot;,\n    \&quot;light wood flooring\&quot;\n  ],\n  \&quot;contradictions\&quot;: [\n    \&quot;Image A shows a bed and wardrobe, while Image B shows a dining table and chairs\&quot;,\n    \&quot;Image A features a large central window with a radiator below, while Image B features a window on the right wall with a radiator below\&quot;,\n    \&quot;Image B has a framed painting on the wall, which is not visible in Image A\&quot;\n  ],\n  \&quot;explanation\&quot;: \&quot;The two images depict different functional spaces within a residence. Image A is a bedroom, characterized by a bed and a large wardrobe. Image B is a dining area, featuring a table, chairs, and a painting. While they share a similar aesthetic (white walls, light wood floors, white radiators), the distinct furniture and room layouts indicate they are separate rooms. There is no visual overlap of specific objects, and no doorway is visible in either frame to confirm a direct connection, making that relationship unknown.\&quot;\n}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 8210717916,
-    &quot;load_duration&quot;: 5847875,
-    &quot;prompt_eval_count&quot;: 1042,
-    &quot;prompt_eval_cached_count&quot;: 366,
-    &quot;prompt_eval_duration&quot;: 1478653125,
-    &quot;eval_count&quot;: 220,
-    &quot;eval_duration&quot;: 6700485542
+    &quot;total_duration&quot;: 8929985167,
+    &quot;load_duration&quot;: 5967375,
+    &quot;prompt_eval_count&quot;: 888,
+    &quot;prompt_eval_cached_count&quot;: 56,
+    &quot;prompt_eval_duration&quot;: 1784528167,
+    &quot;eval_count&quot;: 258,
+    &quot;eval_duration&quot;: 7119119375
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
-    &quot;same_room&quot;: &quot;yes&quot;,
+    &quot;overlap&quot;: &quot;no&quot;,
+    &quot;same_room&quot;: &quot;no&quot;,
     &quot;doorway_connection&quot;: &quot;unknown&quot;,
     &quot;shared_landmarks&quot;: [
-      &quot;white sofa with beige pillows and white throw blanket&quot;,
-      &quot;round glass-top coffee table with black metal base&quot;,
-      &quot;tall green potted plant (Philodendron)&quot;,
-      &quot;light wood dining table and chairs&quot;,
-      &quot;white rug on light wood floor&quot;,
-      &quot;wall-mounted flat-screen TV&quot;
+      &quot;white walls&quot;,
+      &quot;white curtains&quot;,
+      &quot;white radiators&quot;,
+      &quot;light wood flooring&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;The two images are opposite views of the same living/dining space. Image A shows the sofa and TV wall, while Image B shows the kitchen and hallway wall. The same physical objects are visible in both: the sofa, coffee table, and plant appear in both frames, and the dining table is visible in both. The TV is on the wall between the two camera positions. There are no visual contradictions; the different angles simply capture different sides of the same room.&quot;
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a bed and wardrobe, while Image B shows a dining table and chairs&quot;,
+      &quot;Image A features a large central window with a radiator below, while Image B features a window on the right wall with a radiator below&quot;,
+      &quot;Image B has a framed painting on the wall, which is not visible in Image A&quot;
+    ],
+    &quot;explanation&quot;: &quot;The two images depict different functional spaces within a residence. Image A is a bedroom, characterized by a bed and a large wardrobe. Image B is a dining area, featuring a table, chairs, and a painting. While they share a similar aesthetic (white walls, light wood floors, white radiators), the distinct furniture and room layouts indicate they are separate rooms. There is no visual overlap of specific objects, and no doorway is visible in either frame to confirm a direct connection, making that relationship unknown.&quot;
   },
-  &quot;elapsed_s&quot;: 8.214831375000358
+  &quot;elapsed_s&quot;: 8.93684795900117
 }</pre></details>
 </section>
-<section class='section' id='section-2'><h2>Порядок A → B: img_3 → img_14</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>да</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>wall-mounted flat-screen TV; white sofa with beige pillows; glass-top coffee table with candlesticks; light wood dining table and chairs; potted plant with large leaves; light wood herringbone flooring</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>The two images are opposite views of the same living space. Image A shows the TV on the central wall and the sofa on the right edge. Image B shows the sofa on the back wall and the TV on the left edge. The identical furniture (glass coffee table, specific plant, dining set) and flooring confirm they are the same room. The cameras are in the same room, looking in opposite directions, so there is no direct doorway connection between the camera positions themselves.</dd></dl><details><summary>Сохранённый запрос и ответ · 8.4 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-2'><h2>Порядок A → B: img_11_a → img_10</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>white curtains; white radiator under window; light wood flooring</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a dining table and chairs, while Image B shows a bed and wardrobe; Image A features a framed portrait on the wall, which is absent in Image B; Image B features a large grey wardrobe and a ceiling lamp, which are absent in Image A</dd><dt><strong>Основание</strong></dt><dd>The two images depict distinct room types: a dining area in A and a bedroom in B. While they share generic architectural elements like white curtains, a radiator, and light wood flooring, the specific furniture (dining set vs. bed/wardrobe) and wall decor (portrait vs. none) are completely different. There is no visible overlap of physical objects or a connecting doorway between the two views.</dd></dl><details><summary>Сохранённый запрос и ответ · 7.9 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0022-ba&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
-    &quot;img_3&quot;,
-    &quot;img_14&quot;
+    &quot;img_11_a&quot;,
+    &quot;img_10&quot;
   ],
   &quot;request&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
@@ -289,14 +291,14 @@ dialog.photo-viewer::backdrop{background:#121614}
         &quot;content&quot;: &quot;Compare image A (first) and image B (second). Decide three SEPARATE relations:\noverlap: do they visibly share the SAME physical surface or identifiable object?\nsame_room: are the cameras likely located in the SAME room?\ndoorway_connection: is there visual evidence of a direct doorway/opening joining the spaces containing these cameras?\nUse yes/no/unknown. Similar white corners, generic doors, furniture categories or the same room type alone do NOT identify a physical location. Different room types do NOT rule out shared surfaces visible through a door. Opposite views of one room may have no visible overlap. Missing evidence means unknown, not no. List specific shared landmarks and genuine visual contradictions with A/B references; do not invent contradictions from objects merely outside the other field of view. Give a short evidence explanation, not a reconstruction or numerical confidence.\nJSON schema:\n{\&quot;type\&quot;: \&quot;object\&quot;, \&quot;properties\&quot;: {\&quot;overlap\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;same_room\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;doorway_connection\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;shared_landmarks\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;contradictions\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;explanation\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}}, \&quot;required\&quot;: [\&quot;overlap\&quot;, \&quot;same_room\&quot;, \&quot;doorway_connection\&quot;, \&quot;shared_landmarks\&quot;, \&quot;contradictions\&quot;, \&quot;explanation\&quot;], \&quot;additionalProperties\&quot;: false}&quot;,
         &quot;images&quot;: [
           {
-            &quot;sha256&quot;: &quot;cc6eddc7db7f79e59bb1ee0c606593fe7a4322fe894d25e20ac973f91d8d4411&quot;,
+            &quot;sha256&quot;: &quot;a3c0e83d35cb7e611e7a3e9f76ee2ce0708859114b6ad33e820f01d8fdee9151&quot;,
             &quot;size&quot;: [
-              690,
+              342,
               460
             ]
           },
           {
-            &quot;sha256&quot;: &quot;05ca5b83c6a91c068c4de5a25bea74a7be9eb5680dbec35abef47f9ea8525f76&quot;,
+            &quot;sha256&quot;: &quot;db8bdbec3e9a92e97623085c9148e1e5fe8d7920ed0a7c8b2b701309797b5ea9&quot;,
             &quot;size&quot;: [
               690,
               460
@@ -384,38 +386,39 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:35:22.761856Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:14:55.918357Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;yes\&quot;,\n  \&quot;same_room\&quot;: \&quot;yes\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [\n    \&quot;wall-mounted flat-screen TV\&quot;,\n    \&quot;white sofa with beige pillows\&quot;,\n    \&quot;glass-top coffee table with candlesticks\&quot;,\n    \&quot;light wood dining table and chairs\&quot;,\n    \&quot;potted plant with large leaves\&quot;,\n    \&quot;light wood herringbone flooring\&quot;\n  ],\n  \&quot;contradictions\&quot;: [],\n  \&quot;explanation\&quot;: \&quot;The two images are opposite views of the same living space. Image A shows the TV on the central wall and the sofa on the right edge. Image B shows the sofa on the back wall and the TV on the left edge. The identical furniture (glass coffee table, specific plant, dining set) and flooring confirm they are the same room. The cameras are in the same room, looking in opposite directions, so there is no direct doorway connection between the camera positions themselves.\&quot;\n}&quot;
+      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;no\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [\n    \&quot;white curtains\&quot;,\n    \&quot;white radiator under window\&quot;,\n    \&quot;light wood flooring\&quot;\n  ],\n  \&quot;contradictions\&quot;: [\n    \&quot;Image A shows a dining table and chairs, while Image B shows a bed and wardrobe\&quot;,\n    \&quot;Image A features a framed portrait on the wall, which is absent in Image B\&quot;,\n    \&quot;Image B features a large grey wardrobe and a ceiling lamp, which are absent in Image A\&quot;\n  ],\n  \&quot;explanation\&quot;: \&quot;The two images depict distinct room types: a dining area in A and a bedroom in B. While they share generic architectural elements like white curtains, a radiator, and light wood flooring, the specific furniture (dining set vs. bed/wardrobe) and wall decor (portrait vs. none) are completely different. There is no visible overlap of physical objects or a connecting doorway between the two views.\&quot;\n}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 8358471416,
-    &quot;load_duration&quot;: 5914000,
-    &quot;prompt_eval_count&quot;: 1042,
+    &quot;total_duration&quot;: 7912063042,
+    &quot;load_duration&quot;: 6277125,
+    &quot;prompt_eval_count&quot;: 888,
     &quot;prompt_eval_cached_count&quot;: 56,
-    &quot;prompt_eval_duration&quot;: 2250358708,
-    &quot;eval_count&quot;: 210,
-    &quot;eval_duration&quot;: 6076896041
+    &quot;prompt_eval_duration&quot;: 1769239166,
+    &quot;eval_count&quot;: 224,
+    &quot;eval_duration&quot;: 6113607166
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
-    &quot;same_room&quot;: &quot;yes&quot;,
+    &quot;overlap&quot;: &quot;no&quot;,
+    &quot;same_room&quot;: &quot;no&quot;,
     &quot;doorway_connection&quot;: &quot;unknown&quot;,
     &quot;shared_landmarks&quot;: [
-      &quot;wall-mounted flat-screen TV&quot;,
-      &quot;white sofa with beige pillows&quot;,
-      &quot;glass-top coffee table with candlesticks&quot;,
-      &quot;light wood dining table and chairs&quot;,
-      &quot;potted plant with large leaves&quot;,
-      &quot;light wood herringbone flooring&quot;
+      &quot;white curtains&quot;,
+      &quot;white radiator under window&quot;,
+      &quot;light wood flooring&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;The two images are opposite views of the same living space. Image A shows the TV on the central wall and the sofa on the right edge. Image B shows the sofa on the back wall and the TV on the left edge. The identical furniture (glass coffee table, specific plant, dining set) and flooring confirm they are the same room. The cameras are in the same room, looking in opposite directions, so there is no direct doorway connection between the camera positions themselves.&quot;
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a dining table and chairs, while Image B shows a bed and wardrobe&quot;,
+      &quot;Image A features a framed portrait on the wall, which is absent in Image B&quot;,
+      &quot;Image B features a large grey wardrobe and a ceiling lamp, which are absent in Image A&quot;
+    ],
+    &quot;explanation&quot;: &quot;The two images depict distinct room types: a dining area in A and a bedroom in B. While they share generic architectural elements like white curtains, a radiator, and light wood flooring, the specific furniture (dining set vs. bed/wardrobe) and wall decor (portrait vs. none) are completely different. There is no visible overlap of physical objects or a connecting doorway between the two views.&quot;
   },
-  &quot;elapsed_s&quot;: 8.362491250001767
+  &quot;elapsed_s&quot;: 7.918442542002595
 }</pre></details>
 </section>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
@@ -473,7 +476,7 @@ window.planrecPhotoViewer = function () {
   };
 };
 
-const groups = {"s0": [{"src": "photos/0006.png", "caption": "img_14"}, {"src": "photos/0014.png", "caption": "img_3"}]};
+const groups = {"s0": [{"src": "photos/0001.png", "caption": "img_10"}, {"src": "photos/0002.png", "caption": "img_11_a"}]};
 
 const photoViewer = window.planrecPhotoViewer();
 function openViewer(group, index, trigger = document.activeElement) {

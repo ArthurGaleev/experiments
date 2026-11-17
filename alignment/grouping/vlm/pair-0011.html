@@ -1,4 +1,4 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_11_b ↔ img_2</title><style>
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_1 ↔ img_18</title><style>
 * { box-sizing: border-box; }
 body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
 main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
@@ -111,22 +111,22 @@ dialog.photo-viewer::backdrop{background:#121614}
  .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
 </style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
 <nav><a href='index.html'>← К обзору</a></nav>
-<h1>VLM · img_11_b ↔ img_2</h1>
+<h1>VLM · img_1 ↔ img_18</h1>
 <section class='section' id='section-0'><h2>Изображения</h2>
-<p>Перекрытие: да · Одна комната: да · Связь через проём: неизвестно</p>
+<p>Перекрытие: нет · Одна комната: нет · Связь через проём: неизвестно</p>
 
 <div class='row' style='--h: 180px'>
-<figure><img src='photos/0003.png' width='342' height='460' loading='lazy' alt='img_11_b' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_11_b</figcaption></figure>
-<figure><img src='photos/0013.png' width='690' height='460' loading='lazy' alt='img_2' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_2</figcaption></figure>
+<figure><img src='photos/0000.png' width='690' height='460' loading='lazy' alt='img_1' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_1</figcaption></figure>
+<figure><img src='photos/0012.png' width='690' height='460' loading='lazy' alt='img_18' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_18</figcaption></figure>
 </div>
 </section>
-<section class='section' id='section-1'><h2>Порядок A → B: img_11_b → img_2</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>да</dd><dt><strong>Связь через проём</strong></dt><dd>нет</dd><dt><strong>Общие ориентиры</strong></dt><dd>white sofa with fringed throw blanket; framed abstract art with black and beige geometric shapes; yellow wall-mounted lamp; small glass side table; light grey area rug with white fringe; herringbone wood flooring</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>The two images clearly depict the same physical space from different camera angles. Image A is a close-up view of the left side of the room, showing a TV and a doorway to a hallway. Image B is a wider shot of the same room, revealing a dining area and a balcony door on the right. The identical presence of the white sofa, the specific abstract painting, the yellow lamp, and the rug confirms they are the same room. There is no visual evidence of a doorway connecting two different rooms, as both cameras are situated within the same living/dining area.</dd></dl><details><summary>Сохранённый запрос и ответ · 7.5 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-1'><h2>Порядок A → B: img_1 → img_18</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>—</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a kitchen with a built-in microwave and stone backsplash, while Image B shows a dining area with a wooden table and a painting on the wall.; The flooring in Image B is light wood parquet, which is not visible in the kitchen area of Image A.</dd><dt><strong>Основание</strong></dt><dd>The two images depict distinct functional spaces within a residence: a kitchen (Image A) and a dining/living area (Image B). There are no shared physical objects or surfaces visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and they are clearly not the same room.</dd></dl><details><summary>Сохранённый запрос и ответ · 6.3 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0011-ab&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
-    &quot;img_11_b&quot;,
-    &quot;img_2&quot;
+    &quot;img_1&quot;,
+    &quot;img_18&quot;
   ],
   &quot;request&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
@@ -140,14 +140,14 @@ dialog.photo-viewer::backdrop{background:#121614}
         &quot;content&quot;: &quot;Compare image A (first) and image B (second). Decide three SEPARATE relations:\noverlap: do they visibly share the SAME physical surface or identifiable object?\nsame_room: are the cameras likely located in the SAME room?\ndoorway_connection: is there visual evidence of a direct doorway/opening joining the spaces containing these cameras?\nUse yes/no/unknown. Similar white corners, generic doors, furniture categories or the same room type alone do NOT identify a physical location. Different room types do NOT rule out shared surfaces visible through a door. Opposite views of one room may have no visible overlap. Missing evidence means unknown, not no. List specific shared landmarks and genuine visual contradictions with A/B references; do not invent contradictions from objects merely outside the other field of view. Give a short evidence explanation, not a reconstruction or numerical confidence.\nJSON schema:\n{\&quot;type\&quot;: \&quot;object\&quot;, \&quot;properties\&quot;: {\&quot;overlap\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;same_room\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;doorway_connection\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;shared_landmarks\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;contradictions\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;explanation\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}}, \&quot;required\&quot;: [\&quot;overlap\&quot;, \&quot;same_room\&quot;, \&quot;doorway_connection\&quot;, \&quot;shared_landmarks\&quot;, \&quot;contradictions\&quot;, \&quot;explanation\&quot;], \&quot;additionalProperties\&quot;: false}&quot;,
         &quot;images&quot;: [
           {
-            &quot;sha256&quot;: &quot;65983ef8cd239197bca38fda772ae6453b424a033371c36d2a9a76d0e2b4f1c7&quot;,
+            &quot;sha256&quot;: &quot;11d92461502fa673863d4463be4b8d65efc8e5f73619a6b695c9c62569998dcd&quot;,
             &quot;size&quot;: [
-              342,
+              690,
               460
             ]
           },
           {
-            &quot;sha256&quot;: &quot;ed059b89a2c0b31f59eb5708a479cee7362a979448decc4353ccbc0a99950564&quot;,
+            &quot;sha256&quot;: &quot;8554f21167d99d48294a763112ec75c4fa3c91448ac67b237ebb05ef40abefc1&quot;,
             &quot;size&quot;: [
               690,
               460
@@ -235,47 +235,43 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:32:30.359825Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:12:12.756041Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;yes\&quot;,\n  \&quot;same_room\&quot;: \&quot;yes\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;no\&quot;,\n  \&quot;shared_landmarks\&quot;: [\n    \&quot;white sofa with fringed throw blanket\&quot;,\n    \&quot;framed abstract art with black and beige geometric shapes\&quot;,\n    \&quot;yellow wall-mounted lamp\&quot;,\n    \&quot;small glass side table\&quot;,\n    \&quot;light grey area rug with white fringe\&quot;,\n    \&quot;herringbone wood flooring\&quot;\n  ],\n  \&quot;contradictions\&quot;: [],\n  \&quot;explanation\&quot;: \&quot;The two images clearly depict the same physical space from different camera angles. Image A is a close-up view of the left side of the room, showing a TV and a doorway to a hallway. Image B is a wider shot of the same room, revealing a dining area and a balcony door on the right. The identical presence of the white sofa, the specific abstract painting, the yellow lamp, and the rug confirms they are the same room. There is no visual evidence of a doorway connecting two different rooms, as both cameras are situated within the same living/dining area.\&quot;\n}&quot;
+      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;no\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [],\n  \&quot;contradictions\&quot;: [\n    \&quot;Image A shows a kitchen with a built-in microwave and stone backsplash, while Image B shows a dining area with a wooden table and a painting on the wall.\&quot;,\n    \&quot;The flooring in Image B is light wood parquet, which is not visible in the kitchen area of Image A.\&quot;\n  ],\n  \&quot;explanation\&quot;: \&quot;The two images depict distinct functional spaces within a residence: a kitchen (Image A) and a dining/living area (Image B). There are no shared physical objects or surfaces visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and they are clearly not the same room.\&quot;\n}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 7502761625,
-    &quot;load_duration&quot;: 9294833,
-    &quot;prompt_eval_count&quot;: 888,
-    &quot;prompt_eval_cached_count&quot;: 212,
-    &quot;prompt_eval_duration&quot;: 1472530500,
-    &quot;eval_count&quot;: 232,
-    &quot;eval_duration&quot;: 5996135917
+    &quot;total_duration&quot;: 6255558459,
+    &quot;load_duration&quot;: 7707584,
+    &quot;prompt_eval_count&quot;: 1042,
+    &quot;prompt_eval_cached_count&quot;: 366,
+    &quot;prompt_eval_duration&quot;: 1459722041,
+    &quot;eval_count&quot;: 191,
+    &quot;eval_duration&quot;: 4758354333
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
-    &quot;same_room&quot;: &quot;yes&quot;,
-    &quot;doorway_connection&quot;: &quot;no&quot;,
-    &quot;shared_landmarks&quot;: [
-      &quot;white sofa with fringed throw blanket&quot;,
-      &quot;framed abstract art with black and beige geometric shapes&quot;,
-      &quot;yellow wall-mounted lamp&quot;,
-      &quot;small glass side table&quot;,
-      &quot;light grey area rug with white fringe&quot;,
-      &quot;herringbone wood flooring&quot;
+    &quot;overlap&quot;: &quot;no&quot;,
+    &quot;same_room&quot;: &quot;no&quot;,
+    &quot;doorway_connection&quot;: &quot;unknown&quot;,
+    &quot;shared_landmarks&quot;: [],
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a kitchen with a built-in microwave and stone backsplash, while Image B shows a dining area with a wooden table and a painting on the wall.&quot;,
+      &quot;The flooring in Image B is light wood parquet, which is not visible in the kitchen area of Image A.&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;The two images clearly depict the same physical space from different camera angles. Image A is a close-up view of the left side of the room, showing a TV and a doorway to a hallway. Image B is a wider shot of the same room, revealing a dining area and a balcony door on the right. The identical presence of the white sofa, the specific abstract painting, the yellow lamp, and the rug confirms they are the same room. There is no visual evidence of a doorway connecting two different rooms, as both cameras are situated within the same living/dining area.&quot;
+    &quot;explanation&quot;: &quot;The two images depict distinct functional spaces within a residence: a kitchen (Image A) and a dining/living area (Image B). There are no shared physical objects or surfaces visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and they are clearly not the same room.&quot;
   },
-  &quot;elapsed_s&quot;: 7.5067371250006545
+  &quot;elapsed_s&quot;: 6.259821874999034
 }</pre></details>
 </section>
-<section class='section' id='section-2'><h2>Порядок A → B: img_2 → img_11_b</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>да</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>white sofa with fringed throw blanket; glass coffee table with metal base; framed abstract art with black and beige geometric shapes; light grey area rug; herringbone wood flooring; small square wall art; yellow wall-mounted lamp</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>The two images clearly show the same room from different angles. Image A provides a wide view of the living and dining area, while Image B is a closer shot of the living area. The white sofa, the specific glass coffee table, the abstract painting, the area rug, and the herringbone flooring are all identical in both images, confirming they are the same physical space. There is no visual evidence of a doorway connecting to a different room, as both cameras are positioned within the same room.</dd></dl><details><summary>Сохранённый запрос и ответ · 6.9 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-2'><h2>Порядок A → B: img_18 → img_1</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>—</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a living/dining area with a glass coffee table, wooden dining set, and a balcony door, whereas Image B shows a kitchen with built-in appliances and a stone backsplash.</dd><dt><strong>Основание</strong></dt><dd>The two images depict distinct functional spaces within a residence. Image A is a living/dining room featuring a glass coffee table, a wooden dining set, and a balcony door. Image B is a kitchen featuring a stone backsplash, a built-in microwave, and a coffee machine. There are no shared physical surfaces or identifiable objects visible in both frames. While they are likely part of the same apartment, the specific rooms are different, and there is no visual evidence of a direct doorway connecting the exact camera positions.</dd></dl><details><summary>Сохранённый запрос и ответ · 7.9 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0011-ba&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
-    &quot;img_2&quot;,
-    &quot;img_11_b&quot;
+    &quot;img_18&quot;,
+    &quot;img_1&quot;
   ],
   &quot;request&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
@@ -289,16 +285,16 @@ dialog.photo-viewer::backdrop{background:#121614}
         &quot;content&quot;: &quot;Compare image A (first) and image B (second). Decide three SEPARATE relations:\noverlap: do they visibly share the SAME physical surface or identifiable object?\nsame_room: are the cameras likely located in the SAME room?\ndoorway_connection: is there visual evidence of a direct doorway/opening joining the spaces containing these cameras?\nUse yes/no/unknown. Similar white corners, generic doors, furniture categories or the same room type alone do NOT identify a physical location. Different room types do NOT rule out shared surfaces visible through a door. Opposite views of one room may have no visible overlap. Missing evidence means unknown, not no. List specific shared landmarks and genuine visual contradictions with A/B references; do not invent contradictions from objects merely outside the other field of view. Give a short evidence explanation, not a reconstruction or numerical confidence.\nJSON schema:\n{\&quot;type\&quot;: \&quot;object\&quot;, \&quot;properties\&quot;: {\&quot;overlap\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;same_room\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;doorway_connection\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;shared_landmarks\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;contradictions\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;explanation\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}}, \&quot;required\&quot;: [\&quot;overlap\&quot;, \&quot;same_room\&quot;, \&quot;doorway_connection\&quot;, \&quot;shared_landmarks\&quot;, \&quot;contradictions\&quot;, \&quot;explanation\&quot;], \&quot;additionalProperties\&quot;: false}&quot;,
         &quot;images&quot;: [
           {
-            &quot;sha256&quot;: &quot;ed059b89a2c0b31f59eb5708a479cee7362a979448decc4353ccbc0a99950564&quot;,
+            &quot;sha256&quot;: &quot;8554f21167d99d48294a763112ec75c4fa3c91448ac67b237ebb05ef40abefc1&quot;,
             &quot;size&quot;: [
               690,
               460
             ]
           },
           {
-            &quot;sha256&quot;: &quot;65983ef8cd239197bca38fda772ae6453b424a033371c36d2a9a76d0e2b4f1c7&quot;,
+            &quot;sha256&quot;: &quot;11d92461502fa673863d4463be4b8d65efc8e5f73619a6b695c9c62569998dcd&quot;,
             &quot;size&quot;: [
-              342,
+              690,
               460
             ]
           }
@@ -384,39 +380,33 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:32:37.293983Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:12:20.692615Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\&quot;overlap\&quot;: \&quot;yes\&quot;, \&quot;same_room\&quot;: \&quot;yes\&quot;, \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;, \&quot;shared_landmarks\&quot;: [\&quot;white sofa with fringed throw blanket\&quot;, \&quot;glass coffee table with metal base\&quot;, \&quot;framed abstract art with black and beige geometric shapes\&quot;, \&quot;light grey area rug\&quot;, \&quot;herringbone wood flooring\&quot;, \&quot;small square wall art\&quot;, \&quot;yellow wall-mounted lamp\&quot;], \&quot;contradictions\&quot;: [], \&quot;explanation\&quot;: \&quot;The two images clearly show the same room from different angles. Image A provides a wide view of the living and dining area, while Image B is a closer shot of the living area. The white sofa, the specific glass coffee table, the abstract painting, the area rug, and the herringbone flooring are all identical in both images, confirming they are the same physical space. There is no visual evidence of a doorway connecting to a different room, as both cameras are positioned within the same room.\&quot;}&quot;
+      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;no\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [],\n  \&quot;contradictions\&quot;: [\n    \&quot;Image A shows a living/dining area with a glass coffee table, wooden dining set, and a balcony door, whereas Image B shows a kitchen with built-in appliances and a stone backsplash.\&quot;\n  ],\n  \&quot;explanation\&quot;: \&quot;The two images depict distinct functional spaces within a residence. Image A is a living/dining room featuring a glass coffee table, a wooden dining set, and a balcony door. Image B is a kitchen featuring a stone backsplash, a built-in microwave, and a coffee machine. There are no shared physical surfaces or identifiable objects visible in both frames. While they are likely part of the same apartment, the specific rooms are different, and there is no visual evidence of a direct doorway connecting the exact camera positions.\&quot;\n}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 6913841208,
-    &quot;load_duration&quot;: 5862541,
-    &quot;prompt_eval_count&quot;: 888,
+    &quot;total_duration&quot;: 7895007167,
+    &quot;load_duration&quot;: 6573667,
+    &quot;prompt_eval_count&quot;: 1042,
     &quot;prompt_eval_cached_count&quot;: 56,
-    &quot;prompt_eval_duration&quot;: 1791542833,
-    &quot;eval_count&quot;: 192,
-    &quot;eval_duration&quot;: 5096414000
+    &quot;prompt_eval_duration&quot;: 2305854167,
+    &quot;eval_count&quot;: 200,
+    &quot;eval_duration&quot;: 5554203959
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
-    &quot;same_room&quot;: &quot;yes&quot;,
+    &quot;overlap&quot;: &quot;no&quot;,
+    &quot;same_room&quot;: &quot;no&quot;,
     &quot;doorway_connection&quot;: &quot;unknown&quot;,
-    &quot;shared_landmarks&quot;: [
-      &quot;white sofa with fringed throw blanket&quot;,
-      &quot;glass coffee table with metal base&quot;,
-      &quot;framed abstract art with black and beige geometric shapes&quot;,
-      &quot;light grey area rug&quot;,
-      &quot;herringbone wood flooring&quot;,
-      &quot;small square wall art&quot;,
-      &quot;yellow wall-mounted lamp&quot;
+    &quot;shared_landmarks&quot;: [],
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a living/dining area with a glass coffee table, wooden dining set, and a balcony door, whereas Image B shows a kitchen with built-in appliances and a stone backsplash.&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;The two images clearly show the same room from different angles. Image A provides a wide view of the living and dining area, while Image B is a closer shot of the living area. The white sofa, the specific glass coffee table, the abstract painting, the area rug, and the herringbone flooring are all identical in both images, confirming they are the same physical space. There is no visual evidence of a doorway connecting to a different room, as both cameras are positioned within the same room.&quot;
+    &quot;explanation&quot;: &quot;The two images depict distinct functional spaces within a residence. Image A is a living/dining room featuring a glass coffee table, a wooden dining set, and a balcony door. Image B is a kitchen featuring a stone backsplash, a built-in microwave, and a coffee machine. There are no shared physical surfaces or identifiable objects visible in both frames. While they are likely part of the same apartment, the specific rooms are different, and there is no visual evidence of a direct doorway connecting the exact camera positions.&quot;
   },
-  &quot;elapsed_s&quot;: 6.917599084001267
+  &quot;elapsed_s&quot;: 7.8998527499970805
 }</pre></details>
 </section>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
@@ -474,7 +464,7 @@ window.planrecPhotoViewer = function () {
   };
 };
 
-const groups = {"s0": [{"src": "photos/0003.png", "caption": "img_11_b"}, {"src": "photos/0013.png", "caption": "img_2"}]};
+const groups = {"s0": [{"src": "photos/0000.png", "caption": "img_1"}, {"src": "photos/0012.png", "caption": "img_18"}]};
 
 const photoViewer = window.planrecPhotoViewer();
 function openViewer(group, index, trigger = document.activeElement) {

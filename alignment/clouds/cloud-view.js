@@ -6,8 +6,10 @@
   const photoViewer = window.planrecPhotoViewer();
   const palette = ['#168575', '#ce621c', '#6551c5', '#bd3c8a', '#267bb7', '#7c4f37', '#85801d'];
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
-  const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0};
+  const roomCamera = {eye: {x: 0, y: -2.1, z: 1}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
+  const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0, room: null};
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
+  const roomSelections = new Map();
   let observer, expanded, scheduled = false, drawing = false;
   const sceneDialog = document.createElement('dialog');
   sceneDialog.className = 'scene-viewer';
@@ -336,7 +338,7 @@
       if (get('cameras').checked) list.push(cameraTrace(source, component, groups));
       return list;
     }))).flat();
-    if (get('paths').checked) {
+    if (get('paths').checked && !state.room) {
       const edges = supportingEdges(component), hidden = new Set(), line = [];
       const byId = new Map(sources.map(s => [s.id, s]));
       for (const [a, b] of edges) {
@@ -349,7 +351,7 @@
         line: {color: '#89958c', width: 3, dash: 'dash'}, name: 'Путь через скрытые фото', hoverinfo: 'name', showlegend: false});
       for (const id of hidden) output.push(cameraTrace(byId.get(id), component, groups, true));
     }
-    if (get('cameras').checked) {
+    if (get('cameras').checked && !state.room) {
       const rotation = get('level').checked ? component.rotation : component.fixed;
       for (const [up, label, color] of [[component.up, 'Вверх · GeoCalib', '#168575'], [settings.referenceUp, 'Вверх · эталон', '#c532b4']]) {
         if (!up) continue;
@@ -367,15 +369,18 @@
       card.classList.toggle('selected', selected);
       card.querySelector('.photo-toggle').setAttribute('aria-pressed', selected);
       card.style.setProperty('--group-colour', palette[(group || 0) % palette.length]);
-      card.querySelector('.badge').textContent = selected ? (state.variant.edges === null ? 'Показано' : `Подгруппа ${(group || 0) + 1}`) : 'Скрыто';
+      const hiddenExtra = state.room && !get('room-extra').checked && !roomParts()[0]?.ids.includes(id);
+      card.querySelector('.badge').textContent = hiddenExtra ? 'Скрыто: нет совмещения' : selected ? (state.variant.edges === null ? 'Показано' : `Подгруппа ${(group || 0) + 1}`) : 'Скрыто';
     }
     const split = [...groups.counts.values()].some(n => n > 1);
     get('selection-status').classList.toggle('split', split);
-    let text = `Выбрано ${state.selected.size} из ${state.variant.sources.length}`;
+    let text = `Выбрано ${state.selected.size} из ${state.room ? roomNames().length : state.variant.sources.length}`;
+    if (state.room) text += ' в предполагаемой комнате · размещение частей условное';
     if (split) text += ` · подгрупп среди выбранных фото: ${groups.total}`;
     if (settings.multiview) text += ' · позы полной группы сохранены';
     get('selection-status').textContent = text + '.';
-    const selected = state.variant.sources.filter(s => state.selected.has(s.id));
+    const shown = state.room && !get('room-extra').checked ? new Set(roomParts()[0]?.ids || []) : state.selected;
+    const selected = state.variant.sources.filter(s => state.selected.has(s.id) && shown.has(s.id));
     const count = selected.reduce((n, s) => n + Math.min(state.limit, s.available), 0);
     const patches = selected.reduce((n, s) => n + (s.planes?.count || 0), 0);
     const faces = selected.reduce((n, s) => n + (s.planes?.triangles || 0), 0);
@@ -389,7 +394,7 @@
     for (const group of get('photos').querySelectorAll('.photo-group')) {
       const button = group.querySelector('.group-only');
       if (!button) continue;
-      const ids = state.variant.components.find(c => c.id === group.dataset.component).ids;
+      const ids = state.variant.components.find(c => c.id === group.dataset.component).ids.filter(id => !state.room || roomNames().includes(id));
       button.setAttribute('aria-pressed', ids.length === state.selected.size && ids.every(id => state.selected.has(id)));
     }
   }
@@ -414,7 +419,8 @@
     get('top').textContent = get('level').checked && state.variant.components.every(c => c.levelled) ? 'Вид сверху' : 'Вдоль −y камеры';
     get('loading').textContent = 'Подготовка 3D…';
     try {
-      for (const component of state.variant.components) {
+      if (state.room) await drawRoom(version, groups);
+      else for (const component of state.variant.components) {
         const view = plots.get(component.id), visible = component.ids.some(id => state.selected.has(id));
         view.section.hidden = !visible;
         // Many SIFT components can be isolated. Only nearby plots keep WebGL contexts.
@@ -462,7 +468,9 @@
       }
       if (changed) scheduleDraw();
     }, {rootMargin: '120px'});
-    const sorted = [...state.variant.components].sort((a, b) => b.ids.length - a.ids.length);
+    const sorted = state.room ? roomParts().map(p => ({...p.component, ids: p.ids}))
+      : [...state.variant.components].sort((a, b) => b.ids.length - a.ids.length);
+    if (state.room) buildRoomScene();
     const photoSources = sorted.flatMap(c => state.variant.sources.filter(s => c.ids.includes(s.id) && s.photo));
     const photoItems = photoSources.map(s => ({src: s.photo, caption: s.name, href: s.href}));
     const isolated = sorted.filter(c => c.ids.length === 1).length;
@@ -488,20 +496,23 @@
         const row = document.createElement('p'), link = document.createElement('a'); row.className = 'warning';
         link.href = note.href; link.textContent = note.text; row.append(link); header.append(row);
       }
-      section.append(header, plot); get('scenes').append(section);
-      enableNavigation(plot);
-      plot.dataset.component = component.id;
-      const view = {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0};
-      plots.set(component.id, view);
-      expand.onclick = () => expandScene(view, expand);
-      observer.observe(plot);
-      const singleton = component.ids.length === 1 && isolated > 1;
+      if (!state.room) {
+        section.append(header, plot); get('scenes').append(section);
+        enableNavigation(plot);
+        plot.dataset.component = component.id;
+        const view = {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0};
+        plots.set(component.id, view);
+        expand.onclick = () => expandScene(view, expand);
+        observer.observe(plot);
+      }
+      const singleton = !state.room && component.ids.length === 1 && isolated > 1;
       let grid = singleton ? isolatedGrid : null;
       if (!grid) {
         const group = document.createElement('div'); group.className = 'photo-group'; group.dataset.component = component.id;
         const heading = document.createElement('div'); heading.className = 'group-heading';
         const label = document.createElement('span');
-        label.textContent = singleton ? `Без принятых связей · фото: ${isolated} · каждое показано отдельно` : title.textContent + (index ? ' · нет принятой связи с основной группой' : '');
+        label.textContent = state.room ? `Часть ${index + 1} · ${component.ids.length} фото · положение относительно других частей неизвестно`
+          : singleton ? `Без принятых связей · фото: ${isolated} · каждое показано отдельно` : title.textContent + (index ? ' · нет принятой связи с основной группой' : '');
         heading.append(label);
         if (settings.multiview && !singleton) {
           const only = document.createElement('button'); only.className = 'group-only'; only.textContent = 'Только эту группу';
@@ -545,8 +556,104 @@
       button.setAttribute('aria-pressed', button.dataset.mode === state.mode);
     }
     get('level-label').hidden = !state.variant.components.some(c => c.levelled);
-    get('paths-label').hidden = !state.variant.treeEdges.length;
+    get('paths-label').hidden = !!state.room || !state.variant.treeEdges.length;
     draw();
+  }
+
+  function roomNames() {
+    return state.room === 'unassigned' ? settings.semantics.unassigned
+      : settings.semantics?.rooms.find(room => room.id === state.room)?.names || [];
+  }
+  function roomParts() {
+    return window.planrecRoomView.parts(state.variant.components, roomNames());
+  }
+  function updateRoomControls() {
+    const semantic = settings.semantics;
+    get('rooms-control').hidden = !semantic;
+    get('room-controls').hidden = !state.room;
+    get('rooms').checked = !!state.room;
+    get('room-warning').textContent = state.room === 'unassigned'
+      ? 'Назначение комнат и взаимное положение облаков неизвестны. Размещение рядом служит только обзору.'
+      : 'Принадлежность комнате предположена. Несовмещённые части разнесены только для обзора — их взаимное положение неизвестно.';
+    if (!semantic) return;
+    const choices = semantic.rooms.map((room, i) => [room.id, `Гипотеза ${i + 1} · ${room.names.length} фото`]);
+    if (semantic.unassigned.length) choices.push(['unassigned', `Без назначения · ${semantic.unassigned.length} фото`]);
+    options(get('room-choice'), choices, state.room || choices[0]?.[0]);
+  }
+  function selectRoom(id) {
+    if (state.room) roomSelections.set(`${state.variant.id}:${state.room}`, new Set(state.selected));
+    else selections.set(state.variant.id, new Set(state.selected));
+    state.room = id;
+    state.selected = new Set(id ? roomSelections.get(`${state.variant.id}:${id}`) || roomNames()
+      : selections.get(state.variant.id) || state.variant.initial);
+    updateRoomControls(); build();
+  }
+  function buildRoomScene() {
+    const semantic = settings.semantics, names = roomNames(), parts = roomParts();
+    const index = semantic.rooms.findIndex(room => room.id === state.room);
+    const title = index < 0 ? 'Фото без назначения комнате' : `Гипотеза комнаты ${index + 1}`;
+    const details = get('room-details'); details.replaceChildren();
+    const status = document.createElement('p');
+    const ambiguous = names.filter(n => semantic.memberships[n].length > 1);
+    status.textContent = `Это гипотеза, не установленная комната. Геометрических частей: ${parts.length}. `
+      + (ambiguous.length ? `Альтернативные назначения: ${ambiguous.join(', ')}. ` : '')
+      + 'Позы внутри каждой части сохранены по выбранному графу, в том числе по путям через фото вне этой гипотезы.';
+    details.append(status);
+    const evidence = document.createElement('a'); evidence.href = semantic.href + '#' + state.room;
+    evidence.textContent = 'Фото, основания и альтернативы ↗'; details.append(evidence);
+    const doorways = semantic.doorways.filter(d => names.includes(d.a) || names.includes(d.b));
+    const doorDetails = document.createElement('details'), summary = document.createElement('summary');
+    summary.textContent = `Предполагаемые проходы: ${doorways.length} парных свидетельств`; doorDetails.append(summary);
+    const list = document.createElement('ul');
+    for (const door of doorways) {
+      const item = document.createElement('li'), link = document.createElement('a');
+      link.href = semantic.href.replace(/rooms\.html$/, `vlm/pair-${String(door.evidence).padStart(4, '0')}.html`);
+      link.textContent = `${door.a} ↔ ${door.b}`; item.append(link);
+      item.append(document.createTextNode(door.assignment === 'unique_hypotheses' ? ' · связь гипотез комнат' : ' · назначение комнат неоднозначно / неизвестно'));
+      list.append(item);
+    }
+    doorDetails.append(list); details.append(doorDetails);
+    const report = document.createElement('a'); report.href = semantic.href + '#candidates';
+    report.textContent = 'Новые кандидаты перекрытия и сохранённые варианты 3D ↗'; details.append(report);
+    const section = document.createElement('section'); section.className = 'scene';
+    const header = document.createElement('header'), heading = document.createElement('div'); heading.className = 'scene-heading';
+    const h2 = document.createElement('h2'); h2.textContent = title;
+    const expand = document.createElement('button'); expand.className = 'scene-expand'; expand.textContent = '⤢';
+    expand.setAttribute('aria-label', 'Развернуть 3D'); expand.setAttribute('aria-haspopup', 'dialog'); expand.setAttribute('aria-expanded', 'false');
+    heading.append(h2, expand); header.append(heading);
+    const note = document.createElement('p'); note.className = 'warning';
+    note.textContent = state.room === 'unassigned' ? 'Комнаты не определены; взаимное положение облаков неизвестно.'
+      : 'Предположительно та же комната; положение несовмещённых частей неизвестно. Раскладка для обзора, не планировка.'; header.append(note);
+    const warnings = parts.reduce((n, p) => n + (p.component.warnings || 0), 0);
+    if (warnings) { const warning = document.createElement('p'); warning.className = 'warning'; warning.textContent = `В исходных компонентах отмечены расхождения путей: ${warnings}. Показ комнаты не исправляет позы.`; header.append(warning); }
+    const legend = document.createElement('div'); legend.className = 'room-legend';
+    parts.forEach((part, i) => { const label = document.createElement('span'); label.textContent = `Часть ${i + 1}: ${part.ids.join(', ')}`; legend.append(label); });
+    header.append(legend);
+    const plot = document.createElement('div'); plot.className = 'plot'; plot.dataset.component = '__room__';
+    section.append(header, plot); get('scenes').append(section);
+    const view = {section, plot, key: `${state.variant.id}:${state.room}`, nearby: true}; plots.set('__room__', view);
+    enableNavigation(plot); expand.onclick = () => expandScene(view, expand); observer.observe(plot);
+    get('room-extra').disabled = parts.length < 2;
+  }
+  async function drawRoom(version, groups) {
+    const view = plots.get('__room__');
+    if (!view.nearby) { release(view); return; }
+    const parts = roomParts(), shown = get('room-extra').checked ? parts : parts.slice(0, 1);
+    const entries = [];
+    for (const part of shown) {
+      if (!part.ids.some(id => state.selected.has(id))) continue;
+      entries.push({label: `Часть ${parts.indexOf(part) + 1}`, data: await traces(part.component, groups)});
+      if (version !== state.version) return;
+    }
+    const layout = window.planrecRoomView.layout(entries);
+    const scene = {aspectmode: 'manual', aspectratio: fixedAspect(layout.ranges),
+      camera: currentCamera(view.plot) || cameras.get(view.key) || roomCamera};
+    ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {visible: false, range: layout.ranges[i], autorange: false}; });
+    view.rendering = true;
+    try {
+      await Plotly.react(view.plot, layout.data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: view.key, paper_bgcolor: '#fff'},
+        {displayModeBar: false, scrollZoom: true, responsive: true, plotGlPixelRatio: 1});
+    } finally { view.rendering = false; if (view.disposed) release(view); }
   }
 
   function options(select, items, current) {
@@ -586,9 +693,11 @@
   }
   function chooseVariant(next) {
     if (!next || next.id === state.variant.id) return;
-    selections.set(state.variant.id, new Set(state.selected));
+    if (state.room) roomSelections.set(`${state.variant.id}:${state.room}`, new Set(state.selected));
+    else selections.set(state.variant.id, new Set(state.selected));
     const sameInputs = next.matcher === state.variant.matcher && next.model === state.variant.model;
-    const selection = selections.get(next.id) || (sameInputs ? state.selected : next.initial);
+    const selection = state.room ? roomSelections.get(`${next.id}:${state.room}`) || state.selected
+      : selections.get(next.id) || (sameInputs ? state.selected : next.initial);
     state.variant = next;
     state.selected = new Set(selection);
     updateControls(); build();
@@ -602,7 +711,7 @@
   get('model').onchange = () => chooseVariant(variantFor(state.variant.matcher, get('model').value, state.variant.vlm));
   get('vlm').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, get('vlm').checked));
   updateControls();
-  get('all').onclick = () => { state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
+  get('all').onclick = () => { state.selected = new Set(state.room ? roomNames() : state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
   get('none').onclick = () => { state.selected.clear(); draw(); };
   for (const button of get('detail').querySelectorAll('button')) button.onclick = () => {
     state.limit = Number(button.dataset.limit);
@@ -615,7 +724,12 @@
     draw();
   };
   for (const id of ['colour', 'cameras', 'level', 'paths']) get(id).onchange = draw;
-  get('reset').onclick = () => { for (const view of plots.values()) if (view.plot.data) Plotly.relayout(view.plot, {'scene.camera': defaultCamera}); };
+  get('reset').onclick = () => { for (const view of plots.values()) if (view.plot.data) Plotly.relayout(view.plot, {'scene.camera': state.room ? roomCamera : defaultCamera}); };
   get('top').onclick = () => { for (const view of plots.values()) if (view.plot.data) Plotly.relayout(view.plot, {'scene.camera': {eye: {x: 0, y: 0, z: 2.3}, up: {x: 0, y: 1, z: 0}, center: {x: 0, y: 0, z: 0}}}); };
-  state.selected = new Set(state.variant.initial); build();
+  get('rooms').onchange = () => selectRoom(get('rooms').checked ? get('room-choice').value : null);
+  get('room-choice').onchange = () => selectRoom(get('room-choice').value);
+  get('room-extra').onchange = draw;
+  const requestedRoom = new URLSearchParams(location.search).get('room');
+  if (settings.semantics && (settings.semantics.rooms.some(r => r.id === requestedRoom) || requestedRoom === 'unassigned' && settings.semantics.unassigned.length)) state.room = requestedRoom;
+  state.selected = new Set(state.room ? roomNames() : state.variant.initial); updateRoomControls(); build();
 })();

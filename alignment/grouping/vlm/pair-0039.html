@@ -1,4 +1,4 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_4_b ↔ img_6</title><style>
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_10 ↔ img_6</title><style>
 * { box-sizing: border-box; }
 body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
 main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
@@ -111,21 +111,21 @@ dialog.photo-viewer::backdrop{background:#121614}
  .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
 </style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
 <nav><a href='index.html'>← К обзору</a></nav>
-<h1>VLM · img_4_b ↔ img_6</h1>
+<h1>VLM · img_10 ↔ img_6</h1>
 <section class='section' id='section-0'><h2>Изображения</h2>
-<p>Перекрытие: да · Одна комната: нет · Связь через проём: да</p>
+<p>Перекрытие: нет · Одна комната: нет · Связь через проём: неизвестно</p>
 
 <div class='row' style='--h: 180px'>
-<figure><img src='photos/0016.png' width='342' height='460' loading='lazy' alt='img_4_b' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_4_b</figcaption></figure>
+<figure><img src='photos/0001.png' width='690' height='460' loading='lazy' alt='img_10' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_10</figcaption></figure>
 <figure><img src='photos/0019.png' width='690' height='460' loading='lazy' alt='img_6' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_6</figcaption></figure>
 </div>
 </section>
-<section class='section' id='section-1'><h2>Порядок A → B: img_4_b → img_6</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>да</dd><dt><strong>Общие ориентиры</strong></dt><dd>peach egg chair; brass articulated floor lamp; herringbone parquet flooring; white wall corner</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>Image B provides a view through a central doorway that directly reveals the exact scene captured in Image A. The peach egg chair, brass floor lamp, and herringbone parquet flooring are clearly visible in the background of B, establishing a direct physical connection between the two spaces. Because the camera in B is positioned in a kitchen or hallway area looking into the bedroom shown in A, the cameras are not in the same room, but the spaces are connected by the visible doorway.</dd></dl><details><summary>Сохранённый запрос и ответ · 6.6 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-1'><h2>Порядок A → B: img_10 → img_6</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>—</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a bedroom with a bed and window, while Image B shows a kitchen with a countertop and oven.</dd><dt><strong>Основание</strong></dt><dd>The two images depict distinct room types: a bedroom (A) and a kitchen (B). There are no shared physical surfaces or identifiable objects visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and they are clearly not the same room.</dd></dl><details><summary>Сохранённый запрос и ответ · 5.3 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0039-ab&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
-    &quot;img_4_b&quot;,
+    &quot;img_10&quot;,
     &quot;img_6&quot;
   ],
   &quot;request&quot;: {
@@ -140,9 +140,9 @@ dialog.photo-viewer::backdrop{background:#121614}
         &quot;content&quot;: &quot;Compare image A (first) and image B (second). Decide three SEPARATE relations:\noverlap: do they visibly share the SAME physical surface or identifiable object?\nsame_room: are the cameras likely located in the SAME room?\ndoorway_connection: is there visual evidence of a direct doorway/opening joining the spaces containing these cameras?\nUse yes/no/unknown. Similar white corners, generic doors, furniture categories or the same room type alone do NOT identify a physical location. Different room types do NOT rule out shared surfaces visible through a door. Opposite views of one room may have no visible overlap. Missing evidence means unknown, not no. List specific shared landmarks and genuine visual contradictions with A/B references; do not invent contradictions from objects merely outside the other field of view. Give a short evidence explanation, not a reconstruction or numerical confidence.\nJSON schema:\n{\&quot;type\&quot;: \&quot;object\&quot;, \&quot;properties\&quot;: {\&quot;overlap\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;same_room\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;doorway_connection\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;shared_landmarks\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;contradictions\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;explanation\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}}, \&quot;required\&quot;: [\&quot;overlap\&quot;, \&quot;same_room\&quot;, \&quot;doorway_connection\&quot;, \&quot;shared_landmarks\&quot;, \&quot;contradictions\&quot;, \&quot;explanation\&quot;], \&quot;additionalProperties\&quot;: false}&quot;,
         &quot;images&quot;: [
           {
-            &quot;sha256&quot;: &quot;eb382f3fe6e41d382d201bd83547247cd98e7f06065b0adc629a76055cad83d1&quot;,
+            &quot;sha256&quot;: &quot;db8bdbec3e9a92e97623085c9148e1e5fe8d7920ed0a7c8b2b701309797b5ea9&quot;,
             &quot;size&quot;: [
-              342,
+              690,
               460
             ]
           },
@@ -235,45 +235,42 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:39:12.714334Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:18:52.616895Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;yes\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;yes\&quot;,\n  \&quot;shared_landmarks\&quot;: [\n    \&quot;peach egg chair\&quot;,\n    \&quot;brass articulated floor lamp\&quot;,\n    \&quot;herringbone parquet flooring\&quot;,\n    \&quot;white wall corner\&quot;\n  ],\n  \&quot;contradictions\&quot;: [],\n  \&quot;explanation\&quot;: \&quot;Image B provides a view through a central doorway that directly reveals the exact scene captured in Image A. The peach egg chair, brass floor lamp, and herringbone parquet flooring are clearly visible in the background of B, establishing a direct physical connection between the two spaces. Because the camera in B is positioned in a kitchen or hallway area looking into the bedroom shown in A, the cameras are not in the same room, but the spaces are connected by the visible doorway.\&quot;\n}&quot;
+      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;no\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [],\n  \&quot;contradictions\&quot;: [\n    \&quot;Image A shows a bedroom with a bed and window, while Image B shows a kitchen with a countertop and oven.\&quot;\n  ],\n  \&quot;explanation\&quot;: \&quot;The two images depict distinct room types: a bedroom (A) and a kitchen (B). There are no shared physical surfaces or identifiable objects visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and they are clearly not the same room.\&quot;\n}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 6621676208,
-    &quot;load_duration&quot;: 5996792,
-    &quot;prompt_eval_count&quot;: 888,
-    &quot;prompt_eval_cached_count&quot;: 56,
-    &quot;prompt_eval_duration&quot;: 1782543166,
-    &quot;eval_count&quot;: 183,
-    &quot;eval_duration&quot;: 4814318459
+    &quot;total_duration&quot;: 5294169333,
+    &quot;load_duration&quot;: 6916625,
+    &quot;prompt_eval_count&quot;: 1042,
+    &quot;prompt_eval_cached_count&quot;: 366,
+    &quot;prompt_eval_duration&quot;: 1457293542,
+    &quot;eval_count&quot;: 150,
+    &quot;eval_duration&quot;: 3798071416
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
+    &quot;overlap&quot;: &quot;no&quot;,
     &quot;same_room&quot;: &quot;no&quot;,
-    &quot;doorway_connection&quot;: &quot;yes&quot;,
-    &quot;shared_landmarks&quot;: [
-      &quot;peach egg chair&quot;,
-      &quot;brass articulated floor lamp&quot;,
-      &quot;herringbone parquet flooring&quot;,
-      &quot;white wall corner&quot;
+    &quot;doorway_connection&quot;: &quot;unknown&quot;,
+    &quot;shared_landmarks&quot;: [],
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a bedroom with a bed and window, while Image B shows a kitchen with a countertop and oven.&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;Image B provides a view through a central doorway that directly reveals the exact scene captured in Image A. The peach egg chair, brass floor lamp, and herringbone parquet flooring are clearly visible in the background of B, establishing a direct physical connection between the two spaces. Because the camera in B is positioned in a kitchen or hallway area looking into the bedroom shown in A, the cameras are not in the same room, but the spaces are connected by the visible doorway.&quot;
+    &quot;explanation&quot;: &quot;The two images depict distinct room types: a bedroom (A) and a kitchen (B). There are no shared physical surfaces or identifiable objects visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and they are clearly not the same room.&quot;
   },
-  &quot;elapsed_s&quot;: 6.625678542000969
+  &quot;elapsed_s&quot;: 5.300536083002953
 }</pre></details>
 </section>
-<section class='section' id='section-2'><h2>Порядок A → B: img_6 → img_4_b</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>да</dd><dt><strong>Общие ориентиры</strong></dt><dd>herringbone parquet flooring; white egg chair with wooden legs; white mushroom table lamp; white throw blanket on chair</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>Image A shows a kitchen and hallway looking through a doorway into a bedroom. Image B is a close-up of that same bedroom. The visual evidence confirms a direct doorway connection and physical overlap because the specific furniture (egg chair, mushroom lamp) and flooring (herringbone parquet) seen in the background of A are the primary subjects in B. The cameras are not in the same room as A is in a kitchen/hallway and B is in a bedroom.</dd></dl><details><summary>Сохранённый запрос и ответ · 6.4 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-2'><h2>Порядок A → B: img_6 → img_10</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>—</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a kitchen counter with a cooktop and a hallway, while Image B shows a bedroom with a bed and a window, indicating different room types.</dd><dt><strong>Основание</strong></dt><dd>The two images depict distinct room types: a kitchen/hallway area in A and a bedroom in B. There are no shared physical surfaces or identifiable objects visible in both frames. While the hallway in A suggests a connection to other rooms, it does not provide direct visual evidence of a doorway leading specifically to the bedroom in B. Therefore, a direct connection is unknown.</dd></dl><details><summary>Сохранённый запрос и ответ · 6.7 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0039-ba&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
     &quot;img_6&quot;,
-    &quot;img_4_b&quot;
+    &quot;img_10&quot;
   ],
   &quot;request&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
@@ -294,9 +291,9 @@ dialog.photo-viewer::backdrop{background:#121614}
             ]
           },
           {
-            &quot;sha256&quot;: &quot;eb382f3fe6e41d382d201bd83547247cd98e7f06065b0adc629a76055cad83d1&quot;,
+            &quot;sha256&quot;: &quot;db8bdbec3e9a92e97623085c9148e1e5fe8d7920ed0a7c8b2b701309797b5ea9&quot;,
             &quot;size&quot;: [
-              342,
+              690,
               460
             ]
           }
@@ -382,36 +379,33 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:39:19.135147Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:18:59.312034Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;yes\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;yes\&quot;,\n  \&quot;shared_landmarks\&quot;: [\n    \&quot;herringbone parquet flooring\&quot;,\n    \&quot;white egg chair with wooden legs\&quot;,\n    \&quot;white mushroom table lamp\&quot;,\n    \&quot;white throw blanket on chair\&quot;\n  ],\n  \&quot;contradictions\&quot;: [],\n  \&quot;explanation\&quot;: \&quot;Image A shows a kitchen and hallway looking through a doorway into a bedroom. Image B is a close-up of that same bedroom. The visual evidence confirms a direct doorway connection and physical overlap because the specific furniture (egg chair, mushroom lamp) and flooring (herringbone parquet) seen in the background of A are the primary subjects in B. The cameras are not in the same room as A is in a kitchen/hallway and B is in a bedroom.\&quot;\n}&quot;
+      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;no\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [],\n  \&quot;contradictions\&quot;: [\n    \&quot;Image A shows a kitchen counter with a cooktop and a hallway, while Image B shows a bedroom with a bed and a window, indicating different room types.\&quot;\n  ],\n  \&quot;explanation\&quot;: \&quot;The two images depict distinct room types: a kitchen/hallway area in A and a bedroom in B. There are no shared physical surfaces or identifiable objects visible in both frames. While the hallway in A suggests a connection to other rooms, it does not provide direct visual evidence of a doorway leading specifically to the bedroom in B. Therefore, a direct connection is unknown.\&quot;\n}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 6402212083,
-    &quot;load_duration&quot;: 5303667,
-    &quot;prompt_eval_count&quot;: 888,
+    &quot;total_duration&quot;: 6644446375,
+    &quot;load_duration&quot;: 6664750,
+    &quot;prompt_eval_count&quot;: 1042,
     &quot;prompt_eval_cached_count&quot;: 56,
-    &quot;prompt_eval_duration&quot;: 1793193917,
-    &quot;eval_count&quot;: 185,
-    &quot;eval_duration&quot;: 4584206917
+    &quot;prompt_eval_duration&quot;: 2177422000,
+    &quot;eval_count&quot;: 165,
+    &quot;eval_duration&quot;: 4431810166
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
+    &quot;overlap&quot;: &quot;no&quot;,
     &quot;same_room&quot;: &quot;no&quot;,
-    &quot;doorway_connection&quot;: &quot;yes&quot;,
-    &quot;shared_landmarks&quot;: [
-      &quot;herringbone parquet flooring&quot;,
-      &quot;white egg chair with wooden legs&quot;,
-      &quot;white mushroom table lamp&quot;,
-      &quot;white throw blanket on chair&quot;
+    &quot;doorway_connection&quot;: &quot;unknown&quot;,
+    &quot;shared_landmarks&quot;: [],
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a kitchen counter with a cooktop and a hallway, while Image B shows a bedroom with a bed and a window, indicating different room types.&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;Image A shows a kitchen and hallway looking through a doorway into a bedroom. Image B is a close-up of that same bedroom. The visual evidence confirms a direct doorway connection and physical overlap because the specific furniture (egg chair, mushroom lamp) and flooring (herringbone parquet) seen in the background of A are the primary subjects in B. The cameras are not in the same room as A is in a kitchen/hallway and B is in a bedroom.&quot;
+    &quot;explanation&quot;: &quot;The two images depict distinct room types: a kitchen/hallway area in A and a bedroom in B. There are no shared physical surfaces or identifiable objects visible in both frames. While the hallway in A suggests a connection to other rooms, it does not provide direct visual evidence of a doorway leading specifically to the bedroom in B. Therefore, a direct connection is unknown.&quot;
   },
-  &quot;elapsed_s&quot;: 6.405919041997549
+  &quot;elapsed_s&quot;: 6.650471041997662
 }</pre></details>
 </section>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
@@ -469,7 +463,7 @@ window.planrecPhotoViewer = function () {
   };
 };
 
-const groups = {"s0": [{"src": "photos/0016.png", "caption": "img_4_b"}, {"src": "photos/0019.png", "caption": "img_6"}]};
+const groups = {"s0": [{"src": "photos/0001.png", "caption": "img_10"}, {"src": "photos/0019.png", "caption": "img_6"}]};
 
 const photoViewer = window.planrecPhotoViewer();
 function openViewer(group, index, trigger = document.activeElement) {

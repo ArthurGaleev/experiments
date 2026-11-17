@@ -1,0 +1,355 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Гипотезы комнат и проходов</title><style>
+* { box-sizing: border-box; }
+body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
+main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
+h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
+ letter-spacing: -.025em; }
+h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 17px; }
+section, details.section { margin: 28px 0; padding: 24px; background: white;
+ border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
+a { color: #176650; text-underline-offset: 3px; }
+button, select, input { font: inherit; color: inherit; padding: 7px 10px;
+ border: 1px solid #aabbb1; border-radius: 6px; background: white; }
+button, select, summary { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
+[hidden] { display: none !important; }
+nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
+nav a { padding: 4px 0; }
+.eyebrow, .muted { color: #596d64; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
+ border-radius: 4px; }
+.warning { background: #fff5e7; border-left-color: #c67918; }
+.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
+.stats strong { display: block; font-size: 30px; line-height: 1.2; }
+.stats span { display: block; font-size: 13px; color: #596d64; }
+.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
+.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
+ padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
+ background: #fff; }
+.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
+.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
+ align-self: flex-start; }
+.card strong { margin-top: 8px; }
+.card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.card-photo { display: flex; flex-direction: column; align-items: flex-start;
+ padding: 0; border: 0; background: none; cursor: zoom-in; }
+.photo-card .photo-report { font-size: 12px; padding: 8px 0 2px; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.table-scroll, .graph { overflow-x: auto; }
+.graph svg { display: block; width: 100%; min-width: 740px; }
+.graph-label { font: 14px system-ui; fill: #20342e; }
+.graph a:hover line { stroke: #d28a19; }
+.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
+ font-variant-numeric: tabular-nums; }
+table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
+ border-bottom: 1px solid #e2e8e3; }
+.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
+ text-align: left; }
+.data-table td { font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: space-between;
+ gap: 12px; margin: 16px 0 0; }
+.switcher > label { font-size: 13px; }
+.switcher > select { margin-bottom: 18px; max-width: 100%; }
+details { margin: 16px 0; }
+summary { font-weight: 600; }
+details[open] > summary { margin-bottom: 16px; }
+p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
+  border: 1px solid #ddd; }
+.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
+figcaption { font-size: 12px; color: #555; margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
+  vertical-align: -2px; border: 1px solid #bbb; }
+.mwrap { overflow-x: auto; }
+table.m { border-collapse: collapse; font-size: 10px; }
+table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
+  border: 1px solid #fff; }
+table.m td[data-index] { cursor: pointer; }
+table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
+table.m td.diag { background: #fff; }
+table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
+table.m th { font-weight: normal; color: #555; white-space: nowrap; }
+table.m th.rh { text-align: right; padding-right: 6px; }
+table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
+table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
+table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
+table.m th.hl { color: #000; font-weight: 700; }
+@media(max-width: 600px) {
+ main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
+ .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
+ .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
+ .filters input { max-width: 180px; } .card { min-width: 100px; }
+}
+
+body.photo-viewer-open{overflow:hidden}
+dialog.photo-viewer{box-sizing:border-box;position:fixed;inset:0;width:100%;max-width:none;
+ height:100%;height:100dvh;max-height:none;margin:0;padding:56px 12px 16px;border:0;
+ background:rgba(18,22,20,.97);color:#f4f6f4;text-align:center;overflow:auto}
+dialog.photo-viewer[open]{display:flex;flex-direction:column;align-items:center;gap:10px}
+dialog.photo-viewer::backdrop{background:#121614}
+.photo-viewer .photo-stage{display:flex;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:8px}
+.photo-viewer img{display:block;min-width:0;max-width:calc(100% - 104px);max-height:100%;
+ width:auto;height:100%;object-fit:contain}
+.photo-viewer button{flex:none;width:44px;height:44px;padding:0;border:1px solid #ffffff55;
+ border-radius:6px;background:#ffffff0d;color:inherit;font:32px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.photo-viewer button:hover{background:#ffffff26}
+.photo-viewer .photo-close{position:absolute;right:12px;top:8px}
+.photo-viewer .photo-caption{white-space:pre-line;max-width:960px;font:14px/1.45 system-ui}
+.photo-viewer a.photo-report{color:#d0e7d7;font:14px/1.5 system-ui;padding:4px 12px}
+.photo-viewer [hidden]{display:none!important}
+.photo-viewer :focus-visible{outline:3px solid #e9bd6d;outline-offset:3px}
+@media(max-width:600px){.photo-viewer .photo-stage{position:relative}
+ .photo-viewer img{max-width:100%;width:100%}
+ .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
+ .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
+</style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
+<nav><a href='index.html'>← К обзору</a></nav>
+<h1>Гипотезы комнат и проходов</h1>
+<nav aria-label='Разделы'><a href='#room-256bfbafa110'>Гипотеза 1 · фото: 6</a><a href='#room-2336ef0b06df'>Гипотеза 2 · фото: 6</a><a href='#room-09ce315bf5c8'>Гипотеза 3 · фото: 5</a><a href='#room-e1f3fb28860e'>Гипотеза 4 · фото: 5</a><a href='#room-f2448722c713'>Гипотеза 5 · фото: 4</a><a href='#room-bf1a7f4cadb4'>Гипотеза 6 · фото: 4</a><a href='#room-7dbeec1458c1'>Гипотеза 7 · фото: 3</a><a href='#room-1a5b28dfdca0'>Гипотеза 8 · фото: 2</a><a href='#room-d4c778e892d6'>Гипотеза 9 · фото: 2</a><a href='#unassigned'>Без назначения комнате</a><a href='#doorways'>Предполагаемые проходы</a><a href='#conflicts'>Несогласованные и неполные цепочки</a><a href='#candidates'>Кандидаты для повторной реконструкции</a></nav>
+<section class='section' id='section-0'><h2>Гипотезы, а не окончательное разбиение</h2>
+<p>В каждой гипотезе все пары получили «одна комната: да» в обоих порядках. Положительная цепочка не объединяется автоматически. Пересекающиеся наборы сохранены как альтернативы; их количество не является числом комнат квартиры. Ни одна семантическая связь не создаёт позу или совмещение облаков.</p>
+<p>Правило: <code>mutual-room-hypotheses-v1</code>. Гипотез: 9; фото с несколькими вариантами: 12; без назначения: 0. Неразрешённых троек: 24.</p><p><a href='../clouds/all-photos.html'>Все фотографии · 3D ↗</a> · <a href='index.html'>Проверка геометрических связей ↗</a></p><p>Вызовов: 531; ошибок: 0. Эталонных комнат/поз Blueprint нет; согласованность ответов не является точностью.</p>
+</section>
+<section class='section' id='section-1'><h2>Обзор полного парного прогона</h2>
+<table><tr><th>Отношение</th><th>Да</th><th>Нет</th><th>Неизвестно</th><th>Расхождения A/B и B/A</th></tr><tr><td>Перекрытие</td><td>54</td><td>182</td><td>17</td><td>17</td></tr><tr><td>Одна комната</td><td>47</td><td>202</td><td>4</td><td>4</td></tr><tr><td>Проход</td><td>20</td><td>17</td><td>216</td><td>20</td></tr></table>
+</section>
+<section class='section' id='room-256bfbafa110'><h2>Гипотеза 1 · фото: 6</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-256bfbafa110'>Открыть облака этой гипотезы ↗</a></p><p>Альтернативные назначения:</p><ul><li>img_11_b: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a></li><li>img_14: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a></li><li>img_2: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li><li>img_3: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li><li>img_9: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a></li></ul><details><summary>Все парные основания</summary><p><a href='vlm/pair-0065.html'>img_11_b ↔ img_14</a> · <a href='vlm/pair-0066.html'>img_11_b ↔ img_15</a> · <a href='vlm/pair-0072.html'>img_11_b ↔ img_2</a> · <a href='vlm/pair-0073.html'>img_11_b ↔ img_3</a> · <a href='vlm/pair-0081.html'>img_11_b ↔ img_9</a> · <a href='vlm/pair-0117.html'>img_14 ↔ img_15</a> · <a href='vlm/pair-0123.html'>img_14 ↔ img_2</a> · <a href='vlm/pair-0124.html'>img_14 ↔ img_3</a> · <a href='vlm/pair-0132.html'>img_14 ↔ img_9</a> · <a href='vlm/pair-0138.html'>img_15 ↔ img_2</a> · <a href='vlm/pair-0139.html'>img_15 ↔ img_3</a> · <a href='vlm/pair-0147.html'>img_15 ↔ img_9</a> · <a href='vlm/pair-0208.html'>img_2 ↔ img_3</a> · <a href='vlm/pair-0216.html'>img_2 ↔ img_9</a> · <a href='vlm/pair-0224.html'>img_3 ↔ img_9</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0003.png' width='342' height='460' loading='lazy' alt='img_11_b' role='button' tabindex='0' data-group='s2' data-index='0'><figcaption>img_11_b</figcaption></figure>
+<figure><img src='vlm/photos/0006.png' width='690' height='460' loading='lazy' alt='img_14' role='button' tabindex='0' data-group='s2' data-index='1'><figcaption>img_14</figcaption></figure>
+<figure><img src='vlm/photos/0007.png' width='690' height='460' loading='lazy' alt='img_15' role='button' tabindex='0' data-group='s2' data-index='2'><figcaption>img_15</figcaption></figure>
+<figure><img src='vlm/photos/0013.png' width='690' height='460' loading='lazy' alt='img_2' role='button' tabindex='0' data-group='s2' data-index='3'><figcaption>img_2</figcaption></figure>
+<figure><img src='vlm/photos/0014.png' width='690' height='460' loading='lazy' alt='img_3' role='button' tabindex='0' data-group='s2' data-index='4'><figcaption>img_3</figcaption></figure>
+<figure><img src='vlm/photos/0022.png' width='690' height='460' loading='lazy' alt='img_9' role='button' tabindex='0' data-group='s2' data-index='5'><figcaption>img_9</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-2336ef0b06df'><h2>Гипотеза 2 · фото: 6</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-2336ef0b06df'>Открыть облака этой гипотезы ↗</a></p><p>Альтернативные назначения:</p><ul><li>img_11_b: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a></li><li>img_14: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a></li><li>img_18: <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li><li>img_2: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li><li>img_3: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li><li>img_9: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a></li></ul><details><summary>Все парные основания</summary><p><a href='vlm/pair-0065.html'>img_11_b ↔ img_14</a> · <a href='vlm/pair-0071.html'>img_11_b ↔ img_18</a> · <a href='vlm/pair-0072.html'>img_11_b ↔ img_2</a> · <a href='vlm/pair-0073.html'>img_11_b ↔ img_3</a> · <a href='vlm/pair-0081.html'>img_11_b ↔ img_9</a> · <a href='vlm/pair-0122.html'>img_14 ↔ img_18</a> · <a href='vlm/pair-0123.html'>img_14 ↔ img_2</a> · <a href='vlm/pair-0124.html'>img_14 ↔ img_3</a> · <a href='vlm/pair-0132.html'>img_14 ↔ img_9</a> · <a href='vlm/pair-0198.html'>img_18 ↔ img_2</a> · <a href='vlm/pair-0199.html'>img_18 ↔ img_3</a> · <a href='vlm/pair-0207.html'>img_18 ↔ img_9</a> · <a href='vlm/pair-0208.html'>img_2 ↔ img_3</a> · <a href='vlm/pair-0216.html'>img_2 ↔ img_9</a> · <a href='vlm/pair-0224.html'>img_3 ↔ img_9</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0003.png' width='342' height='460' loading='lazy' alt='img_11_b' role='button' tabindex='0' data-group='s3' data-index='0'><figcaption>img_11_b</figcaption></figure>
+<figure><img src='vlm/photos/0006.png' width='690' height='460' loading='lazy' alt='img_14' role='button' tabindex='0' data-group='s3' data-index='1'><figcaption>img_14</figcaption></figure>
+<figure><img src='vlm/photos/0012.png' width='690' height='460' loading='lazy' alt='img_18' role='button' tabindex='0' data-group='s3' data-index='2'><figcaption>img_18</figcaption></figure>
+<figure><img src='vlm/photos/0013.png' width='690' height='460' loading='lazy' alt='img_2' role='button' tabindex='0' data-group='s3' data-index='3'><figcaption>img_2</figcaption></figure>
+<figure><img src='vlm/photos/0014.png' width='690' height='460' loading='lazy' alt='img_3' role='button' tabindex='0' data-group='s3' data-index='4'><figcaption>img_3</figcaption></figure>
+<figure><img src='vlm/photos/0022.png' width='690' height='460' loading='lazy' alt='img_9' role='button' tabindex='0' data-group='s3' data-index='5'><figcaption>img_9</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-09ce315bf5c8'><h2>Гипотеза 3 · фото: 5</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-09ce315bf5c8'>Открыть облака этой гипотезы ↗</a></p><p>Альтернативные назначения:</p><ul><li>img_1: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li><li>img_12: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li><li>img_17_a: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li><li>img_7: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li></ul><details><summary>Все парные основания</summary><p><a href='vlm/pair-0003.html'>img_1 ↔ img_12</a> · <a href='vlm/pair-0009.html'>img_1 ↔ img_17_a</a> · <a href='vlm/pair-0010.html'>img_1 ↔ img_17_b</a> · <a href='vlm/pair-0019.html'>img_1 ↔ img_7</a> · <a href='vlm/pair-0087.html'>img_12 ↔ img_17_a</a> · <a href='vlm/pair-0088.html'>img_12 ↔ img_17_b</a> · <a href='vlm/pair-0097.html'>img_12 ↔ img_7</a> · <a href='vlm/pair-0175.html'>img_17_a ↔ img_17_b</a> · <a href='vlm/pair-0184.html'>img_17_a ↔ img_7</a> · <a href='vlm/pair-0195.html'>img_17_b ↔ img_7</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0000.png' width='690' height='460' loading='lazy' alt='img_1' role='button' tabindex='0' data-group='s4' data-index='0'><figcaption>img_1</figcaption></figure>
+<figure><img src='vlm/photos/0004.png' width='690' height='460' loading='lazy' alt='img_12' role='button' tabindex='0' data-group='s4' data-index='1'><figcaption>img_12</figcaption></figure>
+<figure><img src='vlm/photos/0010.png' width='342' height='460' loading='lazy' alt='img_17_a' role='button' tabindex='0' data-group='s4' data-index='2'><figcaption>img_17_a</figcaption></figure>
+<figure><img src='vlm/photos/0011.png' width='342' height='460' loading='lazy' alt='img_17_b' role='button' tabindex='0' data-group='s4' data-index='3'><figcaption>img_17_b</figcaption></figure>
+<figure><img src='vlm/photos/0020.png' width='690' height='460' loading='lazy' alt='img_7' role='button' tabindex='0' data-group='s4' data-index='4'><figcaption>img_7</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-e1f3fb28860e'><h2>Гипотеза 4 · фото: 5</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-e1f3fb28860e'>Открыть облака этой гипотезы ↗</a></p><p>Альтернативные назначения:</p><ul><li>img_1: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li><li>img_12: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li><li>img_17_a: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li><li>img_7: <a href='#room-09ce315bf5c8'>Гипотеза 3</a>, <a href='#room-e1f3fb28860e'>Гипотеза 4</a></li></ul><details><summary>Все парные основания</summary><p><a href='vlm/pair-0003.html'>img_1 ↔ img_12</a> · <a href='vlm/pair-0009.html'>img_1 ↔ img_17_a</a> · <a href='vlm/pair-0018.html'>img_1 ↔ img_6</a> · <a href='vlm/pair-0019.html'>img_1 ↔ img_7</a> · <a href='vlm/pair-0087.html'>img_12 ↔ img_17_a</a> · <a href='vlm/pair-0096.html'>img_12 ↔ img_6</a> · <a href='vlm/pair-0097.html'>img_12 ↔ img_7</a> · <a href='vlm/pair-0183.html'>img_17_a ↔ img_6</a> · <a href='vlm/pair-0184.html'>img_17_a ↔ img_7</a> · <a href='vlm/pair-0247.html'>img_6 ↔ img_7</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0000.png' width='690' height='460' loading='lazy' alt='img_1' role='button' tabindex='0' data-group='s5' data-index='0'><figcaption>img_1</figcaption></figure>
+<figure><img src='vlm/photos/0004.png' width='690' height='460' loading='lazy' alt='img_12' role='button' tabindex='0' data-group='s5' data-index='1'><figcaption>img_12</figcaption></figure>
+<figure><img src='vlm/photos/0010.png' width='342' height='460' loading='lazy' alt='img_17_a' role='button' tabindex='0' data-group='s5' data-index='2'><figcaption>img_17_a</figcaption></figure>
+<figure><img src='vlm/photos/0019.png' width='690' height='460' loading='lazy' alt='img_6' role='button' tabindex='0' data-group='s5' data-index='3'><figcaption>img_6</figcaption></figure>
+<figure><img src='vlm/photos/0020.png' width='690' height='460' loading='lazy' alt='img_7' role='button' tabindex='0' data-group='s5' data-index='4'><figcaption>img_7</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-f2448722c713'><h2>Гипотеза 5 · фото: 4</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-f2448722c713'>Открыть облака этой гипотезы ↗</a></p><p>Альтернативные назначения:</p><ul><li>img_13: <a href='#room-f2448722c713'>Гипотеза 5</a>, <a href='#room-7dbeec1458c1'>Гипотеза 7</a></li><li>img_8: <a href='#room-f2448722c713'>Гипотеза 5</a>, <a href='#room-7dbeec1458c1'>Гипотеза 7</a></li></ul><details><summary>Все парные основания</summary><p><a href='vlm/pair-0025.html'>img_10 ↔ img_13</a> · <a href='vlm/pair-0035.html'>img_10 ↔ img_4_a</a> · <a href='vlm/pair-0041.html'>img_10 ↔ img_8</a> · <a href='vlm/pair-0109.html'>img_13 ↔ img_4_a</a> · <a href='vlm/pair-0115.html'>img_13 ↔ img_8</a> · <a href='vlm/pair-0230.html'>img_4_a ↔ img_8</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0001.png' width='690' height='460' loading='lazy' alt='img_10' role='button' tabindex='0' data-group='s6' data-index='0'><figcaption>img_10</figcaption></figure>
+<figure><img src='vlm/photos/0005.png' width='690' height='460' loading='lazy' alt='img_13' role='button' tabindex='0' data-group='s6' data-index='1'><figcaption>img_13</figcaption></figure>
+<figure><img src='vlm/photos/0015.png' width='342' height='460' loading='lazy' alt='img_4_a' role='button' tabindex='0' data-group='s6' data-index='2'><figcaption>img_4_a</figcaption></figure>
+<figure><img src='vlm/photos/0021.png' width='690' height='460' loading='lazy' alt='img_8' role='button' tabindex='0' data-group='s6' data-index='3'><figcaption>img_8</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-bf1a7f4cadb4'><h2>Гипотеза 6 · фото: 4</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-bf1a7f4cadb4'>Открыть облака этой гипотезы ↗</a></p><p>Альтернативные назначения:</p><ul><li>img_18: <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li><li>img_2: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li><li>img_3: <a href='#room-256bfbafa110'>Гипотеза 1</a>, <a href='#room-2336ef0b06df'>Гипотеза 2</a>, <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></li></ul><details><summary>Все парные основания</summary><p><a href='vlm/pair-0052.html'>img_11_a ↔ img_18</a> · <a href='vlm/pair-0053.html'>img_11_a ↔ img_2</a> · <a href='vlm/pair-0054.html'>img_11_a ↔ img_3</a> · <a href='vlm/pair-0198.html'>img_18 ↔ img_2</a> · <a href='vlm/pair-0199.html'>img_18 ↔ img_3</a> · <a href='vlm/pair-0208.html'>img_2 ↔ img_3</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0002.png' width='342' height='460' loading='lazy' alt='img_11_a' role='button' tabindex='0' data-group='s7' data-index='0'><figcaption>img_11_a</figcaption></figure>
+<figure><img src='vlm/photos/0012.png' width='690' height='460' loading='lazy' alt='img_18' role='button' tabindex='0' data-group='s7' data-index='1'><figcaption>img_18</figcaption></figure>
+<figure><img src='vlm/photos/0013.png' width='690' height='460' loading='lazy' alt='img_2' role='button' tabindex='0' data-group='s7' data-index='2'><figcaption>img_2</figcaption></figure>
+<figure><img src='vlm/photos/0014.png' width='690' height='460' loading='lazy' alt='img_3' role='button' tabindex='0' data-group='s7' data-index='3'><figcaption>img_3</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-7dbeec1458c1'><h2>Гипотеза 7 · фото: 3</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-7dbeec1458c1'>Открыть облака этой гипотезы ↗</a></p><p>Альтернативные назначения:</p><ul><li>img_13: <a href='#room-f2448722c713'>Гипотеза 5</a>, <a href='#room-7dbeec1458c1'>Гипотеза 7</a></li><li>img_8: <a href='#room-f2448722c713'>Гипотеза 5</a>, <a href='#room-7dbeec1458c1'>Гипотеза 7</a></li></ul><details><summary>Все парные основания</summary><p><a href='vlm/pair-0110.html'>img_13 ↔ img_4_b</a> · <a href='vlm/pair-0115.html'>img_13 ↔ img_8</a> · <a href='vlm/pair-0236.html'>img_4_b ↔ img_8</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0005.png' width='690' height='460' loading='lazy' alt='img_13' role='button' tabindex='0' data-group='s8' data-index='0'><figcaption>img_13</figcaption></figure>
+<figure><img src='vlm/photos/0016.png' width='342' height='460' loading='lazy' alt='img_4_b' role='button' tabindex='0' data-group='s8' data-index='1'><figcaption>img_4_b</figcaption></figure>
+<figure><img src='vlm/photos/0021.png' width='690' height='460' loading='lazy' alt='img_8' role='button' tabindex='0' data-group='s8' data-index='2'><figcaption>img_8</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-1a5b28dfdca0'><h2>Гипотеза 8 · фото: 2</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-1a5b28dfdca0'>Открыть облака этой гипотезы ↗</a></p><details><summary>Все парные основания</summary><p><a href='vlm/pair-0148.html'>img_16_a ↔ img_16_b</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0008.png' width='342' height='460' loading='lazy' alt='img_16_a' role='button' tabindex='0' data-group='s9' data-index='0'><figcaption>img_16_a</figcaption></figure>
+<figure><img src='vlm/photos/0009.png' width='342' height='460' loading='lazy' alt='img_16_b' role='button' tabindex='0' data-group='s9' data-index='1'><figcaption>img_16_b</figcaption></figure>
+</div>
+</section>
+<section class='section' id='room-d4c778e892d6'><h2>Гипотеза 9 · фото: 2</h2>
+<p>Принадлежность комнате предположена по VLM. Несовмещённые части в 3D показаны рядом для обзора: взаимное положение неизвестно.</p>
+<p><a href='../clouds/all-photos.html?room=room-d4c778e892d6'>Открыть облака этой гипотезы ↗</a></p><details><summary>Все парные основания</summary><p><a href='vlm/pair-0238.html'>img_5_a ↔ img_5_b</a></p></details>
+<div class='row' style='--h: 180px'>
+<figure><img src='vlm/photos/0017.png' width='342' height='460' loading='lazy' alt='img_5_a' role='button' tabindex='0' data-group='s10' data-index='0'><figcaption>img_5_a</figcaption></figure>
+<figure><img src='vlm/photos/0018.png' width='342' height='460' loading='lazy' alt='img_5_b' role='button' tabindex='0' data-group='s10' data-index='1'><figcaption>img_5_b</figcaption></figure>
+</div>
+</section>
+<section class='section' id='unassigned'><h2>Без назначения комнате</h2>
+<p>Все фото входят хотя бы в одну гипотезу; неоднозначность сохранена.</p>
+
+</section>
+<section class='section' id='doorways'><h2>Предполагаемые проходы</h2>
+<p>Сохранены парные свидетельства проёмов. Несколько назначений комнаты дают альтернативы одной связи, а не несколько обнаруженных дверей. Положение и ширина не определены.</p>
+<table><tr><th>Фото и основания</th><th>Возможные гипотезы</th><th>Назначение</th></tr><tr><td><a href='vlm/pair-0013.html'>img_1 ↔ img_3</a></td><td><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a><br><a href='#room-2336ef0b06df'>Гипотеза 2</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-256bfbafa110'>Гипотеза 1</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-bf1a7f4cadb4'>Гипотеза 6</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0085.html'>img_12 ↔ img_16_a</a></td><td><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-1a5b28dfdca0'>Гипотеза 8</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0086.html'>img_12 ↔ img_16_b</a></td><td><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-1a5b28dfdca0'>Гипотеза 8</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0091.html'>img_12 ↔ img_3</a></td><td><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a><br><a href='#room-2336ef0b06df'>Гипотеза 2</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-256bfbafa110'>Гипотеза 1</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-bf1a7f4cadb4'>Гипотеза 6</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0118.html'>img_14 ↔ img_16_a</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0129.html'>img_14 ↔ img_6</a></td><td><a href='#room-2336ef0b06df'>Гипотеза 2</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-256bfbafa110'>Гипотеза 1</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0133.html'>img_15 ↔ img_16_a</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a></td><td>Однозначные гипотезы</td></tr><tr><td><a href='vlm/pair-0151.html'>img_16_a ↔ img_18</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0152.html'>img_16_a ↔ img_2</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0153.html'>img_16_a ↔ img_3</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0158.html'>img_16_a ↔ img_6</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Однозначные гипотезы</td></tr><tr><td><a href='vlm/pair-0160.html'>img_16_a ↔ img_8</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-7dbeec1458c1'>Гипотеза 7</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-f2448722c713'>Гипотеза 5</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0161.html'>img_16_a ↔ img_9</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0166.html'>img_16_b ↔ img_3</a></td><td><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-1a5b28dfdca0'>Гипотеза 8</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0178.html'>img_17_a ↔ img_3</a></td><td><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a><br><a href='#room-2336ef0b06df'>Гипотеза 2</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-256bfbafa110'>Гипотеза 1</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-bf1a7f4cadb4'>Гипотеза 6</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0189.html'>img_17_b ↔ img_3</a></td><td><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0213.html'>img_2 ↔ img_6</a></td><td><a href='#room-2336ef0b06df'>Гипотеза 2</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-256bfbafa110'>Гипотеза 1</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-bf1a7f4cadb4'>Гипотеза 6</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0221.html'>img_3 ↔ img_6</a></td><td><a href='#room-2336ef0b06df'>Гипотеза 2</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-256bfbafa110'>Гипотеза 1</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-bf1a7f4cadb4'>Гипотеза 6</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0222.html'>img_3 ↔ img_7</a></td><td><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-2336ef0b06df'>Гипотеза 2</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-256bfbafa110'>Гипотеза 1</a><br><a href='#room-09ce315bf5c8'>Гипотеза 3</a> ↔ <a href='#room-bf1a7f4cadb4'>Гипотеза 6</a><br><a href='#room-2336ef0b06df'>Гипотеза 2</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-256bfbafa110'>Гипотеза 1</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a><br><a href='#room-bf1a7f4cadb4'>Гипотеза 6</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Неоднозначно / неизвестно</td></tr><tr><td><a href='vlm/pair-0234.html'>img_4_b ↔ img_6</a></td><td><a href='#room-7dbeec1458c1'>Гипотеза 7</a> ↔ <a href='#room-e1f3fb28860e'>Гипотеза 4</a></td><td>Однозначные гипотезы</td></tr></table>
+</section>
+<section class='section' id='conflicts'><h2>Несогласованные и неполные цепочки</h2>
+<p>Две пары утверждают одну комнату, а третья даёт «нет» или «неизвестно». Противоречия показаны для проверки; вручную правильный ответ не подставлен.</p>
+<table><tr><th>Тройка</th><th>Неразрешённая пара</th><th>Основания</th></tr><tr><td>img_1 · img_17_b · img_6</td><td>img_17_b ↔ img_6: неизвестно</td><td><a href='vlm/pair-0010.html'>img_1 ↔ img_17_b</a> · <a href='vlm/pair-0018.html'>img_1 ↔ img_6</a> · <a href='vlm/pair-0194.html'>img_17_b ↔ img_6</a></td></tr><tr><td>img_10 · img_13 · img_4_b</td><td>img_10 ↔ img_4_b: неизвестно</td><td><a href='vlm/pair-0025.html'>img_10 ↔ img_13</a> · <a href='vlm/pair-0036.html'>img_10 ↔ img_4_b</a> · <a href='vlm/pair-0110.html'>img_13 ↔ img_4_b</a></td></tr><tr><td>img_10 · img_4_b · img_8</td><td>img_10 ↔ img_4_b: неизвестно</td><td><a href='vlm/pair-0036.html'>img_10 ↔ img_4_b</a> · <a href='vlm/pair-0041.html'>img_10 ↔ img_8</a> · <a href='vlm/pair-0236.html'>img_4_b ↔ img_8</a></td></tr><tr><td>img_11_a · img_11_b · img_18</td><td>img_11_a ↔ img_11_b: нет</td><td><a href='vlm/pair-0043.html'>img_11_a ↔ img_11_b</a> · <a href='vlm/pair-0052.html'>img_11_a ↔ img_18</a> · <a href='vlm/pair-0071.html'>img_11_b ↔ img_18</a></td></tr><tr><td>img_11_a · img_11_b · img_2</td><td>img_11_a ↔ img_11_b: нет</td><td><a href='vlm/pair-0043.html'>img_11_a ↔ img_11_b</a> · <a href='vlm/pair-0053.html'>img_11_a ↔ img_2</a> · <a href='vlm/pair-0072.html'>img_11_b ↔ img_2</a></td></tr><tr><td>img_11_a · img_11_b · img_3</td><td>img_11_a ↔ img_11_b: нет</td><td><a href='vlm/pair-0043.html'>img_11_a ↔ img_11_b</a> · <a href='vlm/pair-0054.html'>img_11_a ↔ img_3</a> · <a href='vlm/pair-0073.html'>img_11_b ↔ img_3</a></td></tr><tr><td>img_11_a · img_14 · img_18</td><td>img_11_a ↔ img_14: нет</td><td><a href='vlm/pair-0046.html'>img_11_a ↔ img_14</a> · <a href='vlm/pair-0052.html'>img_11_a ↔ img_18</a> · <a href='vlm/pair-0122.html'>img_14 ↔ img_18</a></td></tr><tr><td>img_11_a · img_14 · img_2</td><td>img_11_a ↔ img_14: нет</td><td><a href='vlm/pair-0046.html'>img_11_a ↔ img_14</a> · <a href='vlm/pair-0053.html'>img_11_a ↔ img_2</a> · <a href='vlm/pair-0123.html'>img_14 ↔ img_2</a></td></tr><tr><td>img_11_a · img_14 · img_3</td><td>img_11_a ↔ img_14: нет</td><td><a href='vlm/pair-0046.html'>img_11_a ↔ img_14</a> · <a href='vlm/pair-0054.html'>img_11_a ↔ img_3</a> · <a href='vlm/pair-0124.html'>img_14 ↔ img_3</a></td></tr><tr><td>img_11_a · img_15 · img_2</td><td>img_11_a ↔ img_15: нет</td><td><a href='vlm/pair-0047.html'>img_11_a ↔ img_15</a> · <a href='vlm/pair-0053.html'>img_11_a ↔ img_2</a> · <a href='vlm/pair-0138.html'>img_15 ↔ img_2</a></td></tr><tr><td>img_11_a · img_15 · img_3</td><td>img_11_a ↔ img_15: нет</td><td><a href='vlm/pair-0047.html'>img_11_a ↔ img_15</a> · <a href='vlm/pair-0054.html'>img_11_a ↔ img_3</a> · <a href='vlm/pair-0139.html'>img_15 ↔ img_3</a></td></tr><tr><td>img_11_a · img_18 · img_9</td><td>img_11_a ↔ img_9: нет</td><td><a href='vlm/pair-0052.html'>img_11_a ↔ img_18</a> · <a href='vlm/pair-0062.html'>img_11_a ↔ img_9</a> · <a href='vlm/pair-0207.html'>img_18 ↔ img_9</a></td></tr><tr><td>img_11_a · img_2 · img_9</td><td>img_11_a ↔ img_9: нет</td><td><a href='vlm/pair-0053.html'>img_11_a ↔ img_2</a> · <a href='vlm/pair-0062.html'>img_11_a ↔ img_9</a> · <a href='vlm/pair-0216.html'>img_2 ↔ img_9</a></td></tr><tr><td>img_11_a · img_3 · img_9</td><td>img_11_a ↔ img_9: нет</td><td><a href='vlm/pair-0054.html'>img_11_a ↔ img_3</a> · <a href='vlm/pair-0062.html'>img_11_a ↔ img_9</a> · <a href='vlm/pair-0224.html'>img_3 ↔ img_9</a></td></tr><tr><td>img_11_b · img_15 · img_18</td><td>img_15 ↔ img_18: неизвестно</td><td><a href='vlm/pair-0066.html'>img_11_b ↔ img_15</a> · <a href='vlm/pair-0071.html'>img_11_b ↔ img_18</a> · <a href='vlm/pair-0137.html'>img_15 ↔ img_18</a></td></tr><tr><td>img_12 · img_17_b · img_6</td><td>img_17_b ↔ img_6: неизвестно</td><td><a href='vlm/pair-0088.html'>img_12 ↔ img_17_b</a> · <a href='vlm/pair-0096.html'>img_12 ↔ img_6</a> · <a href='vlm/pair-0194.html'>img_17_b ↔ img_6</a></td></tr><tr><td>img_13 · img_4_a · img_4_b</td><td>img_4_a ↔ img_4_b: неизвестно</td><td><a href='vlm/pair-0109.html'>img_13 ↔ img_4_a</a> · <a href='vlm/pair-0110.html'>img_13 ↔ img_4_b</a> · <a href='vlm/pair-0225.html'>img_4_a ↔ img_4_b</a></td></tr><tr><td>img_14 · img_15 · img_18</td><td>img_15 ↔ img_18: неизвестно</td><td><a href='vlm/pair-0117.html'>img_14 ↔ img_15</a> · <a href='vlm/pair-0122.html'>img_14 ↔ img_18</a> · <a href='vlm/pair-0137.html'>img_15 ↔ img_18</a></td></tr><tr><td>img_15 · img_18 · img_2</td><td>img_15 ↔ img_18: неизвестно</td><td><a href='vlm/pair-0137.html'>img_15 ↔ img_18</a> · <a href='vlm/pair-0138.html'>img_15 ↔ img_2</a> · <a href='vlm/pair-0198.html'>img_18 ↔ img_2</a></td></tr><tr><td>img_15 · img_18 · img_3</td><td>img_15 ↔ img_18: неизвестно</td><td><a href='vlm/pair-0137.html'>img_15 ↔ img_18</a> · <a href='vlm/pair-0139.html'>img_15 ↔ img_3</a> · <a href='vlm/pair-0199.html'>img_18 ↔ img_3</a></td></tr><tr><td>img_15 · img_18 · img_9</td><td>img_15 ↔ img_18: неизвестно</td><td><a href='vlm/pair-0137.html'>img_15 ↔ img_18</a> · <a href='vlm/pair-0147.html'>img_15 ↔ img_9</a> · <a href='vlm/pair-0207.html'>img_18 ↔ img_9</a></td></tr><tr><td>img_17_a · img_17_b · img_6</td><td>img_17_b ↔ img_6: неизвестно</td><td><a href='vlm/pair-0175.html'>img_17_a ↔ img_17_b</a> · <a href='vlm/pair-0183.html'>img_17_a ↔ img_6</a> · <a href='vlm/pair-0194.html'>img_17_b ↔ img_6</a></td></tr><tr><td>img_17_b · img_6 · img_7</td><td>img_17_b ↔ img_6: неизвестно</td><td><a href='vlm/pair-0194.html'>img_17_b ↔ img_6</a> · <a href='vlm/pair-0195.html'>img_17_b ↔ img_7</a> · <a href='vlm/pair-0247.html'>img_6 ↔ img_7</a></td></tr><tr><td>img_4_a · img_4_b · img_8</td><td>img_4_a ↔ img_4_b: неизвестно</td><td><a href='vlm/pair-0225.html'>img_4_a ↔ img_4_b</a> · <a href='vlm/pair-0230.html'>img_4_a ↔ img_8</a> · <a href='vlm/pair-0236.html'>img_4_b ↔ img_8</a></td></tr></table>
+</section>
+<section class='section' id='candidates'><h2>Кандидаты для повторной реконструкции</h2>
+<p>VLM поддерживает перекрытие, но хотя бы одна ветвь не приняла жёсткое совмещение. Сохранённые преобразования доступны для осмотра. Новые позы, масштабные поправки и геометрические связи здесь не применены.</p>
+<table><tr><th>Фото и основания</th><th>Геометрия</th><th>Сохранённые варианты</th></tr><tr><td><a href='vlm/pair-0003.html'>img_1 ↔ img_12</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.932) · <a href='../clouds/003_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.963) · <a href='../clouds/003_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0009.html'>img_1 ↔ img_17_a</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.877) · <a href='../clouds/009_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.883) · <a href='../clouds/009_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0010.html'>img_1 ↔ img_17_b</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/010_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/010_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0013.html'>img_1 ↔ img_3</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/013_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/013_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0018.html'>img_1 ↔ img_6</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.904) · <a href='../clouds/018_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.962) · <a href='../clouds/018_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0019.html'>img_1 ↔ img_7</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/019_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/019_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0040.html'>img_10 ↔ img_7</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование не получено<br>MoGe-2: отклонено; преобразование не получено</td></tr><tr><td><a href='vlm/pair-0041.html'>img_10 ↔ img_8</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/041_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/041_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0053.html'>img_11_a ↔ img_2</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.932) · <a href='../clouds/053_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.958) · <a href='../clouds/053_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0066.html'>img_11_b ↔ img_15</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.110) · <a href='../clouds/066_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.999) · <a href='../clouds/066_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0072.html'>img_11_b ↔ img_2</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.127) · <a href='../clouds/072_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.030) · <a href='../clouds/072_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0073.html'>img_11_b ↔ img_3</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.069) · <a href='../clouds/073_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.031) · <a href='../clouds/073_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0081.html'>img_11_b ↔ img_9</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.158) · <a href='../clouds/081_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.045) · <a href='../clouds/081_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0086.html'>img_12 ↔ img_16_b</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/086_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/086_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0087.html'>img_12 ↔ img_17_a</a></td><td>Модели расходятся</td><td>MetricAnything: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.937) · <a href='../clouds/087_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.912) · <a href='../clouds/087_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0088.html'>img_12 ↔ img_17_b</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/088_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/088_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0097.html'>img_12 ↔ img_7</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/097_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/097_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0115.html'>img_13 ↔ img_8</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/115_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/115_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0118.html'>img_14 ↔ img_16_a</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/118_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.969) · <a href='../clouds/118_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0122.html'>img_14 ↔ img_18</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.064) · <a href='../clouds/122_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.967) · <a href='../clouds/122_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0124.html'>img_14 ↔ img_3</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.035) · <a href='../clouds/124_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.019) · <a href='../clouds/124_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0129.html'>img_14 ↔ img_6</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/129_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/129_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0132.html'>img_14 ↔ img_9</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.097) · <a href='../clouds/132_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.996) · <a href='../clouds/132_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0139.html'>img_15 ↔ img_3</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/139_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/139_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0153.html'>img_16_a ↔ img_3</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/153_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено · <a href='../clouds/153_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0158.html'>img_16_a ↔ img_6</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/158_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено · <a href='../clouds/158_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0175.html'>img_17_a ↔ img_17_b</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/175_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/175_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0183.html'>img_17_a ↔ img_6</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/183_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.082) · <a href='../clouds/183_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0184.html'>img_17_a ↔ img_7</a></td><td>Модели расходятся</td><td>MetricAnything: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.969) · <a href='../clouds/184_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.046) · <a href='../clouds/184_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0199.html'>img_18 ↔ img_3</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/199_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/199_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0207.html'>img_18 ↔ img_9</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/207_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/207_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0213.html'>img_2 ↔ img_6</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/213_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/213_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0224.html'>img_3 ↔ img_9</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/224_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/224_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0234.html'>img_4_b ↔ img_6</a></td><td>Модели расходятся</td><td>MetricAnything: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.034) · <a href='../clouds/234_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=1.146) · <a href='../clouds/234_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0238.html'>img_5_a ↔ img_5_b</a></td><td>Модели расходятся</td><td>MetricAnything: отклонено; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.887) · <a href='../clouds/238_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: принято; преобразование сохранено; вариант с масштабом прошёл проверки (s=0.930) · <a href='../clouds/238_roma_moge2.html'>Кандидат 3D ↗</a></td></tr><tr><td><a href='vlm/pair-0247.html'>img_6 ↔ img_7</a></td><td>Нет принятой связи у обеих моделей</td><td>MetricAnything: отклонено; преобразование сохранено · <a href='../clouds/247_roma_metricanything.html'>Кандидат 3D ↗</a><br>MoGe-2: отклонено; преобразование сохранено · <a href='../clouds/247_roma_moge2.html'>Кандидат 3D ↗</a></td></tr></table>
+</section>
+</main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
+window.planrecPhotoViewer = function () {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'photo-viewer';
+  dialog.setAttribute('aria-label', 'Просмотр фотографии');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Закрыть (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Предыдущее фото (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Следующее фото (→)">›</button></div>
+    <div class="photo-caption" aria-live="polite"></div>
+    <a class="photo-report" hidden>Отчёт фото ↗</a>`;
+  document.body.append(dialog);
+  const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
+  const report = dialog.querySelector('.photo-report');
+  const previous = dialog.querySelector('.photo-prev'), next = dialog.querySelector('.photo-next');
+  let items = [], index = 0, opener;
+  function show() {
+    const item = items[index];
+    image.src = item.src; image.alt = item.caption || '';
+    caption.textContent = [item.caption, `${index + 1} / ${items.length}`].filter(Boolean).join('\n');
+    report.hidden = !item.href;
+    if (item.href) report.href = item.href; else report.removeAttribute('href');
+    previous.hidden = next.hidden = items.length < 2;
+  }
+  function step(direction) {
+    index = (index + direction + items.length) % items.length;
+    show();
+  }
+  previous.onclick = () => step(-1);
+  next.onclick = () => step(1);
+  dialog.querySelector('.photo-close').onclick = () => dialog.close();
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog || event.target.classList.contains('photo-stage')) dialog.close();
+  });
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1);
+    }
+  });
+  dialog.addEventListener('close', () => {
+    document.body.classList.remove('photo-viewer-open');
+    image.removeAttribute('src');
+    if (opener?.isConnected) opener.focus({preventScroll: true});
+  });
+  return {
+    open(photos, selectedIndex, trigger = document.activeElement) {
+      if (!photos?.length || !photos[selectedIndex]) return;
+      items = photos; index = selectedIndex; opener = trigger;
+      show();
+      if (!dialog.open) dialog.showModal();
+      document.body.classList.add('photo-viewer-open');
+      dialog.querySelector('.photo-close').focus({preventScroll: true});
+    },
+  };
+};
+
+const groups = {"s2": [{"src": "vlm/photos/0003.png", "caption": "img_11_b"}, {"src": "vlm/photos/0006.png", "caption": "img_14"}, {"src": "vlm/photos/0007.png", "caption": "img_15"}, {"src": "vlm/photos/0013.png", "caption": "img_2"}, {"src": "vlm/photos/0014.png", "caption": "img_3"}, {"src": "vlm/photos/0022.png", "caption": "img_9"}], "s3": [{"src": "vlm/photos/0003.png", "caption": "img_11_b"}, {"src": "vlm/photos/0006.png", "caption": "img_14"}, {"src": "vlm/photos/0012.png", "caption": "img_18"}, {"src": "vlm/photos/0013.png", "caption": "img_2"}, {"src": "vlm/photos/0014.png", "caption": "img_3"}, {"src": "vlm/photos/0022.png", "caption": "img_9"}], "s4": [{"src": "vlm/photos/0000.png", "caption": "img_1"}, {"src": "vlm/photos/0004.png", "caption": "img_12"}, {"src": "vlm/photos/0010.png", "caption": "img_17_a"}, {"src": "vlm/photos/0011.png", "caption": "img_17_b"}, {"src": "vlm/photos/0020.png", "caption": "img_7"}], "s5": [{"src": "vlm/photos/0000.png", "caption": "img_1"}, {"src": "vlm/photos/0004.png", "caption": "img_12"}, {"src": "vlm/photos/0010.png", "caption": "img_17_a"}, {"src": "vlm/photos/0019.png", "caption": "img_6"}, {"src": "vlm/photos/0020.png", "caption": "img_7"}], "s6": [{"src": "vlm/photos/0001.png", "caption": "img_10"}, {"src": "vlm/photos/0005.png", "caption": "img_13"}, {"src": "vlm/photos/0015.png", "caption": "img_4_a"}, {"src": "vlm/photos/0021.png", "caption": "img_8"}], "s7": [{"src": "vlm/photos/0002.png", "caption": "img_11_a"}, {"src": "vlm/photos/0012.png", "caption": "img_18"}, {"src": "vlm/photos/0013.png", "caption": "img_2"}, {"src": "vlm/photos/0014.png", "caption": "img_3"}], "s8": [{"src": "vlm/photos/0005.png", "caption": "img_13"}, {"src": "vlm/photos/0016.png", "caption": "img_4_b"}, {"src": "vlm/photos/0021.png", "caption": "img_8"}], "s9": [{"src": "vlm/photos/0008.png", "caption": "img_16_a"}, {"src": "vlm/photos/0009.png", "caption": "img_16_b"}], "s10": [{"src": "vlm/photos/0017.png", "caption": "img_5_a"}, {"src": "vlm/photos/0018.png", "caption": "img_5_b"}]};
+
+const photoViewer = window.planrecPhotoViewer();
+function openViewer(group, index, trigger = document.activeElement) {
+  photoViewer.open(groups[group], index, trigger);
+}
+document.addEventListener("click", event => {
+  const target = event.target.closest("[data-group]");
+  if (target) openViewer(target.dataset.group, Number(target.dataset.index), target);
+});
+for (const table of document.querySelectorAll("table.m")) {
+  table.addEventListener("mouseover", (e) => {
+    for (const th of table.querySelectorAll("th.hl")) th.classList.remove("hl");
+    const td = e.target.closest("td[data-r]");
+    if (!td) return;
+    table.querySelector(`th.rh[data-r="${td.dataset.r}"]`).classList.add("hl");
+    table.querySelector(`th.ch[data-c="${td.dataset.c}"]`).classList.add("hl");
+  });
+}
+document.addEventListener('keydown', e => {
+ const el=e.target.closest('img[data-group]');
+ if(el && (e.key==='Enter'||e.key===' ')){e.preventDefault();openViewer(el.dataset.group,
++el.dataset.index);}
+});
+for(const select of document.querySelectorAll('[data-panel-select]')) {
+ select.addEventListener('change',()=>{
+  for(const panel of select.parentElement.querySelectorAll(':scope > [data-panel]')) {
+   panel.hidden=panel.dataset.panel!==select.value;
+  }
+ });
+}
+for(const browser of document.querySelectorAll('.pair-browser')) {
+ const body=browser.querySelector('tbody'),rows=Array.from(body.rows),q=s=>browser.querySelector(s);
+ let page=0,sort=-1,ascending=false;
+ const storageKey='pair-browser:'+location.pathname;
+ try {
+  const saved=JSON.parse(sessionStorage.getItem(storageKey)||'null');
+  if(saved){page=saved.page;sort=saved.sort;ascending=saved.ascending;
+   for(const key of ['photo','status','query','count'])q(`[data-${key}]`).value=saved[key];}
+ } catch {}
+ const hash=new URLSearchParams(location.hash.slice(1));
+ if(hash.has('photo'))q('[data-photo]').value=hash.get('photo');
+ function draw(){
+  const photo=q('[data-photo]').value,status=q('[data-status]').value,
+query=q('[data-query]').value.toLowerCase().trim(),limit=+q('[data-count]').value;
+  let selected=rows.filter(r=>(!photo||r.dataset.a===photo||r.dataset.b===photo)
+   &&(!status||r.dataset.status===status)
+   &&(!query||r.textContent.toLowerCase().includes(query)));
+  if(sort>=0)selected.sort((a,b)=>{let x=a.cells[sort].dataset.value,y=b.cells[sort].dataset.value;
+   const cmp=x!==''&&y!==''&&!isNaN(x)&&!isNaN(y)?Number(x)-Number(y):x.localeCompare(y,
+'ru');return ascending?cmp:-cmp;});
+  page=Math.min(page,Math.max(0,Math.ceil(selected.length/limit)-1));
+  for(const row of rows)row.hidden=true;
+  selected.slice(page*limit,(page+1)*limit).forEach(r=>{r.hidden=false;body.append(r);});
+  const end=Math.min((page+1)*limit,selected.length);
+  q('[data-total]').textContent=selected.length?
+   `${page*limit+1}–${end} из ${selected.length} пар`:'Пары не найдены';
+  q('[data-prev]').disabled=page===0;q('[data-next]').disabled=(page+1)*limit>=selected.length;
+  try{sessionStorage.setItem(storageKey,JSON.stringify({photo,status,query,count:limit,
+   page,sort,ascending}));}catch{}
+ }
+ for(const el of browser.querySelectorAll('.filters select,.filters input')) {
+  el.addEventListener('input',()=>{page=0;draw();});
+ }
+ for(const button of browser.querySelectorAll('[data-sort]'))button.onclick=()=>{
+const n=+button.dataset.sort;ascending=sort===n?!ascending:false;sort=n;page=0;
+  for(const th of browser.querySelectorAll('th'))th.removeAttribute('aria-sort');
+button.parentElement.setAttribute('aria-sort',ascending?'ascending':'descending');draw();};
+ q('[data-prev]').onclick=()=>{page--;draw();};q('[data-next]').onclick=()=>{page++;draw();};draw();
+}
+</script></body></html>

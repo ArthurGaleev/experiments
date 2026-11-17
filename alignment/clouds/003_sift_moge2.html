@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>img_1 ↔ img_12 · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=ff8601677c37">
-<link rel="stylesheet" href="photo-view.css?v=ff8601677c37">
-<script src="plotly.min.js" defer></script><script src="photo-view.js?v=ff8601677c37" defer></script>
-<script src="cloud-view.js?v=ff8601677c37" defer></script>
+<title>img_1 ↔ img_12 · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=3c79a0dbda7e">
+<link rel="stylesheet" href="photo-view.css?v=3c79a0dbda7e">
+<script src="plotly.min.js" defer></script><script src="photo-view.js?v=3c79a0dbda7e" defer></script>
+<script src="room-view.js?v=3c79a0dbda7e" defer></script>
+<script src="cloud-view.js?v=3c79a0dbda7e" defer></script>
 </head><body><main>
 <a href="../pair-0003.html">← К отчёту</a><h1>img_1 ↔ img_12 · SIFT × MoGe-2</h1>
 <p id="scene-note">принято; проверочные соответствия: 39/51; медиана ошибки 3D: 0.068 м; гравитация: 2.1°. Отклонённая гипотеза не используется для сборки группы.</p>
@@ -12,6 +13,7 @@
   <label id="matcher-control" hidden>Сопоставление <select id="matcher"></select></label>
   <label id="model-control" hidden><span id="model-label">Модель</span> <select id="model"></select></label>
   <label id="vlm-control" hidden><input type="checkbox" id="vlm" aria-describedby="vlm-status"> VLM: проверка связей</label>
+  <label id="rooms-control" hidden><input type="checkbox" id="rooms"> Гипотезы комнат и проходов</label>
   <div class="segments" id="representation" role="group" aria-label="Представление">
     <button data-mode="points" aria-pressed="true">Точки</button>
     <button data-mode="planes" aria-pressed="false">Участки · экспериментально</button>
@@ -19,6 +21,12 @@
   </div>
 </div>
 <p id="vlm-status" class="muted" role="status" hidden></p>
+<section id="room-controls" class="room-controls" hidden>
+  <div class="toolbar"><label>Предполагаемая комната <select id="room-choice"></select></label>
+  <label><input type="checkbox" id="room-extra" checked> Показать несовмещённые облака</label></div>
+  <p id="room-warning" class="warning">Принадлежность комнате предположена. Несовмещённые части разнесены только для обзора — их взаимное положение неизвестно.</p>
+  <div id="room-details"></div>
+</section>
 <div class="toolbar" id="detail-control"><span>До точек на фото</span>
   <div class="segments" id="detail" role="group" aria-label="Количество точек на фото">
     <button data-limit="1000" aria-pressed="false">1k</button>
@@ -61,6 +69,10 @@
 общую систему координат. Неизвестные случаи не считаются подтверждением VLM.</p>
 <p>Циклы проверяют согласованность путей, но позы здесь не оптимизируются.
 Цвет подгрупп показывает связность выбранных фото, а не правильность геометрии.</p>
+<p>Гипотезы комнат собраны из взаимно положительных ответов VLM. Пересекающиеся
+наборы — альтернативы, их количество не равно числу комнат квартиры. В виде комнаты
+геометрические части разнесены для обзора; расстояния между ними и физическое размещение
+не определены. Этот показ не меняет XYZ, позы, масштаб или допуск геометрических связей.</p>
 <p>Масштаб задан моделью в метрах; нулевая высота проходит через камеру, а не пол.
 GeoCalib задаёт общий поворот каждой компоненты. При его выключении вертикаль мира
 не определена. XYZ и K каждой модели используются вместе.</p>
@@ -74,4 +86,4 @@ GeoCalib задаёт общий поворот каждой компонент�
 проверить пропуски по исходному облаку.</p>
 </details>
 <noscript>Для интерактивного просмотра требуется JavaScript.</noscript>
-</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"sources":[{"id":"img_1","name":"img_1","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.16572184928069916,-0.11048123285379945,0.3],[0.1657218492806992,-0.11048123285379945,0.3],[0.1657218492806992,0.11048123285379945,0.3],[-0.16572184928069916,0.11048123285379945,0.3]],"chunks":[{"key":"caf7461629fd595a4f311dd0","url":"points-caf7461629fd595a4f311dd0.js","bytes":20109,"start":0,"end":1000},{"key":"7b7ceb79fe58b05f02a84b9e","url":"points-7b7ceb79fe58b05f02a84b9e.js","bytes":20109,"start":1000,"end":2000},{"key":"04bd634f95e7b771a769b724","url":"points-04bd634f95e7b771a769b724.js","bytes":60109,"start":2000,"end":5000},{"key":"6f769c51d5b17d6d72ae5569","url":"points-6f769c51d5b17d6d72ae5569.js","bytes":100109,"start":5000,"end":10000},{"key":"cd88b6495e9ba99651370e57","url":"points-cd88b6495e9ba99651370e57.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_1.jpg","href":"../photo-img_1.html","reference":false,"planes":{"key":"75145a988025517c1e8eec67","url":"planes-75145a988025517c1e8eec67.js","bytes":27247,"count":22,"coverage":0.8443604284814115,"triangles":442}},{"id":"img_12","name":"img_12","pose":[[0.8333126502004433,-0.0027050992593312295,0.55279535947212,-0.6361843375565304],[-0.008962486959995965,0.9997904799847218,0.01840298778489889,0.10722191217739789],[-0.5527293196885839,-0.02028986372345557,0.8331138101044044,0.44319127439474076],[0.0,0.0,0.0,1.0]],"corners":[[-0.22715396102376872,-0.15143597401584583,0.3],[0.22715396102376878,-0.15143597401584583,0.3],[0.22715396102376878,0.15143597401584585,0.3],[-0.22715396102376872,0.15143597401584585,0.3]],"chunks":[{"key":"c144f06103ecdda85c9b9050","url":"points-c144f06103ecdda85c9b9050.js","bytes":20109,"start":0,"end":1000},{"key":"8e0662443bf206f7a8b508b2","url":"points-8e0662443bf206f7a8b508b2.js","bytes":20109,"start":1000,"end":2000},{"key":"6adddd87eb6fdecbd27e0d4f","url":"points-6adddd87eb6fdecbd27e0d4f.js","bytes":60109,"start":2000,"end":5000},{"key":"39d9af19c07f77e4be3a5aa3","url":"points-39d9af19c07f77e4be3a5aa3.js","bytes":100109,"start":5000,"end":10000},{"key":"b79670b592afc0ac07b71010","url":"points-b79670b592afc0ac07b71010.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_12.jpg","href":"../photo-img_12.html","reference":false,"planes":{"key":"0fd3f4c995931a7152afb104","url":"planes-0fd3f4c995931a7152afb104.js","bytes":52515,"count":38,"coverage":0.6418147448015122,"triangles":854}}],"components":[{"id":"0","ids":["img_1","img_12"],"rotation":[[0.9999795196640705,0.006400019719891298,0.0],[9.71903982704813e-05,-0.015185641924885553,0.9998846867681072],[0.006399281712933218,-0.9998642087938312,-0.01518595293830314]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[0.006399281712933218,-0.9998642087938312,-0.01518595293830314],"ranges":[[-1.4118254563030996,4.354471963098606],[-0.11623794472111414,3.0221865627489675],[-1.626786945846801,1.4404307868147963]],"rawRanges":[[-1.4114387273194375,4.359277747516982],[-0.11571001037810433,3.0084602698307124],[-1.6162837433761852,1.4595363820540517]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":[["img_1","img_12"]],"treeEdges":[],"initial":["img_1","img_12"]}],"defaultLimit":2000,"multiview":true}</script></body></html>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"sources":[{"id":"img_1","name":"img_1","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.16572184928069916,-0.11048123285379945,0.3],[0.1657218492806992,-0.11048123285379945,0.3],[0.1657218492806992,0.11048123285379945,0.3],[-0.16572184928069916,0.11048123285379945,0.3]],"chunks":[{"key":"caf7461629fd595a4f311dd0","url":"points-caf7461629fd595a4f311dd0.js","bytes":20109,"start":0,"end":1000},{"key":"7b7ceb79fe58b05f02a84b9e","url":"points-7b7ceb79fe58b05f02a84b9e.js","bytes":20109,"start":1000,"end":2000},{"key":"04bd634f95e7b771a769b724","url":"points-04bd634f95e7b771a769b724.js","bytes":60109,"start":2000,"end":5000},{"key":"6f769c51d5b17d6d72ae5569","url":"points-6f769c51d5b17d6d72ae5569.js","bytes":100109,"start":5000,"end":10000},{"key":"cd88b6495e9ba99651370e57","url":"points-cd88b6495e9ba99651370e57.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_1.jpg","href":"../photo-img_1.html","reference":false,"planes":{"key":"75145a988025517c1e8eec67","url":"planes-75145a988025517c1e8eec67.js","bytes":27247,"count":22,"coverage":0.8443604284814115,"triangles":442}},{"id":"img_12","name":"img_12","pose":[[0.8333126502004433,-0.0027050992593312295,0.55279535947212,-0.6361843375565304],[-0.008962486959995965,0.9997904799847218,0.01840298778489889,0.10722191217739789],[-0.5527293196885839,-0.02028986372345557,0.8331138101044044,0.44319127439474076],[0.0,0.0,0.0,1.0]],"corners":[[-0.22715396102376872,-0.15143597401584583,0.3],[0.22715396102376878,-0.15143597401584583,0.3],[0.22715396102376878,0.15143597401584585,0.3],[-0.22715396102376872,0.15143597401584585,0.3]],"chunks":[{"key":"c144f06103ecdda85c9b9050","url":"points-c144f06103ecdda85c9b9050.js","bytes":20109,"start":0,"end":1000},{"key":"8e0662443bf206f7a8b508b2","url":"points-8e0662443bf206f7a8b508b2.js","bytes":20109,"start":1000,"end":2000},{"key":"6adddd87eb6fdecbd27e0d4f","url":"points-6adddd87eb6fdecbd27e0d4f.js","bytes":60109,"start":2000,"end":5000},{"key":"39d9af19c07f77e4be3a5aa3","url":"points-39d9af19c07f77e4be3a5aa3.js","bytes":100109,"start":5000,"end":10000},{"key":"b79670b592afc0ac07b71010","url":"points-b79670b592afc0ac07b71010.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_12.jpg","href":"../photo-img_12.html","reference":false,"planes":{"key":"0fd3f4c995931a7152afb104","url":"planes-0fd3f4c995931a7152afb104.js","bytes":52515,"count":38,"coverage":0.6418147448015122,"triangles":854}}],"components":[{"id":"0","ids":["img_1","img_12"],"rotation":[[0.9999795196640705,0.006400019719891298,0.0],[9.71903982704813e-05,-0.015185641924885553,0.9998846867681072],[0.006399281712933218,-0.9998642087938312,-0.01518595293830314]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[0.006399281712933218,-0.9998642087938312,-0.01518595293830314],"ranges":[[-1.4118254563030996,4.354471963098606],[-0.11623794472111414,3.0221865627489675],[-1.626786945846801,1.4404307868147963]],"rawRanges":[[-1.4114387273194375,4.359277747516982],[-0.11571001037810433,3.0084602698307124],[-1.6162837433761852,1.4595363820540517]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":[["img_1","img_12"]],"treeEdges":[],"initial":["img_1","img_12"]}],"defaultLimit":2000,"multiview":true,"semantics":null}</script></body></html>

@@ -1,4 +1,4 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_11_a ↔ img_2</title><style>
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>VLM · img_1 ↔ img_15</title><style>
 * { box-sizing: border-box; }
 body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
 main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
@@ -111,22 +111,22 @@ dialog.photo-viewer::backdrop{background:#121614}
  .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
 </style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
 <nav><a href='index.html'>← К обзору</a></nav>
-<h1>VLM · img_11_a ↔ img_2</h1>
+<h1>VLM · img_1 ↔ img_15</h1>
 <section class='section' id='section-0'><h2>Изображения</h2>
-<p>Перекрытие: да · Одна комната: да · Связь через проём: нет</p>
+<p>Перекрытие: нет · Одна комната: нет · Связь через проём: неизвестно</p>
 
 <div class='row' style='--h: 180px'>
-<figure><img src='photos/0002.png' width='342' height='460' loading='lazy' alt='img_11_a' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_11_a</figcaption></figure>
-<figure><img src='photos/0013.png' width='690' height='460' loading='lazy' alt='img_2' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_2</figcaption></figure>
+<figure><img src='photos/0000.png' width='690' height='460' loading='lazy' alt='img_1' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>img_1</figcaption></figure>
+<figure><img src='photos/0007.png' width='690' height='460' loading='lazy' alt='img_15' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>img_15</figcaption></figure>
 </div>
 </section>
-<section class='section' id='section-1'><h2>Порядок A → B: img_11_a → img_2</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>да</dd><dt><strong>Связь через проём</strong></dt><dd>нет</dd><dt><strong>Общие ориентиры</strong></dt><dd>Круглый обеденный стол из светлого дерева; Набор из четырёх стульев из светлого дерева; Картинка с изображением женщины в зелёном платье; Зелёное растение в горшке на столе; Миска с апельсинами на столе; Паркетный пол</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>Обе фотографии демонстрируют одну и ту же комнату, снятую с разных ракурсов. В обоих кадрах видны идентичные предметы: обеденный стол, стулья, картина на стене, растение и фрукты. Изображение B показывает более широкий угол, включая зону гостиной с диваном, в то время как изображение A сфокусировано на обеденной зоне. Так как это один и тот же физический объём, связь через дверной проём не требуется.</dd></dl><details><summary>Сохранённый запрос и ответ · 7.5 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-1'><h2>Порядок A → B: img_1 → img_15</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>—</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a kitchen with a built-in microwave and stone backsplash, while Image B shows a living room with a sofa and a balcony door.</dd><dt><strong>Основание</strong></dt><dd>The two images depict distinct functional spaces within a residence: a kitchen (A) and a living room (B). There are no shared physical surfaces or objects visible in both frames. While they likely belong to the same apartment, the visual evidence does not show a direct doorway connecting the two camera positions, nor does it confirm they are the same room.</dd></dl><details><summary>Сохранённый запрос и ответ · 5.2 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0006-ab&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
-    &quot;img_11_a&quot;,
-    &quot;img_2&quot;
+    &quot;img_1&quot;,
+    &quot;img_15&quot;
   ],
   &quot;request&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
@@ -140,14 +140,14 @@ dialog.photo-viewer::backdrop{background:#121614}
         &quot;content&quot;: &quot;Compare image A (first) and image B (second). Decide three SEPARATE relations:\noverlap: do they visibly share the SAME physical surface or identifiable object?\nsame_room: are the cameras likely located in the SAME room?\ndoorway_connection: is there visual evidence of a direct doorway/opening joining the spaces containing these cameras?\nUse yes/no/unknown. Similar white corners, generic doors, furniture categories or the same room type alone do NOT identify a physical location. Different room types do NOT rule out shared surfaces visible through a door. Opposite views of one room may have no visible overlap. Missing evidence means unknown, not no. List specific shared landmarks and genuine visual contradictions with A/B references; do not invent contradictions from objects merely outside the other field of view. Give a short evidence explanation, not a reconstruction or numerical confidence.\nJSON schema:\n{\&quot;type\&quot;: \&quot;object\&quot;, \&quot;properties\&quot;: {\&quot;overlap\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;same_room\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;doorway_connection\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;shared_landmarks\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;contradictions\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;explanation\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}}, \&quot;required\&quot;: [\&quot;overlap\&quot;, \&quot;same_room\&quot;, \&quot;doorway_connection\&quot;, \&quot;shared_landmarks\&quot;, \&quot;contradictions\&quot;, \&quot;explanation\&quot;], \&quot;additionalProperties\&quot;: false}&quot;,
         &quot;images&quot;: [
           {
-            &quot;sha256&quot;: &quot;a3c0e83d35cb7e611e7a3e9f76ee2ce0708859114b6ad33e820f01d8fdee9151&quot;,
+            &quot;sha256&quot;: &quot;11d92461502fa673863d4463be4b8d65efc8e5f73619a6b695c9c62569998dcd&quot;,
             &quot;size&quot;: [
-              342,
+              690,
               460
             ]
           },
           {
-            &quot;sha256&quot;: &quot;ed059b89a2c0b31f59eb5708a479cee7362a979448decc4353ccbc0a99950564&quot;,
+            &quot;sha256&quot;: &quot;a52cc9f0714b017bcda609ef9fcd9c05b0252619a4aee5de9622170246b03d04&quot;,
             &quot;size&quot;: [
               690,
               460
@@ -235,47 +235,42 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:31:16.063948Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:11:06.170188Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\&quot;overlap\&quot;: \&quot;yes\&quot;, \&quot;same_room\&quot;: \&quot;yes\&quot;, \&quot;doorway_connection\&quot;: \&quot;no\&quot;, \&quot;shared_landmarks\&quot;: [\&quot;Круглый обеденный стол из светлого дерева\&quot;, \&quot;Набор из четырёх стульев из светлого дерева\&quot;, \&quot;Картинка с изображением женщины в зелёном платье\&quot;, \&quot;Зелёное растение в горшке на столе\&quot;, \&quot;Миска с апельсинами на столе\&quot;, \&quot;Паркетный пол\&quot;], \&quot;contradictions\&quot;: [], \&quot;explanation\&quot;: \&quot;Обе фотографии демонстрируют одну и ту же комнату, снятую с разных ракурсов. В обоих кадрах видны идентичные предметы: обеденный стол, стулья, картина на стене, растение и фрукты. Изображение B показывает более широкий угол, включая зону гостиной с диваном, в то время как изображение A сфокусировано на обеденной зоне. Так как это один и тот же физический объём, связь через дверной проём не требуется.\&quot;}&quot;
+      &quot;content&quot;: &quot;{\n  \&quot;overlap\&quot;: \&quot;no\&quot;,\n  \&quot;same_room\&quot;: \&quot;no\&quot;,\n  \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;,\n  \&quot;shared_landmarks\&quot;: [],\n  \&quot;contradictions\&quot;: [\n    \&quot;Image A shows a kitchen with a built-in microwave and stone backsplash, while Image B shows a living room with a sofa and a balcony door.\&quot;\n  ],\n  \&quot;explanation\&quot;: \&quot;The two images depict distinct functional spaces within a residence: a kitchen (A) and a living room (B). There are no shared physical surfaces or objects visible in both frames. While they likely belong to the same apartment, the visual evidence does not show a direct doorway connecting the two camera positions, nor does it confirm they are the same room.\&quot;\n}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 7514876583,
-    &quot;load_duration&quot;: 5916916,
-    &quot;prompt_eval_count&quot;: 888,
-    &quot;prompt_eval_cached_count&quot;: 212,
-    &quot;prompt_eval_duration&quot;: 1506265959,
-    &quot;eval_count&quot;: 212,
-    &quot;eval_duration&quot;: 5979943500
+    &quot;total_duration&quot;: 5149150542,
+    &quot;load_duration&quot;: 7147250,
+    &quot;prompt_eval_count&quot;: 1042,
+    &quot;prompt_eval_cached_count&quot;: 366,
+    &quot;prompt_eval_duration&quot;: 1450896542,
+    &quot;eval_count&quot;: 159,
+    &quot;eval_duration&quot;: 3662878667
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
-    &quot;same_room&quot;: &quot;yes&quot;,
-    &quot;doorway_connection&quot;: &quot;no&quot;,
-    &quot;shared_landmarks&quot;: [
-      &quot;Круглый обеденный стол из светлого дерева&quot;,
-      &quot;Набор из четырёх стульев из светлого дерева&quot;,
-      &quot;Картинка с изображением женщины в зелёном платье&quot;,
-      &quot;Зелёное растение в горшке на столе&quot;,
-      &quot;Миска с апельсинами на столе&quot;,
-      &quot;Паркетный пол&quot;
+    &quot;overlap&quot;: &quot;no&quot;,
+    &quot;same_room&quot;: &quot;no&quot;,
+    &quot;doorway_connection&quot;: &quot;unknown&quot;,
+    &quot;shared_landmarks&quot;: [],
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a kitchen with a built-in microwave and stone backsplash, while Image B shows a living room with a sofa and a balcony door.&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;Обе фотографии демонстрируют одну и ту же комнату, снятую с разных ракурсов. В обоих кадрах видны идентичные предметы: обеденный стол, стулья, картина на стене, растение и фрукты. Изображение B показывает более широкий угол, включая зону гостиной с диваном, в то время как изображение A сфокусировано на обеденной зоне. Так как это один и тот же физический объём, связь через дверной проём не требуется.&quot;
+    &quot;explanation&quot;: &quot;The two images depict distinct functional spaces within a residence: a kitchen (A) and a living room (B). There are no shared physical surfaces or objects visible in both frames. While they likely belong to the same apartment, the visual evidence does not show a direct doorway connecting the two camera positions, nor does it confirm they are the same room.&quot;
   },
-  &quot;elapsed_s&quot;: 7.518767167002807
+  &quot;elapsed_s&quot;: 5.1553945829982695
 }</pre></details>
 </section>
-<section class='section' id='section-2'><h2>Порядок A → B: img_2 → img_11_a</h2>
-<dl><dt><strong>Перекрытие</strong></dt><dd>да</dd><dt><strong>Одна комната</strong></dt><dd>да</dd><dt><strong>Связь через проём</strong></dt><dd>нет</dd><dt><strong>Общие ориентиры</strong></dt><dd>Портрет женщины в зелёном платье; Круглый деревянный обеденный стол; Лёгкие деревянные стулья; Растение в зелёном горшке на столе; Миска с апельсинами на столе; Паркетный пол</dd><dt><strong>Противоречия</strong></dt><dd>—</dd><dt><strong>Основание</strong></dt><dd>Обе фотографии демонстрируют одну и ту же комнату, что подтверждается наличием идентичных предметов мебели и декора: обеденного стола, стульев, картины на стене и растений. Изображение A показывает общий вид комнаты с зоной гостиной, а изображение B — более узкий ракурс, сфокусированный на обеденной зоне и окне. Визуальные противоречия отсутствуют; различия в композиции объясняются углом обзора и полем зрения камеры.</dd></dl><details><summary>Сохранённый запрос и ответ · 7.9 с</summary><pre style='white-space:pre-wrap'>{
+<section class='section' id='section-2'><h2>Порядок A → B: img_15 → img_1</h2>
+<dl><dt><strong>Перекрытие</strong></dt><dd>нет</dd><dt><strong>Одна комната</strong></dt><dd>нет</dd><dt><strong>Связь через проём</strong></dt><dd>неизвестно</dd><dt><strong>Общие ориентиры</strong></dt><dd>—</dd><dt><strong>Противоречия</strong></dt><dd>Image A shows a living room with a sofa, coffee table, and a balcony door, while Image B shows a kitchen with a microwave, sink, and countertop appliances.; The wall in Image A is plain white with a picture frame, whereas the wall in Image B features a marble backsplash and built-in cabinetry.</dd><dt><strong>Основание</strong></dt><dd>The two images depict distinct functional spaces within a residence: a living area (Image A) and a kitchen (Image B). There are no shared physical objects or surfaces visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and the different room types (living vs. kitchen) indicate they are not the same room.</dd></dl><details><summary>Сохранённый запрос и ответ · 7.6 с</summary><pre style='white-space:pre-wrap'>{
   &quot;id&quot;: &quot;pair-0006-ba&quot;,
   &quot;kind&quot;: &quot;pair&quot;,
   &quot;photos&quot;: [
-    &quot;img_2&quot;,
-    &quot;img_11_a&quot;
+    &quot;img_15&quot;,
+    &quot;img_1&quot;
   ],
   &quot;request&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
@@ -289,16 +284,16 @@ dialog.photo-viewer::backdrop{background:#121614}
         &quot;content&quot;: &quot;Compare image A (first) and image B (second). Decide three SEPARATE relations:\noverlap: do they visibly share the SAME physical surface or identifiable object?\nsame_room: are the cameras likely located in the SAME room?\ndoorway_connection: is there visual evidence of a direct doorway/opening joining the spaces containing these cameras?\nUse yes/no/unknown. Similar white corners, generic doors, furniture categories or the same room type alone do NOT identify a physical location. Different room types do NOT rule out shared surfaces visible through a door. Opposite views of one room may have no visible overlap. Missing evidence means unknown, not no. List specific shared landmarks and genuine visual contradictions with A/B references; do not invent contradictions from objects merely outside the other field of view. Give a short evidence explanation, not a reconstruction or numerical confidence.\nJSON schema:\n{\&quot;type\&quot;: \&quot;object\&quot;, \&quot;properties\&quot;: {\&quot;overlap\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;same_room\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;doorway_connection\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;, \&quot;enum\&quot;: [\&quot;yes\&quot;, \&quot;no\&quot;, \&quot;unknown\&quot;]}, \&quot;shared_landmarks\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;contradictions\&quot;: {\&quot;type\&quot;: \&quot;array\&quot;, \&quot;items\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}, \&quot;maxItems\&quot;: 8}, \&quot;explanation\&quot;: {\&quot;type\&quot;: \&quot;string\&quot;}}, \&quot;required\&quot;: [\&quot;overlap\&quot;, \&quot;same_room\&quot;, \&quot;doorway_connection\&quot;, \&quot;shared_landmarks\&quot;, \&quot;contradictions\&quot;, \&quot;explanation\&quot;], \&quot;additionalProperties\&quot;: false}&quot;,
         &quot;images&quot;: [
           {
-            &quot;sha256&quot;: &quot;ed059b89a2c0b31f59eb5708a479cee7362a979448decc4353ccbc0a99950564&quot;,
+            &quot;sha256&quot;: &quot;a52cc9f0714b017bcda609ef9fcd9c05b0252619a4aee5de9622170246b03d04&quot;,
             &quot;size&quot;: [
               690,
               460
             ]
           },
           {
-            &quot;sha256&quot;: &quot;a3c0e83d35cb7e611e7a3e9f76ee2ce0708859114b6ad33e820f01d8fdee9151&quot;,
+            &quot;sha256&quot;: &quot;11d92461502fa673863d4463be4b8d65efc8e5f73619a6b695c9c62569998dcd&quot;,
             &quot;size&quot;: [
-              342,
+              690,
               460
             ]
           }
@@ -384,38 +379,34 @@ dialog.photo-viewer::backdrop{background:#121614}
   &quot;prompt_version&quot;: &quot;room-evidence-v1&quot;,
   &quot;response&quot;: {
     &quot;model&quot;: &quot;qwen3.8:27b-mlx&quot;,
-    &quot;created_at&quot;: &quot;2026-11-17T01:31:23.950551Z&quot;,
+    &quot;created_at&quot;: &quot;2026-11-17T02:11:13.84404Z&quot;,
     &quot;message&quot;: {
       &quot;role&quot;: &quot;assistant&quot;,
-      &quot;content&quot;: &quot;{\&quot;overlap\&quot;: \&quot;yes\&quot;, \&quot;same_room\&quot;: \&quot;yes\&quot;, \&quot;doorway_connection\&quot;: \&quot;no\&quot;, \&quot;shared_landmarks\&quot;: [\&quot;Портрет женщины в зелёном платье\&quot;, \&quot;Круглый деревянный обеденный стол\&quot;, \&quot;Лёгкие деревянные стулья\&quot;, \&quot;Растение в зелёном горшке на столе\&quot;, \&quot;Миска с апельсинами на столе\&quot;, \&quot;Паркетный пол\&quot;], \&quot;contradictions\&quot;: [], \&quot;explanation\&quot;: \&quot;Обе фотографии демонстрируют одну и ту же комнату, что подтверждается наличием идентичных предметов мебели и декора: обеденного стола, стульев, картины на стене и растений. Изображение A показывает общий вид комнаты с зоной гостиной, а изображение B — более узкий ракурс, сфокусированный на обеденной зоне и окне. Визуальные противоречия отсутствуют; различия в композиции объясняются углом обзора и полем зрения камеры.\&quot;}&quot;
+      &quot;content&quot;: &quot;{\&quot;overlap\&quot;: \&quot;no\&quot;, \&quot;same_room\&quot;: \&quot;no\&quot;, \&quot;doorway_connection\&quot;: \&quot;unknown\&quot;, \&quot;shared_landmarks\&quot;: [], \&quot;contradictions\&quot;: [\&quot;Image A shows a living room with a sofa, coffee table, and a balcony door, while Image B shows a kitchen with a microwave, sink, and countertop appliances.\&quot;, \&quot;The wall in Image A is plain white with a picture frame, whereas the wall in Image B features a marble backsplash and built-in cabinetry.\&quot;], \&quot;explanation\&quot;: \&quot;The two images depict distinct functional spaces within a residence: a living area (Image A) and a kitchen (Image B). There are no shared physical objects or surfaces visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and the different room types (living vs. kitchen) indicate they are not the same room.\&quot;}&quot;
     },
     &quot;done&quot;: true,
     &quot;done_reason&quot;: &quot;stop&quot;,
-    &quot;total_duration&quot;: 7858703125,
-    &quot;load_duration&quot;: 7457125,
-    &quot;prompt_eval_count&quot;: 888,
+    &quot;total_duration&quot;: 7621046250,
+    &quot;load_duration&quot;: 7306416,
+    &quot;prompt_eval_count&quot;: 1042,
     &quot;prompt_eval_cached_count&quot;: 56,
-    &quot;prompt_eval_duration&quot;: 1860033125,
-    &quot;eval_count&quot;: 198,
-    &quot;eval_duration&quot;: 5967566417
+    &quot;prompt_eval_duration&quot;: 2181725750,
+    &quot;eval_count&quot;: 188,
+    &quot;eval_duration&quot;: 5402640542
   },
   &quot;status&quot;: &quot;ok&quot;,
   &quot;observation&quot;: {
-    &quot;overlap&quot;: &quot;yes&quot;,
-    &quot;same_room&quot;: &quot;yes&quot;,
-    &quot;doorway_connection&quot;: &quot;no&quot;,
-    &quot;shared_landmarks&quot;: [
-      &quot;Портрет женщины в зелёном платье&quot;,
-      &quot;Круглый деревянный обеденный стол&quot;,
-      &quot;Лёгкие деревянные стулья&quot;,
-      &quot;Растение в зелёном горшке на столе&quot;,
-      &quot;Миска с апельсинами на столе&quot;,
-      &quot;Паркетный пол&quot;
+    &quot;overlap&quot;: &quot;no&quot;,
+    &quot;same_room&quot;: &quot;no&quot;,
+    &quot;doorway_connection&quot;: &quot;unknown&quot;,
+    &quot;shared_landmarks&quot;: [],
+    &quot;contradictions&quot;: [
+      &quot;Image A shows a living room with a sofa, coffee table, and a balcony door, while Image B shows a kitchen with a microwave, sink, and countertop appliances.&quot;,
+      &quot;The wall in Image A is plain white with a picture frame, whereas the wall in Image B features a marble backsplash and built-in cabinetry.&quot;
     ],
-    &quot;contradictions&quot;: [],
-    &quot;explanation&quot;: &quot;Обе фотографии демонстрируют одну и ту же комнату, что подтверждается наличием идентичных предметов мебели и декора: обеденного стола, стульев, картины на стене и растений. Изображение A показывает общий вид комнаты с зоной гостиной, а изображение B — более узкий ракурс, сфокусированный на обеденной зоне и окне. Визуальные противоречия отсутствуют; различия в композиции объясняются углом обзора и полем зрения камеры.&quot;
+    &quot;explanation&quot;: &quot;The two images depict distinct functional spaces within a residence: a living area (Image A) and a kitchen (Image B). There are no shared physical objects or surfaces visible in both frames. While they are likely part of the same apartment, there is no visual evidence of a direct doorway connecting the specific camera positions, and the different room types (living vs. kitchen) indicate they are not the same room.&quot;
   },
-  &quot;elapsed_s&quot;: 7.863510499999393
+  &quot;elapsed_s&quot;: 7.626996958999371
 }</pre></details>
 </section>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
@@ -473,7 +464,7 @@ window.planrecPhotoViewer = function () {
   };
 };
 
-const groups = {"s0": [{"src": "photos/0002.png", "caption": "img_11_a"}, {"src": "photos/0013.png", "caption": "img_2"}]};
+const groups = {"s0": [{"src": "photos/0000.png", "caption": "img_1"}, {"src": "photos/0007.png", "caption": "img_15"}]};
 
 const photoViewer = window.planrecPhotoViewer();
 function openViewer(group, index, trigger = document.activeElement) {
