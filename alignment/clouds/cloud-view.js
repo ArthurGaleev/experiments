@@ -377,7 +377,7 @@
     const split = [...groups.counts.values()].some(n => n > 1);
     get('selection-status').classList.toggle('split', split);
     let text = `Выбрано ${state.selected.size} из ${state.room ? roomNames().length : state.variant.sources.length}`;
-    if (state.room) text += ' в предполагаемой комнате' + (roomParts().length > 1 ? ' · размещение частей условное' : ' · одна геометрическая часть');
+    if (state.room) text += ' в предполагаемой комнате' + (!roomNames().length ? ' · камер не назначено' : roomParts().length > 1 ? ' · размещение частей условное' : ' · одна геометрическая часть');
     if (split) text += ` · подгрупп среди выбранных фото: ${groups.total}`;
     if (settings.multiview) text += ' · позы полной группы сохранены';
     get('selection-status').textContent = text + '.';
@@ -580,13 +580,15 @@
     get('rooms').checked = !!state.room;
     get('room-warning').textContent = state.room === 'unassigned'
       ? 'Назначение комнат и взаимное положение облаков неизвестны. Размещение рядом служит только обзору.'
+      : state.room && !roomNames().length
+      ? 'Камеры этой комнате не назначены. Фото-свидетельства и проходы сохранены; геометрия и положение комнаты не определены.'
       : state.room && roomParts().length === 1
       ? 'Принадлежность комнате предположена. Все фото имеют связующий геометрический путь; показаны оценки поз выбранной ветви.'
       : 'Принадлежность комнате предположена. Несовмещённые части разнесены только для обзора — их взаимное положение неизвестно.';
     if (!semantic) return;
     get('room-source-control').hidden = semanticVariants.length < 2;
     options(get('room-source'), semanticVariants.map(v => [v.id, v.label]), state.roomSource);
-    const choices = semantic.rooms.map((room, i) => [room.id, `${room.label || 'Гипотеза ' + (i + 1)} · ${room.names.length} фото`]);
+    const choices = semantic.rooms.map((room, i) => [room.id, `${room.label || 'Гипотеза ' + (i + 1)} · ${room.names.length ? room.names.length + ' фото' : 'без назначенных камер'}`]);
     if (semantic.unassigned.length) choices.push(['unassigned', `Без назначения · ${semantic.unassigned.length} фото`]);
     options(get('room-choice'), choices, state.room || choices[0]?.[0]);
   }
@@ -614,7 +616,8 @@
     const ambiguous = names.filter(n => semantic.ambiguous.includes(n));
     status.textContent = `Это гипотеза, не установленная комната. Геометрических частей: ${parts.length}. `
       + (ambiguous.length ? `Альтернативные назначения: ${ambiguous.join(', ')}. ` : '')
-      + 'Позы внутри каждой части сохранены по выбранному графу, в том числе по путям через фото вне этой гипотезы.';
+      + (names.length ? 'Позы внутри каждой части сохранены по выбранному графу, в том числе по путям через фото вне этой гипотезы.'
+        : `Камеры не назначены. Фото-свидетельства: ${(semantic.rooms[index]?.evidence_photos || []).join(', ') || 'не указаны'}. Положение и геометрия не определены.`);
     details.append(status);
     const evidence = document.createElement('a'); evidence.href = semantic.href + '#' + state.room;
     evidence.textContent = 'Фото, основания и альтернативы ↗'; details.append(evidence);
@@ -642,6 +645,7 @@
     heading.append(h2, expand); header.append(heading);
     const note = document.createElement('p'); note.className = 'warning';
     note.textContent = state.room === 'unassigned' ? 'Комнаты не определены; взаимное положение облаков неизвестно.'
+      : !names.length ? 'Комната сохранена по фото-свидетельствам. Камер и восстановленной геометрии нет.'
       : parts.length === 1 ? 'Предположительно та же комната. Одна геометрическая часть; позы по выбранному графу.'
       : 'Предположительно та же комната; положение несовмещённых частей неизвестно. Раскладка для обзора, не планировка.'; header.append(note);
     const warnings = parts.reduce((n, p) => n + (p.component.warnings || 0), 0);
@@ -649,6 +653,10 @@
     const legend = document.createElement('div'); legend.className = 'room-legend';
     parts.forEach((part, i) => { const label = document.createElement('span'); label.textContent = `Часть ${i + 1}: ${part.ids.join(', ')}`; legend.append(label); });
     header.append(legend);
+    if (!names.length) {
+      expand.hidden = true; section.append(header); get('scenes').append(section);
+      get('room-extra').disabled = true; return;
+    }
     const plot = document.createElement('div'); plot.className = 'plot'; plot.dataset.component = '__room__';
     section.append(header, plot); get('scenes').append(section);
     const view = {section, plot, key: `${state.variant.id}:${state.roomSource}:${state.room}`, nearby: true}; plots.set('__room__', view);
@@ -657,6 +665,7 @@
   }
   async function drawRoom(version, groups) {
     const view = plots.get('__room__');
+    if (!view) return;
     if (!view.nearby) { release(view); return; }
     const parts = roomParts(), shown = get('room-extra').checked ? parts : parts.slice(0, 1);
     const entries = [];
