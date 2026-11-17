@@ -7,7 +7,9 @@
   const palette = ['#168575', '#ce621c', '#6551c5', '#bd3c8a', '#267bb7', '#7c4f37', '#85801d'];
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
   const roomCamera = {eye: {x: 0, y: -2.1, z: 1}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
-  const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0, room: null};
+  const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0, room: null, roomSource: 'pairwise'};
+  const semanticVariants = [{id: 'pairwise', label: 'Парные гипотезы', semantics: settings.semantics}, ...(settings.roomVariants || [])].filter(v => v.semantics);
+  const sourceRooms = new Map();
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
   const roomSelections = new Map();
   let observer, expanded, scheduled = false, drawing = false;
@@ -375,7 +377,7 @@
     const split = [...groups.counts.values()].some(n => n > 1);
     get('selection-status').classList.toggle('split', split);
     let text = `Выбрано ${state.selected.size} из ${state.room ? roomNames().length : state.variant.sources.length}`;
-    if (state.room) text += ' в предполагаемой комнате · размещение частей условное';
+    if (state.room) text += ' в предполагаемой комнате' + (roomParts().length > 1 ? ' · размещение частей условное' : ' · одна геометрическая часть');
     if (split) text += ` · подгрупп среди выбранных фото: ${groups.total}`;
     if (settings.multiview) text += ' · позы полной группы сохранены';
     get('selection-status').textContent = text + '.';
@@ -455,6 +457,7 @@
   }
 
   function build() {
+    updateRoomControls();
     collapseScene();
     observer?.disconnect();
     for (const view of plots.values()) release(view);
@@ -511,7 +514,7 @@
         const group = document.createElement('div'); group.className = 'photo-group'; group.dataset.component = component.id;
         const heading = document.createElement('div'); heading.className = 'group-heading';
         const label = document.createElement('span');
-        label.textContent = state.room ? `Часть ${index + 1} · ${component.ids.length} фото · положение относительно других частей неизвестно`
+        label.textContent = state.room ? `Часть ${index + 1} · ${component.ids.length} фото` + (sorted.length > 1 ? ' · положение относительно других частей неизвестно' : ' · позы по выбранному графу')
           : singleton ? `Без принятых связей · фото: ${isolated} · каждое показано отдельно` : title.textContent + (index ? ' · нет принятой связи с основной группой' : '');
         heading.append(label);
         if (settings.multiview && !singleton) {
@@ -560,61 +563,77 @@
     draw();
   }
 
+  function currentSemantics() {
+    return semanticVariants.find(v => v.id === state.roomSource)?.semantics || settings.semantics;
+  }
   function roomNames() {
-    return state.room === 'unassigned' ? settings.semantics.unassigned
-      : settings.semantics?.rooms.find(room => room.id === state.room)?.names || [];
+    return state.room === 'unassigned' ? currentSemantics().unassigned
+      : currentSemantics()?.rooms.find(room => room.id === state.room)?.names || [];
   }
   function roomParts() {
     return window.planrecRoomView.parts(state.variant.components, roomNames());
   }
   function updateRoomControls() {
-    const semantic = settings.semantics;
+    const semantic = currentSemantics();
     get('rooms-control').hidden = !semantic;
     get('room-controls').hidden = !state.room;
     get('rooms').checked = !!state.room;
     get('room-warning').textContent = state.room === 'unassigned'
       ? 'Назначение комнат и взаимное положение облаков неизвестны. Размещение рядом служит только обзору.'
+      : state.room && roomParts().length === 1
+      ? 'Принадлежность комнате предположена. Все фото имеют связующий геометрический путь; показаны оценки поз выбранной ветви.'
       : 'Принадлежность комнате предположена. Несовмещённые части разнесены только для обзора — их взаимное положение неизвестно.';
     if (!semantic) return;
-    const choices = semantic.rooms.map((room, i) => [room.id, `Гипотеза ${i + 1} · ${room.names.length} фото`]);
+    get('room-source-control').hidden = semanticVariants.length < 2;
+    options(get('room-source'), semanticVariants.map(v => [v.id, v.label]), state.roomSource);
+    const choices = semantic.rooms.map((room, i) => [room.id, `${room.label || 'Гипотеза ' + (i + 1)} · ${room.names.length} фото`]);
     if (semantic.unassigned.length) choices.push(['unassigned', `Без назначения · ${semantic.unassigned.length} фото`]);
     options(get('room-choice'), choices, state.room || choices[0]?.[0]);
   }
-  function selectRoom(id) {
-    if (state.room) roomSelections.set(`${state.variant.id}:${state.room}`, new Set(state.selected));
+  function selectRoom(id, source = state.roomSource) {
+    if (state.room) roomSelections.set(`${state.variant.id}:${state.roomSource}:${state.room}`, new Set(state.selected));
     else selections.set(state.variant.id, new Set(state.selected));
+    state.roomSource = source;
     state.room = id;
-    state.selected = new Set(id ? roomSelections.get(`${state.variant.id}:${id}`) || roomNames()
+    state.selected = new Set(id ? roomSelections.get(`${state.variant.id}:${state.roomSource}:${id}`) || roomNames()
       : selections.get(state.variant.id) || state.variant.initial);
     updateRoomControls(); build();
   }
+  function selectRoomSource(id) {
+    if (state.room) sourceRooms.set(state.roomSource, state.room);
+    const semantic = semanticVariants.find(v => v.id === id)?.semantics;
+    if (!semantic) return;
+    selectRoom(sourceRooms.get(id) || semantic.rooms[0]?.id || (semantic.unassigned.length ? 'unassigned' : null), id);
+  }
   function buildRoomScene() {
-    const semantic = settings.semantics, names = roomNames(), parts = roomParts();
+    const semantic = currentSemantics(), names = roomNames(), parts = roomParts();
     const index = semantic.rooms.findIndex(room => room.id === state.room);
-    const title = index < 0 ? 'Фото без назначения комнате' : `Гипотеза комнаты ${index + 1}`;
+    const title = index < 0 ? 'Фото без назначения комнате' : semantic.rooms[index].label || `Гипотеза комнаты ${index + 1}`;
     const details = get('room-details'); details.replaceChildren();
     const status = document.createElement('p');
-    const ambiguous = names.filter(n => semantic.memberships[n].length > 1);
+    const ambiguous = names.filter(n => semantic.ambiguous.includes(n));
     status.textContent = `Это гипотеза, не установленная комната. Геометрических частей: ${parts.length}. `
       + (ambiguous.length ? `Альтернативные назначения: ${ambiguous.join(', ')}. ` : '')
       + 'Позы внутри каждой части сохранены по выбранному графу, в том числе по путям через фото вне этой гипотезы.';
     details.append(status);
     const evidence = document.createElement('a'); evidence.href = semantic.href + '#' + state.room;
     evidence.textContent = 'Фото, основания и альтернативы ↗'; details.append(evidence);
-    const doorways = semantic.doorways.filter(d => names.includes(d.a) || names.includes(d.b));
+    const doorways = semantic.doorways.filter(d => semantic.kind === 'global' ? d.room_pairs.flat().includes(state.room) : names.includes(d.a) || names.includes(d.b));
     const doorDetails = document.createElement('details'), summary = document.createElement('summary');
-    summary.textContent = `Предполагаемые проходы: ${doorways.length} парных свидетельств`; doorDetails.append(summary);
+    summary.textContent = `Предполагаемые проходы · ${semantic.kind === 'global' ? 'гипотезы' : 'парные свидетельства'}: ${doorways.length}`; doorDetails.append(summary);
     const list = document.createElement('ul');
     for (const door of doorways) {
       const item = document.createElement('li'), link = document.createElement('a');
-      link.href = semantic.href.replace(/rooms\.html$/, `vlm/pair-${String(door.evidence).padStart(4, '0')}.html`);
-      link.textContent = `${door.a} ↔ ${door.b}`; item.append(link);
-      item.append(document.createTextNode(door.assignment === 'unique_hypotheses' ? ' · связь гипотез комнат' : ' · назначение комнат неоднозначно / неизвестно'));
+      link.href = door.href || semantic.href.replace(/rooms\.html$/, `vlm/pair-${String(door.evidence).padStart(4, '0')}.html`);
+      link.textContent = semantic.kind === 'global'
+        ? door.room_pairs[0].map(id => semantic.rooms.find(r => r.id === id)?.label || 'Не назначено фото').join(' ↔ ')
+        : door.label || `${door.a} ↔ ${door.b}`; item.append(link);
+      item.append(document.createTextNode(door.assignment === 'global_hypothesis' ? ' · вывод по всем фото' : door.assignment === 'unique_hypotheses' ? ' · связь гипотез комнат' : ' · назначение комнат неоднозначно / неизвестно'));
       list.append(item);
     }
     doorDetails.append(list); details.append(doorDetails);
-    const report = document.createElement('a'); report.href = semantic.href + '#candidates';
-    report.textContent = 'Новые кандидаты перекрытия и сохранённые варианты 3D ↗'; details.append(report);
+    const report = document.createElement('a'); report.href = semantic.candidateHref || semantic.href + '#candidates';
+    report.textContent = semantic.candidateHref ? 'Восстановленные связи и проверки 3D ↗' : 'Новые кандидаты перекрытия и сохранённые варианты 3D ↗'; details.append(report);
     const section = document.createElement('section'); section.className = 'scene';
     const header = document.createElement('header'), heading = document.createElement('div'); heading.className = 'scene-heading';
     const h2 = document.createElement('h2'); h2.textContent = title;
@@ -623,6 +642,7 @@
     heading.append(h2, expand); header.append(heading);
     const note = document.createElement('p'); note.className = 'warning';
     note.textContent = state.room === 'unassigned' ? 'Комнаты не определены; взаимное положение облаков неизвестно.'
+      : parts.length === 1 ? 'Предположительно та же комната. Одна геометрическая часть; позы по выбранному графу.'
       : 'Предположительно та же комната; положение несовмещённых частей неизвестно. Раскладка для обзора, не планировка.'; header.append(note);
     const warnings = parts.reduce((n, p) => n + (p.component.warnings || 0), 0);
     if (warnings) { const warning = document.createElement('p'); warning.className = 'warning'; warning.textContent = `В исходных компонентах отмечены расхождения путей: ${warnings}. Показ комнаты не исправляет позы.`; header.append(warning); }
@@ -631,7 +651,7 @@
     header.append(legend);
     const plot = document.createElement('div'); plot.className = 'plot'; plot.dataset.component = '__room__';
     section.append(header, plot); get('scenes').append(section);
-    const view = {section, plot, key: `${state.variant.id}:${state.room}`, nearby: true}; plots.set('__room__', view);
+    const view = {section, plot, key: `${state.variant.id}:${state.roomSource}:${state.room}`, nearby: true}; plots.set('__room__', view);
     enableNavigation(plot); expand.onclick = () => expandScene(view, expand); observer.observe(plot);
     get('room-extra').disabled = parts.length < 2;
   }
@@ -672,7 +692,18 @@
     options(get('model'), models, state.variant.model);
     get('model-control').hidden = models.size < 2;
     get('model-label').textContent = matchers.size ? 'Глубина' : 'Модель';
-    const reviewed = choices.find(v => v.model === state.variant.model && v.vlm);
+    const reviewed = choices.find(v => v.model === state.variant.model && v.vlm && !v.recovery);
+    const recovered = choices.find(v => v.model === state.variant.model && v.recovery);
+    get('recovery-control').hidden = !recovered;
+    get('recovery').disabled = !recovered || !state.variant.vlm;
+    get('recovery').checked = !!state.variant.recovery;
+    const recoveryStatus = get('recovery-status'); recoveryStatus.replaceChildren();
+    recoveryStatus.hidden = !state.variant.recovery;
+    if (state.variant.recovery) {
+      const result = recovered.recoveryInfo;
+      recoveryStatus.append(document.createTextNode(`Восстановлено мостов: ${result.bridges}; дополнительных ограничений: ${result.constraints}; всего связей: ${result.edges}. Масштаб задан опорной компонентой; внутренние позы сохранены. `));
+      const link = document.createElement('a'); link.href = result.href; link.textContent = 'Проверки и поправки масштаба ↗'; recoveryStatus.append(link);
+    }
     const visible = settings.multiview && !!state.variant.matcher;
     get('vlm-control').hidden = !visible;
     get('vlm-status').hidden = !visible;
@@ -693,23 +724,27 @@
   }
   function chooseVariant(next) {
     if (!next || next.id === state.variant.id) return;
-    if (state.room) roomSelections.set(`${state.variant.id}:${state.room}`, new Set(state.selected));
+    if (state.room) roomSelections.set(`${state.variant.id}:${state.roomSource}:${state.room}`, new Set(state.selected));
     else selections.set(state.variant.id, new Set(state.selected));
     const sameInputs = next.matcher === state.variant.matcher && next.model === state.variant.model;
-    const selection = state.room ? roomSelections.get(`${next.id}:${state.room}`) || state.selected
+    const selection = state.room ? roomSelections.get(`${next.id}:${state.roomSource}:${state.room}`) || state.selected
       : selections.get(next.id) || (sameInputs ? state.selected : next.initial);
     state.variant = next;
     state.selected = new Set(selection);
     updateControls(); build();
   }
-  function variantFor(matcher, model, vlm) {
+  function variantFor(matcher, model, vlm, recovery = false) {
     const choices = settings.variants.filter(v => v.matcher === matcher && v.model === model);
-    return choices.find(v => !!v.vlm === !!vlm) || choices.find(v => !v.vlm)
+    return choices.find(v => !!v.vlm === !!vlm && !!v.recovery === !!recovery)
+      || choices.find(v => !!v.vlm === !!vlm && !v.recovery) || choices.find(v => !v.vlm)
       || settings.variants.find(v => v.matcher === matcher && !v.vlm);
   }
-  get('matcher').onchange = () => chooseVariant(variantFor(get('matcher').value, state.variant.model, state.variant.vlm));
-  get('model').onchange = () => chooseVariant(variantFor(state.variant.matcher, get('model').value, state.variant.vlm));
+  get('matcher').onchange = () => chooseVariant(variantFor(get('matcher').value, state.variant.model, state.variant.vlm, state.variant.recovery));
+  get('model').onchange = () => chooseVariant(variantFor(state.variant.matcher, get('model').value, state.variant.vlm, state.variant.recovery));
   get('vlm').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, get('vlm').checked));
+  get('recovery').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, true, get('recovery').checked));
+  const params = new URLSearchParams(location.search);
+  if (params.has('model') || params.has('recovery')) state.variant = variantFor(params.get('matcher') || state.variant.matcher, params.get('model') || state.variant.model, params.get('recovery') === '1', params.get('recovery') === '1') || state.variant;
   updateControls();
   get('all').onclick = () => { state.selected = new Set(state.room ? roomNames() : state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
   get('none').onclick = () => { state.selected.clear(); draw(); };
@@ -728,8 +763,11 @@
   get('top').onclick = () => { for (const view of plots.values()) if (view.plot.data) Plotly.relayout(view.plot, {'scene.camera': {eye: {x: 0, y: 0, z: 2.3}, up: {x: 0, y: 1, z: 0}, center: {x: 0, y: 0, z: 0}}}); };
   get('rooms').onchange = () => selectRoom(get('rooms').checked ? get('room-choice').value : null);
   get('room-choice').onchange = () => selectRoom(get('room-choice').value);
+  get('room-source').onchange = () => selectRoomSource(get('room-source').value);
   get('room-extra').onchange = draw;
-  const requestedRoom = new URLSearchParams(location.search).get('room');
-  if (settings.semantics && (settings.semantics.rooms.some(r => r.id === requestedRoom) || requestedRoom === 'unassigned' && settings.semantics.unassigned.length)) state.room = requestedRoom;
+  const requestedRoom = params.get('room');
+  const requestedSource = semanticVariants.find(v => v.semantics.rooms.some(r => r.id === requestedRoom));
+  if (requestedSource) { state.roomSource = requestedSource.id; state.room = requestedRoom; }
+  else if (settings.semantics && requestedRoom === 'unassigned' && settings.semantics.unassigned.length) state.room = requestedRoom;
   state.selected = new Set(state.room ? roomNames() : state.variant.initial); updateRoomControls(); build();
 })();

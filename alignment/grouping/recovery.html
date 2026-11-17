@@ -1,0 +1,252 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Восстановление геометрических связей</title><style>
+* { box-sizing: border-box; }
+body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
+main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
+h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
+ letter-spacing: -.025em; }
+h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 17px; }
+section, details.section { margin: 28px 0; padding: 24px; background: white;
+ border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
+a { color: #176650; text-underline-offset: 3px; }
+button, select, input { font: inherit; color: inherit; padding: 7px 10px;
+ border: 1px solid #aabbb1; border-radius: 6px; background: white; }
+button, select, summary { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
+[hidden] { display: none !important; }
+nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
+nav a { padding: 4px 0; }
+.eyebrow, .muted { color: #596d64; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
+ border-radius: 4px; }
+.warning { background: #fff5e7; border-left-color: #c67918; }
+.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
+.stats strong { display: block; font-size: 30px; line-height: 1.2; }
+.stats span { display: block; font-size: 13px; color: #596d64; }
+.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
+.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
+ padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
+ background: #fff; }
+.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
+.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
+ align-self: flex-start; }
+.card strong { margin-top: 8px; }
+.card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.card-photo { display: flex; flex-direction: column; align-items: flex-start;
+ padding: 0; border: 0; background: none; cursor: zoom-in; }
+.photo-card .photo-report { font-size: 12px; padding: 8px 0 2px; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.table-scroll, .graph { overflow-x: auto; }
+.graph svg { display: block; width: 100%; min-width: 740px; }
+.graph-label { font: 14px system-ui; fill: #20342e; }
+.graph a:hover line { stroke: #d28a19; }
+.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
+ font-variant-numeric: tabular-nums; }
+table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
+ border-bottom: 1px solid #e2e8e3; }
+.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
+ text-align: left; }
+.data-table td { font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: space-between;
+ gap: 12px; margin: 16px 0 0; }
+.switcher > label { font-size: 13px; }
+.switcher > select { margin-bottom: 18px; max-width: 100%; }
+details { margin: 16px 0; }
+summary { font-weight: 600; }
+details[open] > summary { margin-bottom: 16px; }
+p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
+  border: 1px solid #ddd; }
+.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
+figcaption { font-size: 12px; color: #555; margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
+  vertical-align: -2px; border: 1px solid #bbb; }
+.mwrap { overflow-x: auto; }
+table.m { border-collapse: collapse; font-size: 10px; }
+table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
+  border: 1px solid #fff; }
+table.m td[data-index] { cursor: pointer; }
+table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
+table.m td.diag { background: #fff; }
+table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
+table.m th { font-weight: normal; color: #555; white-space: nowrap; }
+table.m th.rh { text-align: right; padding-right: 6px; }
+table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
+table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
+table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
+table.m th.hl { color: #000; font-weight: 700; }
+@media(max-width: 600px) {
+ main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
+ .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
+ .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
+ .filters input { max-width: 180px; } .card { min-width: 100px; }
+}
+
+body.photo-viewer-open{overflow:hidden}
+dialog.photo-viewer{box-sizing:border-box;position:fixed;inset:0;width:100%;max-width:none;
+ height:100%;height:100dvh;max-height:none;margin:0;padding:56px 12px 16px;border:0;
+ background:rgba(18,22,20,.97);color:#f4f6f4;text-align:center;overflow:auto}
+dialog.photo-viewer[open]{display:flex;flex-direction:column;align-items:center;gap:10px}
+dialog.photo-viewer::backdrop{background:#121614}
+.photo-viewer .photo-stage{display:flex;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:8px}
+.photo-viewer img{display:block;min-width:0;max-width:calc(100% - 104px);max-height:100%;
+ width:auto;height:100%;object-fit:contain}
+.photo-viewer button{flex:none;width:44px;height:44px;padding:0;border:1px solid #ffffff55;
+ border-radius:6px;background:#ffffff0d;color:inherit;font:32px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.photo-viewer button:hover{background:#ffffff26}
+.photo-viewer .photo-close{position:absolute;right:12px;top:8px}
+.photo-viewer .photo-caption{white-space:pre-line;max-width:960px;font:14px/1.45 system-ui}
+.photo-viewer a.photo-report{color:#d0e7d7;font:14px/1.5 system-ui;padding:4px 12px}
+.photo-viewer [hidden]{display:none!important}
+.photo-viewer :focus-visible{outline:3px solid #e9bd6d;outline-offset:3px}
+@media(max-width:600px){.photo-viewer .photo-stage{position:relative}
+ .photo-viewer img{max-width:100%;width:100%}
+ .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
+ .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
+</style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
+<nav><a href='index.html'>← К обзору</a></nav>
+<h1>Восстановление геометрических связей</h1>
+<section class='section' id='section-0'><h2>Фактическое присоединение облаков</h2>
+<p>Использованы сохранённые оценки с масштабом, прошедшие геометрические проверки, и общие ориентиры в обоих порядках VLM. Каждая исходная компонента получает одно общее преобразование; её внутренние относительные позы не меняются. Опора — крупнейшая исходная компонента. Пороговые правила пар не ослаблены. Одиночный мост не имеет независимой проверки замыкания; новое совмещение остаётся экспериментальным. Совместная оптимизация не выполнена.</p>
+<p><a href='../clouds/all-photos.html'>Все фото · 3D ↗</a> · <a href='index.html'>Проверка VLM ↗</a></p>
+</section>
+<section class='section' id='section-1'><h2>MetricAnything</h2>
+<p>Компоненты: 18+1+1+1+1+1 → 19+2+1+1. Мостов: 2; дополнительных ограничений: 2. Все фото сохранены.</p>
+<p><a href='../clouds/all-photos.html?model=metricanything&amp;matcher=roma&amp;recovery=1'>Открыть восстановленную геометрию ↗</a></p><details><summary>Масштаб каждой исходной компоненты</summary><ul><li>img_1: ×0.9319</li><li>img_10, img_13, img_4_b, img_4_a, img_6, img_12, img_17_a, img_7, img_17_b, img_3, img_8, img_2, img_9, img_15, img_14, img_11_b, img_18, img_11_a: ×1.0000</li><li>img_16_a: ×1.0000</li><li>img_16_b: ×1.0000</li><li>img_5_a: ×1.0000</li><li>img_5_b: ×1.1271</li></ul><p>Метрическая точность поправок на Blueprint не подтверждена.</p></details><table><tr><th>Пара</th><th>Решение</th><th>Геометрия и согласованность</th></tr><tr><td><a href='vlm/pair-0003.html'>img_1 ↔ img_12</a><br><a href='../pair-0003.html'>Геометрия пары ↗</a></td><td>Добавлен мост между компонентами</td><td>s=0.9319; проверочные совпадения: 1129; охват: 38; ошибка проекции: 0.0048 диагонали</td></tr><tr><td><a href='vlm/pair-0009.html'>img_1 ↔ img_17_a</a><br><a href='../pair-0009.html'>Геометрия пары ↗</a></td><td>Добавлена согласованная проверка другого пути</td><td>s=0.8768; проверочные совпадения: 1018; охват: 30; ошибка проекции: 0.0064 диагонали; путь: 0.50°, 0.160 м в исходном масштабе, отношение масштабов 1.063</td></tr><tr><td><a href='vlm/pair-0018.html'>img_1 ↔ img_6</a><br><a href='../pair-0018.html'>Геометрия пары ↗</a></td><td>Добавлена согласованная проверка другого пути</td><td>s=0.9042; проверочные совпадения: 984; охват: 17; ошибка проекции: 0.0099 диагонали; путь: 3.18°, 0.144 м в исходном масштабе, отношение масштабов 1.031</td></tr><tr><td><a href='vlm/pair-0238.html'>img_5_a ↔ img_5_b</a><br><a href='../pair-0238.html'>Геометрия пары ↗</a></td><td>Добавлен мост между компонентами</td><td>s=0.8873; проверочные совпадения: 768; охват: 34; ошибка проекции: 0.0118 диагонали</td></tr><tr><td><a href='vlm/pair-0010.html'>img_1 ↔ img_17_b</a><br><a href='../pair-0010.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0013.html'>img_1 ↔ img_3</a><br><a href='../pair-0013.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0019.html'>img_1 ↔ img_7</a><br><a href='../pair-0019.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0040.html'>img_10 ↔ img_7</a><br><a href='../pair-0040.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0041.html'>img_10 ↔ img_8</a><br><a href='../pair-0041.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0053.html'>img_11_a ↔ img_2</a><br><a href='../pair-0053.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0066.html'>img_11_b ↔ img_15</a><br><a href='../pair-0066.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0072.html'>img_11_b ↔ img_2</a><br><a href='../pair-0072.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0073.html'>img_11_b ↔ img_3</a><br><a href='../pair-0073.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0081.html'>img_11_b ↔ img_9</a><br><a href='../pair-0081.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0086.html'>img_12 ↔ img_16_b</a><br><a href='../pair-0086.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0088.html'>img_12 ↔ img_17_b</a><br><a href='../pair-0088.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0097.html'>img_12 ↔ img_7</a><br><a href='../pair-0097.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0115.html'>img_13 ↔ img_8</a><br><a href='../pair-0115.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0118.html'>img_14 ↔ img_16_a</a><br><a href='../pair-0118.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0122.html'>img_14 ↔ img_18</a><br><a href='../pair-0122.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0124.html'>img_14 ↔ img_3</a><br><a href='../pair-0124.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0129.html'>img_14 ↔ img_6</a><br><a href='../pair-0129.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0132.html'>img_14 ↔ img_9</a><br><a href='../pair-0132.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0139.html'>img_15 ↔ img_3</a><br><a href='../pair-0139.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0153.html'>img_16_a ↔ img_3</a><br><a href='../pair-0153.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0158.html'>img_16_a ↔ img_6</a><br><a href='../pair-0158.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0175.html'>img_17_a ↔ img_17_b</a><br><a href='../pair-0175.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0183.html'>img_17_a ↔ img_6</a><br><a href='../pair-0183.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0199.html'>img_18 ↔ img_3</a><br><a href='../pair-0199.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0207.html'>img_18 ↔ img_9</a><br><a href='../pair-0207.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0213.html'>img_2 ↔ img_6</a><br><a href='../pair-0213.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0224.html'>img_3 ↔ img_9</a><br><a href='../pair-0224.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0247.html'>img_6 ↔ img_7</a><br><a href='../pair-0247.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr></table>
+</section>
+<section class='section' id='section-2'><h2>MoGe-2</h2>
+<p>Компоненты: 15+5+2+1 → 20+2+1. Мостов: 1; дополнительных ограничений: 0. Все фото сохранены.</p>
+<p><a href='../clouds/all-photos.html?model=moge2&amp;matcher=roma&amp;recovery=1'>Открыть восстановленную геометрию ↗</a></p><details><summary>Масштаб каждой исходной компоненты</summary><ul><li>img_1, img_12, img_6, img_16_a, img_2, img_9, img_11_b, img_14, img_15, img_11_a, img_18, img_3, img_17_a, img_7, img_17_b: ×1.0000</li><li>img_10, img_13, img_4_b, img_4_a, img_8: ×1.1459</li><li>img_16_b: ×1.0000</li><li>img_5_a, img_5_b: ×1.0000</li></ul><p>Метрическая точность поправок на Blueprint не подтверждена.</p></details><table><tr><th>Пара</th><th>Решение</th><th>Геометрия и согласованность</th></tr><tr><td><a href='vlm/pair-0234.html'>img_4_b ↔ img_6</a><br><a href='../pair-0234.html'>Геометрия пары ↗</a></td><td>Добавлен мост между компонентами</td><td>s=1.1459; проверочные совпадения: 506; охват: 6; ошибка проекции: 0.0065 диагонали</td></tr><tr><td><a href='vlm/pair-0009.html'>img_1 ↔ img_17_a</a><br><a href='../pair-0009.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0010.html'>img_1 ↔ img_17_b</a><br><a href='../pair-0010.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0013.html'>img_1 ↔ img_3</a><br><a href='../pair-0013.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0019.html'>img_1 ↔ img_7</a><br><a href='../pair-0019.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0040.html'>img_10 ↔ img_7</a><br><a href='../pair-0040.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0041.html'>img_10 ↔ img_8</a><br><a href='../pair-0041.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0086.html'>img_12 ↔ img_16_b</a><br><a href='../pair-0086.html'>Геометрия пары ↗</a></td><td>Нет принятой оценки с масштабом</td><td>—</td></tr><tr><td><a href='vlm/pair-0087.html'>img_12 ↔ img_17_a</a><br><a href='../pair-0087.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0088.html'>img_12 ↔ img_17_b</a><br><a href='../pair-0088.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0097.html'>img_12 ↔ img_7</a><br><a href='../pair-0097.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0115.html'>img_13 ↔ img_8</a><br><a href='../pair-0115.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0118.html'>img_14 ↔ img_16_a</a><br><a href='../pair-0118.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0129.html'>img_14 ↔ img_6</a><br><a href='../pair-0129.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0139.html'>img_15 ↔ img_3</a><br><a href='../pair-0139.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0175.html'>img_17_a ↔ img_17_b</a><br><a href='../pair-0175.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0183.html'>img_17_a ↔ img_6</a><br><a href='../pair-0183.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0184.html'>img_17_a ↔ img_7</a><br><a href='../pair-0184.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0199.html'>img_18 ↔ img_3</a><br><a href='../pair-0199.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0207.html'>img_18 ↔ img_9</a><br><a href='../pair-0207.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0213.html'>img_2 ↔ img_6</a><br><a href='../pair-0213.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0224.html'>img_3 ↔ img_9</a><br><a href='../pair-0224.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr><tr><td><a href='vlm/pair-0247.html'>img_6 ↔ img_7</a><br><a href='../pair-0247.html'>Геометрия пары ↗</a></td><td>Фото уже соединены путём</td><td>—</td></tr></table>
+</section>
+</main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
+window.planrecPhotoViewer = function () {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'photo-viewer';
+  dialog.setAttribute('aria-label', 'Просмотр фотографии');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Закрыть (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Предыдущее фото (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Следующее фото (→)">›</button></div>
+    <div class="photo-caption" aria-live="polite"></div>
+    <a class="photo-report" hidden>Отчёт фото ↗</a>`;
+  document.body.append(dialog);
+  const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
+  const report = dialog.querySelector('.photo-report');
+  const previous = dialog.querySelector('.photo-prev'), next = dialog.querySelector('.photo-next');
+  let items = [], index = 0, opener;
+  function show() {
+    const item = items[index];
+    image.src = item.src; image.alt = item.caption || '';
+    caption.textContent = [item.caption, `${index + 1} / ${items.length}`].filter(Boolean).join('\n');
+    report.hidden = !item.href;
+    if (item.href) report.href = item.href; else report.removeAttribute('href');
+    previous.hidden = next.hidden = items.length < 2;
+  }
+  function step(direction) {
+    index = (index + direction + items.length) % items.length;
+    show();
+  }
+  previous.onclick = () => step(-1);
+  next.onclick = () => step(1);
+  dialog.querySelector('.photo-close').onclick = () => dialog.close();
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog || event.target.classList.contains('photo-stage')) dialog.close();
+  });
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1);
+    }
+  });
+  dialog.addEventListener('close', () => {
+    document.body.classList.remove('photo-viewer-open');
+    image.removeAttribute('src');
+    if (opener?.isConnected) opener.focus({preventScroll: true});
+  });
+  return {
+    open(photos, selectedIndex, trigger = document.activeElement) {
+      if (!photos?.length || !photos[selectedIndex]) return;
+      items = photos; index = selectedIndex; opener = trigger;
+      show();
+      if (!dialog.open) dialog.showModal();
+      document.body.classList.add('photo-viewer-open');
+      dialog.querySelector('.photo-close').focus({preventScroll: true});
+    },
+  };
+};
+
+const groups = {};
+
+const photoViewer = window.planrecPhotoViewer();
+function openViewer(group, index, trigger = document.activeElement) {
+  photoViewer.open(groups[group], index, trigger);
+}
+document.addEventListener("click", event => {
+  const target = event.target.closest("[data-group]");
+  if (target) openViewer(target.dataset.group, Number(target.dataset.index), target);
+});
+for (const table of document.querySelectorAll("table.m")) {
+  table.addEventListener("mouseover", (e) => {
+    for (const th of table.querySelectorAll("th.hl")) th.classList.remove("hl");
+    const td = e.target.closest("td[data-r]");
+    if (!td) return;
+    table.querySelector(`th.rh[data-r="${td.dataset.r}"]`).classList.add("hl");
+    table.querySelector(`th.ch[data-c="${td.dataset.c}"]`).classList.add("hl");
+  });
+}
+document.addEventListener('keydown', e => {
+ const el=e.target.closest('img[data-group]');
+ if(el && (e.key==='Enter'||e.key===' ')){e.preventDefault();openViewer(el.dataset.group,
++el.dataset.index);}
+});
+for(const select of document.querySelectorAll('[data-panel-select]')) {
+ select.addEventListener('change',()=>{
+  for(const panel of select.parentElement.querySelectorAll(':scope > [data-panel]')) {
+   panel.hidden=panel.dataset.panel!==select.value;
+  }
+ });
+}
+for(const browser of document.querySelectorAll('.pair-browser')) {
+ const body=browser.querySelector('tbody'),rows=Array.from(body.rows),q=s=>browser.querySelector(s);
+ let page=0,sort=-1,ascending=false;
+ const storageKey='pair-browser:'+location.pathname;
+ try {
+  const saved=JSON.parse(sessionStorage.getItem(storageKey)||'null');
+  if(saved){page=saved.page;sort=saved.sort;ascending=saved.ascending;
+   for(const key of ['photo','status','query','count'])q(`[data-${key}]`).value=saved[key];}
+ } catch {}
+ const hash=new URLSearchParams(location.hash.slice(1));
+ if(hash.has('photo'))q('[data-photo]').value=hash.get('photo');
+ function draw(){
+  const photo=q('[data-photo]').value,status=q('[data-status]').value,
+query=q('[data-query]').value.toLowerCase().trim(),limit=+q('[data-count]').value;
+  let selected=rows.filter(r=>(!photo||r.dataset.a===photo||r.dataset.b===photo)
+   &&(!status||r.dataset.status===status)
+   &&(!query||r.textContent.toLowerCase().includes(query)));
+  if(sort>=0)selected.sort((a,b)=>{let x=a.cells[sort].dataset.value,y=b.cells[sort].dataset.value;
+   const cmp=x!==''&&y!==''&&!isNaN(x)&&!isNaN(y)?Number(x)-Number(y):x.localeCompare(y,
+'ru');return ascending?cmp:-cmp;});
+  page=Math.min(page,Math.max(0,Math.ceil(selected.length/limit)-1));
+  for(const row of rows)row.hidden=true;
+  selected.slice(page*limit,(page+1)*limit).forEach(r=>{r.hidden=false;body.append(r);});
+  const end=Math.min((page+1)*limit,selected.length);
+  q('[data-total]').textContent=selected.length?
+   `${page*limit+1}–${end} из ${selected.length} пар`:'Пары не найдены';
+  q('[data-prev]').disabled=page===0;q('[data-next]').disabled=(page+1)*limit>=selected.length;
+  try{sessionStorage.setItem(storageKey,JSON.stringify({photo,status,query,count:limit,
+   page,sort,ascending}));}catch{}
+ }
+ for(const el of browser.querySelectorAll('.filters select,.filters input')) {
+  el.addEventListener('input',()=>{page=0;draw();});
+ }
+ for(const button of browser.querySelectorAll('[data-sort]'))button.onclick=()=>{
+const n=+button.dataset.sort;ascending=sort===n?!ascending:false;sort=n;page=0;
+  for(const th of browser.querySelectorAll('th'))th.removeAttribute('aria-sort');
+button.parentElement.setAttribute('aria-sort',ascending?'ascending':'descending');draw();};
+ q('[data-prev]').onclick=()=>{page--;draw();};q('[data-next]').onclick=()=>{page++;draw();};draw();
+}
+</script></body></html>
