@@ -1,118 +1,77 @@
-# Эксперименты
+# Floor plan from photos: experiments
 
-Визуальные результаты экспериментов по построению плана квартиры по фотографиям.
-[Открыть каталог](https://arthurgaleev.github.io/experiments/).
+Interactive galleries for research toward a floor plan from sparse photographs.
+[Open the catalog](https://arthurgaleev.github.io/experiments/) or
+[inspect all photos in 3D](https://arthurgaleev.github.io/experiments/alignment/clouds/all-photos.html).
+These are tool experiments, not a completed apartment plan.
 
-Начать можно с [выбора всех фотографий в 3D](https://arthurgaleev.github.io/experiments/alignment/clouds/all-photos.html).
-В обзорах показаны выводы; карточки, графы и матрицы ведут к подробностям.
-Фильтры и поиск позволяют найти любую пару. Между отчётами разных инструментов
-можно переходить для того же фото или пары. В 3D миниатюры включают любое подмножество источников при сохранении поз;
-разрывы выбранного графа отмечаются цветом. Кнопка «Только эту группу»
-выбирает целую исходную компоненту. Несвязанные исходные группы показаны
-отдельно. Начальный уровень — 2k точек на фото; кнопки 1k/2k/5k/10k/25k
-подгружают детали по запросу. Связная компонента не является распознанной комнатой.
-Списки «Сопоставление» и «Глубина» переключают четыре самостоятельных результата:
-RoMa / SIFT × MetricAnything / MoGe-2. Выбор фото сохраняется для каждого
-сочетания. Одиночные фото доступны компактной полосой миниатюр; их положение
-относительно других групп неизвестно.
+## What is available
 
-Переключатель **«VLM: проверка связей»** выбирает сохранённую проверку RoMa-связей
-локальным Qwen. Описаны все 23 фото; проверены все 253 пары в обоих порядках.
-Исключение связей сопровождается пересборкой компонент и поз, исходные облака
-не изменяются. В режиме MoGe-2 компоненты 21+2 разделены на 15+5+2+1;
-это качественный пример, а не доказательство правильного разбиения на комнаты.
-Независимый переключатель **«Гипотезы комнат и проходов»** открывает общий вид
-выбранной предполагаемой комнаты. Несовмещённые облака размещены рядом только
-для обзора; положение между частями явно отмечено как неизвестное. Их можно
-скрыть отдельным переключателем. Показаны 9 взаимно поддержанных наборов,
-причём 12 фото имеют несколько назначений: это альтернативы, а не число комнат.
-В [отчёте по гипотезам](https://arthurgaleev.github.io/experiments/alignment/grouping/rooms.html)
-сохранены парные основания, 24 неразрешённые тройки, свидетельства проходов
-и 36 кандидатов повторного совмещения. Семантические ответы не добавляют
-геометрические связи, позы или метрический план. Вызовы модели из браузера
-не выполняются.
+| Experiment | Contribution |
+|---|---|
+| [SIFT](https://arthurgaleev.github.io/experiments/sift/) | Classical keypoints, correspondences and pair matrix |
+| [RoMa v2 / SIFT](https://arthurgaleev.github.io/experiments/roma/) | All 253 photo pairs, match coverage and graph diagnostics |
+| [MetricAnything / MoGe-2](https://arthurgaleev.github.io/experiments/depth/) | Per-photo depth and interactive clouds with a shared comparison view |
+| [GeoCalib](https://arthurgaleev.github.io/experiments/geocalib/) | Vertical direction, calibration and before/after leveling |
+| [Alignment](https://arthurgaleev.github.io/experiments/alignment/) | Four matcher × depth branches with independent edges, poses, cycles and failures |
+| [Planar patches](https://arthurgaleev.github.io/experiments/planes/) | Experimental depth approximation, image support and point/patch views |
+| [Qwen edge review](https://arthurgaleev.github.io/experiments/alignment/grouping/) | Saved photo observations and all 253 pairs in both orders |
+| [Room/doorway hypotheses](https://arthurgaleev.github.io/experiments/alignment/grouping/rooms.html) | Alternatives, contradictions and reconstruction candidates |
+| [Connection recovery](https://arthurgaleev.github.io/experiments/alignment/grouping/recovery.html) | Validated component bridges, scale corrections and path checks |
+| [Global Qwen](https://arthurgaleev.github.io/experiments/alignment/grouping/global.html) | All-photo room reasoning, revisions and repeat/order differences |
+| [Joint DA3-Small](https://arthurgaleev.github.io/experiments/da3/) | Shared cameras and depth within groups of 20, 2 and 1 photos |
 
-Дополнительный переключатель **«Восстановить подтверждённые связи»** применяет
-сохранённые оценки с масштабом, прошедшие геометрические проверки и поддержанные
-обоими порядками Qwen. MoGe-2 соединяет группы 15 и 5 фото через `img_4_b / img_6`:
-получены 20+2+1. MetricAnything добавляет два моста: 19+2+1+1.
-Каждая исходная компонента получает одно общее преобразование; внутренние
-относительные позы сохранены. Одиночный мост всё ещё может быть ложным.
-[Отчёт восстановления](https://arthurgaleev.github.io/experiments/alignment/grouping/recovery.html)
-показывает основания, масштаб и проверки путей. Совместная оптимизация,
-исправление формы глубины и слияние поверхностей ещё не выполнялись.
+The viewer retains all photos, including singletons. Selecting photos changes
+visibility while preserving established poses. Originally disconnected components
+have unknown relative placement. Detail levels load on demand, starting at 2k
+points per photo. Matcher/depth, VLM review, supported recovery and semantic room
+source select separately saved results; the browser runs no inference.
 
-В режиме комнат **«Источник комнат»** позволяет сравнить парные альтернативы
-с [глобальным Qwen](https://arthurgaleev.github.io/experiments/alignment/grouping/global.html):
-все 23 фото и сводка 253 пар в одном запросе. При контексте 131072 на Mac
-прямой/обратный порядок и повтор дали одинаковые пять комнат. Из восьми изменений
-парных отношений пять не имеют отдельного объяснения; истинность разбиения
-не установлена. Глобальная семантика не изменяет геометрические рёбра.
-В прихожей два облака по-прежнему показаны с неизвестным взаимным положением.
+A geometric component is not a room. Pairwise room hypotheses can overlap and are
+not a room count. Global Qwen's five-room proposals are also unverified; repeated
+agreement does not establish correctness. Rooms visible through openings can
+have supporting photos without an assigned camera or reconstructed geometry.
+Unaligned room parts are arranged for inspection, with no physical inter-part
+distance implied.
 
-Для каждого инструмента хранится один выбранный запуск в отдельной папке.
-Доступны:
+VLM review can remove a false bridge and recompute placement. Supported recovery
+uses both positive visual landmarks and validated scale-aware geometry, applying
+one transform per original component. Internal relative poses are retained.
+This does not perform joint camera/depth optimization or surface fusion. DA3
+predicts joint geometry with independent relative scale per group, including
+local depth for singletons. Original and processed RGB show actual cropping.
 
-- [SIFT](https://arthurgaleev.github.io/experiments/sift/): ключевые точки,
-  соответствия и матрица пар.
-- [RoMa v2 и SIFT](https://arthurgaleev.github.io/experiments/roma/): все 253 пары
-  образца, графы RoMa/исходного SIFT, пространственный охват и отчёт по любой паре.
-- [MetricAnything и MoGe-2](https://arthurgaleev.github.io/experiments/depth/):
-  сравнение моделей для каждого фото и интерактивные облака в общем ракурсе.
-- [Совместная реконструкция DA3-Small](https://arthurgaleev.github.io/experiments/da3/).
-  Для тех же 23 фотографий использованы три сохранённые группы по 20, 2 и
-  1 снимку. В каждой доступны фактические входные обрезки, глубина,
-  уверенность и облако с камерами. Масштаб и система координат каждой группы
-  независимы. Для этого образца точность поз не измерена.
-- [GeoCalib](https://arthurgaleev.github.io/experiments/geocalib/): направление
-  вертикали, сравнение калибровок и переключатель до/после поворота.
-- [Совмещение облаков](https://arthurgaleev.github.io/experiments/alignment/):
-  все 253 пары × четыре сочетания, собственные группы и позы каждого,
-  камеры, конфликты циклов и сохранённые неудачные попытки. В обзоре и отчёте
-  каждой пары доступно сравнение решений; нехватка точек показана отдельно.
-  Старые группы SIFT с совмещением RoMa сохранены в исторической диагностике.
-- [Плоские участки](https://arthurgaleev.github.io/experiments/planes/):
-  экспериментальная аппроксимация предсказанной глубины, маски поддержки
-  и переключение точек / участков. Поверхности разных фото не объединены;
-  пропуски и потеря фототекстуры делают этот вид грубее подробного облака.
-- [Проверка связей VLM](https://arthurgaleev.github.io/experiments/alignment/grouping/):
-  изменённые связи, охват проверки и исходные ответы Qwen с фото и обоими
-  порядками. Перекрытие, одна комната и проход показаны как разные отношения;
-  неизвестные ответы сохраняются. Согласие двух порядков одной модели
-  не является независимым подтверждением.
-- [Гипотезы комнат и проходов](https://arthurgaleev.github.io/experiments/alignment/grouping/rooms.html):
-  альтернативные назначения фото с прямым переходом к облакам комнаты,
-  противоречия и кандидаты повторной реконструкции.
-- [Восстановленные связи](https://arthurgaleev.github.io/experiments/alignment/grouping/recovery.html):
-  фактически добавленные мосты, масштаб каждой компоненты и проверки путей.
-- [Qwen по всем фото](https://arthurgaleev.github.io/experiments/alignment/grouping/global.html):
-  пять предполагаемых комнат, исходные ответы, пересмотры и их ограничения.
+## Evidence and limitations
 
-Метрические размеры и правильность совмещения на этом образце не подтверждены
-эталонными глубиной и позами: таких данных у образца нет. Внешние проверочные
-наборы не публикуются. Полные NPZ-массивы хранятся локально; HTML-сцены используют общие JS-ресурсы с
-прореженными точками и работают без внешнего сервера вычислений.
+There are no verified camera poses or depth for this house. Graph size, inlier
+counts, model agreement and attractive clouds are not accuracy scores. For example,
+the original SIFT branches accept 5/7 pairs and RoMa 26/37, but 197 SIFT pairs
+lack enough support for the common fit/validation split. This is not an accuracy
+ranking. A manually noted false white-corner alignment remains visible; that note
+was not supplied to Qwen and did not alter the baseline decisions.
 
-В исходной ветви SIFT принимает 5/7 пар, RoMa — 26/37, но у SIFT 197 из 253 пар не имеют
-достаточно точек для разделения на подгонку и проверку при общих порогах.
-Это не рейтинг точности. В паре `img_11_a ↔ img_4_a` сохранено визуальное замечание
-о ложном совмещении похожих углов; решения алгоритма не исправлялись
-вручную. Замечание не является метрической эталонной разметкой.
-В отдельном VLM-варианте эта связь отклонена без передачи ручной заметки модели.
+Saved Qwen evidence covers all 23 photos and 253 pairs in both image orders,
+plus two pair repeats and three global calls (forward, reverse and repeat).
+All 531 photo/pair responses and three global responses passed schema validation
+and contain English descriptive text. Global camera-room assignments agree across
+the three calls, while doorway certainty and revision explanations still vary.
+Independent dev scorecards and private datasets remain in the source workspace.
+Full NPZ arrays are local; galleries use sampled geometry and need no compute
+server. One selected run per tool is exported here.
 
-Фотографии взяты из [example_house в официальном репозитории Blueprint-Bench / Andon Labs](https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house).
-Пять коллажей вручную разделены на отдельные снимки с удалением разделительной
-полосы; файлы переименованы. Из 18 исходных JPEG-файлов получено 23 фотографии.
+## Data and license
 
-Лицензия — [Apache 2.0](LICENSE), как в исходном репозитории Blueprint-Bench.
+Photos come from the [official Andon Labs Blueprint-Bench example](https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house).
+Five collages were manually split, removing separator strips, and files were
+renamed: 18 original JPEGs became 23 photos. This is a smoke sample, not the
+private full benchmark. [Apache-2.0 license](LICENSE), as in the source repository.
 
-## Сопровождение
+## Maintenance
 
-Генераторы и проверки находятся в [исходном проекте photo2plan](https://github.com/ArthurGaleev/photo2plan).
-Порядок обновления описан в `docs/visualization.md` локального исходного проекта.
-Из корня исходного проекта команда
-`uv run python scripts/refresh_experiments.py --export` создаёт копии выбранных
-запусков, перерисовывает страницы и проверяет сохранность данных перед заменой
-галерей в этом checkout. Модели повторно не запускаются. Затем выполняется
+Generators and checks live in [photo2plan](https://github.com/ArthurGaleev/photo2plan).
+From that source checkout, `uv run python scripts/refresh_experiments.py --export`
+stages selected runs, rerenders and verifies preserved data before replacing
+presentation files. Then run
 `uv run python scripts/check_gallery.py outputs/experiments --public`.
-Коммит и отправка этого отдельного репозитория выполняются отдельно.
+No model inference, commit or push is performed by those commands. This is a
+separate Git repository; publishing its prepared changes is a separate action.

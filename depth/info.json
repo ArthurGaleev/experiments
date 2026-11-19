@@ -37,8 +37,8 @@
   "axes": "x_right_y_down_z_forward",
   "failures": 0,
   "status": "complete",
-  "title": "MetricAnything и MoGe-2: геометрия одного фото",
-  "run": "20261116-233614-515867",
+  "title": "MetricAnything and MoGe-2: single-photo geometry",
+  "run": "20261110-034622-096298",
   "params": {
     "reference_smoke": false,
     "models": [
@@ -50,6 +50,6 @@
     "max_depth_m": 8,
     "limit": null
   },
-  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
   "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
 }

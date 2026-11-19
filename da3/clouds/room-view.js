@@ -31,7 +31,7 @@
           shifted[axis] = Array.from(trace[axis] || [], n => n === null ? null : n + offset[i]);
         });
         // A display coordinate must never be presented as a measured room position.
-        shifted.hovertemplate = `${trace.name || ''}<br>${part.label}<br>Положение между частями неизвестно<extra></extra>`;
+        shifted.hovertemplate = `${trace.name || ''}<br>${part.label}<br>Relative placement of parts is unknown<extra></extra>`;
         data.push(shifted);
       }
       data.push({type: 'scatter3d', mode: 'text', x: [b[0][0] + offset[0]],

@@ -3,7 +3,7 @@
     "a": "img_11_a",
     "b": "img_4_a",
     "kind": "wrong_surface_alignment",
-    "text": "Отмечено, что белые углы стен относятся к разным физическим поверхностям: столовая зона и спальня. Принятое совмещение этих углов отмечено как ложное. Это не метрическая GT-разметка и не утверждение об отсутствии любого перекрытия, включая вид за окном.",
-    "source": "Визуальное замечание, 11.11.2026; проверена панель соответствий."
+    "text": "The white wall corners belong to different physical surfaces: a dining area and a bedroom. Their accepted alignment is marked as false. This is a qualitative visual annotation, not metric ground truth or a claim that no region overlaps, including the view outside the window.",
+    "source": "Visual observation, 2026-11-11; correspondence panel checked."
   }
 ]

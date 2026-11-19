@@ -2,12 +2,12 @@
 window.planrecPhotoViewer = function () {
   const dialog = document.createElement('dialog');
   dialog.className = 'photo-viewer';
-  dialog.setAttribute('aria-label', 'Просмотр фотографии');
-  dialog.innerHTML = `<button class="photo-close" aria-label="Закрыть (Esc)">×</button>
-    <div class="photo-stage"><button class="photo-prev" aria-label="Предыдущее фото (←)">‹</button>
-    <img alt=""><button class="photo-next" aria-label="Следующее фото (→)">›</button></div>
+  dialog.setAttribute('aria-label', 'Photo viewer');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Close (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Previous photo (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Next photo (→)">›</button></div>
     <div class="photo-caption" aria-live="polite"></div>
-    <a class="photo-report" hidden>Отчёт фото ↗</a>`;
+    <a class="photo-report" hidden>Photo report ↗</a>`;
   document.body.append(dialog);
   const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
   const report = dialog.querySelector('.photo-report');

@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Эксперименты — план квартиры по фотографиям</title>
+<title>Experiments — floor plan from photos</title>
 <style>
 body { margin: 0; background: #f5f6f4; color: #20302a;
        font: 16px/1.6 system-ui, sans-serif; }
@@ -24,20 +24,20 @@ footer { margin-top: 40px; font-size: 14px; color: #58695d; }
 summary { cursor: pointer; }
 @media (max-width: 540px) { main { padding: 28px 16px; } th, td { padding: 12px 8px; } }
 </style></head><body><main>
-<div class="label">ПЛАН КВАРТИРЫ ПО ФОТОГРАФИЯМ</div>
-<h1>От фотографий к геометрии</h1>
-<p>23 фотографии одной квартиры. Геометрические проверки: где кадры перекрываются,
-что видно в глубину, куда направлена вертикаль и какие облака удаётся совместить.
-Это исследование инструментов, а не готовый план квартиры.</p>
-<div class="callout"><strong>Все фотографии в 3D</strong><p><a href="alignment/clouds/all-photos.html">Открыть сцену и выбрать фотографии →</a><br>Сопоставление и глубина выбираются отдельно. Сначала показана крупнейшая группа; другие группы доступны отдельно, их взаимное положение неизвестно.</p></div><div class="cards"><a class="card" href="roma/"><strong>01 · Связи между фото</strong><span>Графы RoMa и исходного SIFT, матрицы и отчёт по любой паре.</span></a><a class="card" href="depth/"><strong>02 · Геометрия одного фото</strong><span>Сравнение глубины двух моделей и переключение облаков в общем ракурсе.</span></a><a class="card" href="geocalib/"><strong>03 · Направление вверх</strong><span>Вертикаль на фото, калибровки камер и 3D до / после поворота.</span></a><a class="card" href="alignment/"><strong>04 · Совмещение и его границы</strong><span>RoMa / SIFT × две модели глубины: пары, группы и конфликты.</span></a><a class="card" href="planes/"><strong>05 · Плоские участки · экспериментально</strong><span>Аппроксимация глубины, поддержка на фото и сравнение с точками.</span></a><a class="card" href="alignment/grouping/"><strong>06 · VLM: связи и комнаты</strong><span>Парные и глобальные ответы Qwen, комнаты, проходы и восстановленные связи облаков.</span></a><a class="card" href="da3/"><strong>Совместная реконструкция DA3</strong><span>Одна система камер на группу фото, относительная глубина и интерактивные облака.</span></a><a class="card" href="sift/"><strong>Исходный эксперимент SIFT</strong><span>Первоначальная группировка и подробная матрица соответствий.</span></a></div>
-<p>В каждом обзоре доступны основные выводы и переход к отдельным фото.
-Матрицы и фильтры открывают все проверенные пары, включая неудачные.</p>
-<details><summary>Запуски и параметры</summary>
-<table><thead><tr><th>Инструмент</th><th>Дата запуска</th><th>Данные запуска</th></tr></thead>
-<tbody><tr><td><a href="alignment/">Совмещение облаков →</a></td><td>2026-11-11</td><td><a href="alignment/info.json">Параметры</a></td></tr><tr><td><a href="da3/">Совместная реконструкция DA3 →</a></td><td>2026-11-17</td><td><a href="da3/info.json">Параметры</a></td></tr><tr><td><a href="depth/">MetricAnything и MoGe-2: геометрия одного фото →</a></td><td>2026-11-10</td><td><a href="depth/info.json">Параметры</a></td></tr><tr><td><a href="geocalib/">GeoCalib: направление вверх →</a></td><td>2026-11-10</td><td><a href="geocalib/info.json">Параметры</a></td></tr><tr><td><a href="planes/">Плоские участки · экспериментально →</a></td><td>2026-11-11</td><td><a href="planes/info.json">Параметры</a></td></tr><tr><td><a href="roma/">RoMa и SIFT: связи между фотографиями →</a></td><td>2026-11-09</td><td><a href="roma/info.json">Параметры</a></td></tr><tr><td><a href="sift/">SIFT →</a></td><td>2026-11-08</td><td><a href="sift/info.json">Параметры</a></td></tr></tbody></table></details>
-<footer><p>Фотографии: <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">образец Blueprint-Bench / Andon Labs</a>.
-Пять коллажей вручную разделены на отдельные снимки, файлы переименованы:
-из 18 исходных файлов получено 23 фотографии.</p>
-<a href="https://github.com/ArthurGaleev/experiments">Репозиторий</a> ·
+<div class="label">FLOOR PLAN FROM PHOTOS</div>
+<h1>From photos to geometry</h1>
+<p>23 photos of one apartment. Geometry checks: where views overlap,
+what depth reveals, which direction is up and which clouds can be aligned.
+Tool research; a completed apartment plan is still ahead.</p>
+<div class="callout"><strong>All photos in 3D</strong><p><a href="alignment/clouds/all-photos.html">Open scene and select photos →</a><br>Choose matcher and depth separately. The largest group is shown first; other groups are available separately, their relative placement is unknown.</p></div><div class="cards"><a class="card" href="roma/"><strong>01 · Photo connections</strong><span>RoMa and original SIFT graphs, matrices and reports for every pair.</span></a><a class="card" href="depth/"><strong>02 · Single-photo geometry</strong><span>Compare two depth models and switch clouds while retaining the view.</span></a><a class="card" href="geocalib/"><strong>03 · Up direction</strong><span>Vertical overlays, camera calibration and 3D before/after rotation.</span></a><a class="card" href="alignment/"><strong>04 · Alignment and limitations</strong><span>RoMa / SIFT × two depth models: pairs, groups and conflicts.</span></a><a class="card" href="planes/"><strong>05 · Planar patches · experimental</strong><span>Depth approximation, image support and comparison with points.</span></a><a class="card" href="alignment/grouping/"><strong>06 · VLM: connections and rooms</strong><span>Pairwise and global Qwen answers, rooms, doorways and recovered cloud connections.</span></a><a class="card" href="da3/"><strong>Joint DA3 reconstruction</strong><span>Shared cameras per image group, relative depth and interactive clouds.</span></a><a class="card" href="sift/"><strong>Original SIFT experiment</strong><span>Initial grouping and detailed correspondence matrix.</span></a></div>
+<p>Each overview links key findings to individual photos.
+Matrices and filters expose every checked pair, including failures.</p>
+<details><summary>Runs and parameters</summary>
+<table><thead><tr><th>Tool</th><th>Run date</th><th>Run data</th></tr></thead>
+<tbody><tr><td><a href="alignment/">Photo alignment and room hypotheses →</a></td><td>2026-11-11</td><td><a href="alignment/info.json">Parameters</a></td></tr><tr><td><a href="da3/">Joint DA3 reconstruction →</a></td><td>2026-11-20</td><td><a href="da3/info.json">Parameters</a></td></tr><tr><td><a href="depth/">MetricAnything and MoGe-2: single-photo geometry →</a></td><td>2026-11-10</td><td><a href="depth/info.json">Parameters</a></td></tr><tr><td><a href="geocalib/">GeoCalib: up direction →</a></td><td>2026-11-10</td><td><a href="geocalib/info.json">Parameters</a></td></tr><tr><td><a href="planes/">Planar patches →</a></td><td>2026-11-11</td><td><a href="planes/info.json">Parameters</a></td></tr><tr><td><a href="roma/">RoMa v2 and SIFT: photo connections →</a></td><td>2026-11-09</td><td><a href="roma/info.json">Parameters</a></td></tr><tr><td><a href="sift/">SIFT photo matching →</a></td><td>2026-11-08</td><td><a href="sift/info.json">Parameters</a></td></tr></tbody></table></details>
+<footer><p>Photos: <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">Blueprint-Bench sample / Andon Labs</a>.
+Five collages were manually split and files renamed:
+18 original files became 23 photos.</p>
+<a href="https://github.com/ArthurGaleev/experiments">Repository</a> ·
 <a href="LICENSE">Apache 2.0</a></footer>
 </main></body></html>

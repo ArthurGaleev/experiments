@@ -18,13 +18,13 @@
   "axes": "x_right_y_down_z_forward; gravity_points_down",
   "failures": 0,
   "status": "complete",
-  "title": "GeoCalib: направление вверх",
-  "run": "20261116-233614-515867",
+  "title": "GeoCalib: up direction",
+  "run": "20261110-222647-275422",
   "params": {
     "device": "mps",
     "seed": 0,
     "limit": null
   },
-  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
   "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
 }

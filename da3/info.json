@@ -1,5 +1,5 @@
 {
-  "created": "2026-11-17T22:50:58.479940+03:00",
+  "created": "2026-11-20T01:35:27.983284+03:00",
   "model_id": "depth-anything/DA3-SMALL",
   "model_revision": "e08cab65ca0ec38e7826075418411ab90cab4da3",
   "source_revision": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
@@ -15,14 +15,14 @@
   "device": "mps",
   "failures": 0,
   "status": "complete",
-  "title": "Совместная реконструкция DA3",
-  "run": "20261117-225058-479940",
+  "title": "Joint DA3 reconstruction",
+  "run": "20261120-013527-983284",
   "params": {
     "process_res": 504,
     "process_res_method": "upper_bound_resize",
     "ref_view_strategy": "saddle_balanced",
     "use_ray_pose": false
   },
-  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
   "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
 }

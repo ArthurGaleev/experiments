@@ -29,7 +29,7 @@
       "z_filter": false
     }
   },
-  "title": "Совмещение облаков",
+  "title": "Photo alignment and room hypotheses",
   "run": "20261116-233614-515867",
   "params": {
     "pair": null,
@@ -46,6 +46,6 @@
     "sift_ratio": 0.8,
     "no_render": true
   },
-  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
   "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
 }

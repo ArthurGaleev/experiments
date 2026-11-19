@@ -1,4 +1,4 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Вертикаль · img_10</title><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Vertical · img_10</title><style>
 * { box-sizing: border-box; }
 body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
 main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
@@ -109,43 +109,43 @@ dialog.photo-viewer::backdrop{background:#121614}
  .photo-viewer img{max-width:100%;width:100%}
  .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
  .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
-</style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
-<nav><a href='index.html'>← К обзору</a></nav>
-<h1>Вертикаль · img_10</h1><nav data-related aria-label="Тот же источник в других экспериментах"><a href="../roma/photo-img_10.html">Соответствия</a> · <a href="../depth/photo-img_10.html">Глубина</a> · <a href="../alignment/photo-img_10.html">Совмещение</a> · <a href="../planes/photo-img_10.html">Плоские участки</a></nav>
-<section class='section' id='section-0'><h2>Вертикаль на фотографии</h2>
-<p>Зелёные стрелки направлены вверх. Линия горизонта может находиться за пределами фото.</p>
+</style></head><body><main><div class='eyebrow'>Floor plan from photos · experiment</div>
+<nav><a href='index.html'>← Overview</a></nav>
+<h1>Vertical · img_10</h1><nav data-related aria-label="Same source in other experiments"><a href="../roma/photo-img_10.html">Matches</a> · <a href="../depth/photo-img_10.html">Depth</a> · <a href="../alignment/photo-img_10.html">Alignment</a> · <a href="../planes/photo-img_10.html">Planar patches</a></nav>
+<section class='section' id='section-0'><h2>Vertical on photo</h2>
+<p>Green arrows point up. The horizon can lie outside the photo.</p>
 
 <div class='row' style='--h: 260px'>
-<figure><img src='photos/01_photos_img_10.png' width='690' height='460' loading='lazy' alt='Исходное RGB' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>Исходное RGB</figcaption></figure>
-<figure><img src='panels/01_photos_img_10_vertical.jpg' width='690' height='460' loading='lazy' alt='Вертикаль и горизонт: GeoCalib' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>Вертикаль и горизонт: GeoCalib</figcaption></figure>
+<figure><img src='photos/01_photos_img_10.png' width='690' height='460' loading='lazy' alt='Source RGB' role='button' tabindex='0' data-group='s0' data-index='0'><figcaption>Source RGB</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_vertical.jpg' width='690' height='460' loading='lazy' alt='Vertical and horizon: GeoCalib' role='button' tabindex='0' data-group='s0' data-index='1'><figcaption>Vertical and horizon: GeoCalib</figcaption></figure>
 </div>
 </section>
-<section class='section' id='section-1'><h2>До и после поворота</h2>
-<p>Переключатель GeoCalib сохраняет ракурс. Ко всем моделям применяется одна оценка вертикали.</p>
-<div class='cards' style='--h:130px'><a class='card' href='clouds/01_photos_img_10.html'><img src='clouds/01_photos_img_10.jpg' alt='' loading='lazy'><strong>Открыть 3D · до / после</strong><span></span></a></div>
+<section class='section' id='section-1'><h2>Before and after leveling</h2>
+<p>The GeoCalib switch preserves the view. One vertical estimate is applied to all models.</p>
+<div class='cards' style='--h:130px'><a class='card' href='clouds/01_photos_img_10.html'><img src='clouds/01_photos_img_10.jpg' alt='' loading='lazy'><strong>Open 3D · before / after</strong><span></span></a></div>
 </section>
-<section class='section' id='section-2'><h2>Почему калибровки различаются</h2>
-<p>Каждая модель оценивает свою K. K от GeoCalib не подставляется в готовые XYZ другой модели. Без эталона расхождение не указывает, какая оценка верна. FoV по fx рассчитан для симметричной камеры как 2·atan(W/2fx).</p>
-<div class='table-scroll'><table><tr><th>Источник</th><th>fx, px</th><th>fy, px</th><th>cx, cy, px</th><th>FoV по fx</th></tr><tr><td>GeoCalib</td><td>443.5</td><td>443.5</td><td>345.0, 230.0</td><td>75.8°</td></tr><tr><td>MetricAnything</td><td>486.7</td><td>486.7</td><td>344.5, 229.5</td><td>70.7°</td></tr><tr><td>MoGe-2 с нормалями</td><td>429.4</td><td>429.4</td><td>344.5, 229.5</td><td>77.6°</td></tr></table></div>
+<section class='section' id='section-2'><h2>Why calibrations differ</h2>
+<p>Each model predicts its own K. GeoCalib K does not replace K attached to another model&#x27;s saved XYZ. Without a reference, disagreement does not establish which estimate is correct. FoV from fx assumes a symmetric camera: 2·atan(W/2fx).</p>
+<div class='table-scroll'><table><tr><th>Source</th><th>fx, px</th><th>fy, px</th><th>cx, cy, px</th><th>FoV from fx</th></tr><tr><td>GeoCalib</td><td>443.5</td><td>443.5</td><td>345.0, 230.0</td><td>75.8°</td></tr><tr><td>MetricAnything</td><td>486.7</td><td>486.7</td><td>344.5, 229.5</td><td>70.7°</td></tr><tr><td>MoGe-2 with normals</td><td>429.4</td><td>429.4</td><td>344.5, 229.5</td><td>77.6°</td></tr></table></div>
 </section>
-<details class='section' id='section-3'><summary>Веса сети и численные данные</summary>
-<p>Крен -0.02°, тангаж 0.03°; f = 443.5 px. Оценка неопределённости вертикали: 1.59°. Время 0.129 с; шагов оптимизации 3. <span>Полные массивы и ковариация NPZ (массив хранится локально)</span>.</p><p><a href='clouds/01_photos_img_10.html'>Интерактивное облако с вертикалью</a> · <a href='../depth/clouds/01_photos_img_10.html'>Исходное облако без вертикали</a>. Сохранённые XYZ, масштаб и K моделей глубины не изменены. Ко всем источникам применён один поворот GeoCalib; эталонная вертикаль не используется для подгонки. Высота пола и общий поворот разных фото не определены.</p>
+<details class='section' id='section-3'><summary>Network weights and numerical data</summary>
+<p>Roll -0.02°, pitch 0.03°; f = 443.5 px. Estimated vertical uncertainty: 1.59°. Time 0.129 s; optimizer steps 3. <span>Full arrays and covariance (NPZ) (array stored locally)</span>.</p><p><a href='clouds/01_photos_img_10.html'>Interactive leveled cloud</a> · <a href='../depth/clouds/01_photos_img_10.html'>Original unlevelled cloud</a>. Saved XYZ, scale and K are unchanged. All sources receive one GeoCalib rotation; reference vertical is not used for fitting. Floor height and common orientation of different photos are unknown.</p>
 <div class='row' style='--h: 210px'>
-<figure><img src='panels/01_photos_img_10_network.jpg' width='480' height='320' loading='lazy' alt='RGB сети после уменьшения и кадрирования' role='button' tabindex='0' data-group='s3' data-index='0'><figcaption>RGB сети после уменьшения и кадрирования</figcaption></figure>
-<figure><img src='panels/01_photos_img_10_up_confidence.png' width='480' height='320' loading='lazy' alt='Вес сети: вертикаль, чёрный 0 → белый 1' role='button' tabindex='0' data-group='s3' data-index='1'><figcaption>Вес сети: вертикаль, чёрный 0 → белый 1</figcaption></figure>
-<figure><img src='panels/01_photos_img_10_latitude_confidence.png' width='480' height='320' loading='lazy' alt='Вес сети: широта лучей, чёрный 0 → белый 1' role='button' tabindex='0' data-group='s3' data-index='2'><figcaption>Вес сети: широта лучей, чёрный 0 → белый 1</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_network.jpg' width='480' height='320' loading='lazy' alt='Network RGB after resize and crop' role='button' tabindex='0' data-group='s3' data-index='0'><figcaption>Network RGB after resize and crop</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_up_confidence.png' width='480' height='320' loading='lazy' alt='Network weight: vertical, black 0 → white 1' role='button' tabindex='0' data-group='s3' data-index='1'><figcaption>Network weight: vertical, black 0 → white 1</figcaption></figure>
+<figure><img src='panels/01_photos_img_10_latitude_confidence.png' width='480' height='320' loading='lazy' alt='Network weight: ray latitude, black 0 → white 1' role='button' tabindex='0' data-group='s3' data-index='2'><figcaption>Network weight: ray latitude, black 0 → white 1</figcaption></figure>
 </div>
 </details>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
 window.planrecPhotoViewer = function () {
   const dialog = document.createElement('dialog');
   dialog.className = 'photo-viewer';
-  dialog.setAttribute('aria-label', 'Просмотр фотографии');
-  dialog.innerHTML = `<button class="photo-close" aria-label="Закрыть (Esc)">×</button>
-    <div class="photo-stage"><button class="photo-prev" aria-label="Предыдущее фото (←)">‹</button>
-    <img alt=""><button class="photo-next" aria-label="Следующее фото (→)">›</button></div>
+  dialog.setAttribute('aria-label', 'Photo viewer');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Close (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Previous photo (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Next photo (→)">›</button></div>
     <div class="photo-caption" aria-live="polite"></div>
-    <a class="photo-report" hidden>Отчёт фото ↗</a>`;
+    <a class="photo-report" hidden>Photo report ↗</a>`;
   document.body.append(dialog);
   const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
   const report = dialog.querySelector('.photo-report');
@@ -191,7 +191,7 @@ window.planrecPhotoViewer = function () {
   };
 };
 
-const groups = {"s0": [{"src": "photos/01_photos_img_10.png", "caption": "Исходное RGB"}, {"src": "panels/01_photos_img_10_vertical.jpg", "caption": "Вертикаль и горизонт: GeoCalib"}], "s3": [{"src": "panels/01_photos_img_10_network.jpg", "caption": "RGB сети после уменьшения и кадрирования"}, {"src": "panels/01_photos_img_10_up_confidence.png", "caption": "Вес сети: вертикаль, чёрный 0 → белый 1"}, {"src": "panels/01_photos_img_10_latitude_confidence.png", "caption": "Вес сети: широта лучей, чёрный 0 → белый 1"}]};
+const groups = {"s0": [{"src": "photos/01_photos_img_10.png", "caption": "Source RGB"}, {"src": "panels/01_photos_img_10_vertical.jpg", "caption": "Vertical and horizon: GeoCalib"}], "s3": [{"src": "panels/01_photos_img_10_network.jpg", "caption": "Network RGB after resize and crop"}, {"src": "panels/01_photos_img_10_up_confidence.png", "caption": "Network weight: vertical, black 0 → white 1"}, {"src": "panels/01_photos_img_10_latitude_confidence.png", "caption": "Network weight: ray latitude, black 0 → white 1"}]};
 
 const photoViewer = window.planrecPhotoViewer();
 function openViewer(group, index, trigger = document.activeElement) {
@@ -247,7 +247,7 @@ query=q('[data-query]').value.toLowerCase().trim(),limit=+q('[data-count]').valu
   selected.slice(page*limit,(page+1)*limit).forEach(r=>{r.hidden=false;body.append(r);});
   const end=Math.min((page+1)*limit,selected.length);
   q('[data-total]').textContent=selected.length?
-   `${page*limit+1}–${end} из ${selected.length} пар`:'Пары не найдены';
+   `${page*limit+1}–${end} of ${selected.length} pairs`:'No pairs found';
   q('[data-prev]').disabled=page===0;q('[data-next]').disabled=(page+1)*limit>=selected.length;
   try{sessionStorage.setItem(storageKey,JSON.stringify({photo,status,query,count:limit,
    page,sort,ascending}));}catch{}

@@ -13,11 +13,11 @@
     "mesh_cell_pixels": 4,
     "seed": 0
   },
-  "title": "Плоские участки · экспериментально",
-  "run": "20261116-233614-515867",
+  "title": "Planar patches",
+  "run": "20261111-164022-218536",
   "params": {
     "limit": null
   },
-  "dataset": "Blueprint-Bench / example_house (коллажи разделены вручную)",
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
   "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
 }

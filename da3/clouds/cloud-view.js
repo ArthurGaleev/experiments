@@ -2,21 +2,21 @@
 (() => {
   'use strict';
   const settings = JSON.parse(document.getElementById('scene-data').textContent);
-  const coordinateUnit = settings.relativeScale ? 'отн. ед.' : 'м';
+  const coordinateUnit = settings.relativeScale ? 'rel. units' : 'm';
   const get = id => document.getElementById(id);
   const photoViewer = window.planrecPhotoViewer();
   const palette = ['#168575', '#ce621c', '#6551c5', '#bd3c8a', '#267bb7', '#7c4f37', '#85801d'];
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
   const roomCamera = {eye: {x: 0, y: -2.1, z: 1}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
   const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0, room: null, roomSource: 'pairwise'};
-  const semanticVariants = [{id: 'pairwise', label: 'Парные гипотезы', semantics: settings.semantics}, ...(settings.roomVariants || [])].filter(v => v.semantics);
+  const semanticVariants = [{id: 'pairwise', label: 'Pairwise hypotheses', semantics: settings.semantics}, ...(settings.roomVariants || [])].filter(v => v.semantics);
   const sourceRooms = new Map();
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
   const roomSelections = new Map();
   let observer, expanded, scheduled = false, drawing = false;
   const sceneDialog = document.createElement('dialog');
   sceneDialog.className = 'scene-viewer';
-  sceneDialog.setAttribute('aria-label', 'Увеличенный 3D-вид');
+  sceneDialog.setAttribute('aria-label', 'Expanded 3D view');
   document.body.append(sceneDialog);
   sceneDialog.addEventListener('close', () => { if (!sceneDialog.open) collapseScene(); });
   function scheduleDraw() {
@@ -65,9 +65,9 @@
     if (sceneDialog.open) sceneDialog.close();
     placeholder.replaceWith(view.section);
     document.body.classList.remove('scene-viewer-open');
-    button.textContent = '⤢'; button.title = 'Развернуть 3D';
+    button.textContent = '⤢'; button.title = 'Expand 3D';
     button.setAttribute('aria-expanded', 'false');
-    button.setAttribute('aria-label', 'Развернуть 3D');
+    button.setAttribute('aria-label', 'Expand 3D');
     button.focus({preventScroll: true});
     resizeScene(view);
   }
@@ -81,9 +81,9 @@
     expanded = {view, placeholder, button}; view.nearby = true;
     sceneDialog.append(view.section);
     document.body.classList.add('scene-viewer-open');
-    button.textContent = '⤡'; button.title = 'Свернуть 3D (Esc)';
+    button.textContent = '⤡'; button.title = 'Collapse 3D (Esc)';
     button.setAttribute('aria-expanded', 'true');
-    button.setAttribute('aria-label', 'Свернуть 3D');
+    button.setAttribute('aria-label', 'Collapse 3D');
     sceneDialog.showModal();
     button.focus({preventScroll: true});
     resizeScene(view);
@@ -318,7 +318,7 @@
     const corners = source.corners.map(p => position(p, source, component));
     for (let i = 0; i < 4; i++) lines.push(centre, corners[i], corners[(i + 1) % 4], [null, null, null]);
     return {type: 'scatter3d', mode: 'lines', x: lines.map(p => p[0]), y: lines.map(p => p[1]), z: lines.map(p => p[2]),
-      name: `${ghost ? 'Скрытое фото' : 'Камера'}: ${source.name}`, showlegend: false, hoverinfo: 'name',
+      name: `${ghost ? 'Hidden photo' : 'Camera'}: ${source.name}`, showlegend: false, hoverinfo: 'name',
       opacity: ghost ? .3 : 1, line: {width: ghost ? 2 : 4, color: ghost ? '#89958c' : palette[(groups.membership.get(source.id) || 0) % palette.length]}};
   }
 
@@ -351,12 +351,12 @@
         line.push(position([0, 0, 0], byId.get(a), component), position([0, 0, 0], byId.get(b), component), [null, null, null]);
       }
       if (line.length) output.push({type: 'scatter3d', mode: 'lines', x: line.map(p => p[0]), y: line.map(p => p[1]), z: line.map(p => p[2]),
-        line: {color: '#89958c', width: 3, dash: 'dash'}, name: 'Путь через скрытые фото', hoverinfo: 'name', showlegend: false});
+        line: {color: '#89958c', width: 3, dash: 'dash'}, name: 'Path through hidden photos', hoverinfo: 'name', showlegend: false});
       for (const id of hidden) output.push(cameraTrace(byId.get(id), component, groups, true));
     }
     if (get('cameras').checked && !state.room) {
       const rotation = get('level').checked ? component.rotation : component.fixed;
-      for (const [up, label, color] of [[component.up, 'Вверх · GeoCalib', '#168575'], [settings.referenceUp, 'Вверх · эталон', '#c532b4']]) {
+      for (const [up, label, color] of [[component.up, 'Up · GeoCalib', '#168575'], [settings.referenceUp, 'Up · reference', '#c532b4']]) {
         if (!up) continue;
         const end = rotate(up, rotation);
         output.push({type:'scatter3d', mode:'lines', x:[0,end[0]], y:[0,end[1]], z:[0,end[2]],
@@ -373,14 +373,14 @@
       card.querySelector('.photo-toggle').setAttribute('aria-pressed', selected);
       card.style.setProperty('--group-colour', palette[(group || 0) % palette.length]);
       const hiddenExtra = state.room && !get('room-extra').checked && !roomParts()[0]?.ids.includes(id);
-      card.querySelector('.badge').textContent = hiddenExtra ? 'Скрыто: нет совмещения' : selected ? (state.variant.edges === null ? 'Показано' : `Подгруппа ${(group || 0) + 1}`) : 'Скрыто';
+      card.querySelector('.badge').textContent = hiddenExtra ? 'Hidden: unaligned' : selected ? (state.variant.edges === null ? 'Visible' : `Subgroup ${(group || 0) + 1}`) : 'Hidden';
     }
     const split = [...groups.counts.values()].some(n => n > 1);
     get('selection-status').classList.toggle('split', split);
-    let text = `Выбрано ${state.selected.size} из ${state.room ? roomNames().length : state.variant.sources.length}`;
-    if (state.room) text += ' в предполагаемой комнате' + (!roomNames().length ? ' · камер не назначено' : roomParts().length > 1 ? ' · размещение частей условное' : ' · одна геометрическая часть');
-    if (split) text += ` · подгрупп среди выбранных фото: ${groups.total}`;
-    if (settings.multiview) text += ' · позы полной группы сохранены';
+    let text = `Selected ${state.selected.size} of ${state.room ? roomNames().length : state.variant.sources.length}`;
+    if (state.room) text += ' in the hypothesized room' + (!roomNames().length ? ' · no assigned cameras' : roomParts().length > 1 ? ' · parts arranged for inspection' : ' · one geometric part');
+    if (split) text += ` · visible subgroups: ${groups.total}`;
+    if (settings.multiview) text += ' · full-group poses retained';
     get('selection-status').textContent = text + '.';
     const shown = state.room && !get('room-extra').checked ? new Set(roomParts()[0]?.ids || []) : state.selected;
     const selected = state.variant.sources.filter(s => state.selected.has(s.id) && shown.has(s.id));
@@ -388,9 +388,9 @@
     const patches = selected.reduce((n, s) => n + (s.planes?.count || 0), 0);
     const faces = selected.reduce((n, s) => n + (s.planes?.triangles || 0), 0);
     const coverage = selected.filter(s => s.planes).map(s => 100 * s.planes.coverage);
-    get('counts').textContent = [state.mode !== 'planes' ? `${count.toLocaleString('ru')} точек` : '',
-      state.mode !== 'points' ? `${patches} участков · ${faces.toLocaleString('ru')} треугольников` : '',
-      state.mode !== 'points' && coverage.length ? `покрытие фото: ${Math.min(...coverage).toFixed(0)}–${Math.max(...coverage).toFixed(0)}%` : ''].filter(Boolean).join(' · ');
+    get('counts').textContent = [state.mode !== 'planes' ? `${count.toLocaleString('en')} points` : '',
+      state.mode !== 'points' ? `${patches} patches · ${faces.toLocaleString('en')} triangles` : '',
+      state.mode !== 'points' && coverage.length ? `photo coverage: ${Math.min(...coverage).toFixed(0)}–${Math.max(...coverage).toFixed(0)}%` : ''].filter(Boolean).join(' · ');
     get('detail-control').querySelector('.segments').hidden = state.mode === 'planes';
     get('detail-control').firstElementChild.hidden = state.mode === 'planes';
     get('plane-note').hidden = state.mode === 'points';
@@ -419,8 +419,8 @@
     const started = performance.now();
     const groups = selectionGroups();
     updateSelection(groups);
-    get('top').textContent = get('level').checked && state.variant.components.every(c => c.levelled) ? 'Вид сверху' : 'Вдоль −y камеры';
-    get('loading').textContent = 'Подготовка 3D…';
+    get('top').textContent = get('level').checked && state.variant.components.every(c => c.levelled) ? 'Top view' : 'Along camera -y';
+    get('loading').textContent = 'Preparing 3D…';
     try {
       if (state.room) await drawRoom(version, groups);
       else for (const component of state.variant.components) {
@@ -432,7 +432,7 @@
         if (version !== state.version) return;
         const level = get('level').checked && component.levelled;
         const ranges = level ? component.ranges : component.rawRanges;
-        const labels = (level ? ['x', 'y', 'z вверх'] : ['x камеры', 'z камеры', '−y камеры']).map(axis => axis + ', ' + coordinateUnit);
+        const labels = (level ? ['x', 'y', 'z up'] : ['camera x', 'camera z', 'camera -y']).map(axis => axis + ', ' + coordinateUnit);
         const camera = currentCamera(view.plot) || cameras.get(view.key) || defaultCamera;
         const scene = {aspectmode: 'manual', aspectratio: fixedAspect(ranges), camera};
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i].slice(), autorange: false}; });
@@ -446,14 +446,14 @@
         }
         if (version !== state.version) return;
       }
-      if (version === state.version) get('loading').textContent = state.selected.size ? '' : 'Выберите фотографии ниже.';
+      if (version === state.version) get('loading').textContent = state.selected.size ? '' : 'Select photos below.';
       if (diagnostics && version === state.version) console.info('planrec-viewer ' + JSON.stringify({
         selected: state.selected.size, mode: state.mode, limit: state.limit,
         updateMs: Math.round(performance.now() - started), readySinceNavigationMs: Math.round(performance.now()),
         geometryBytesRequested: loadedBytes, geometryFilesRequested: assets.size,
       }));
     } catch (error) {
-      if (version === state.version) get('loading').textContent = 'Не удалось загрузить 3D. Можно повторить выбор уровня детализации. ' + error.message;
+      if (version === state.version) get('loading').textContent = 'Failed to load 3D. Select a detail level to retry. ' + error.message;
     }
   }
 
@@ -482,19 +482,19 @@
     for (let index = 0; index < sorted.length; index++) {
       const component = sorted[index], section = document.createElement('section'), header = document.createElement('header'), plot = document.createElement('div');
       section.className = 'scene' + (index ? ' secondary' : ''); plot.className = 'plot';
-      const title = document.createElement('h2'); title.textContent = `Группа ${Number(component.id) + 1} · ${settings.multiview ? 'фото' : 'источники'}: ${component.ids.length}`;
+      const title = document.createElement('h2'); title.textContent = `Group ${Number(component.id) + 1} · ${settings.multiview ? 'photos' : 'sources'}: ${component.ids.length}`;
       const heading = document.createElement('div'); heading.className = 'scene-heading';
       const expand = document.createElement('button'); expand.className = 'scene-expand';
-      expand.textContent = '⤢'; expand.title = 'Развернуть 3D';
-      expand.setAttribute('aria-label', 'Развернуть 3D'); expand.setAttribute('aria-haspopup', 'dialog');
+      expand.textContent = '⤢'; expand.title = 'Expand 3D';
+      expand.setAttribute('aria-label', 'Expand 3D'); expand.setAttribute('aria-haspopup', 'dialog');
       expand.setAttribute('aria-expanded', 'false'); heading.append(title, expand); header.append(heading);
-      if (index) { const note = document.createElement('p'); note.textContent = 'Отдельная система координат · положение относительно других групп неизвестно'; header.append(note); }
+      if (index) { const note = document.createElement('p'); note.textContent = 'Separate coordinate frame · placement relative to other groups is unknown'; header.append(note); }
       if (component.warnings) {
         const warning = document.createElement('p'); warning.className = 'warning';
-        warning.textContent = `Расхождения путей: ${component.warnings}${component.cycleChecks == null ? '' : ' из ' + component.cycleChecks}. Совместное уточнение поз не выполнено.`;
+        warning.textContent = `Path conflicts: ${component.warnings}${component.cycleChecks == null ? '' : ' of ' + component.cycleChecks}. Joint pose refinement has not been performed.`;
         header.append(warning);
       } else if (settings.multiview && component.cycleChecks === 0) {
-        const note = document.createElement('p'); note.textContent = 'Замкнутых путей нет: альтернативная проверка размещения недоступна.'; header.append(note);
+        const note = document.createElement('p'); note.textContent = 'No cycles: no alternative path check is available.'; header.append(note);
       }
       for (const note of component.notes || []) {
         const row = document.createElement('p'), link = document.createElement('a'); row.className = 'warning';
@@ -515,12 +515,12 @@
         const group = document.createElement('div'); group.className = 'photo-group'; group.dataset.component = component.id;
         const heading = document.createElement('div'); heading.className = 'group-heading';
         const label = document.createElement('span');
-        label.textContent = state.room ? `Часть ${index + 1} · ${component.ids.length} фото` + (sorted.length > 1 ? ' · положение относительно других частей неизвестно' : ' · позы по выбранному графу')
-          : singleton ? `Без принятых связей · фото: ${isolated} · каждое показано отдельно` : title.textContent + (index ? ' · нет принятой связи с основной группой' : '');
+        label.textContent = state.room ? `Part ${index + 1} · ${component.ids.length} photos` + (sorted.length > 1 ? ' · placement relative to other parts is unknown' : ' · poses from the selected graph')
+          : singleton ? `No accepted connections · photos: ${isolated} · each shown separately` : title.textContent + (index ? ' · no accepted connection to the main group' : '');
         heading.append(label);
         if (settings.multiview && !singleton) {
-          const only = document.createElement('button'); only.className = 'group-only'; only.textContent = 'Только эту группу';
-          only.setAttribute('aria-label', `Показать только группу ${Number(component.id) + 1}`);
+          const only = document.createElement('button'); only.className = 'group-only'; only.textContent = 'Only this group';
+          only.setAttribute('aria-label', `Show only group ${Number(component.id) + 1}`);
           only.onclick = () => { state.selected = new Set(component.ids); draw(); };
           heading.append(only);
         }
@@ -531,23 +531,23 @@
       }
       for (const source of state.variant.sources.filter(s => component.ids.includes(s.id))) {
         const card = document.createElement('div'); card.className = 'photo'; card.dataset.id = source.id;
-        const button = document.createElement('button'); button.className = 'photo-toggle'; button.setAttribute('aria-label', 'Показать или скрыть ' + source.name);
+        const button = document.createElement('button'); button.className = 'photo-toggle'; button.setAttribute('aria-label', 'Show or hide ' + source.name);
         if (source.photo) { const img = document.createElement('img'); img.src = source.photo; img.alt = source.name; img.loading = 'lazy'; button.append(img); }
         const name = document.createElement('span'); name.className = 'name'; name.textContent = source.name; button.append(name);
         const badge = document.createElement('span'); badge.className = 'badge'; button.append(badge);
-        if (source.planes) button.title = `Плоские участки покрывают ${(source.planes.coverage * 100).toFixed(0)}% допустимых пикселей`;
+        if (source.planes) button.title = `Planar patches cover ${(source.planes.coverage * 100).toFixed(0)}% valid pixels`;
         button.onclick = () => { if (!state.selected.delete(source.id)) state.selected.add(source.id); draw(); };
         card.append(button);
         const actions = document.createElement('div'); actions.className = 'photo-actions';
         if (source.photo) {
           const enlarge = document.createElement('button'); enlarge.className = 'photo-enlarge'; enlarge.textContent = '⤢';
-          enlarge.title = 'Увеличить'; enlarge.setAttribute('aria-label', 'Увеличить ' + source.name);
+          enlarge.title = 'Enlarge'; enlarge.setAttribute('aria-label', 'Enlarge ' + source.name);
           enlarge.onclick = () => photoViewer.open(photoItems, photoSources.indexOf(source), enlarge);
           actions.append(enlarge);
         }
         if (source.href) {
-          const link = document.createElement('a'); link.href = source.href; link.textContent = 'Отчёт ↗';
-          link.setAttribute('aria-label', 'Отчёт фото ' + source.name); actions.append(link);
+          const link = document.createElement('a'); link.href = source.href; link.textContent = 'Report ↗';
+          link.setAttribute('aria-label', 'Photo report ' + source.name); actions.append(link);
         }
         card.append(actions);
         grid.append(card);
@@ -580,17 +580,17 @@
     get('room-controls').hidden = !state.room;
     get('rooms').checked = !!state.room;
     get('room-warning').textContent = state.room === 'unassigned'
-      ? 'Назначение комнат и взаимное положение облаков неизвестны. Размещение рядом служит только обзору.'
+      ? 'Room assignments and relative cloud placement are unknown. Side-by-side layout is for inspection only.'
       : state.room && !roomNames().length
-      ? 'Камеры этой комнате не назначены. Фото-свидетельства и проходы сохранены; геометрия и положение комнаты не определены.'
+      ? 'No cameras are assigned to this room. Supporting photos and doorways are retained; the room geometry and placement are unknown.'
       : state.room && roomParts().length === 1
-      ? 'Принадлежность комнате предположена. Все фото имеют связующий геометрический путь; показаны оценки поз выбранной ветви.'
-      : 'Принадлежность комнате предположена. Несовмещённые части разнесены только для обзора — их взаимное положение неизвестно.';
+      ? 'Room membership is hypothesized. All photos share a geometric path; poses follow the selected branch.'
+      : 'Room membership is hypothesized. Unaligned parts are arranged for inspection; their relative placement is unknown.';
     if (!semantic) return;
     get('room-source-control').hidden = semanticVariants.length < 2;
     options(get('room-source'), semanticVariants.map(v => [v.id, v.label]), state.roomSource);
-    const choices = semantic.rooms.map((room, i) => [room.id, `${room.label || 'Гипотеза ' + (i + 1)} · ${room.names.length ? room.names.length + ' фото' : 'без назначенных камер'}`]);
-    if (semantic.unassigned.length) choices.push(['unassigned', `Без назначения · ${semantic.unassigned.length} фото`]);
+    const choices = semantic.rooms.map((room, i) => [room.id, `${room.label || 'Hypothesis ' + (i + 1)} · ${room.names.length ? room.names.length + ' photos' : 'no assigned cameras'}`]);
+    if (semantic.unassigned.length) choices.push(['unassigned', `Unassigned · ${semantic.unassigned.length} photos`]);
     options(get('room-choice'), choices, state.room || choices[0]?.[0]);
   }
   function selectRoom(id, source = state.roomSource) {
@@ -611,48 +611,52 @@
   function buildRoomScene() {
     const semantic = currentSemantics(), names = roomNames(), parts = roomParts();
     const index = semantic.rooms.findIndex(room => room.id === state.room);
-    const title = index < 0 ? 'Фото без назначения комнате' : semantic.rooms[index].label || `Гипотеза комнаты ${index + 1}`;
+    const title = index < 0 ? 'Photos without room assignments' : semantic.rooms[index].label || `Room hypothesis ${index + 1}`;
     const details = get('room-details'); details.replaceChildren();
     const status = document.createElement('p');
     const ambiguous = names.filter(n => semantic.ambiguous.includes(n));
-    status.textContent = `Это гипотеза, не установленная комната. Геометрических частей: ${parts.length}. `
-      + (ambiguous.length ? `Альтернативные назначения: ${ambiguous.join(', ')}. ` : '')
-      + (names.length ? 'Позы внутри каждой части сохранены по выбранному графу, в том числе по путям через фото вне этой гипотезы.'
-        : `Камеры не назначены. Фото-свидетельства: ${(semantic.rooms[index]?.evidence_photos || []).join(', ') || 'не указаны'}. Положение и геометрия не определены.`);
+    status.textContent = `This is a hypothesis, not an established room. Geometric parts: ${parts.length}. `
+      + (ambiguous.length ? `Alternative assignments: ${ambiguous.join(', ')}. ` : '')
+      + (names.length ? 'Poses within each part follow the selected graph, including paths through photos outside this hypothesis.'
+        : `No assigned cameras. Supporting photos: ${(semantic.rooms[index]?.evidence_photos || []).join(', ') || 'not specified'}. Placement and geometry are unknown.`);
     details.append(status);
-    const evidence = document.createElement('a'); evidence.href = semantic.href + '#' + state.room;
-    evidence.textContent = 'Фото, основания и альтернативы ↗'; details.append(evidence);
+    const evidence = document.createElement('a');
+    const anchor = state.room === 'unassigned' && semantic.kind === 'global' ? semantic.call : state.room;
+    evidence.href = semantic.href + '#' + anchor;
+    evidence.textContent = 'Photos, evidence and alternatives ↗'; details.append(evidence);
     const doorways = semantic.doorways.filter(d => semantic.kind === 'global' ? d.room_pairs.flat().includes(state.room) : names.includes(d.a) || names.includes(d.b));
     const doorDetails = document.createElement('details'), summary = document.createElement('summary');
-    summary.textContent = `Предполагаемые проходы · ${semantic.kind === 'global' ? 'гипотезы' : 'парные свидетельства'}: ${doorways.length}`; doorDetails.append(summary);
+    summary.textContent = `Doorway hypotheses · ${semantic.kind === 'global' ? 'hypotheses' : 'pairwise evidence'}: ${doorways.length}`; doorDetails.append(summary);
     const list = document.createElement('ul');
     for (const door of doorways) {
       const item = document.createElement('li'), link = document.createElement('a');
       link.href = door.href || semantic.href.replace(/rooms\.html$/, `vlm/pair-${String(door.evidence).padStart(4, '0')}.html`);
       link.textContent = semantic.kind === 'global'
-        ? door.room_pairs[0].map(id => semantic.rooms.find(r => r.id === id)?.label || 'Не назначено фото').join(' ↔ ')
+        ? door.room_pairs[0].map(id => semantic.rooms.find(r => r.id === id)?.label || 'No assigned photo').join(' ↔ ')
         : door.label || `${door.a} ↔ ${door.b}`; item.append(link);
-      item.append(document.createTextNode(door.assignment === 'global_hypothesis' ? ' · вывод по всем фото' : door.assignment === 'unique_hypotheses' ? ' · связь гипотез комнат' : ' · назначение комнат неоднозначно / неизвестно'));
+      item.append(document.createTextNode(door.assignment === 'global_hypothesis' ? ' · all-photo inference' : door.assignment === 'unique_hypotheses' ? ' · connection between room hypotheses' : ' · room assignment ambiguous / unknown'));
       list.append(item);
     }
     doorDetails.append(list); details.append(doorDetails);
-    const report = document.createElement('a'); report.href = semantic.candidateHref || semantic.href + '#candidates';
-    report.textContent = semantic.candidateHref ? 'Восстановленные связи и проверки 3D ↗' : 'Новые кандидаты перекрытия и сохранённые варианты 3D ↗'; details.append(report);
+    const recovery = semantic.kind === 'global' && settings.variants.find(v => v.recovery);
+    const report = document.createElement('a');
+    report.href = recovery ? recovery.recoveryInfo.href : settings.semantics.href + '#candidates';
+    report.textContent = recovery ? 'Recovered connections and 3D checks ↗' : 'New overlap candidates and saved 3D variants ↗'; details.append(report);
     const section = document.createElement('section'); section.className = 'scene';
     const header = document.createElement('header'), heading = document.createElement('div'); heading.className = 'scene-heading';
     const h2 = document.createElement('h2'); h2.textContent = title;
     const expand = document.createElement('button'); expand.className = 'scene-expand'; expand.textContent = '⤢';
-    expand.setAttribute('aria-label', 'Развернуть 3D'); expand.setAttribute('aria-haspopup', 'dialog'); expand.setAttribute('aria-expanded', 'false');
+    expand.setAttribute('aria-label', 'Expand 3D'); expand.setAttribute('aria-haspopup', 'dialog'); expand.setAttribute('aria-expanded', 'false');
     heading.append(h2, expand); header.append(heading);
     const note = document.createElement('p'); note.className = 'warning';
-    note.textContent = state.room === 'unassigned' ? 'Комнаты не определены; взаимное положение облаков неизвестно.'
-      : !names.length ? 'Комната сохранена по фото-свидетельствам. Камер и восстановленной геометрии нет.'
-      : parts.length === 1 ? 'Предположительно та же комната. Одна геометрическая часть; позы по выбранному графу.'
-      : 'Предположительно та же комната; положение несовмещённых частей неизвестно. Раскладка для обзора, не планировка.'; header.append(note);
+    note.textContent = state.room === 'unassigned' ? 'Rooms are undetermined; relative cloud placement is unknown.'
+      : !names.length ? 'Room hypothesis retained from supporting photos. No assigned cameras or reconstructed geometry.'
+      : parts.length === 1 ? 'Hypothesized same room. One geometric part; poses from the selected graph.'
+      : 'Hypothesized same room; relative placement of unaligned parts is unknown. Inspection layout, not a floor plan.'; header.append(note);
     const warnings = parts.reduce((n, p) => n + (p.component.warnings || 0), 0);
-    if (warnings) { const warning = document.createElement('p'); warning.className = 'warning'; warning.textContent = `В исходных компонентах отмечены расхождения путей: ${warnings}. Показ комнаты не исправляет позы.`; header.append(warning); }
+    if (warnings) { const warning = document.createElement('p'); warning.className = 'warning'; warning.textContent = `Original components have path conflicts: ${warnings}. The room view does not correct poses.`; header.append(warning); }
     const legend = document.createElement('div'); legend.className = 'room-legend';
-    parts.forEach((part, i) => { const label = document.createElement('span'); label.textContent = `Часть ${i + 1}: ${part.ids.join(', ')}`; legend.append(label); });
+    parts.forEach((part, i) => { const label = document.createElement('span'); label.textContent = `Part ${i + 1}: ${part.ids.join(', ')}`; legend.append(label); });
     header.append(legend);
     if (!names.length) {
       expand.hidden = true; section.append(header); get('scenes').append(section);
@@ -672,7 +676,7 @@
     const entries = [];
     for (const part of shown) {
       if (!part.ids.some(id => state.selected.has(id))) continue;
-      entries.push({label: `Часть ${parts.indexOf(part) + 1}`, data: await traces(part.component, groups)});
+      entries.push({label: `Part ${parts.indexOf(part) + 1}`, data: await traces(part.component, groups)});
       if (version !== state.version) return;
     }
     const layout = window.planrecRoomView.layout(entries);
@@ -701,7 +705,7 @@
     const models = new Map(choices.map(v => [v.model, v.label]));
     options(get('model'), models, state.variant.model);
     get('model-control').hidden = models.size < 2;
-    get('model-label').textContent = matchers.size ? 'Глубина' : 'Модель';
+    get('model-label').textContent = matchers.size ? 'Depth' : 'Model';
     const reviewed = choices.find(v => v.model === state.variant.model && v.vlm && !v.recovery);
     const recovered = choices.find(v => v.model === state.variant.model && v.recovery);
     get('recovery-control').hidden = !recovered;
@@ -711,8 +715,8 @@
     recoveryStatus.hidden = !state.variant.recovery;
     if (state.variant.recovery) {
       const result = recovered.recoveryInfo;
-      recoveryStatus.append(document.createTextNode(`Восстановлено мостов: ${result.bridges}; дополнительных ограничений: ${result.constraints}; всего связей: ${result.edges}. Масштаб задан опорной компонентой; внутренние позы сохранены. `));
-      const link = document.createElement('a'); link.href = result.href; link.textContent = 'Проверки и поправки масштаба ↗'; recoveryStatus.append(link);
+      recoveryStatus.append(document.createTextNode(`Recovered bridges: ${result.bridges}; additional constraints: ${result.constraints}; total edges: ${result.edges}. Scale follows the anchor component; internal poses are preserved. `));
+      const link = document.createElement('a'); link.href = result.href; link.textContent = 'Checks and scale corrections ↗'; recoveryStatus.append(link);
     }
     const visible = settings.multiview && !!state.variant.matcher;
     get('vlm-control').hidden = !visible;
@@ -723,13 +727,13 @@
     if (reviewed) {
       const result = reviewed.review;
       status.append(document.createTextNode(state.variant.vlm
-        ? `Эксперимент VLM: удалено связей ${result.removed}; сохранено ${result.kept}, из них не подтверждено VLM ${result.unresolved}. `
-        : 'Исходная геометрия. Сохранённый эксперимент VLM доступен. '));
-      status.append(document.createTextNode(`Проверено пар: ${result.checkedPairs}/${result.possiblePairs}. `));
+        ? `VLM experiment: removed edges ${result.removed}; retained ${result.kept}, of which not supported by VLM ${result.unresolved}. `
+        : 'Original geometry. A saved VLM experiment is available. '));
+      status.append(document.createTextNode(`Checked pairs: ${result.checkedPairs}/${result.possiblePairs}. `));
       const link = document.createElement('a'); link.href = result.href;
-      link.textContent = 'Решения и основания ↗'; status.append(link);
+      link.textContent = 'Decisions and evidence ↗'; status.append(link);
     } else {
-      status.textContent = 'Для этого сочетания сохранённая проверка VLM отсутствует.';
+      status.textContent = 'No saved VLM review for this combination.';
     }
   }
   function chooseVariant(next) {

@@ -1,4 +1,4 @@
-<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Все фото · часть 14 · 1 фото · SIFT × MoGe-2</title><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>All photos · part 14 · 1 photos · SIFT × MoGe-2</title><style>
 * { box-sizing: border-box; }
 body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
 main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
@@ -109,32 +109,32 @@ dialog.photo-viewer::backdrop{background:#121614}
  .photo-viewer img{max-width:100%;width:100%}
  .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
  .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
-</style></head><body><main><div class='eyebrow'>План квартиры по фотографиям · эксперимент</div>
-<nav><a href='index.html#groups'>← К обзору</a></nav>
-<h1>Все фото · часть 14 · 1 фото · SIFT × MoGe-2</h1>
-<section class='section' id='section-0'><h2>Что собрано</h2>
-<p>Корневая камера: img_5_a. Принятые жёсткие преобразования, максимальное остовное дерево по поддержке. Замыканий циклов: 0, предупреждений: 0. Петли не оптимизированы. Компонента не является распознанной комнатой; невидимые поверхности не достроены.</p>
-<p><a href='clouds/group0_sift_moge2_13.html'>Открыть 3D · выбрать источники →</a></p>
+</style></head><body><main><div class='eyebrow'>Floor plan from photos · experiment</div>
+<nav><a href='index.html#groups'>← Overview</a></nav>
+<h1>All photos · part 14 · 1 photos · SIFT × MoGe-2</h1>
+<section class='section' id='section-0'><h2>What was assembled</h2>
+<p>Root camera: img_5_a. Accepted rigid transforms, maximum support spanning tree. Cycle closures: 0, warnings: 0. Loops are not optimized. A component is not a recognized room; hidden surfaces remain unreconstructed.</p>
+<p><a href='clouds/group0_sift_moge2_13.html'>Open 3D · select sources →</a></p>
 </section>
-<section class='section' id='section-1'><h2>Фотографии компоненты</h2>
+<section class='section' id='section-1'><h2>Component photos</h2>
 <div class='cards' style='--h:130px'><a class='card' href='photo-img_5_a.html'><img src='photos/img_5_a.jpg' alt='' loading='lazy'><strong>img_5_a</strong><span></span></a></div>
 </section>
-<section class='section' id='section-2'><h2>Принятые связи</h2>
+<section class='section' id='section-2'><h2>Accepted edges</h2>
 <p></p>
 </section>
-<section class='section' id='section-3'><h2>Проверка циклов</h2>
-<p>Независимых циклов нет: взаимная согласованность обходным путём не проверена.</p>
+<section class='section' id='section-3'><h2>Cycle checks</h2>
+<p>No independent cycles: no alternative path check.</p>
 </section>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
 window.planrecPhotoViewer = function () {
   const dialog = document.createElement('dialog');
   dialog.className = 'photo-viewer';
-  dialog.setAttribute('aria-label', 'Просмотр фотографии');
-  dialog.innerHTML = `<button class="photo-close" aria-label="Закрыть (Esc)">×</button>
-    <div class="photo-stage"><button class="photo-prev" aria-label="Предыдущее фото (←)">‹</button>
-    <img alt=""><button class="photo-next" aria-label="Следующее фото (→)">›</button></div>
+  dialog.setAttribute('aria-label', 'Photo viewer');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Close (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Previous photo (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Next photo (→)">›</button></div>
     <div class="photo-caption" aria-live="polite"></div>
-    <a class="photo-report" hidden>Отчёт фото ↗</a>`;
+    <a class="photo-report" hidden>Photo report ↗</a>`;
   document.body.append(dialog);
   const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
   const report = dialog.querySelector('.photo-report');
@@ -236,7 +236,7 @@ query=q('[data-query]').value.toLowerCase().trim(),limit=+q('[data-count]').valu
   selected.slice(page*limit,(page+1)*limit).forEach(r=>{r.hidden=false;body.append(r);});
   const end=Math.min((page+1)*limit,selected.length);
   q('[data-total]').textContent=selected.length?
-   `${page*limit+1}–${end} из ${selected.length} пар`:'Пары не найдены';
+   `${page*limit+1}–${end} of ${selected.length} pairs`:'No pairs found';
   q('[data-prev]').disabled=page===0;q('[data-next]').disabled=(page+1)*limit>=selected.length;
   try{sessionStorage.setItem(storageKey,JSON.stringify({photo,status,query,count:limit,
    page,sort,ascending}));}catch{}
