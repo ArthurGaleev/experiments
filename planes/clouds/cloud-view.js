@@ -123,19 +123,23 @@
     try {
       if (id && state.room && roomParts().length > 1) selectRoom(null);
       const component = id && state.variant.components.find(c => c.ids.includes(id));
-      const view = component ? plots.get(state.room ? '__room__' : component.id) : activeView();
+      const selectedComponent = state.variant.components.find(c => c.ids.some(photo => state.selected.has(photo)));
+      const view = component ? plots.get(state.room ? '__room__' : component.id)
+        : activeView() || plots.get(state.room ? '__room__' : selectedComponent?.id);
       if (!view) throw new Error('Select a photo or aligned group first.');
       if (expanded && expanded.view !== view) collapseScene();
       if (id) state.selected.add(id);
+      if (!expanded) expandScene(view,view.section.querySelector('.scene-expand'));
       view.nearby = true; await draw();
       const deadline = performance.now() + 20000;
       while (!view.plot.data || drawing) {
+        if (expanded?.view !== view) return;
         if (!view.plot.isConnected || performance.now() > deadline) throw new Error('This viewpoint is not ready. Try again after the cloud loads.');
         await new Promise(requestAnimationFrame);
       }
+      if (expanded?.view !== view) return;
       if (!renderer.navigate(view.plot,'explore',id)) throw new Error('Explore needs one aligned group. Open a photo viewpoint to explore its group separately.');
       get('measure').checked = false; renderer.setMeasuring();
-      if (!expanded) expandScene(view,view.section.querySelector('.scene-expand'));
       for (const panel of document.querySelectorAll('.tool-panel')) panel.open = false;
       view.plot.querySelector('canvas').focus({preventScroll:true}); syncNavigation();
     } catch (error) { get('navigation').value = 'inspect'; tools.updateControlLabels(); get('navigation-status').textContent = error.message; get('orientation-panel').open = true; }
