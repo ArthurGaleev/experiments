@@ -1,5 +1,6 @@
 /* Small viewer state/geometry helpers. No inference or network requests. */
 export const controlSpec = {
+  navigation: ['inspect','explore'], 'explore-speed': [.1, 5, 1],
   projection: ['perspective', 'orthographic'], colour: ['rgb', 'source', 'group', 'patch'],
   cameras: true, level: true, axes: false, paths: false, 'room-extra': true,
   'point-size': [1, 5, 2], cutaway: false, 'cut-height': [5, 100, 75],
@@ -77,17 +78,24 @@ export function updateControlLabels() {
   get('section-center-value').textContent = get('section-center').value + '%';
   get('section-panel').classList.toggle('active-tool', get('section').checked || get('cutaway').checked);
   get('measurement-panel').classList.toggle('active-tool', get('measure').checked);
+  get('explore-speed-value').textContent = Number(get('explore-speed').value).toFixed(1);
+  get('explore-options').hidden = get('navigation').value !== 'explore';
+  get('projection').disabled = get('navigation').value === 'explore';
+  document.dispatchEvent(new Event('planrec-controls-updated'));
 }
 const finiteVector = v => v && ['x', 'y', 'z'].every(a => Number.isFinite(v[a]) && Math.abs(v[a]) < 1e8);
-export function validCamera(camera) {
+export function validCamera(camera, nested = false) {
   return camera && finiteVector(camera.eye) && finiteVector(camera.center)
-    && (camera.scale == null || Number.isFinite(camera.scale) && camera.scale > 0 && camera.scale < 1e8);
+    && (camera.scale == null || Number.isFinite(camera.scale) && camera.scale > 0 && camera.scale < 1e8)
+    && (camera.navigation == null || ['inspect','explore'].includes(camera.navigation))
+    && (camera.projection == null || ['perspective','orthographic'].includes(camera.projection))
+    && (camera.inspect == null || !nested && validCamera(camera.inspect,true));
 }
 export function validateBookmark(value, scene) {
   if (!value || value.version !== 1 || value.scene !== scene || typeof value.variant !== 'string'
     || !Array.isArray(value.photos) || value.photos.length > 2000 || !value.photos.every(id => typeof id === 'string')) throw new Error('This saved view belongs to different or unavailable scene data.');
   if (!['points', 'planes', 'both'].includes(value.mode) || !detailLevels.includes(value.limit)) throw new Error('Unsupported saved view settings.');
-  if (!value.cameras || Object.keys(value.cameras).length > 1000 || !Object.values(value.cameras).every(validCamera)) throw new Error('Invalid saved camera.');
+  if (!value.cameras || Object.keys(value.cameras).length > 1000 || !Object.values(value.cameras).every(camera => validCamera(camera))) throw new Error('Invalid saved camera.');
   return {...value, controls: cleanControls(value.controls)};
 }
 export function encodeView(value) {

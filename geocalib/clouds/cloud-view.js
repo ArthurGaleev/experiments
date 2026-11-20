@@ -2,9 +2,11 @@
 (async () => {
   'use strict';
   const settings = JSON.parse(document.getElementById('scene-data').textContent);
-  const renderer = await import('./three-renderer.js');
-  const {decodePoints, transformedBounds} = await import('./cloud-buffers.js');
-  const tools = await import('./viewer-tools.js');
+  const assetQuery = new URL(document.currentScript.src).search;
+  const renderer = await import('./three-renderer.js' + assetQuery);
+  const {decodePoints, transformedBounds} = await import('./cloud-buffers.js' + assetQuery);
+  const tools = await import('./viewer-tools.js' + assetQuery);
+  const {setupAdjustments} = await import('./mobile-tools.js' + assetQuery);
   const coordinateUnit = settings.relativeScale ? 'rel. units' : 'm';
   const get = id => document.getElementById(id);
   const photoViewer = window.planrecPhotoViewer();
@@ -65,6 +67,7 @@
   function collapseScene() {
     if (!expanded) return;
     const {view, placeholder, button, tools, scroll} = expanded;
+    if (view.plot.dataset.navigation === 'explore') renderer.navigate(view.plot,'inspect');
     expanded = null;
     if (sceneDialog.open) sceneDialog.close();
     placeholder.replaceWith(view.section);
@@ -85,10 +88,10 @@
     placeholder.className = 'scene-placeholder';
     placeholder.style.height = view.section.getBoundingClientRect().height + 'px';
     view.section.before(placeholder);
-    const tools = ['detail-control', 'view-controls', 'render-diagnostics'].map(id => {
+    const tools = ['detail-control', 'view-controls', 'inspection-footer'].map(id => {
       const control = get(id), slot = document.createElement('span');
       control.before(slot);
-      (id === 'render-diagnostics' ? view.section : view.section.querySelector('header')).append(control);
+      (id === 'inspection-footer' ? view.section : view.section.querySelector('header')).append(control);
       return [slot, control];
     });
     expanded = {view, placeholder, button, tools, scroll}; view.nearby = true;
@@ -100,6 +103,42 @@
     sceneDialog.showModal();
     button.focus({preventScroll: true});
     resizeScene(view);
+    syncNavigation();
+  }
+
+  function activeView() { return expanded?.view || [...plots.values()].find(v => v.nearby && v.plot.data); }
+  function syncNavigation() {
+    const view = activeView(), photos = view?.plot.layout?.scene.photoViews || [], select = get('photo-view');
+    if (view && !expanded && get('inspection-footer').parentElement !== view.section) view.section.append(get('inspection-footer'));
+    const current = photos.some(p => p.id === select.value) ? select.value : photos[0]?.id || '';
+    if (Array.from(select.options,o => o.value).join() !== photos.map(p => p.id).join()) select.replaceChildren(...photos.map(p => new Option(p.name,p.id)));
+    select.value = view?.plot.dataset.navigation === 'explore' && photos.some(p => p.id === view.plot.dataset.viewpoint) ? view.plot.dataset.viewpoint : current;
+    get('jump-photo').disabled = get('open-view-photo').disabled = !select.value;
+    get('navigation').value = view?.plot.dataset.navigation || 'inspect';
+    get('navigation-status').textContent = get('navigation').value === 'explore'
+      ? `Exploring this aligned group · ${photos.find(p => p.id === select.value)?.name || 'current position'} · return to Inspect for the previous overview.` : '';
+    tools.updateControlLabels();
+  }
+  async function explorePhoto(id) {
+    try {
+      if (id && state.room && roomParts().length > 1) selectRoom(null);
+      const component = id && state.variant.components.find(c => c.ids.includes(id));
+      const view = component ? plots.get(state.room ? '__room__' : component.id) : activeView();
+      if (!view) throw new Error('Select a photo or aligned group first.');
+      if (expanded && expanded.view !== view) collapseScene();
+      if (id) state.selected.add(id);
+      view.nearby = true; await draw();
+      const deadline = performance.now() + 20000;
+      while (!view.plot.data || drawing) {
+        if (!view.plot.isConnected || performance.now() > deadline) throw new Error('This viewpoint is not ready. Try again after the cloud loads.');
+        await new Promise(requestAnimationFrame);
+      }
+      if (!renderer.navigate(view.plot,'explore',id)) throw new Error('Explore needs one aligned group. Open a photo viewpoint to explore its group separately.');
+      get('measure').checked = false; renderer.setMeasuring();
+      if (!expanded) expandScene(view,view.section.querySelector('.scene-expand'));
+      for (const panel of document.querySelectorAll('.tool-panel')) panel.open = false;
+      view.plot.querySelector('canvas').focus({preventScroll:true}); syncNavigation();
+    } catch (error) { get('navigation').value = 'inspect'; tools.updateControlLabels(); get('navigation-status').textContent = error.message; get('orientation-panel').open = true; }
   }
 
   function load(asset) {
@@ -242,6 +281,12 @@
       name: `${ghost ? 'Hidden photo' : 'Camera'}: ${source.name}`, showlegend: false, hoverinfo: 'name',
       opacity: ghost ? .3 : 1, line: {width: ghost ? 2 : 4, color: ghost ? '#89958c' : palette[(groups.membership.get(source.id) || 0) % palette.length]}};
   }
+  function photoViews(component) {
+    return state.variant.sources.filter(s => s.photo && component.ids.includes(s.id)).map(source => {
+      const origin = position([0,0,0],source,component), forward = position([0,0,1],source,component);
+      return {id:source.id,name:source.name,position:origin,direction:forward.map((n,i) => n - origin[i]),frame:component.id};
+    });
+  }
 
   async function traces(component, groups) {
     const sources = state.variant.sources.filter(s => component.ids.includes(s.id));
@@ -362,7 +407,7 @@
         const ranges = level ? component.ranges : component.rawRanges;
         const labels = (level ? ['x', 'y', 'z up'] : ['camera x', 'camera z', 'camera -y']).map(axis => axis + ', ' + coordinateUnit);
         const camera = currentCamera(view.plot) || cameras.get(view.key) || defaultCamera;
-        const scene = {aspectmode: 'manual', aspectratio: fixedAspect(ranges), camera};
+        const scene = {aspectmode: 'manual', aspectratio: fixedAspect(ranges), camera, photoViews:photoViews(component), unitLabel:coordinateUnit};
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i].slice(), autorange: false}; });
         view.rendering = true;
         try {
@@ -376,6 +421,7 @@
       }
       if (version === state.version) get('loading').textContent = state.selected.size ? '' : 'Select photos below.';
       if (version === state.version) get('render-stats').textContent = `Ready in ${Math.round(performance.now() - started)} ms · ${(loadedBytes / 1e6).toFixed(1)} MB requested this session`;
+      if (version === state.version) syncNavigation();
       if (diagnostics && version === state.version) console.info('planrec-viewer ' + JSON.stringify({
         selected: state.selected.size, mode: state.mode, limit: state.limit,
         updateMs: Math.round(performance.now() - started), readySinceNavigationMs: Math.round(performance.now()),
@@ -389,6 +435,7 @@
   function build() {
     updateRoomControls();
     collapseScene();
+    get('scenes').after(get('inspection-footer'));
     observer?.disconnect();
     for (const view of plots.values()) release(view);
     plots.clear(); geometry.clear(); get('scenes').replaceChildren(); get('photos').replaceChildren();
@@ -472,6 +519,9 @@
           enlarge.title = 'Enlarge'; enlarge.setAttribute('aria-label', 'Enlarge ' + source.name);
           enlarge.onclick = () => photoViewer.open(photoItems, photoSources.indexOf(source), enlarge);
           actions.append(enlarge);
+          const viewpoint = document.createElement('button'); viewpoint.className = 'photo-viewpoint'; viewpoint.textContent = 'Viewpoint';
+          viewpoint.setAttribute('aria-label','Explore from ' + source.name); viewpoint.onclick = () => explorePhoto(source.id);
+          card.append(viewpoint);
         }
         if (source.href) {
           const link = document.createElement('a'); link.href = source.href; link.textContent = 'Report ↗';
@@ -482,6 +532,7 @@
       }
     }
     const hasPlanes = state.variant.sources.some(s => s.planes);
+    const firstScene = get('scenes').querySelector('.scene'); if (firstScene) firstScene.append(get('inspection-footer'));
     get('representation').hidden = !hasPlanes;
     if (!hasPlanes) state.mode = 'points';
     for (const button of get('representation').querySelectorAll('button')) {
@@ -604,12 +655,13 @@
     const entries = [];
     for (const part of shown) {
       if (!part.ids.some(id => state.selected.has(id))) continue;
-      entries.push({label: `Part ${parts.indexOf(part) + 1}`, data: await traces(part.component, groups)});
+      entries.push({label: `Part ${parts.indexOf(part) + 1}`, data: await traces(part.component, groups), photoViews:photoViews(part.component).filter(p => part.ids.includes(p.id))});
       if (version !== state.version) return;
     }
     const layout = window.planrecRoomView.layout(entries);
     const scene = {aspectmode: 'manual', aspectratio: fixedAspect(layout.ranges),
-      camera: currentCamera(view.plot) || cameras.get(view.key) || roomCamera};
+      camera: currentCamera(view.plot) || cameras.get(view.key) || roomCamera, unitLabel:coordinateUnit, canExplore:entries.length === 1,
+      photoViews:entries.flatMap((entry,i) => entry.photoViews.map(p => ({...p,position:p.position.map((n,j) => n + layout.offsets[i][j])})))};
     ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {visible: false, range: layout.ranges[i], autorange: false}; });
     view.rendering = true;
     try {
@@ -706,6 +758,17 @@
   }
   for (const id of ['cutaway', 'section', 'section-axis', 'section-guide']) get(id).onchange = () => { tools.updateControlLabels(); draw(); };
   get('projection').onchange = draw;
+  get('navigation').onchange = () => {
+    if (get('navigation').value === 'explore') explorePhoto();
+    else { const view = activeView(); if (view) renderer.navigate(view.plot,'inspect'); syncNavigation(); }
+  };
+  get('explore-speed').oninput = tools.updateControlLabels;
+  get('photo-view').onchange = () => { get('jump-photo').disabled = get('open-view-photo').disabled = !get('photo-view').value; };
+  get('jump-photo').onclick = () => explorePhoto(get('photo-view').value);
+  get('open-view-photo').onclick = () => {
+    const plot = activeView()?.plot; if (plot) plot.dispatchEvent(new CustomEvent('planrec-camera-open',{bubbles:true,detail:{id:get('photo-view').value}}));
+  };
+  document.addEventListener('planrec-navigation',syncNavigation);
   get('measure-units').onchange = () => renderer.refreshMeasurements();
   get('benchmark').onclick = async () => {
     const button = get('benchmark'); button.disabled = true;
@@ -725,11 +788,11 @@
     draw();
   };
   for (const id of ['colour', 'cameras', 'level', 'paths', 'axes']) get(id).onchange = draw;
-  get('reset').onclick = () => { for (const view of plots.values()) if (view.plot.data) renderer.relayout(view.plot, {'scene.camera': state.room ? roomCamera : defaultCamera}); };
+  get('reset').onclick = () => { for (const view of plots.values()) if (view.plot.data) { if (view.plot.dataset.navigation === 'explore') renderer.navigate(view.plot,'inspect'); renderer.relayout(view.plot, {'scene.camera': state.room ? roomCamera : defaultCamera}); } syncNavigation(); };
   for (const button of document.querySelectorAll('[data-orient]')) button.onclick = () => {
     for (const view of plots.values()) if (view.plot.data) renderer.orient(view.plot, button.dataset.orient);
   };
-  get('measure').onchange = () => { renderer.setMeasuring(); tools.updateControlLabels(); };
+  get('measure').onchange = () => { if (get('measure').checked) { const view = activeView(); if (view?.plot.dataset.navigation === 'explore') renderer.navigate(view.plot,'inspect'); } renderer.setMeasuring(); tools.updateControlLabels(); };
   get('clear-measure').onclick = () => renderer.clearMeasurements();
   document.addEventListener('planrec-camera-open', event => {
     const sources = state.variant.sources.filter(source => source.photo);
@@ -751,7 +814,7 @@
     if ([0, 1000, 2000, 5000, 10000, 25000, 100000, 250000].includes(value)) state.limit = value;
   }
   get('detail').value = String(state.limit);
-  get('navigation-help').textContent = 'Drag: orbit · Shift/right-drag: pan · Scroll/pinch: zoom · Double-click: focus · Camera: click/tap for photo · F: reset · T: top';
+  get('navigation-help').textContent = 'Inspect: drag to orbit; Shift/right-drag to pan; scroll/pinch to zoom; double-click to focus. Explore: drag to look; WASD/arrows or the movement pad to move; scroll to move forward/back. F: fit; T: top.';
   state.selected = new Set(state.room ? roomNames() : state.variant.initial);
   if (params.get('photos') === 'all') state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id));
   const sceneId = tools.sceneIdentity(settings);
@@ -784,17 +847,22 @@
   }
   async function restoreView(saved) {
     applyView(saved); build();
+    const view = saved.expanded && plots.get(saved.expanded);
+    // Open the requested scene before waiting: it may start below the viewport,
+    // where lazy loading intentionally keeps its geometry unloaded.
+    if (!view) return;
+    expandScene(view, view.section.querySelector('.scene-expand'));
     const deadline = performance.now() + 30000;
-    while (drawing || ![...plots.values()].some(v => v.plot.data)) {
+    while (drawing || !view.plot.data) {
       if (!state.selected.size || !plots.size) return;
       if (performance.now() > deadline) throw new Error('View settings restored, but geometry has not finished loading.');
       await new Promise(requestAnimationFrame);
     }
-    const view = saved.expanded && plots.get(saved.expanded);
-    if (view) expandScene(view, view.section.querySelector('.scene-expand'));
   }
   tools.setupPanels(); tools.updateControlLabels();
+  setupAdjustments({unit:coordinateUnit,widthRange:() => Math.max(.1,...['x','y','z'].map(a => { const r = activeView()?.plot.layout?.scene[a+'axis'].range; return r ? r[1]-r[0] : 1; }))});
   get('section-unit').textContent = coordinateUnit;
+  get('explore-speed-unit').textContent = settings.relativeScale ? 'rel. units/s' : 'm/s';
   if (settings.relativeScale) { get('measure-units').disabled = true; get('measure-units').replaceChildren(new Option('Relative units','m')); }
   const initialView = tools.setupBookmarks({scene:sceneId, capture:captureView, restore:restoreView});
   if (initialView) await restoreView(initialView);

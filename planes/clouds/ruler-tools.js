@@ -1,6 +1,6 @@
 /* Editable measurements are annotations in a known frame, never geometry edits. */
 import * as THREE from './vendor/three/three.module.js';
-import {measureParts} from './viewer-tools.js';
+const {measureParts} = await import('./viewer-tools.js' + new URL(import.meta.url).search);
 const sets = new Set();
 let active;
 const get = id => document.getElementById(id);
@@ -79,7 +79,7 @@ export function attachRulers(view, pick) {
           if (event.type !== 'pointercancel' && !moved) {
             this.editing = {record, index:i}; status(`Choose a new position for ${i ? 'B' : 'A'} in the same connected group. Escape cancels.`);
           }
-          down = null; view.controls.enabled = true;
+          down = null; view.controls.enabled = !view.explore?.enabled;
           if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
         };
         handle.addEventListener('pointerup', finish); handle.addEventListener('pointercancel', finish);
@@ -159,7 +159,7 @@ export function attachRulers(view, pick) {
     cancel() {
       const had = !!this.draft || !!this.editing;
       if (this.draft) { if (active?.record === this.draft) active = null; destroy(this.draft, view); this.draft = null; }
-      this.editing = null; view.controls.enabled = true; view.invalidate(); list();
+      this.editing = null; view.controls.enabled = !view.explore?.enabled; view.invalidate(); list();
       if (had) status(get('measure').checked ? 'Click A, then B to add a ruler.' : '');
       return had;
     },

@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>img_16_a ↔ img_5_b · RoMa × MetricAnything</title><link rel="stylesheet" href="cloud-view.css?v=fe9cdc0a824b">
-<link rel="stylesheet" href="photo-view.css?v=fe9cdc0a824b">
-<script src="photo-view.js?v=fe9cdc0a824b" defer></script>
-<script src="room-view.js?v=fe9cdc0a824b" defer></script>
-<script src="cloud-view.js?v=fe9cdc0a824b" defer></script>
+<title>img_16_a ↔ img_5_b · RoMa × MetricAnything</title><link rel="stylesheet" href="cloud-view.css?v=9db92318443c">
+<link rel="stylesheet" href="photo-view.css?v=9db92318443c">
+<script src="photo-view.js?v=9db92318443c" defer></script>
+<script src="room-view.js?v=9db92318443c" defer></script>
+<script src="cloud-view.js?v=9db92318443c" defer></script>
 </head><body><main>
 <a href="../pair-0157.html">← Report</a><h1>img_16_a ↔ img_5_b · RoMa × MetricAnything</h1>
 <p id="scene-note">rejected; validation matches: 11/158; median 3D residual: 0.855 m; gravity: 57.2°; reason: insufficient consistent-point fraction, insufficient spatial coverage, reprojection error, vertical disagreement. Rejected hypotheses are not used to assemble groups.</p>
@@ -29,7 +29,7 @@
   <p id="room-warning" class="warning">Room membership is hypothesized. Unaligned parts are arranged for inspection; their relative placement is unknown.</p>
   <div id="room-details"></div>
 </section>
-<div class="toolbar" id="detail-control"><label>Detail per photo
+<div class="toolbar" id="detail-control"><label>Detail<span class="detail-extra">per photo</span>
   <select id="detail" aria-label="Points per photo">
     <option value="1000">1k</option><option value="2000">2k</option>
     <option value="5000">5k</option><option value="10000">10k</option>
@@ -44,7 +44,8 @@
 </div>
 <p id="plane-note" class="muted" hidden>Simplified surfaces without photo textures; use Both to inspect gaps.</p>
 <div class="toolbar" id="view-controls" role="group" aria-label="Viewer tools">
-  <button id="reset" title="Fit the current group (F)">Fit / reset</button>
+  <button id="reset" title="Fit the current group (F)" aria-label="Fit / reset">Fit</button>
+  <label class="compact-label"><select id="navigation" aria-label="Navigation"><option value="inspect">Inspect</option><option value="explore">Explore</option></select></label>
   <label class="compact-label"><select id="projection" aria-label="Projection"><option value="perspective">Perspective</option><option value="orthographic">Orthographic</option></select></label>
   <details class="tool-panel" id="orientation-panel"><summary>View</summary><div class="tool-content">
     <h3>Orientation</h3><div class="view-presets">
@@ -52,6 +53,11 @@
       <button data-orient="front">Front</button><button data-orient="back">Back</button>
       <button data-orient="left">Left</button><button data-orient="right">Right</button><button data-orient="iso">Isometric</button>
     </div><p class="muted">Views follow the displayed axes. GeoCalib supplies the estimated vertical.</p>
+    <label>Photo viewpoint <select id="photo-view" aria-label="Photo viewpoint"></select></label>
+    <div class="button-row"><button id="jump-photo">Go to viewpoint</button><button id="open-view-photo">Open photo</button></div>
+    <div id="explore-options" hidden><label>Move speed <input id="explore-speed" type="range" min="0.1" max="5" step="0.1" value="1" aria-label="Explore movement speed"><output id="explore-speed-value">1.0</output><span id="explore-speed-unit">m/s</span></label>
+    <p class="muted">Keeps your height while moving. Q/E or ↑/↓ changes height; no floor snapping or wall collisions. Photo viewpoints use predicted positions and an upright view; framing can differ from the photo.</p></div>
+    <p id="navigation-status" class="muted" role="status"></p>
     <p id="navigation-help" class="muted"></p>
   </div></details>
   <details class="tool-panel" id="appearance-panel"><summary>Display</summary><div class="tool-content">
@@ -61,6 +67,7 @@
     <label id="paths-label"><input type="checkbox" id="paths"> Paths through hidden photos</label>
     <label><input type="checkbox" id="axes"> World axes</label>
     <label id="point-size-control">Point size <input type="range" id="point-size" min="1" max="5" step="0.5" value="2" aria-label="Point size"><output id="point-size-value">2 px</output></label>
+    <button class="adjust-in-view" data-adjust="point-size">Adjust with scene visible</button>
   </div></details>
   <details class="tool-panel" id="section-panel"><summary>Section</summary><div class="tool-content">
     <h3>Cutaway and cross-section</h3>
@@ -73,11 +80,12 @@
       <label>Position <input type="range" id="section-center" min="0" max="100" step="0.5" value="50" aria-label="Slice position"><output id="section-center-value">50%</output></label>
       <label>Slice width <input id="section-width" type="number" min="0.001" max="10000" step="0.001" value="0.3" aria-label="Slice width"><span id="section-unit">m</span></label>
       <label><input type="checkbox" id="section-guide"> Show slice guide</label>
-    </div><p class="muted">Keeps a band of surfaces. Position follows each group's bounds; width uses its predicted scale. Rulers stay visible.</p>
+    </div><button class="adjust-in-view" data-adjust="section">Adjust with scene visible</button>
+    <p class="muted">Keeps a band of surfaces. Position follows each group's bounds; width uses its predicted scale. Rulers stay visible.</p>
   </div></details>
-  <label class="measure-toggle"><input type="checkbox" id="measure" aria-label="Measure distance"> Measure</label>
   <details class="tool-panel" id="measurement-panel"><summary>Rulers</summary><div class="tool-content">
-    <h3>Measurements</h3><label>Display units <select id="measure-units"><option value="m">Metres</option><option value="cm">Centimetres</option></select></label>
+    <h3>Measurements</h3><label class="measure-toggle"><input type="checkbox" id="measure" aria-label="Measure distance"> Measure distance</label>
+    <label>Display units <select id="measure-units"><option value="m">Metres</option><option value="cm">Centimetres</option></select></label>
     <p class="muted">Click A, then B to add a ruler. Drag A/B to adjust, or click an endpoint then choose its new position. Escape cancels an unfinished edit.</p>
     <p id="measurement-components" class="muted"></p><div id="measurements-list"></div><p id="measurements-empty" class="muted">No rulers in visible groups.</p>
     <button id="clear-measure">Clear all rulers</button>
@@ -95,6 +103,17 @@
 <p id="loading" class="muted" role="status"></p>
 <p><a href="#photo-controls">Photo selection ↓</a></p>
 <div id="scenes"></div>
+<div id="inspection-footer">
+  <div id="adjustment-strip" hidden>
+    <div class="adjustment-heading"><select id="adjustment-kind" aria-label="Adjustment"></select><output id="adjustment-value"></output><button id="adjustment-settings" aria-label="Adjustment settings">Settings</button><button id="adjustment-close" aria-label="Hide adjustment strip">×</button></div>
+    <div class="adjustment-slider"><button id="adjustment-less" aria-label="Decrease adjustment">−</button><input id="adjustment-range" type="range" aria-label="Adjust visible scene"><button id="adjustment-more" aria-label="Increase adjustment">+</button></div>
+  </div>
+  <details id="inspection-guide"><summary>Inspection tips</summary>
+    <p><strong>Wall alignment:</strong> Top + orthographic + a horizontal slice.</p>
+    <p><strong>Floor/ceiling alignment:</strong> Front or Side + orthographic + a vertical slice.</p>
+    <p><strong>Rooms and doorways:</strong> Explore or jump to a photo viewpoint. Turn off slices to see the whole room.</p>
+  </details>
+</div>
 <details id="render-diagnostics"><summary>Rendering diagnostics</summary>
 <p id="render-stats" class="muted" role="status"></p>
 <button id="benchmark">Measure rotation</button>
@@ -136,6 +155,8 @@ downsample the saved valid cloud.</p>
 <p>Measure distance: click A, then B to add a ruler. Points/Both snap to saved cloud vertices; Patches uses positions inside visible triangles. Labels retain source photos. Select a ruler to see its 3D length, horizontal distance and vertical difference. Drag A/B to adjust, or click an endpoint then choose a new location. Escape cancels an unfinished pick or edit; completed rulers remain until deleted. Measurements cannot cross disconnected inspection parts. Changing selected geometry, representation or coordinate transforms clears incompatible rulers.</p>
 <p>Distances follow predicted scale (relative units for DA3), including reconstruction/alignment errors. Horizontal and vertical components follow the displayed axes. A cross-section is a visible band, not an estimate of physical wall thickness.</p>
 <p>Drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, double-click a surface to focus. The orientation widget and View presets select axis-aligned or isometric views. Orthographic projection removes perspective size changes. Cameras highlight on hover and open the source image on click/tap; measurement mode takes priority.</p>
+<p>Explore opens one aligned group in perspective at a predicted photo position. Drag to look; WASD/arrows or the mobile movement pad moves horizontally, Q/E or the height buttons moves vertically. Scroll moves through the scene, independently of orbit zoom. Returning to Inspect restores the previous camera. No collision detection or measured floor height is implied. Separate components are explored separately; photo jumps are viewpoint changes, not verified walkable paths.</p>
+<p>On mobile, Adjust with scene visible collapses settings to a bottom strip for slice position/width, cutaway height or point size. The strip reserves its own space, leaving the canvas unobscured. Rendering diagnostics stay outside enlarged mode.</p>
 <p>Cutaway and cross-section clip reconstructed surfaces consistently, including picking. Rulers and camera annotations remain visible. Display controls preserve saved geometry and metrics. Cross-section position is relative to each group's bounds; width is in its model units.</p>
 <p>Saved views live in this browser. A view link encodes settings and rulers in its fragment, without cloud files or a server write. Restore requires the same scene data. Sharing a full-detail view downloads geometry only when that link is opened; switching view controls reuses loaded assets.</p>
 <p><a href="vendor/three/LICENSE.txt">Three.js MIT license</a> ·

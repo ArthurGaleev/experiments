@@ -29,18 +29,31 @@ all-photo view defaults to RoMa + MoGe-2 with VLM review and supported recovery.
 Matcher/depth, VLM review, supported recovery and semantic room
 source select separately saved results; the browser runs no inference.
 
-Drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, and double-click a
+In Inspect, drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, and double-click a
 surface to focus. The compact toolbar provides View, Display, Section, Rulers
 and Saved views panels. Use the orientation widget or presets for top/front/side
 and isometric views; switch between perspective and orthographic projection
 without losing the apparent zoom. Fit/reset fits the current group.
 
+Explore opens one aligned group at a predicted photo camera. Drag to look,
+WASD/arrows to move, Q/E to change height, and Shift to move faster. Phones have
+a movement pad and height buttons. Movement keeps its speed inside rooms; it does
+not depend on orbit distance. View → Photo viewpoint, or Viewpoint below a thumbnail,
+jumps to that photo's position and direction. Open photo shows the source image.
+Returning to Inspect restores the previous overview. Viewpoints are upright;
+photo framing can differ. There is no floor snapping or wall collision detection.
+Unrelated components remain separate; a jump is not a verified walkable route.
+
 Height cutaway hides upper surfaces. Cross-section keeps a movable band with an
 adjustable width and horizontal, vertical or custom orientation. Both controls
 clip points and patches consistently; rulers and camera annotations stay visible.
 Slice width is a display setting, not an estimate of physical wall thickness.
+On mobile, Adjust with scene visible reduces settings to a bottom strip for
+position, width, cutaway height or point size. The canvas stays unobscured while
+adjusting. Rendering diagnostics stay outside enlarged mode; brief Inspection tips
+explain useful combinations of orientation, projection and slices.
 
-Enable Measure and click A then B to add rulers, with distance labels on their
+Open Rulers, enable Measure distance and click A then B to add rulers, with distance labels on their
 lines and source-photo names in the toolbar. Points/Both snap to saved vertices;
 Patches measures between positions inside finite fitted triangles. Select a ruler
 for 3D, horizontal and vertical distances. Drag A/B to adjust it, or click an
@@ -48,11 +61,11 @@ endpoint and then its new position. Delete rulers individually or clear all;
 Escape cancels unfinished picks/edits. Metres/centimetres follow predicted scale;
 DA3 retains relative units. Cross-component distances remain unavailable.
 
-Saved views preserve selection, reconstruction branch, camera, display/clipping
+Saved views preserve selection, reconstruction branch, camera, navigation mode, display/clipping
 and completed rulers. Save them in this browser, or copy a portable view link
 for the same scene. View links contain settings, not cloud files or server writes.
 Hover a camera outline to highlight it, then click/tap to open its source photo.
-Rendering diagnostics sit below the canvas. These static tools also work locally
+Rendering diagnostics sit below the regular scenes. These static tools also work locally
 through an HTTP server, without a backend or model inference.
 
 The preferred 20-photo scene requests about 30 MB of geometry at 100k/photo or

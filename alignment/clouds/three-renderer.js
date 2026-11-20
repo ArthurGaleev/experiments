@@ -1,9 +1,10 @@
 /* A point-cloud renderer for the shared report controls. All data remain immutable. */
 import * as THREE from './vendor/three/three.module.js';
 import {OrbitControls} from './vendor/three/OrbitControls.js';
-import {cloudMatrix, segmentDistance2D} from './cloud-buffers.js';
-import {clipping, insideClip, readControls, hashText} from './viewer-tools.js';
-import {attachRulers, clearMeasurements, setMeasuring, refreshMeasurements} from './ruler-tools.js';
+const assetQuery = new URL(import.meta.url).search;
+const [{attachExplore},{cloudMatrix,segmentDistance2D},{clipping,insideClip,readControls,hashText},{attachRulers,clearMeasurements,setMeasuring,refreshMeasurements}] = await Promise.all([
+  import('./explore-controls.js' + assetQuery),import('./cloud-buffers.js' + assetQuery),import('./viewer-tools.js' + assetQuery),import('./ruler-tools.js' + assetQuery),
+]);
 export {clearMeasurements, setMeasuring, refreshMeasurements};
 
 const views = new Map();
@@ -52,6 +53,8 @@ function cameraState(view) {
     center: Object.fromEntries(axes.map(a => [a, (controls.target[a] - center[a]) / unit])),
     up: {x: 0, y: 0, z: 1},
     scale: camera.isOrthographicCamera ? camera.top / camera.zoom / unit : camera.position.distanceTo(controls.target) * Math.tan(Math.PI / 8) / unit,
+    projection: camera.isOrthographicCamera ? 'orthographic' : 'perspective',
+    ...view.explore.snapshot(),
   };
 }
 
@@ -87,11 +90,40 @@ function setCamera(view, state) {
     camera.position.sub(controls.target).normalize().multiplyScalar(half / Math.tan(Math.PI / 8)).add(controls.target);
   }
   if (Math.hypot(camera.position.x - controls.target.x, camera.position.y - controls.target.y) < unit * 1e-6) camera.position.y -= unit * 1e-5;
-  camera.updateProjectionMatrix(); camera.lookAt(controls.target); controls.update(); view.invalidate();
+  view.explore.restore(state);
+  camera.updateProjectionMatrix(); camera.lookAt(controls.target);
+  if (!view.explore.enabled) controls.update();
+  view.plot.dataset.navigation = view.explore.enabled ? 'explore' : 'inspect'; view.invalidate();
+}
+export function navigate(plot, mode, photoId) {
+  const view = views.get(plot); if (!view) return false;
+  if (mode === 'explore' && !view.canExplore) return false;
+  cancelAnimationFrame(view.transition);
+  if (mode === 'inspect') {
+    const saved = view.explore.leave();
+    if (saved) {
+      document.getElementById('projection').value = saved.projection || 'perspective';
+      projection(view); setCamera(view, saved);
+    }
+  } else {
+    if (!view.explore.enabled) {
+      const saved = cameraState(view);
+      document.getElementById('projection').value = 'perspective'; projection(view);
+      view.explore.enter(saved);
+    }
+    const photos = view.photoViews || [];
+    const nearest = photos.slice().sort((a,b) => view.controls.target.distanceToSquared(new THREE.Vector3(...a.position)) - view.controls.target.distanceToSquared(new THREE.Vector3(...b.position)))[0];
+    const photo = photos.find(p => p.id === photoId) || nearest;
+    if (photo) { view.explore.place(photo); view.plot.dataset.viewpoint = photo.id; }
+  }
+  view.plot.dataset.navigation = view.explore.enabled ? 'explore' : 'inspect';
+  plot.dispatchEvent(new CustomEvent('planrec-navigation',{bubbles:true,detail:{mode:view.plot.dataset.navigation,photoId:view.plot.dataset.viewpoint}}));
+  view.invalidate(); return true;
 }
 const directions = {top:[0,0,1], bottom:[0,0,-1], front:[0,-1,0], back:[0,1,0], left:[-1,0,0], right:[1,0,0], iso:[1.35,-1.8,.8]};
 export function orient(plot, name, animate = true) {
   const view = views.get(plot), direction = directions[name]; if (!view || !direction) return;
+  if (view.explore.enabled) navigate(plot,'inspect');
   cancelAnimationFrame(view.transition);
   const saved = cameraState(view), start = view.camera.position.clone().sub(view.controls.target), distance = start.length();
   const rotation = new THREE.Quaternion().setFromUnitVectors(start.clone().normalize(), new THREE.Vector3(...direction).normalize());
@@ -141,6 +173,7 @@ function renderView(view) {
 }
 
 function cameraHit(view, event) {
+  if (view.explore.enabled) return null;
   if (!document.getElementById('cameras').checked || document.getElementById('measure').checked) return null;
   const rect = view.renderer.domElement.getBoundingClientRect();
   const pointer = [event.clientX - rect.left, event.clientY - rect.top];
@@ -221,10 +254,11 @@ function makeView(plot) {
     if (!view.frame && !view.disposed) view.frame = requestAnimationFrame(() => {
       view.frame = 0;
       if (view.disposed) return;
-      controls.update();
+      if (!view.explore.enabled) controls.update();
       renderView(view);
     });
   };
+  view.explore = attachExplore(view);
   view.measurements = attachRulers(view, pick); orientationWidget(view);
   controls.addEventListener('change', view.invalidate);
   controls.addEventListener('start', () => { cancelAnimationFrame(view.transition); cameraHover(view, null); });
@@ -232,6 +266,7 @@ function makeView(plot) {
     event.preventDefault(); readout.textContent = 'Graphics context lost. Reload this page to restore the view.';
   });
   canvas.addEventListener('dblclick', event => {
+    if (view.explore.enabled) return;
     if (document.getElementById('measure').checked || cameraHit(view, event)) return;
     const hit = pick(view, event);
     if (hit) {
@@ -247,7 +282,7 @@ function makeView(plot) {
   canvas.addEventListener('pointermove', event => cameraHover(view, event.buttons ? null : cameraHit(view, event), event));
   canvas.addEventListener('pointerleave', () => cameraHover(view, null));
   canvas.addEventListener('pointerup', event => {
-    if (down && Math.hypot(event.clientX - down[0], event.clientY - down[1]) < 4) {
+    if (!view.explore.enabled && down && Math.hypot(event.clientX - down[0], event.clientY - down[1]) < 4) {
       if (document.getElementById('measure').checked) view.measurements.measure(event);
       else {
         const hit = cameraHit(view, event);
@@ -274,6 +309,7 @@ function makeView(plot) {
     if (!gesture) return;
     stop(event);
     const factor = Math.max(.05, Math.min(20, gesture.scale / event.scale));
+    if (view.explore.enabled) { view.explore.gesture(Math.log((event.scale || 1) / gesture.scale)); gesture.scale = event.scale || 1; return; }
     if (view.camera.isOrthographicCamera) { view.camera.zoom = gesture.zoom / factor; view.camera.updateProjectionMatrix(); }
     else view.camera.position.copy(gesture.eye).sub(gesture.target).multiplyScalar(factor).add(gesture.target);
     controls.update(); view.invalidate();
@@ -349,7 +385,11 @@ export async function react(plot, data, layout) {
   view.center.set(...ranges.map(r => (r[0] + r[1]) / 2));
   view.unit = Math.cbrt(spans[0] * spans[1] * spans[2]);
   view.unitLabel = config.xaxis.title?.text?.includes('rel.') ? 'relative units' : 'm';
+  if (config.unitLabel) view.unitLabel = config.unitLabel;
   view.inspection = config.xaxis.visible === false;
+  view.photoViews = config.photoViews || [];
+  const frames = new Set(data.map(t => (t.cloud || t.surface)?.frame).filter(f => f != null));
+  view.canExplore = frames.size === 1 && config.canExplore !== false;
   view.camera.near = Math.max(.0001, view.unit * .0001);
   view.camera.far = Math.max(...spans) * 1000; view.camera.updateProjectionMatrix();
   view.controls.minDistance = view.unit * .0005; view.controls.maxDistance = view.unit * 100;
@@ -450,6 +490,7 @@ export function purge(plot) {
   const view = views.get(plot); if (!view) return;
   view.disposed = true; cancelAnimationFrame(view.frame); cancelAnimationFrame(view.transition);
   view.observer.disconnect(); view.controls.dispose();
+  view.explore.dispose();
   disposeObject(view.content); disposeObject(view.labels); view.objects.clear();
   view.measurements.dispose(); if (view.sectionGuide) disposeObject(view.sectionGuide);
   view.renderer.dispose(); view.renderer.forceContextLoss();
