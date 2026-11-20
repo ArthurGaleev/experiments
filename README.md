@@ -23,9 +23,43 @@ These are tool experiments, not a completed apartment plan.
 
 The viewer retains all photos, including singletons. Selecting photos changes
 visibility while preserving established poses. Originally disconnected components
-have unknown relative placement. Detail levels load on demand, starting at 2k
-points per photo. Matcher/depth, VLM review, supported recovery and semantic room
+have unknown relative placement. The Three.js viewer loads detail on demand,
+starting at 100k points per photo; Full displays all saved valid points. The
+all-photo view defaults to RoMa + MoGe-2 with VLM review and supported recovery.
+Matcher/depth, VLM review, supported recovery and semantic room
 source select separately saved results; the browser runs no inference.
+
+Drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, and double-click a
+surface to focus. The compact toolbar provides View, Display, Section, Rulers
+and Saved views panels. Use the orientation widget or presets for top/front/side
+and isometric views; switch between perspective and orthographic projection
+without losing the apparent zoom. Fit/reset fits the current group.
+
+Height cutaway hides upper surfaces. Cross-section keeps a movable band with an
+adjustable width and horizontal, vertical or custom orientation. Both controls
+clip points and patches consistently; rulers and camera annotations stay visible.
+Slice width is a display setting, not an estimate of physical wall thickness.
+
+Enable Measure and click A then B to add rulers, with distance labels on their
+lines and source-photo names in the toolbar. Points/Both snap to saved vertices;
+Patches measures between positions inside finite fitted triangles. Select a ruler
+for 3D, horizontal and vertical distances. Drag A/B to adjust it, or click an
+endpoint and then its new position. Delete rulers individually or clear all;
+Escape cancels unfinished picks/edits. Metres/centimetres follow predicted scale;
+DA3 retains relative units. Cross-component distances remain unavailable.
+
+Saved views preserve selection, reconstruction branch, camera, display/clipping
+and completed rulers. Save them in this browser, or copy a portable view link
+for the same scene. View links contain settings, not cloud files or server writes.
+Hover a camera outline to highlight it, then click/tap to open its source photo.
+Rendering diagnostics sit below the canvas. These static tools also work locally
+through an HTTP server, without a backend or model inference.
+
+The preferred 20-photo scene requests about 30 MB of geometry at 100k/photo or
+78.4 MB at Full; other page assets add overhead. Controls reuse loaded geometry.
+GitHub Pages currently documents a 1 GB site limit and 100 GB/month soft bandwidth
+limit; see [GitHub's limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
+Actual usage depends on visitors, selected detail and caching.
 
 A geometric component is not a room. Pairwise room hypotheses can overlap and are
 not a room count. Global Qwen's five-room proposals are also unverified; repeated
@@ -56,8 +90,9 @@ All 531 photo/pair responses and three global responses passed schema validation
 and contain English descriptive text. Global camera-room assignments agree across
 the three calls, while doorway certainty and revision explanations still vary.
 Independent dev scorecards and private datasets remain in the source workspace.
-Full NPZ arrays are local; galleries use sampled geometry and need no compute
-server. One selected run per tool is exported here.
+Full NPZ arrays are local; galleries stream saved geometry at the selected detail,
+including all valid points at Full, and need no compute server. One selected run
+per tool is exported here.
 
 ## Data and license
 

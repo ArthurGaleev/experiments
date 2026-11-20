@@ -9,7 +9,7 @@
   function bounds(traces) {
     return ['x', 'y', 'z'].map(axis => {
       let low = Infinity, high = -Infinity;
-      for (const trace of traces) for (const n of trace[axis] || []) {
+      for (const trace of traces) for (const n of trace.bounds?.[['x', 'y', 'z'].indexOf(axis)] || trace[axis] || []) {
         if (n === null || !Number.isFinite(n)) continue;
         low = Math.min(low, n); high = Math.max(high, n);
       }
@@ -27,6 +27,11 @@
       offsets.push(offset);
       for (const trace of part.data) {
         const shifted = {...trace};
+        if (trace.cloud) {
+          shifted.cloud = {...trace.cloud, offset: offset.slice()};
+          shifted.bounds = trace.bounds.map((b, i) => b.map(v => v + offset[i]));
+        }
+        if (trace.surface) shifted.surface = {...trace.surface, offset: offset.slice()};
         ['x', 'y', 'z'].forEach((axis, i) => {
           shifted[axis] = Array.from(trace[axis] || [], n => n === null ? null : n + offset[i]);
         });

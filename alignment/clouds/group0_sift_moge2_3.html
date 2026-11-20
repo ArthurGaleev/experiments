@@ -1,28 +1,27 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All photos · part 4 · 1 photos · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=b4783b640b63">
-<link rel="stylesheet" href="photo-view.css?v=b4783b640b63">
-<script src="plotly.min.js" defer></script><script src="photo-view.js?v=b4783b640b63" defer></script>
-<script src="room-view.js?v=b4783b640b63" defer></script>
-<script src="cloud-view.js?v=b4783b640b63" defer></script>
+<title>All photos · part 4 · 1 photos · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=fe9cdc0a824b">
+<link rel="stylesheet" href="photo-view.css?v=fe9cdc0a824b">
+<script src="photo-view.js?v=fe9cdc0a824b" defer></script>
+<script src="room-view.js?v=fe9cdc0a824b" defer></script>
+<script src="cloud-view.js?v=fe9cdc0a824b" defer></script>
 </head><body><main>
 <a href="../component-group0_sift_moge2_3.html">← Report</a><h1>All photos · part 4 · 1 photos · SIFT × MoGe-2</h1>
 <p id="scene-note">Root camera: img_11_b. Accepted rigid transforms, maximum support spanning tree. Cycle closures: 0, warnings: 0. Loops are not optimized. A component is not a recognized room; hidden surfaces remain unreconstructed.</p>
 <div class="toolbar">
   <label id="matcher-control" hidden>Matching <select id="matcher"></select></label>
   <label id="model-control" hidden><span id="model-label">Model</span> <select id="model"></select></label>
+</div>
+<details class="connection-options"><summary>Connections and room hypotheses</summary>
+<div class="toolbar">
   <label id="vlm-control" hidden><input type="checkbox" id="vlm" aria-describedby="vlm-status"> VLM: review connections</label>
   <label id="recovery-control" hidden><input type="checkbox" id="recovery" aria-describedby="recovery-status"> Recover supported connections</label>
   <label id="rooms-control" hidden><input type="checkbox" id="rooms"> Room and doorway hypotheses</label>
-  <div class="segments" id="representation" role="group" aria-label="View">
-    <button data-mode="points" aria-pressed="true">Points</button>
-    <button data-mode="planes" aria-pressed="false">Patches · experimental</button>
-    <button data-mode="both" aria-pressed="false" title="Planar patches and original points">Both</button>
-  </div>
 </div>
 <p id="vlm-status" class="muted" role="status" hidden></p>
 <p id="recovery-status" class="muted" role="status" hidden></p>
+</details>
 <section id="room-controls" class="room-controls" hidden>
   <div class="toolbar"><label id="room-source-control" hidden>Room source <select id="room-source"></select></label>
   <label>Room hypothesis <select id="room-choice"></select></label>
@@ -30,33 +29,82 @@
   <p id="room-warning" class="warning">Room membership is hypothesized. Unaligned parts are arranged for inspection; their relative placement is unknown.</p>
   <div id="room-details"></div>
 </section>
-<div class="toolbar" id="detail-control"><span>Maximum points per photo</span>
-  <div class="segments" id="detail" role="group" aria-label="Points per photo">
-    <button data-limit="1000" aria-pressed="false">1k</button>
-    <button data-limit="2000" aria-pressed="true">2k</button>
-    <button data-limit="5000" aria-pressed="false">5k</button>
-    <button data-limit="10000" aria-pressed="false">10k</button>
-    <button data-limit="25000" aria-pressed="false">25k</button>
-  </div><span id="counts" class="muted" aria-live="polite"></span>
+<div class="toolbar" id="detail-control"><label>Detail per photo
+  <select id="detail" aria-label="Points per photo">
+    <option value="1000">1k</option><option value="2000">2k</option>
+    <option value="5000">5k</option><option value="10000">10k</option>
+    <option value="25000">25k</option><option value="100000" selected>100k</option>
+    <option value="250000">250k</option><option value="0" title="Every saved valid point">Full</option>
+  </select></label><span id="counts" class="muted" aria-live="polite"></span>
+  <div class="segments" id="representation" role="group" aria-label="View">
+    <button data-mode="points" aria-pressed="true">Points</button>
+    <button data-mode="planes" aria-pressed="false">Patches</button>
+    <button data-mode="both" aria-pressed="false" title="Planar patches and original points">Both</button>
+  </div>
 </div>
 <p id="plane-note" class="muted" hidden>Simplified surfaces without photo textures; use Both to inspect gaps.</p>
-<div class="toolbar" id="view-controls" role="group" aria-label="View and connections">
-  <label>Color <select id="colour"><option value="rgb">Photo RGB</option>
-    <option value="source">Source</option><option value="group">Selected subgroup</option>
-    <option value="patch">Planar patch</option></select></label>
-  <label><input type="checkbox" id="cameras" checked> Cameras</label>
-  <label id="level-label"><input type="checkbox" id="level" checked> GeoCalib vertical</label>
-  <label id="paths-label"><input type="checkbox" id="paths"> Paths through hidden photos</label>
-  <button id="top">Top view</button><button id="reset">Reset view</button>
+<div class="toolbar" id="view-controls" role="group" aria-label="Viewer tools">
+  <button id="reset" title="Fit the current group (F)">Fit / reset</button>
+  <label class="compact-label"><select id="projection" aria-label="Projection"><option value="perspective">Perspective</option><option value="orthographic">Orthographic</option></select></label>
+  <details class="tool-panel" id="orientation-panel"><summary>View</summary><div class="tool-content">
+    <h3>Orientation</h3><div class="view-presets">
+      <button id="top" data-orient="top">Top view</button><button data-orient="bottom">Bottom</button>
+      <button data-orient="front">Front</button><button data-orient="back">Back</button>
+      <button data-orient="left">Left</button><button data-orient="right">Right</button><button data-orient="iso">Isometric</button>
+    </div><p class="muted">Views follow the displayed axes. GeoCalib supplies the estimated vertical.</p>
+    <p id="navigation-help" class="muted"></p>
+  </div></details>
+  <details class="tool-panel" id="appearance-panel"><summary>Display</summary><div class="tool-content">
+    <h3>Appearance</h3><label>Color <select id="colour"><option value="rgb">Photo RGB</option><option value="source">Source</option><option value="group">Selected subgroup</option><option value="patch">Planar patch</option></select></label>
+    <label><input type="checkbox" id="cameras" checked> Cameras</label>
+    <label id="level-label"><input type="checkbox" id="level" checked> GeoCalib vertical</label>
+    <label id="paths-label"><input type="checkbox" id="paths"> Paths through hidden photos</label>
+    <label><input type="checkbox" id="axes"> World axes</label>
+    <label id="point-size-control">Point size <input type="range" id="point-size" min="1" max="5" step="0.5" value="2" aria-label="Point size"><output id="point-size-value">2 px</output></label>
+  </div></details>
+  <details class="tool-panel" id="section-panel"><summary>Section</summary><div class="tool-content">
+    <h3>Cutaway and cross-section</h3>
+    <label><input type="checkbox" id="cutaway"> Height cutaway</label>
+    <label id="cut-height-control" hidden>Keep lower <input type="range" id="cut-height" min="5" max="100" step="1" value="75" aria-label="Cutaway height"><output id="cut-height-value">75%</output></label>
+    <label><input type="checkbox" id="section"> Cross-section</label>
+    <div id="section-fields" hidden>
+      <label>Slice orientation <select id="section-axis"><option value="z">Horizontal (Z)</option><option value="x">Vertical (X)</option><option value="y">Vertical (Y)</option><option value="custom">Custom angle</option></select></label>
+      <div id="section-custom" hidden><label>Azimuth ° <input id="section-azimuth" type="number" min="-180" max="180" step="5" value="0"></label><label>Normal tilt ° <input id="section-tilt" type="number" min="0" max="180" step="5" value="90"></label></div>
+      <label>Position <input type="range" id="section-center" min="0" max="100" step="0.5" value="50" aria-label="Slice position"><output id="section-center-value">50%</output></label>
+      <label>Slice width <input id="section-width" type="number" min="0.001" max="10000" step="0.001" value="0.3" aria-label="Slice width"><span id="section-unit">m</span></label>
+      <label><input type="checkbox" id="section-guide"> Show slice guide</label>
+    </div><p class="muted">Keeps a band of surfaces. Position follows each group's bounds; width uses its predicted scale. Rulers stay visible.</p>
+  </div></details>
+  <label class="measure-toggle"><input type="checkbox" id="measure" aria-label="Measure distance"> Measure</label>
+  <details class="tool-panel" id="measurement-panel"><summary>Rulers</summary><div class="tool-content">
+    <h3>Measurements</h3><label>Display units <select id="measure-units"><option value="m">Metres</option><option value="cm">Centimetres</option></select></label>
+    <p class="muted">Click A, then B to add a ruler. Drag A/B to adjust, or click an endpoint then choose its new position. Escape cancels an unfinished edit.</p>
+    <p id="measurement-components" class="muted"></p><div id="measurements-list"></div><p id="measurements-empty" class="muted">No rulers in visible groups.</p>
+    <button id="clear-measure">Clear all rulers</button>
+  </div></details>
+  <details class="tool-panel" id="saved-panel"><summary>Saved views</summary><div class="tool-content">
+    <h3>Save this view</h3><label>Name <input id="view-name" type="text" maxlength="70" placeholder="Kitchen overview"></label>
+    <div class="button-row"><button id="save-view">Save current</button><button id="copy-view">Copy view link</button></div>
+    <label>Saved in this browser <select id="saved-views"></select></label><div class="button-row"><button id="load-view" disabled>Load view</button><button id="delete-view" disabled>Delete saved view</button></div>
+    <input id="view-link" aria-label="View link" type="text" readonly hidden>
+    <p id="saved-status" class="muted" role="status">Includes selection, camera, display, clipping and completed rulers.</p>
+  </div></details>
+  <output id="measure-status" class="muted" aria-live="polite" hidden></output>
 </div>
 <p id="selection-status" role="status"></p>
 <p id="loading" class="muted" role="status"></p>
 <p><a href="#photo-controls">Photo selection ↓</a></p>
 <div id="scenes"></div>
+<details id="render-diagnostics"><summary>Rendering diagnostics</summary>
+<p id="render-stats" class="muted" role="status"></p>
+<button id="benchmark">Measure rotation</button>
+<pre id="benchmark-result" aria-live="polite"></pre>
+</details>
 <div class="toolbar" id="photo-controls"><strong>Photos</strong><button id="all">All</button>
 <button id="none">Clear selection</button><span class="muted">Select a thumbnail to show or hide it</span>
 <a href="#scenes">3D ↑</a></div>
 <div id="photos"></div>
+
 <details><summary>About this view</summary>
 <p>Photo selection changes visibility only. Poses use the full graph and remain fixed
 when the visible subgraph splits. Originally disconnected components have separate
@@ -80,12 +128,22 @@ and changes no poses. Overlapping hypotheses are alternatives, not a room count.
 Disconnected parts are arranged for inspection, with unknown physical placement.</p>
 <p>The model predicts meters; zero height is at the camera, not the floor. GeoCalib applies one rotation per component. Without it, world
 vertical is unknown. Each model's XYZ and K are used together.</p>
-<p>Points are nested uniform pixel samples; detailed levels load on demand.
-Toggling a photo does not change the samples of other sources.</p>
+<p>Points are nested uniform pixel samples; Full includes every finite, positive,
+model-valid saved point. It does not change inference or metrics. Detail loads on
+demand. Toggling a photo does not change other samples. Three.js uses binary buffers
+and GPU camera transforms. Lower detail reduces the rendered count; Full does not
+downsample the saved valid cloud.</p>
+<p>Measure distance: click A, then B to add a ruler. Points/Both snap to saved cloud vertices; Patches uses positions inside visible triangles. Labels retain source photos. Select a ruler to see its 3D length, horizontal distance and vertical difference. Drag A/B to adjust, or click an endpoint then choose a new location. Escape cancels an unfinished pick or edit; completed rulers remain until deleted. Measurements cannot cross disconnected inspection parts. Changing selected geometry, representation or coordinate transforms clears incompatible rulers.</p>
+<p>Distances follow predicted scale (relative units for DA3), including reconstruction/alignment errors. Horizontal and vertical components follow the displayed axes. A cross-section is a visible band, not an estimate of physical wall thickness.</p>
+<p>Drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, double-click a surface to focus. The orientation widget and View presets select axis-aligned or isometric views. Orthographic projection removes perspective size changes. Cameras highlight on hover and open the source image on click/tap; measurement mode takes priority.</p>
+<p>Cutaway and cross-section clip reconstructed surfaces consistently, including picking. Rulers and camera annotations remain visible. Display controls preserve saved geometry and metrics. Cross-section position is relative to each group's bounds; width is in its model units.</p>
+<p>Saved views live in this browser. A view link encodes settings and rulers in its fragment, without cloud files or a server write. Restore requires the same scene data. Sharing a full-detail view downloads geometry only when that link is opened; switching view controls reuses loaded assets.</p>
+<p><a href="vendor/three/LICENSE.txt">Three.js MIT license</a> ·
+<a href="vendor/three/provenance.json">Pinned renderer version</a></p>
 <p>Planar patches approximate predicted geometry. Surfaces from different photos
 are not fused, so duplicate walls remain. Only fully supported grid cells are
 rendered; boundary strips and nonplanar regions can be missing. Vertex colors lose
 fine image detail. Use Both to compare patch support with the original cloud.</p>
 </details>
 <noscript>JavaScript is required for the interactive viewer.</noscript>
-</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"recovery":false,"recoveryInfo":null,"sources":[{"id":"img_11_b","name":"img_11_b","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.14056864172407646,-0.18906893528937832,0.3],[0.14056864172407646,-0.18906893528937832,0.3],[0.14056864172407646,0.18906893528937832,0.3],[-0.14056864172407646,0.18906893528937832,0.3]],"chunks":[{"key":"cbdc78f31b0ac31e9d245c31","url":"points-cbdc78f31b0ac31e9d245c31.js","bytes":20109,"start":0,"end":1000},{"key":"682cc409751da81ffd41498d","url":"points-682cc409751da81ffd41498d.js","bytes":20109,"start":1000,"end":2000},{"key":"7bb7a0a29e4d6bb71ef95f1c","url":"points-7bb7a0a29e4d6bb71ef95f1c.js","bytes":60109,"start":2000,"end":5000},{"key":"d85952ec5f949b9cde0225b3","url":"points-d85952ec5f949b9cde0225b3.js","bytes":100109,"start":5000,"end":10000},{"key":"41e971737dc1cb058ed06090","url":"points-41e971737dc1cb058ed06090.js","bytes":300109,"start":10000,"end":25000}],"available":25000,"photo":"../photos/img_11_b.jpg","href":"../photo-img_11_b.html","reference":false,"planes":{"key":"2d228ffba9ac216fe3b8f335","url":"planes-2d228ffba9ac216fe3b8f335.js","bytes":29331,"count":23,"coverage":0.7680650902618866,"triangles":476}}],"components":[{"id":"0","ids":["img_11_b"],"rotation":[[0.9999986603871726,0.0016368334858910462,0.0],[-3.1122558603187692e-06,0.0019013856436390498,0.9999981923598403],[0.0016368305270851023,-0.9999968527494343,0.00190138819076306]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[0.0016368305270851023,-0.9999968527494343,0.00190138819076306],"ranges":[[-1.3890606328479869,1.9150355111294066],[-0.15828866585889506,4.115505312331272],[-1.2297154878196679,1.9014182182741546]],"rawRanges":[[-1.3872989702224732,1.9170009183883667],[-0.15837254524230956,4.117686176300049],[-1.2381998348236083,1.895205144882202]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":[],"treeEdges":[],"initial":["img_11_b"]}],"defaultLimit":2000,"multiview":true,"semantics":null,"roomVariants":null}</script></body></html>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"recovery":false,"recoveryInfo":null,"sources":[{"id":"img_11_b","name":"img_11_b","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.14056864172407646,-0.18906893528937832,0.3],[0.14056864172407646,-0.18906893528937832,0.3],[0.14056864172407646,0.18906893528937832,0.3],[-0.14056864172407646,0.18906893528937832,0.3]],"chunks":[{"key":"72ef24e00986d1b0043822ce","url":"../../cloud-assets/points-72ef24e00986d1b0043822ce.bin","bytes":375008,"start":0,"end":25000},{"key":"312da604cf4dc7a56c0b7c9d","url":"../../cloud-assets/points-312da604cf4dc7a56c0b7c9d.bin","bytes":1125008,"start":25000,"end":100000},{"key":"04b67bff2161551e9fbe5bad","url":"../../cloud-assets/points-04b67bff2161551e9fbe5bad.bin","bytes":859808,"start":100000,"end":157320}],"available":157320,"bounds":[[-1.2691144943237305,1.7959163188934326],[-1.7791531085968018,1.1274299621582031],[1.51319420337677,3.985069513320923]],"photo":"../photos/img_11_b.jpg","href":"../photo-img_11_b.html","reference":false,"planes":{"key":"2d228ffba9ac216fe3b8f335","url":"planes-2d228ffba9ac216fe3b8f335.js","bytes":29331,"count":23,"coverage":0.7680650902618866,"triangles":476}}],"components":[{"id":"0","ids":["img_11_b"],"rotation":[[0.9999986603871726,0.0016368334858910462,0.0],[-3.1122558603187692e-06,0.0019013856436390498,0.9999981923598403],[0.0016368305270851023,-0.9999968527494343,0.00190138819076306]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[0.0016368305270851023,-0.9999968527494343,0.00190138819076306],"ranges":[[-1.394816343576845,1.9205507001664444],[-0.1594883975481004,4.14669833625061],[-1.243278203753048,1.9063159180644151]],"rawRanges":[[-1.391715726852417,1.918517551422119],[-0.1594027805328369,4.1444722938537595],[-1.2436932849884033,1.895416431427002]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":[],"treeEdges":[],"initial":["img_11_b"]}],"defaultLimit":100000,"multiview":true,"semantics":null,"roomVariants":null,"defaultVariant":"scene"}</script></body></html>

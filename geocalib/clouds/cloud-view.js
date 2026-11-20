@@ -1,18 +1,22 @@
 /* Static scene viewer. Geometry is immutable; selection changes visibility only. */
-(() => {
+(async () => {
   'use strict';
   const settings = JSON.parse(document.getElementById('scene-data').textContent);
+  const renderer = await import('./three-renderer.js');
+  const {decodePoints, transformedBounds} = await import('./cloud-buffers.js');
+  const tools = await import('./viewer-tools.js');
   const coordinateUnit = settings.relativeScale ? 'rel. units' : 'm';
   const get = id => document.getElementById(id);
   const photoViewer = window.planrecPhotoViewer();
   const palette = ['#168575', '#ce621c', '#6551c5', '#bd3c8a', '#267bb7', '#7c4f37', '#85801d'];
-  const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
-  const roomCamera = {eye: {x: 0, y: -2.1, z: 1}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}};
-  const state = {variant: settings.variants[0], selected: new Set(), limit: settings.defaultLimit, mode: 'points', version: 0, room: null, roomSource: 'pairwise'};
+  const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}, fit: true};
+  const roomCamera = {eye: {x: 0, y: -2.1, z: 1}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}, fit: true};
+  const preferred = settings.variants.find(v => v.id === settings.defaultVariant) || settings.variants[0];
+  const state = {variant: preferred, selected: new Set(), limit: settings.defaultLimit ?? 100000, mode: 'points', version: 0, room: null, roomSource: 'pairwise'};
   const semanticVariants = [{id: 'pairwise', label: 'Pairwise hypotheses', semantics: settings.semantics}, ...(settings.roomVariants || [])].filter(v => v.semantics);
   const sourceRooms = new Map();
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
-  const roomSelections = new Map();
+  const roomSelections = new Map(), inspections = new Map();
   let observer, expanded, scheduled = false, drawing = false;
   const sceneDialog = document.createElement('dialog');
   sceneDialog.className = 'scene-viewer';
@@ -26,24 +30,24 @@
     }
   }
   function release(view) {
-    // A variant can disappear while Plotly.react is still using its DOM node.
+    // A variant can disappear while renderer.react is still using its DOM node.
     if (view.rendering) { view.disposed = true; return; }
-    if (view.plot.data) { cameras.set(view.key, currentCamera(view.plot)); Plotly.purge(view.plot); }
+    if (view.plot.data) {
+      if (!view.discardState) { cameras.set(view.key, currentCamera(view.plot)); inspections.set(view.key, renderer.inspectionState(view.plot)); }
+      renderer.purge(view.plot); view.needsInspection = true;
+    }
   }
   const diagnostics = new URLSearchParams(location.search).has('qa');
-  let loadedBytes = 0;
+  if (diagnostics) document.documentElement.classList.add('viewer-benchmark');
+  let loadedBytes = 0, pointCacheBytes = 0;
+  const pointCacheSizes = new Map();
   const decode = (value, Type) => new Type(Uint8Array.from(atob(value), c => c.charCodeAt(0)).buffer);
   const rotate = (p, r) => r.map(row => row[0] * p[0] + row[1] * p[1] + row[2] * p[2]);
   const pose = (p, m) => m.slice(0, 3).map(row => row[0] * p[0] + row[1] * p[1] + row[2] * p[2] + row[3]);
   const position = (p, source, component) => rotate(pose(p, source.pose), get('level').checked ? component.rotation : component.fixed);
   const sourceColour = source => palette[state.variant.sources.indexOf(source) % palette.length];
 
-  // Plotly's touch rotation can leave layout.scene.camera stale. Keep this
-  // access to the bundled GL scene in one place, including when suspending views.
-  function currentCamera(plot) {
-    const camera = plot._fullLayout?.scene?._scene?.getCamera?.() || plot.layout?.scene?.camera;
-    return camera ? structuredClone(camera) : undefined;
-  }
+  function currentCamera(plot) { return renderer.currentCamera(plot); }
 
   function fixedAspect(ranges) {
     const spans = ranges.map(([lo, hi]) => Math.max(hi - lo, 1e-9));
@@ -54,31 +58,40 @@
   function resizeScene(view) {
     requestAnimationFrame(() => {
       if (!view.plot.isConnected || !view.plot.data) return;
-      Plotly.Plots.resize(view.plot);
+      renderer.Plots.resize(view.plot);
     });
   }
 
   function collapseScene() {
     if (!expanded) return;
-    const {view, placeholder, button} = expanded;
+    const {view, placeholder, button, tools, scroll} = expanded;
     expanded = null;
     if (sceneDialog.open) sceneDialog.close();
     placeholder.replaceWith(view.section);
+    for (const [slot, control] of tools) slot.replaceWith(control);
     document.body.classList.remove('scene-viewer-open');
     button.textContent = '⤢'; button.title = 'Expand 3D';
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-label', 'Expand 3D');
     button.focus({preventScroll: true});
+    window.scrollTo(scroll.x, scroll.y);
     resizeScene(view);
   }
 
   function expandScene(view, button) {
     if (expanded) { collapseScene(); return; }
+    const scroll = {x: window.scrollX, y: window.scrollY};
     const placeholder = document.createElement('div');
     placeholder.className = 'scene-placeholder';
     placeholder.style.height = view.section.getBoundingClientRect().height + 'px';
     view.section.before(placeholder);
-    expanded = {view, placeholder, button}; view.nearby = true;
+    const tools = ['detail-control', 'view-controls', 'render-diagnostics'].map(id => {
+      const control = get(id), slot = document.createElement('span');
+      control.before(slot);
+      (id === 'render-diagnostics' ? view.section : view.section.querySelector('header')).append(control);
+      return [slot, control];
+    });
+    expanded = {view, placeholder, button, tools, scroll}; view.nearby = true;
     sceneDialog.append(view.section);
     document.body.classList.add('scene-viewer-open');
     button.textContent = '⤡'; button.title = 'Collapse 3D (Esc)';
@@ -87,117 +100,6 @@
     sceneDialog.showModal();
     button.focus({preventScroll: true});
     resizeScene(view);
-  }
-
-  // Single-finger orbit stays with Plotly; custom gestures only move the view camera.
-  function enableNavigation(plot) {
-    let active = false, touchCount = 0, start, native, mouse, pending, frame = 0, busy = false;
-    const touches = event => [...event.touches].filter(touch => plot.contains(touch.target))
-      .sort((a, b) => a.identifier - b.identifier);
-    const distance = pair => Math.hypot(pair[0].clientX - pair[1].clientX, pair[0].clientY - pair[1].clientY);
-    const angle = pair => Math.atan2(pair[1].clientY - pair[0].clientY, pair[1].clientX - pair[0].clientX);
-    const midpoint = pair => [(pair[0].clientX + pair[1].clientX) / 2, (pair[0].clientY + pair[1].clientY) / 2];
-    const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
-    const stop = event => { event.preventDefault(); event.stopImmediatePropagation(); };
-    const options = {capture: true, passive: false};
-    function snapshot() {
-      const camera = pending || currentCamera(plot);
-      return camera && {camera: structuredClone(camera), height: Math.max(1, plot.getBoundingClientRect().height),
-        fovy: plot._fullLayout?.scene?._scene?.glplot?.fovy || Math.PI / 4};
-    }
-    function flush() {
-      frame = 0;
-      if (!pending || !plot.data) { pending = null; return; }
-      const camera = pending; pending = null; busy = true;
-      Promise.resolve(Plotly.relayout(plot, {'scene.camera': camera})).finally(() => {
-        busy = false;
-        if (pending && !frame) frame = requestAnimationFrame(flush);
-      });
-    }
-    function move(base, {zoom = 1, rotation = 0, dx = 0, dy = 0}) {
-      if (!(zoom > 0) || ![zoom, rotation, dx, dy].every(Number.isFinite)) return;
-      const camera = base.camera, centre = camera.center || {x: 0, y: 0, z: 0};
-      const axes = ['x', 'y', 'z'], vector = axes.map(axis => camera.eye[axis] - centre[axis]);
-      const radius = Math.hypot(...vector);
-      if (radius < 1e-6) return;
-      const scale = Math.min(20, Math.max(.1, radius / zoom)) / radius;
-      const forward = vector.map(v => -v / radius), originalUp = axes.map(axis => camera.up[axis]);
-      const crossedUp = cross(forward, originalUp), rightLength = Math.hypot(...crossedUp);
-      if (rightLength < 1e-6) return;
-      const right = crossedUp.map(v => v / rightLength), up = cross(right, forward);
-      const pixelScale = 2 * radius * Math.tan(base.fovy / 2) / base.height;
-      const centreNext = Object.fromEntries(axes.map((axis, i) => [axis,
-        centre[axis] + (-right[i] * dx + up[i] * dy) * pixelScale]));
-      const eye = Object.fromEntries(axes.map((axis, i) => [axis, centreNext[axis] + vector[i] * scale]));
-      // Rotate up opposite to the screen-space angle: the scene follows the fingers.
-      const cosine = Math.cos(rotation), sine = Math.sin(rotation);
-      // Canonical screen-up survives Plotly recreating a previously hidden scene.
-      const rolledUp = rotation ? Object.fromEntries(axes.map((axis, i) => [axis,
-        up[i] * cosine - right[i] * sine])) : camera.up;
-      pending = {...camera, center: centreNext, eye, up: rolledUp};
-      if (!frame && !busy) frame = requestAnimationFrame(flush);
-    }
-    plot.addEventListener('touchstart', event => {
-      const pair = touches(event), base = snapshot(); touchCount = pair.length; native = null;
-      if (pair.length === 2 && base) {
-        start = {...base, distance: distance(pair), angle: angle(pair), midpoint: midpoint(pair)};
-        active = true;
-      } else if (active) start = null;
-      if (active) stop(event);
-    }, options);
-    plot.addEventListener('touchmove', event => {
-      if (!active) return;
-      stop(event);
-      const pair = touches(event);
-      if (!start || pair.length !== 2 || distance(pair) < 1 || start.distance < 1) return;
-      const middle = midpoint(pair);
-      move(start, {zoom: distance(pair) / start.distance, rotation: angle(pair) - start.angle,
-        dx: middle[0] - start.midpoint[0], dy: middle[1] - start.midpoint[1]});
-    }, options);
-    const end = event => {
-      if (active) event.preventDefault();
-      // Let Plotly see releases so its preceding one-finger drag cannot stay active.
-      touchCount = touches(event).length;
-      if (touchCount < 2) start = null;
-      if (!touchCount) active = false;
-    };
-    plot.addEventListener('touchend', end, options);
-    plot.addEventListener('touchcancel', end, options);
-
-    // WebKit exposes trackpad rotation. On touchscreens, avoid handling both streams.
-    plot.addEventListener('gesturestart', event => {
-      stop(event);
-      const base = snapshot();
-      if (!touchCount && base) native = {...base, rotation: event.rotation || 0, scale: event.scale || 1};
-    }, options);
-    plot.addEventListener('gesturechange', event => {
-      if (!native && !touchCount) return;
-      stop(event);
-      if (native && !touchCount) move(native, {zoom: event.scale / native.scale,
-        rotation: (event.rotation - native.rotation) * Math.PI / 180});
-    }, options);
-    plot.addEventListener('gestureend', event => { if (native || touchCount) stop(event); native = null; }, options);
-    plot.addEventListener('wheel', event => { if (native) stop(event); }, options);
-
-    // Alt + horizontal mouse drag provides the same roll where trackpad rotation is unavailable.
-    plot.addEventListener('pointerdown', event => {
-      if (event.pointerType !== 'mouse' || event.button !== 0 || !event.altKey) return;
-      const base = snapshot(); if (!base) return;
-      stop(event); mouse = {...base, id: event.pointerId, x: event.clientX};
-      plot.setPointerCapture(event.pointerId);
-    }, options);
-    plot.addEventListener('pointermove', event => {
-      if (!mouse || event.pointerId !== mouse.id) return;
-      stop(event); move(mouse, {rotation: (event.clientX - mouse.x) * Math.PI / 720});
-    }, options);
-    const mouseEnd = event => {
-      if (!mouse || event.pointerId !== mouse.id) return;
-      stop(event); mouse = null;
-      if (plot.hasPointerCapture(event.pointerId)) plot.releasePointerCapture(event.pointerId);
-    };
-    plot.addEventListener('pointerup', mouseEnd, options);
-    plot.addEventListener('pointercancel', mouseEnd, options);
-    plot.addEventListener('lostpointercapture', () => { mouse = null; }, options);
   }
 
   function load(asset) {
@@ -224,6 +126,24 @@
         script.onerror = () => fail(new Error(asset.url));
         document.head.append(script);
       }));
+    }
+    return assets.get(asset.key);
+  }
+
+  async function loadDense(asset) {
+    if (!assets.has(asset.key)) {
+      loadedBytes += asset.bytes;
+      const pending = fetch(asset.url).then(async response => {
+        if (!response.ok) throw new Error(`Point buffer ${response.status}: ${asset.url}`);
+        const decoded = decodePoints(await response.arrayBuffer(), asset.end - asset.start);
+        pointCacheSizes.set(asset.key, asset.bytes); pointCacheBytes += asset.bytes;
+        while (pointCacheBytes > 256 * 1024 * 1024 && pointCacheSizes.size > 1) {
+          const [key, bytes] = pointCacheSizes.entries().next().value;
+          pointCacheBytes -= bytes; pointCacheSizes.delete(key); assets.delete(key);
+        }
+        return {...decoded, key: asset.key, start: asset.start};
+      }).catch(error => { assets.delete(asset.key); throw error; });
+      assets.set(asset.key, pending);
     }
     return assets.get(asset.key);
   }
@@ -275,13 +195,13 @@
     return state.variant.treeEdges.filter(([a, b]) => adjacent.get(a)?.has(b));
   }
 
-  async function prepared(source, component, kind) {
-    const key = `${state.variant.id}:${source.id}:${kind}`;
-    const signature = `${get('level').checked}:${kind === 'points' ? state.limit : ''}`;
+  async function preparedPlanes(source, component) {
+    const key = `${state.variant.id}:${source.id}:planes`;
+    const signature = String(get('level').checked);
     const prior = geometry.get(key);
     if (prior?.signature === signature) return prior.data;
     const rotation = get('level').checked ? component.rotation : component.fixed;
-    const chunks = kind === 'points' ? source.chunks.filter(c => c.start < state.limit) : [source.planes];
+    const chunks = [source.planes];
     const raw = await Promise.all(chunks.map(load));
     const n = raw.reduce((sum, c) => sum + c.xyz.length / 3, 0);
     const data = {x: new Float32Array(n), y: new Float32Array(n), z: new Float32Array(n), rgb: [], patch: []};
@@ -295,7 +215,7 @@
         offset++;
       }
     }
-    if (kind === 'planes') {
+    {
       const faces = raw[0].triangles;
       data.i = []; data.j = []; data.k = [];
       for (let i = 0; i < faces.length; i += 3) { data.i.push(faces[i]); data.j.push(faces[i + 1]); data.k.push(faces[i + 2]); }
@@ -318,6 +238,7 @@
     const corners = source.corners.map(p => position(p, source, component));
     for (let i = 0; i < 4; i++) lines.push(centre, corners[i], corners[(i + 1) % 4], [null, null, null]);
     return {type: 'scatter3d', mode: 'lines', x: lines.map(p => p[0]), y: lines.map(p => p[1]), z: lines.map(p => p[2]),
+      cameraPhoto: source.photo ? {id: source.id, name: source.name} : null,
       name: `${ghost ? 'Hidden photo' : 'Camera'}: ${source.name}`, showlegend: false, hoverinfo: 'name',
       opacity: ghost ? .3 : 1, line: {width: ghost ? 2 : 4, color: ghost ? '#89958c' : palette[(groups.membership.get(source.id) || 0) % palette.length]}};
   }
@@ -328,13 +249,20 @@
     const output = (await Promise.all(selected.map(async source => {
       const list = [], hover = `x: %{x:.2f} ${coordinateUnit}<br>y: %{y:.2f} ${coordinateUnit}<br>z: %{z:.2f} ${coordinateUnit}<extra>${source.name}</extra>`;
       if (state.mode !== 'planes') {
-        const data = await prepared(source, component, 'points');
-        list.push({type: 'scatter3d', mode: 'markers', name: source.name, x: data.x, y: data.y, z: data.z,
-          marker: {size: 2, color: colour(source, groups, data, 'points')}, showlegend: false, hovertemplate: hover});
+        const limit = state.limit || Infinity;
+        const chunks = await Promise.all(source.chunks.filter(c => c.start < limit).map(loadDense));
+        const rotation = get('level').checked ? component.rotation : component.fixed;
+        const cloud = {id: source.id, chunks, pose: source.pose, rotation, limit, frame: component.id, unitLabel: coordinateUnit};
+        list.push({type: 'scatter3d', mode: 'markers', name: source.name, cloud,
+          bounds: transformedBounds(source.bounds, source.pose, rotation),
+          marker: {color: get('colour').value === 'rgb' ? 'photo' : colour(source, groups, {}, 'points')},
+          showlegend: false, hovertemplate: hover});
       }
       if (state.mode !== 'points' && source.planes?.triangles) {
-        const data = await prepared(source, component, 'planes'), colors = colour(source, groups, data, 'planes');
+        const data = await preparedPlanes(source, component), colors = colour(source, groups, data, 'planes');
         list.push({type: 'mesh3d', name: source.name, x: data.x, y: data.y, z: data.z, i: data.i, j: data.j, k: data.k,
+          surface: {id: source.id, frame: component.id, unitLabel: coordinateUnit, pose: source.pose,
+            rotation: get('level').checked ? component.rotation : component.fixed},
           ...(typeof colors === 'string' ? {color: colors} : {vertexcolor: colors}), flatshading: true,
           lighting: {ambient: .8, diffuse: .35, specular: 0}, showlegend: false, hovertemplate: hover});
       }
@@ -384,14 +312,14 @@
     get('selection-status').textContent = text + '.';
     const shown = state.room && !get('room-extra').checked ? new Set(roomParts()[0]?.ids || []) : state.selected;
     const selected = state.variant.sources.filter(s => state.selected.has(s.id) && shown.has(s.id));
-    const count = selected.reduce((n, s) => n + Math.min(state.limit, s.available), 0);
+    const count = selected.reduce((n, s) => n + Math.min(state.limit || Infinity, s.available), 0);
     const patches = selected.reduce((n, s) => n + (s.planes?.count || 0), 0);
     const faces = selected.reduce((n, s) => n + (s.planes?.triangles || 0), 0);
     const coverage = selected.filter(s => s.planes).map(s => 100 * s.planes.coverage);
     get('counts').textContent = [state.mode !== 'planes' ? `${count.toLocaleString('en')} points` : '',
       state.mode !== 'points' ? `${patches} patches · ${faces.toLocaleString('en')} triangles` : '',
       state.mode !== 'points' && coverage.length ? `photo coverage: ${Math.min(...coverage).toFixed(0)}–${Math.max(...coverage).toFixed(0)}%` : ''].filter(Boolean).join(' · ');
-    get('detail-control').querySelector('.segments').hidden = state.mode === 'planes';
+    get('detail').hidden = state.mode === 'planes';
     get('detail-control').firstElementChild.hidden = state.mode === 'planes';
     get('plane-note').hidden = state.mode === 'points';
     for (const group of get('photos').querySelectorAll('.photo-group')) {
@@ -419,7 +347,7 @@
     const started = performance.now();
     const groups = selectionGroups();
     updateSelection(groups);
-    get('top').textContent = get('level').checked && state.variant.components.every(c => c.levelled) ? 'Top view' : 'Along camera -y';
+    get('top').title = get('level').checked && state.variant.components.every(c => c.levelled) ? 'Along estimated vertical' : 'Along displayed Z (camera −y); physical vertical unknown';
     get('loading').textContent = 'Preparing 3D…';
     try {
       if (state.room) await drawRoom(version, groups);
@@ -438,8 +366,8 @@
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i].slice(), autorange: false}; });
         view.rendering = true;
         try {
-          await Plotly.react(view.plot, data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: 'fixed-camera', paper_bgcolor: '#fff'},
-            {displayModeBar: false, scrollZoom: true, responsive: true, plotGlPixelRatio: 1});
+          await renderer.react(view.plot, data, {scene});
+          restoreAnnotations(view);
         } finally {
           view.rendering = false;
           if (view.disposed) release(view);
@@ -447,6 +375,7 @@
         if (version !== state.version) return;
       }
       if (version === state.version) get('loading').textContent = state.selected.size ? '' : 'Select photos below.';
+      if (version === state.version) get('render-stats').textContent = `Ready in ${Math.round(performance.now() - started)} ms · ${(loadedBytes / 1e6).toFixed(1)} MB requested this session`;
       if (diagnostics && version === state.version) console.info('planrec-viewer ' + JSON.stringify({
         selected: state.selected.size, mode: state.mode, limit: state.limit,
         updateMs: Math.round(performance.now() - started), readySinceNavigationMs: Math.round(performance.now()),
@@ -502,9 +431,8 @@
       }
       if (!state.room) {
         section.append(header, plot); get('scenes').append(section);
-        enableNavigation(plot);
         plot.dataset.component = component.id;
-        const view = {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0};
+        const view = {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0, needsInspection:true};
         plots.set(component.id, view);
         expand.onclick = () => expandScene(view, expand);
         observer.observe(plot);
@@ -664,8 +592,8 @@
     }
     const plot = document.createElement('div'); plot.className = 'plot'; plot.dataset.component = '__room__';
     section.append(header, plot); get('scenes').append(section);
-    const view = {section, plot, key: `${state.variant.id}:${state.roomSource}:${state.room}`, nearby: true}; plots.set('__room__', view);
-    enableNavigation(plot); expand.onclick = () => expandScene(view, expand); observer.observe(plot);
+    const view = {section, plot, key: `${state.variant.id}:${state.roomSource}:${state.room}`, nearby: true, needsInspection:true}; plots.set('__room__', view);
+    expand.onclick = () => expandScene(view, expand); observer.observe(plot);
     get('room-extra').disabled = parts.length < 2;
   }
   async function drawRoom(version, groups) {
@@ -685,9 +613,14 @@
     ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {visible: false, range: layout.ranges[i], autorange: false}; });
     view.rendering = true;
     try {
-      await Plotly.react(view.plot, layout.data, {scene, margin: {l: 0, r: 0, b: 0, t: 0}, uirevision: view.key, paper_bgcolor: '#fff'},
-        {displayModeBar: false, scrollZoom: true, responsive: true, plotGlPixelRatio: 1});
+      await renderer.react(view.plot, layout.data, {scene});
+      restoreAnnotations(view);
     } finally { view.rendering = false; if (view.disposed) release(view); }
+  }
+
+  function restoreAnnotations(view) {
+    if (!view.needsInspection) return;
+    renderer.restoreInspection(view.plot, inspections.get(view.key)); view.needsInspection = false;
   }
 
   function options(select, items, current) {
@@ -719,6 +652,7 @@
       const link = document.createElement('a'); link.href = result.href; link.textContent = 'Checks and scale corrections ↗'; recoveryStatus.append(link);
     }
     const visible = settings.multiview && !!state.variant.matcher;
+    document.querySelector('.connection-options').hidden = !visible && !semanticVariants.length;
     get('vlm-control').hidden = !visible;
     get('vlm-status').hidden = !visible;
     get('vlm').disabled = !reviewed;
@@ -758,23 +692,52 @@
   get('vlm').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, get('vlm').checked));
   get('recovery').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, true, get('recovery').checked));
   const params = new URLSearchParams(location.search);
-  if (params.has('model') || params.has('recovery')) state.variant = variantFor(params.get('matcher') || state.variant.matcher, params.get('model') || state.variant.model, params.get('recovery') === '1', params.get('recovery') === '1') || state.variant;
+  if (['matcher', 'model', 'vlm', 'recovery'].some(key => params.has(key))) {
+    const recovery = params.has('recovery') ? params.get('recovery') === '1' : state.variant.recovery;
+    const vlm = params.has('vlm') ? params.get('vlm') === '1' : params.has('recovery') ? recovery : state.variant.vlm;
+    state.variant = variantFor(params.get('matcher') || state.variant.matcher, params.get('model') || state.variant.model, vlm, vlm && recovery) || state.variant;
+  }
   updateControls();
   get('all').onclick = () => { state.selected = new Set(state.room ? roomNames() : state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
   get('none').onclick = () => { state.selected.clear(); draw(); };
-  for (const button of get('detail').querySelectorAll('button')) button.onclick = () => {
-    state.limit = Number(button.dataset.limit);
-    for (const other of get('detail').querySelectorAll('button')) other.setAttribute('aria-pressed', other === button);
-    draw();
+  get('detail').onchange = () => { state.limit = Number(get('detail').value); draw(); };
+  for (const id of ['point-size', 'cut-height', 'section-center', 'section-width', 'section-azimuth', 'section-tilt']) {
+    get(id).oninput = () => { if (get(id).validity.valid) { tools.updateControlLabels(); scheduleDraw(); } };
+  }
+  for (const id of ['cutaway', 'section', 'section-axis', 'section-guide']) get(id).onchange = () => { tools.updateControlLabels(); draw(); };
+  get('projection').onchange = draw;
+  get('measure-units').onchange = () => renderer.refreshMeasurements();
+  get('benchmark').onclick = async () => {
+    const button = get('benchmark'); button.disabled = true;
+    const output = get('benchmark-result'); output.textContent = 'Measuring rotation… Keep this view visible.';
+    try {
+      const view = [...plots.values()].find(v => v.plot.data && v.nearby);
+      const result = await renderer.benchmark(view?.plot);
+      result.detail = state.limit || 'full'; result.variant = state.variant.id;
+      result.geometryBytesRequested = loadedBytes;
+      output.textContent = JSON.stringify(result, null, 2);
+    } catch (error) { output.textContent = error.message; }
+    finally { button.disabled = false; }
   };
   for (const button of get('representation').querySelectorAll('button')) button.onclick = () => {
     state.mode = button.dataset.mode;
     for (const other of get('representation').querySelectorAll('button')) other.setAttribute('aria-pressed', other === button);
     draw();
   };
-  for (const id of ['colour', 'cameras', 'level', 'paths']) get(id).onchange = draw;
-  get('reset').onclick = () => { for (const view of plots.values()) if (view.plot.data) Plotly.relayout(view.plot, {'scene.camera': state.room ? roomCamera : defaultCamera}); };
-  get('top').onclick = () => { for (const view of plots.values()) if (view.plot.data) Plotly.relayout(view.plot, {'scene.camera': {eye: {x: 0, y: 0, z: 2.3}, up: {x: 0, y: 1, z: 0}, center: {x: 0, y: 0, z: 0}}}); };
+  for (const id of ['colour', 'cameras', 'level', 'paths', 'axes']) get(id).onchange = draw;
+  get('reset').onclick = () => { for (const view of plots.values()) if (view.plot.data) renderer.relayout(view.plot, {'scene.camera': state.room ? roomCamera : defaultCamera}); };
+  for (const button of document.querySelectorAll('[data-orient]')) button.onclick = () => {
+    for (const view of plots.values()) if (view.plot.data) renderer.orient(view.plot, button.dataset.orient);
+  };
+  get('measure').onchange = () => { renderer.setMeasuring(); tools.updateControlLabels(); };
+  get('clear-measure').onclick = () => renderer.clearMeasurements();
+  document.addEventListener('planrec-camera-open', event => {
+    const sources = state.variant.sources.filter(source => source.photo);
+    const index = sources.findIndex(source => source.id === event.detail?.id);
+    if (index < 0) return;
+    const items = sources.map(source => ({src: source.photo, caption: source.name, href: source.href}));
+    photoViewer.open(items, index, event.target.querySelector('canvas'));
+  });
   get('rooms').onchange = () => selectRoom(get('rooms').checked ? get('room-choice').value : null);
   get('room-choice').onchange = () => selectRoom(get('room-choice').value);
   get('room-source').onchange = () => selectRoomSource(get('room-source').value);
@@ -783,5 +746,57 @@
   const requestedSource = semanticVariants.find(v => v.semantics.rooms.some(r => r.id === requestedRoom));
   if (requestedSource) { state.roomSource = requestedSource.id; state.room = requestedRoom; }
   else if (settings.semantics && requestedRoom === 'unassigned' && settings.semantics.unassigned.length) state.room = requestedRoom;
-  state.selected = new Set(state.room ? roomNames() : state.variant.initial); updateRoomControls(); build();
-})();
+  if (params.has('detail')) {
+    const value = params.get('detail') === 'full' ? 0 : Number(params.get('detail'));
+    if ([0, 1000, 2000, 5000, 10000, 25000, 100000, 250000].includes(value)) state.limit = value;
+  }
+  get('detail').value = String(state.limit);
+  get('navigation-help').textContent = 'Drag: orbit · Shift/right-drag: pan · Scroll/pinch: zoom · Double-click: focus · Camera: click/tap for photo · F: reset · T: top';
+  state.selected = new Set(state.room ? roomNames() : state.variant.initial);
+  if (params.get('photos') === 'all') state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id));
+  const sceneId = tools.sceneIdentity(settings);
+  function captureView() {
+    for (const view of plots.values()) if (view.plot.data) {
+      cameras.set(view.key, currentCamera(view.plot)); inspections.set(view.key, renderer.inspectionState(view.plot));
+    }
+    const keys = new Set([...plots.values()].map(v => v.key));
+    return {version:1, scene:sceneId, variant:state.variant.id, photos:[...state.selected], limit:state.limit,
+      mode:state.mode, room:state.room, roomSource:state.roomSource, controls:tools.readControls(),
+      cameras:Object.fromEntries([...cameras].filter(([key]) => keys.has(key))),
+      inspections:Object.fromEntries([...inspections].filter(([key]) => keys.has(key))),
+      expanded:expanded?.view.plot.dataset.component || null};
+  }
+  function applyView(saved) {
+    const variant = settings.variants.find(v => v.id === saved.variant);
+    if (!variant || saved.photos.some(id => !variant.sources.some(s => s.id === id))) throw new Error('Saved reconstruction or photos are no longer available.');
+    if (saved.room && !semanticVariants.some(v => v.id === saved.roomSource && (saved.room === 'unassigned' || v.semantics.rooms.some(r => r.id === saved.room)))) throw new Error('Saved room hypothesis is no longer available.');
+    ++state.version; collapseScene();
+    for (const view of plots.values()) { view.discardState = true; release(view); }
+    plots.clear(); cameras.clear(); inspections.clear();
+    state.variant = variant; state.selected = new Set(saved.photos); state.limit = saved.limit; state.mode = saved.mode;
+    state.room = saved.room || null; state.roomSource = saved.roomSource || 'pairwise';
+    tools.writeControls(saved.controls); get('measure').checked = false; tools.updateControlLabels();
+    if (settings.relativeScale) get('measure-units').value = 'm';
+    get('detail').value = String(state.limit);
+    for (const [key, value] of Object.entries(saved.cameras)) cameras.set(key, value);
+    for (const [key, value] of Object.entries(saved.inspections || {})) inspections.set(key, value);
+    updateControls(); updateRoomControls();
+  }
+  async function restoreView(saved) {
+    applyView(saved); build();
+    const deadline = performance.now() + 30000;
+    while (drawing || ![...plots.values()].some(v => v.plot.data)) {
+      if (!state.selected.size || !plots.size) return;
+      if (performance.now() > deadline) throw new Error('View settings restored, but geometry has not finished loading.');
+      await new Promise(requestAnimationFrame);
+    }
+    const view = saved.expanded && plots.get(saved.expanded);
+    if (view) expandScene(view, view.section.querySelector('.scene-expand'));
+  }
+  tools.setupPanels(); tools.updateControlLabels();
+  get('section-unit').textContent = coordinateUnit;
+  if (settings.relativeScale) { get('measure-units').disabled = true; get('measure-units').replaceChildren(new Option('Relative units','m')); }
+  const initialView = tools.setupBookmarks({scene:sceneId, capture:captureView, restore:restoreView});
+  if (initialView) await restoreView(initialView);
+  else { updateRoomControls(); build(); }
+})().catch(error => { document.getElementById('loading').textContent = 'Unable to start the 3D viewer. ' + error.message; });

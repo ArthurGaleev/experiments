@@ -38,6 +38,54 @@ dialog.scene-viewer{position:fixed;inset:0;width:100%;max-width:none;height:100%
  max-height:none;margin:0;padding:0;border:0;background:#fff;color:inherit;overflow:hidden}
 dialog.scene-viewer::backdrop{background:#f5f6f4}
 .scene-viewer .scene{display:flex;flex-direction:column;width:100%;height:100%;margin:0;border:0;border-radius:0}
-.scene-viewer .scene header{flex:none;max-height:40%;overflow:auto}
+.scene-viewer .scene header{flex:none;max-height:35%;overflow:auto;padding:8px 12px}
 .scene-viewer .scene .plot{flex:1;min-height:0;height:auto}
+.scene-viewer #detail-control,.scene-viewer #view-controls{margin:7px 0}
+.scene-viewer #view-controls{padding:7px 10px;gap:8px}
+.scene-viewer #render-diagnostics{flex:none;margin:0;padding:8px 14px;max-height:28%;overflow:auto;background:#fff}
 .room-controls{background:#fffaf0;border:1px solid #dbc590;border-radius:8px;padding:12px 16px;margin:12px 0}.room-controls p{font-size:13px;margin:6px 0}.room-controls select{max-width:100%}.room-controls details{margin-top:6px;padding:8px 0}.room-legend{display:flex;gap:8px;flex-wrap:wrap}.room-legend span{background:#fff7dd;border:1px solid #dfc68e;border-radius:5px;padding:5px 8px;font-size:12px}
+.plot{position:relative;overflow:hidden;background:#f8faf7}
+.plot canvas{display:block;width:100%;height:100%;touch-action:none;outline-offset:-3px}
+.cloud-readout{position:absolute;bottom:10px;left:12px;right:12px;pointer-events:none;font-size:12px;color:#365044;text-shadow:0 1px #fff}
+.cloud-readout:empty{display:none}
+.connection-options{margin:8px 0;padding:8px 0}.connection-options summary{font-weight:600}
+#point-size{width:88px}#point-size-value{min-width:34px;font-size:12px}
+#navigation-help{margin:6px 0;font-size:12px}#benchmark-result{white-space:pre-wrap;font-size:12px}
+#view-controls{padding:10px 12px;border:1px solid #dce3dc;background:#fff;border-radius:7px}
+#measure-status{flex-basis:100%;color:#854100}#clear-measure{font-size:13px}
+.ruler-distance,.camera-hint{position:absolute;pointer-events:none;padding:4px 8px;border:1px solid #be9965;border-radius:5px;background:#fffdf3;color:#783c0b;font-size:13px;font-weight:650;white-space:nowrap;box-shadow:0 1px 5px #0002}
+.ruler-distance{transform:translate(-50%,-50%)}
+.camera-hint{border-color:#6993bf;background:#f5faff;color:#164c84;font-size:12px;max-width:calc(100% - 16px);overflow:hidden;text-overflow:ellipsis}
+
+/* Fixed canvas framing only for the explicit comparison protocol. */
+.viewer-benchmark .scene-viewer .scene header{height:320px;min-height:320px;max-height:320px}
+
+/* Compact tools open over the scene, preserving canvas space. */
+#view-controls{position:relative;gap:6px;padding:7px 8px;z-index:30;align-items:center}
+#view-controls>button,#view-controls>label,#view-controls>details>summary{font-size:13px}
+#view-controls>label{margin:0}.measure-toggle{padding:5px 6px;border-radius:6px}.measure-toggle:has(:checked){background:#fff0df;color:#8d450e}
+.tool-panel{margin:0;padding:0}.tool-panel>summary{display:block;list-style:none;cursor:pointer;border:1px solid #ccd5cf;border-radius:5px;padding:7px 10px;background:#fff;white-space:nowrap}
+.tool-panel>summary::-webkit-details-marker{display:none}.tool-panel>summary::after{content:'⌄';margin-left:7px;color:#789082}
+.tool-panel[open]>summary{background:#e7f0e8;border-color:#739783}.tool-panel.active-tool>summary{box-shadow:inset 0 -2px #448368}
+.tool-content{position:absolute;left:0;top:calc(100% + 6px);width:350px;max-width:100%;max-height:min(65vh,530px);overflow:auto;padding:16px;background:#fff;border:1px solid #d6e1d8;border-radius:10px;box-shadow:0 8px 28px #163b2524;z-index:40;text-align:left}
+.tool-content h3{margin:0 0 12px;font-size:15px}.tool-content label{display:flex;gap:8px;align-items:center;margin:10px 0;font-size:13px}
+.tool-content input[type=number]{width:94px}.tool-content input[type=text],.tool-content select{min-width:0;max-width:100%;flex:1}
+.tool-content input[type=number],.tool-content input[type=text]{font:inherit;border:1px solid #ccd5cf;border-radius:5px;padding:7px;color:inherit}
+.tool-content input[type=range]{min-width:60px;flex:1;accent-color:#42765a}.tool-content output{min-width:36px;font-size:12px}
+.tool-content .muted{line-height:1.5;margin:10px 0}.view-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.view-presets button,.button-row button{font-size:13px}
+.button-row{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}#view-link{width:100%;font-size:11px}
+#measure-status{font-size:12px;color:#854100;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;line-height:1.6}
+.measurement-row{display:flex;gap:5px;margin:6px 0}.measurement-row>button:first-child{flex:1;text-align:left;font-size:13px}.measurement-row>button:last-child{font-size:20px;padding:2px 10px}
+.scene header{position:relative;z-index:5}.scene{overflow:visible}.scene-viewer .scene header{max-height:none;overflow:visible;padding:7px 12px;z-index:10}
+.scene-viewer .scene header>p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scene-viewer .scene header>.room-legend{max-height:32px;overflow:auto}
+#detail-control{gap:8px}#detail-control label,#detail-control select,#detail-control button{font-size:13px}#counts{font-size:12px}
+.scene-viewer #detail-control,.scene-viewer #view-controls{margin:5px 0}.scene-viewer #detail-control #counts{order:2}
+.scene-viewer #view-controls{padding:6px;gap:6px}.scene-viewer #render-diagnostics{font-size:12px;padding:6px 14px}
+.orientation-widget{position:absolute;right:12px;top:12px;width:80px;height:80px;border-radius:50%;background:#ffffffb8;border:1px solid #dae3da88;z-index:4}
+.orientation-widget button{position:absolute;width:25px;height:25px;border-radius:50%;padding:0;transform:translate(-50%,-50%);font-size:10px;font-weight:700;box-shadow:0 1px 3px #0001}
+.orientation-widget .axis-x{background:#fce8e2;color:#9f4832;border-color:#e9b2a5}.orientation-widget .axis-y{background:#e3f0e3;color:#397449;border-color:#adcbb2}.orientation-widget .axis-z{background:#e3edf8;color:#336795;border-color:#aec8e1}
+.ruler-distance{pointer-events:auto;cursor:pointer;font-size:12px;padding:4px 7px;z-index:6}.ruler-distance[aria-pressed=true]{background:#fff3dc;border-color:#b97836;color:#783c0b}
+.ruler-endpoint{position:absolute;transform:translate(-50%,-50%);border:2px solid #fff;background:#b9601f;color:#fff;border-radius:50%;width:25px;height:25px;padding:0;font-size:11px;font-weight:700;cursor:grab;touch-action:none;z-index:7;box-shadow:0 1px 5px #0003}
+.ruler-endpoint:hover{background:#94460f}.ruler-endpoint:active{cursor:grabbing}
+@media(max-width:560px){.scene-viewer .scene header{padding:6px 8px}.tool-content{width:100%;max-height:55dvh}.scene-viewer #detail-control{gap:5px}.scene-viewer #counts{flex-basis:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#measure-status{max-height:38px;white-space:normal}.orientation-widget{width:80px;height:80px;right:6px;top:6px}.scene-expand{height:32px;width:32px;font-size:20px}#view-controls>button,#view-controls>label,#view-controls>details>summary{font-size:12px;padding:6px 8px}#view-controls>label{padding:0 3px}#view-controls select{font-size:12px;padding:6px}#view-controls .tool-content select{font-size:13px}}
+@media(max-width:560px){#detail-control select{width:76px;padding:7px 5px}#detail-control label{font-size:12px}.scene-viewer #detail-control .segments button{padding:7px 9px}}
