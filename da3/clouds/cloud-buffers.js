@@ -5,6 +5,13 @@ export function measurementDistance(a, b) {
   return Math.hypot(...a.point.map((v, i) => v - b.point[i]));
 }
 
+// Offer only detail levels that can change the saved geometry being displayed.
+export function detailChoices(sources, requested) {
+  const maximum = Math.max(0, ...sources.map(source => source.available || 0));
+  const levels = [1000, 2000, 5000, 10000, 25000, 100000, 250000].filter(n => n < maximum);
+  return {maximum, levels, selected: requested && requested < maximum ? requested : 0};
+}
+
 export function segmentDistance2D(point, a, b) {
   const dx = b[0] - a[0], dy = b[1] - a[1], length = dx * dx + dy * dy;
   const t = length ? Math.max(0, Math.min(1, ((point[0] - a[0]) * dx + (point[1] - a[1]) * dy) / length)) : 0;

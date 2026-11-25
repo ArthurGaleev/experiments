@@ -4,9 +4,10 @@
   const settings = JSON.parse(document.getElementById('scene-data').textContent);
   const assetQuery = new URL(document.currentScript.src).search;
   const renderer = await import('./three-renderer.js' + assetQuery);
-  const {decodePoints, transformedBounds} = await import('./cloud-buffers.js' + assetQuery);
+  const {decodePoints, transformedBounds, detailChoices} = await import('./cloud-buffers.js' + assetQuery);
   const tools = await import('./viewer-tools.js' + assetQuery);
   const {setupAdjustments} = await import('./mobile-tools.js' + assetQuery);
+  const {comparisonCandidates, comparisonRanges, cameraAxes, identityPose} = await import('./cloud-comparison.js' + assetQuery);
   const coordinateUnit = settings.relativeScale ? 'rel. units' : 'm';
   const get = id => document.getElementById(id);
   const photoViewer = window.planrecPhotoViewer();
@@ -14,7 +15,8 @@
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}, fit: true};
   const roomCamera = {eye: {x: 0, y: -2.1, z: 1}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}, fit: true};
   const preferred = settings.variants.find(v => v.id === settings.defaultVariant) || settings.variants[0];
-  const state = {variant: preferred, selected: new Set(), limit: settings.defaultLimit ?? 100000, mode: 'points', version: 0, room: null, roomSource: 'pairwise'};
+  const state = {variant: preferred, selected: new Set(), limit: settings.defaultLimit ?? 100000, mode: 'points', version: 0, room: null, roomSource: 'pairwise', compare: false, compareModels: new Set(), comparePhoto: null};
+  let comparisonCamera = null;
   const semanticVariants = [{id: 'pairwise', label: 'Pairwise hypotheses', semantics: settings.semantics}, ...(settings.roomVariants || [])].filter(v => v.semantics);
   const sourceRooms = new Map();
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
@@ -369,6 +371,7 @@
     get('selection-status').textContent = text + '.';
     const shown = state.room && !get('room-extra').checked ? new Set(roomParts()[0]?.ids || []) : state.selected;
     const selected = state.variant.sources.filter(s => state.selected.has(s.id) && shown.has(s.id));
+    syncDetail(selected.length ? selected : state.variant.sources);
     const count = selected.reduce((n, s) => n + Math.min(state.limit || Infinity, s.available), 0);
     const patches = selected.reduce((n, s) => n + (s.planes?.count || 0), 0);
     const faces = selected.reduce((n, s) => n + (s.planes?.triangles || 0), 0);
@@ -387,6 +390,109 @@
     }
   }
 
+  function syncDetail(sources) {
+    const {maximum, levels, selected} = detailChoices(sources, state.limit);
+    const control = get('detail');
+    const options = levels.map(n => new Option(`${n / 1000}k`, String(n)));
+    options.push(new Option(`All saved (≤${maximum.toLocaleString('en')}/photo)`, '0'));
+    control.replaceChildren(...options); control.value = String(selected);
+    control.disabled = maximum === 0;
+    control.title = 'Only counts below the saved maximum are offered. All saved includes every point exported to this view; a report may use a display sample.';
+  }
+
+  function updateComparisonControls() {
+    const candidates = comparisonCandidates(settings, state.variant);
+    get('compare-toggle').hidden = candidates.length < 2;
+    if (candidates.length < 2) state.compare = false;
+    get('compare-toggle').setAttribute('aria-pressed', state.compare);
+    get('compare-toggle').textContent = state.compare ? 'Return to scene' : 'Compare models';
+    get('compare-controls').hidden = !state.compare;
+    if (!state.compare) return candidates;
+    state.compareModels = new Set([...state.compareModels].filter(id => candidates.some(c => c.id === id)));
+    if (!state.compareModels.size) {
+      const first = candidates.find(c => c.id === state.variant.id) || candidates[0];
+      state.compareModels = new Set([first, candidates.find(c => c.id !== first.id)].filter(Boolean).map(c => c.id));
+    }
+    const photos = new Map(candidates.flatMap(c => c.sources.map(s => [s.id, s])));
+    if (!photos.has(state.comparePhoto)) state.comparePhoto = [...state.selected].find(id => photos.has(id)) || photos.keys().next().value;
+    get('compare-photo').replaceChildren(...[...photos].map(([id, s]) => new Option(s.name, id)));
+    get('compare-photo').value = state.comparePhoto;
+    const photo = photos.get(state.comparePhoto);
+    get('compare-preview').hidden = !photo?.photo;
+    if (photo?.photo) get('compare-preview').src = photo.photo;
+    const choices = candidates.map(candidate => {
+      const label = document.createElement('label'), input = document.createElement('input');
+      input.type = 'checkbox'; input.value = candidate.id; input.checked = state.compareModels.has(candidate.id);
+      input.disabled = !input.checked && state.compareModels.size >= 4;
+      input.onchange = () => {
+        if (input.checked) state.compareModels.add(candidate.id); else state.compareModels.delete(candidate.id);
+        if (!state.compareModels.size) state.compareModels.add(candidate.id);
+        comparisonCamera = null; build();
+      };
+      label.append(input, document.createTextNode(candidate.label || candidate.model || candidate.id)); return label;
+    });
+    get('compare-models').replaceChildren(...choices);
+    return candidates;
+  }
+
+  function buildComparison(candidates) {
+    get('scenes').classList.add('comparison-grid');
+    for (const candidate of candidates.filter(c => state.compareModels.has(c.id))) {
+      const section = document.createElement('section'), header = document.createElement('header');
+      const heading = document.createElement('h2'), plot = document.createElement('div');
+      section.className = 'scene'; plot.className = 'plot';
+      heading.textContent = candidate.label || candidate.model || candidate.id; header.append(heading);
+      const source = candidate.sources.find(s => s.id === state.comparePhoto);
+      section.append(header, plot); get('scenes').append(section);
+      if (!source) { plot.className = 'scene-empty'; plot.textContent = 'This model has no saved prediction for this photo.'; continue; }
+      const view = {section, plot, source, candidate, key:`compare:${candidate.id}:${source.id}`, nearby:true, needsInspection:true};
+      plots.set(candidate.id, view);
+    }
+    get('representation').hidden = true;
+    get('detail').hidden = false; get('detail-control').firstElementChild.hidden = false;
+    get('plane-note').hidden = true;
+    get('level-label').hidden = true; get('paths-label').hidden = true;
+    get('navigation').value = 'inspect'; get('navigation').disabled = true;
+  }
+
+  async function drawComparison(version) {
+    const views = [...plots.values()], sources = views.map(v => v.source), ranges = comparisonRanges(sources);
+    syncDetail(sources);
+    const count = sources.reduce((sum, source) => sum + Math.min(state.limit || Infinity, source.available), 0);
+    get('counts').textContent = `${count.toLocaleString('en')} points across ${sources.length} model panels`;
+    get('selection-status').textContent = `One photo · ${sources.length} saved models · linked cameras · common scale; no scene poses applied.`;
+    for (const view of views) {
+      const source = view.source, limit = state.limit || Infinity;
+      const chunks = await Promise.all(source.chunks.filter(c => c.start < limit).map(loadDense));
+      if (version !== state.version) return;
+      const cloud = {id:source.id, chunks, pose:identityPose, rotation:cameraAxes, limit,
+        frame:view.key, unitLabel:coordinateUnit};
+      const data = [{type:'scatter3d', mode:'markers', name:view.candidate.label, cloud,
+        bounds:transformedBounds(source.bounds, identityPose, cameraAxes),
+        marker:{color:get('colour').value === 'rgb' ? 'photo' : palette[views.indexOf(view) % palette.length]}}];
+      if (get('cameras').checked) {
+        const component = {rotation:cameraAxes, fixed:cameraAxes};
+        data.push(cameraTrace({...source, pose:identityPose}, component, {membership:new Map()}));
+      }
+      const scene = {camera:comparisonCamera || defaultCamera, aspectmode:'manual', aspectratio:fixedAspect(ranges),
+        unitLabel:coordinateUnit, linkedCamera:true, canExplore:false};
+      ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title:{text:['camera x','camera z','camera −y'][i] + ', ' + coordinateUnit},range:ranges[i],autorange:false}; });
+      view.rendering = true;
+      try { await renderer.react(view.plot, data, {scene}); restoreAnnotations(view); }
+      finally { view.rendering = false; if (view.disposed) release(view); }
+      if (version !== state.version) return;
+      comparisonCamera ||= currentCamera(view.plot);
+    }
+  }
+
+  document.addEventListener('planrec-camera-change', event => {
+    if (!state.compare) return;
+    comparisonCamera = event.detail;
+    for (const view of plots.values()) if (view.plot !== event.target && view.plot.data) {
+      renderer.relayout(view.plot, {'scene.camera': comparisonCamera});
+    }
+  });
+
   async function draw() {
     ++state.version; // Invalidate an in-flight draw as soon as controls change.
     if (drawing) return;
@@ -403,11 +509,12 @@
   async function drawVersion(version) {
     const started = performance.now();
     const groups = selectionGroups();
-    updateSelection(groups);
+    if (!state.compare) updateSelection(groups);
     get('top').title = get('level').checked && state.variant.components.every(c => c.levelled) ? 'Along estimated vertical' : 'Along displayed Z (camera −y); physical vertical unknown';
     get('loading').textContent = 'Preparing 3D…';
     try {
-      if (state.room) await drawRoom(version, groups);
+      if (state.compare) await drawComparison(version);
+      else if (state.room) await drawRoom(version, groups);
       else for (const component of state.variant.components) {
         const view = plots.get(component.id), visible = component.ids.some(id => state.selected.has(id));
         view.section.hidden = !visible;
@@ -431,7 +538,7 @@
         }
         if (version !== state.version) return;
       }
-      if (version === state.version) get('loading').textContent = state.selected.size ? '' : 'Select photos below.';
+      if (version === state.version) get('loading').textContent = state.compare || state.selected.size ? '' : 'Select photos below.';
       if (version === state.version) get('render-stats').textContent = `Ready in ${Math.round(performance.now() - started)} ms · ${(loadedBytes / 1e6).toFixed(1)} MB requested this session`;
       if (version === state.version) syncNavigation();
       if (diagnostics && version === state.version) console.info('planrec-viewer ' + JSON.stringify({
@@ -451,6 +558,13 @@
     observer?.disconnect();
     for (const view of plots.values()) release(view);
     plots.clear(); geometry.clear(); get('scenes').replaceChildren(); get('photos').replaceChildren();
+    const candidates = updateComparisonControls();
+    get('scenes').classList.remove('comparison-grid');
+    get('photo-controls').hidden = get('photos').hidden = state.compare;
+    const selectionLink = document.querySelector('a[href="#photo-controls"]');
+    if (selectionLink) selectionLink.parentElement.hidden = state.compare;
+    get('navigation').disabled = false;
+    if (state.compare) { buildComparison(candidates); draw(); return; }
     observer = new IntersectionObserver(entries => {
       let changed = false;
       for (const entry of entries) {
@@ -754,6 +868,8 @@
   }
   get('matcher').onchange = () => chooseVariant(variantFor(get('matcher').value, state.variant.model, state.variant.vlm, state.variant.recovery));
   get('model').onchange = () => chooseVariant(variantFor(state.variant.matcher, get('model').value, state.variant.vlm, state.variant.recovery));
+  get('compare-toggle').onclick = () => { state.compare = !state.compare; comparisonCamera = null; build(); };
+  get('compare-photo').onchange = () => { state.comparePhoto = get('compare-photo').value; comparisonCamera = null; build(); };
   get('vlm').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, get('vlm').checked));
   get('recovery').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, true, get('recovery').checked));
   const params = new URLSearchParams(location.search);
@@ -801,8 +917,9 @@
     draw();
   };
   for (const id of ['colour', 'cameras', 'level', 'paths', 'axes']) get(id).onchange = draw;
-  get('reset').onclick = () => { for (const view of plots.values()) if (view.plot.data) { if (view.plot.dataset.navigation === 'explore') renderer.navigate(view.plot,'inspect'); renderer.relayout(view.plot, {'scene.camera': state.room ? roomCamera : defaultCamera}); } syncNavigation(); };
+  get('reset').onclick = () => { if (state.compare) { comparisonCamera = null; draw(); return; } for (const view of plots.values()) if (view.plot.data) { if (view.plot.dataset.navigation === 'explore') renderer.navigate(view.plot,'inspect'); renderer.relayout(view.plot, {'scene.camera': state.room ? roomCamera : defaultCamera}); } syncNavigation(); };
   for (const button of document.querySelectorAll('[data-orient]')) button.onclick = () => {
+    if (state.compare) { const view = activeView(); if (view) renderer.orient(view.plot, button.dataset.orient); return; }
     for (const view of plots.values()) if (view.plot.data) renderer.orient(view.plot, button.dataset.orient);
   };
   get('measure').onchange = () => { if (get('measure').checked) { const view = activeView(); if (view?.plot.dataset.navigation === 'explore') renderer.navigate(view.plot,'inspect'); } renderer.setMeasuring(); tools.updateControlLabels(); };
@@ -830,6 +947,10 @@
   get('navigation-help').textContent = 'Inspect: drag to orbit; Shift/right-drag to pan; scroll/pinch to zoom; double-click to focus. Explore: drag to look; WASD/arrows or the movement pad to move; scroll to move forward/back. F: fit; T: top.';
   state.selected = new Set(state.room ? roomNames() : state.variant.initial);
   if (params.get('photos') === 'all') state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id));
+  if (params.get('compare') === '1') {
+    state.compare = true; state.comparePhoto = params.get('photo');
+    state.compareModels = new Set((params.get('models') || '').split(',').filter(Boolean).slice(0, 4));
+  }
   const sceneId = tools.sceneIdentity(settings);
   function captureView() {
     for (const view of plots.values()) if (view.plot.data) {
@@ -838,6 +959,7 @@
     const keys = new Set([...plots.values()].map(v => v.key));
     return {version:1, scene:sceneId, variant:state.variant.id, photos:[...state.selected], limit:state.limit,
       mode:state.mode, room:state.room, roomSource:state.roomSource, controls:tools.readControls(),
+      comparison:state.compare ? {photo:state.comparePhoto, models:[...state.compareModels], camera:comparisonCamera} : null,
       cameras:Object.fromEntries([...cameras].filter(([key]) => keys.has(key))),
       inspections:Object.fromEntries([...inspections].filter(([key]) => keys.has(key))),
       expanded:expanded?.view.plot.dataset.component || null};
@@ -851,6 +973,9 @@
     plots.clear(); cameras.clear(); inspections.clear();
     state.variant = variant; state.selected = new Set(saved.photos); state.limit = saved.limit; state.mode = saved.mode;
     state.room = saved.room || null; state.roomSource = saved.roomSource || 'pairwise';
+    state.compare = !!saved.comparison; state.comparePhoto = saved.comparison?.photo || null;
+    state.compareModels = new Set((saved.comparison?.models || []).slice(0, 4));
+    comparisonCamera = saved.comparison?.camera || null;
     tools.writeControls(saved.controls); get('measure').checked = false; tools.updateControlLabels();
     if (settings.relativeScale) get('measure-units').value = 'm';
     get('detail').value = String(state.limit);

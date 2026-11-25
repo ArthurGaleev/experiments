@@ -96,6 +96,10 @@ export function validateBookmark(value, scene) {
     || !Array.isArray(value.photos) || value.photos.length > 2000 || !value.photos.every(id => typeof id === 'string')) throw new Error('This saved view belongs to different or unavailable scene data.');
   if (!['points', 'planes', 'both'].includes(value.mode) || !detailLevels.includes(value.limit)) throw new Error('Unsupported saved view settings.');
   if (!value.cameras || Object.keys(value.cameras).length > 1000 || !Object.values(value.cameras).every(camera => validCamera(camera))) throw new Error('Invalid saved camera.');
+  if (value.comparison && (typeof value.comparison.photo !== 'string'
+    || !Array.isArray(value.comparison.models) || value.comparison.models.length > 4
+    || !value.comparison.models.every(id => typeof id === 'string')
+    || value.comparison.camera && !validCamera(value.comparison.camera))) throw new Error('Invalid saved model comparison.');
   return {...value, controls: cleanControls(value.controls)};
 }
 export function encodeView(value) {

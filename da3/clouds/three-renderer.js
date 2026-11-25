@@ -72,6 +72,7 @@ function projection(view) {
   view.plot.dataset.projection = orthographic ? 'orthographic' : 'perspective';
 }
 function setCamera(view, state) {
+  view.settingCamera = true;
   const {camera, controls, center, unit} = view;
   const aspect = Math.max(1, view.plot.clientWidth) / Math.max(1, view.plot.clientHeight);
   camera.up.set(0, 0, 1);
@@ -93,6 +94,7 @@ function setCamera(view, state) {
   view.explore.restore(state);
   camera.updateProjectionMatrix(); camera.lookAt(controls.target);
   if (!view.explore.enabled) controls.update();
+  view.settingCamera = false;
   view.plot.dataset.navigation = view.explore.enabled ? 'explore' : 'inspect'; view.invalidate();
 }
 export function navigate(plot, mode, photoId) {
@@ -133,6 +135,7 @@ export function orient(plot, name, animate = true) {
     const t = duration ? Math.min(1, (now - began) / duration) : 1, eased = t * t * (3 - 2 * t);
     const vector = start.clone().normalize().applyQuaternion(new THREE.Quaternion().slerp(rotation, eased)).multiplyScalar(distance / view.unit);
     setCamera(view, {...saved, eye:Object.fromEntries(axes.map(a => [a, saved.center[a] + vector[a]]))});
+    announceCamera(view);
     if (t < 1) view.transition = requestAnimationFrame(step);
   };
   step(began);
@@ -232,6 +235,12 @@ function pick(view, event, pointsOnly = false) {
   }
 }
 
+function announceCamera(view) {
+  if (view.linkedCamera && !view.settingCamera) {
+    view.plot.dispatchEvent(new CustomEvent('planrec-camera-change', {bubbles: true, detail: cameraState(view)}));
+  }
+}
+
 function makeView(plot) {
   const renderer = new THREE.WebGLRenderer({antialias: false, alpha: false, powerPreference: 'high-performance'});
   renderer.localClippingEnabled = true;
@@ -260,7 +269,7 @@ function makeView(plot) {
   };
   view.explore = attachExplore(view);
   view.measurements = attachRulers(view, pick); orientationWidget(view);
-  controls.addEventListener('change', view.invalidate);
+  controls.addEventListener('change', () => { view.invalidate(); announceCamera(view); });
   controls.addEventListener('start', () => { cancelAnimationFrame(view.transition); cameraHover(view, null); });
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault(); readout.textContent = 'Graphics context lost. Reload this page to restore the view.';
@@ -380,6 +389,8 @@ export async function react(plot, data, layout) {
   const view = views.get(plot) || makeView(plot);
   cameraHover(view, null); projection(view);
   const config = layout.scene, ranges = axes.map(a => config[a + 'axis'].range);
+  view.linkedCamera = !!config.linkedCamera;
+  view.controls.enableDamping = !view.linkedCamera;
   const spans = ranges.map(r => Math.max(.1, r[1] - r[0]));
   view.spans = spans;
   view.center.set(...ranges.map(r => (r[0] + r[1]) / 2));

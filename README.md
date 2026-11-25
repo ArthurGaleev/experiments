@@ -25,7 +25,8 @@ These are tool experiments, not a completed apartment plan.
 The viewer retains all photos, including singletons. Selecting photos changes
 visibility while preserving established poses. Originally disconnected components
 have unknown relative placement. The Three.js viewer loads detail on demand,
-starting at 100k points per photo; Full displays all saved valid points. The
+starting at 100k points per photo. Detail offers only useful counts, followed by
+**All saved** with the saved maximum shown. The
 all-photo view defaults to RoMa + MoGe-2 with VLM review and supported recovery.
 Matcher/depth, VLM review, supported recovery and semantic room
 source select separately saved results; the browser runs no inference.
@@ -35,6 +36,12 @@ The G1 gallery compares individual photo geometry before alignment and starts at
 it does not claim those clouds share an apartment coordinate frame. The local
 development report uses the same viewer and adds dataset/scene navigation and
 reference comparisons. Only the bundled Blueprint sample is published here.
+
+**Compare models** shows one photo across up to four models in a linked grid.
+Rotation, pan and zoom move together; common bounds preserve scale differences.
+This compares each photo's local depth/shape before scene placement. Return to
+scene restores the existing reconstruction. G1's All saved means its 25k display
+sample; the older depth/alignment galleries retain full saved point clouds.
 
 In Inspect, drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, and double-click a
 surface to focus. The compact toolbar provides View, Display, Section, Rulers

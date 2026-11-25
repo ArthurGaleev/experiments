@@ -1,18 +1,25 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Single-photo geometry · b012</title><link rel="stylesheet" href="cloud-view.css?v=2239a462444f">
-<link rel="stylesheet" href="photo-view.css?v=2239a462444f">
-<script src="photo-view.js?v=2239a462444f" defer></script>
-<script src="room-view.js?v=2239a462444f" defer></script>
-<script src="cloud-view.js?v=2239a462444f" defer></script>
+<title>Single-photo geometry · b012</title><link rel="stylesheet" href="cloud-view.css?v=81e22d0a5580">
+<link rel="stylesheet" href="photo-view.css?v=81e22d0a5580">
+<script src="photo-view.js?v=81e22d0a5580" defer></script>
+<script src="room-view.js?v=81e22d0a5580" defer></script>
+<script src="cloud-view.js?v=81e22d0a5580" defer></script>
 </head><body><main>
 <a href="../photo-b012.html">← Report</a><h1>Single-photo geometry · b012</h1>
 <p id="scene-note">Each photo has an independent camera frame. No alignment or completed room is implied. This viewer uses up to 25,000 display points per photo; full numeric outputs stay in the local NPZ files.</p>
 <div class="toolbar">
   <label id="matcher-control" hidden>Matching <select id="matcher"></select></label>
   <label id="model-control" hidden><span id="model-label">Model</span> <select id="model"></select></label>
+  <button id="compare-toggle" hidden aria-pressed="false">Compare models</button>
 </div>
+<section id="compare-controls" hidden>
+  <div class="toolbar"><label>Compare photo <select id="compare-photo"></select></label></div>
+  <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
+  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked; every panel uses the same scale and photo camera frame. This compares local shape and depth, before scene placement.</p>
+  <img id="compare-preview" alt="Source photo for model comparison" hidden>
+</section>
 <details class="connection-options"><summary>Connections and room hypotheses</summary>
 <div class="toolbar">
   <label id="vlm-control" hidden><input type="checkbox" id="vlm" aria-describedby="vlm-status"> VLM: review connections</label>

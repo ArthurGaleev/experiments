@@ -1,18 +1,25 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>img_2 ↔ img_4_b · RoMa × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=30d75cb8e686">
-<link rel="stylesheet" href="photo-view.css?v=30d75cb8e686">
-<script src="photo-view.js?v=30d75cb8e686" defer></script>
-<script src="room-view.js?v=30d75cb8e686" defer></script>
-<script src="cloud-view.js?v=30d75cb8e686" defer></script>
+<title>img_2 ↔ img_4_b · RoMa × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=81e22d0a5580">
+<link rel="stylesheet" href="photo-view.css?v=81e22d0a5580">
+<script src="photo-view.js?v=81e22d0a5580" defer></script>
+<script src="room-view.js?v=81e22d0a5580" defer></script>
+<script src="cloud-view.js?v=81e22d0a5580" defer></script>
 </head><body><main>
 <a href="../pair-0210.html">← Report</a><h1>img_2 ↔ img_4_b · RoMa × MoGe-2</h1>
 <p id="scene-note">rejected; validation matches: 341/402; median 3D residual: 0.065 m; gravity: 1.3°; reason: insufficient spatial coverage. Rejected hypotheses are not used to assemble groups.</p>
 <div class="toolbar">
   <label id="matcher-control" hidden>Matching <select id="matcher"></select></label>
   <label id="model-control" hidden><span id="model-label">Model</span> <select id="model"></select></label>
+  <button id="compare-toggle" hidden aria-pressed="false">Compare models</button>
 </div>
+<section id="compare-controls" hidden>
+  <div class="toolbar"><label>Compare photo <select id="compare-photo"></select></label></div>
+  <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
+  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked; every panel uses the same scale and photo camera frame. This compares local shape and depth, before scene placement.</p>
+  <img id="compare-preview" alt="Source photo for model comparison" hidden>
+</section>
 <details class="connection-options"><summary>Connections and room hypotheses</summary>
 <div class="toolbar">
   <label id="vlm-control" hidden><input type="checkbox" id="vlm" aria-describedby="vlm-status"> VLM: review connections</label>

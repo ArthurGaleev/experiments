@@ -13,6 +13,11 @@ button[aria-pressed=true]{background:#e0eee3;border-color:#31704d;color:#194d32}
 #selection-status{font-size:14px}#selection-status.split{border-left:3px solid #b68328;padding-left:10px}
 #loading:empty{display:none}.scene{background:#fff;border:1px solid #e0e6e0;border-radius:7px;margin:12px 0;overflow:hidden}
 .scene header{padding:10px 14px;border-bottom:1px solid #edf0eb}.scene header p{margin:4px 0 0;font-size:13px}
+.comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.comparison-grid .scene{margin:0}.comparison-grid .plot{height:400px;min-height:280px}
+.comparison-models{display:flex;flex-wrap:wrap;gap:8px 18px}.comparison-models label{display:flex;align-items:center;gap:6px;font-size:13px}
+#compare-preview{max-width:160px;max-height:100px;object-fit:contain;border-radius:5px}
+@media(max-width:600px){.comparison-grid{grid-template-columns:1fr}.comparison-grid .plot{height:360px}}
 .scene-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .scene-expand{font-size:24px;line-height:1;width:40px;height:40px;padding:0;flex:none}
 .plot{height:58vh;min-height:330px;touch-action:none}.scene.secondary .plot{height:340px;min-height:260px}
