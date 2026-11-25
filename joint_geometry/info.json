@@ -1,15 +1,17 @@
 {
-  "created": "2026-11-25T09:46:34",
-  "selection": "All E1 screen cases; repeat three E1 orders on common_4, bridge_3 and redundant_3. Blueprint all photos in both orders. Identical orders deduplicated with aliases.",
-  "units": "relative, one scale per inference set",
+  "created": "2026-11-25T10:08:13",
+  "selection": "Exact frozen source RGB, cases and orders; predicted conditions only.",
+  "units": "learned approximate metric",
   "status": "complete",
-  "title": "JOINT_GEOMETRY",
-  "run": "20261125-094634-249999",
+  "title": "Joint reconstruction and predicted conditions",
+  "run": "20261125-100813-508586",
   "params": {
     "configurations": [
-      "da3large11_camera_first",
-      "da3large11_ray_first",
-      "da3large11_camera_saddle"
+      "pi3x_rgb",
+      "pi3x_predicted_k",
+      "pi3x_predicted_k_depth",
+      "pi3x_predicted_k_pose",
+      "pi3x_predicted_k_depth_pose"
     ],
     "seed": 20261125
   },
