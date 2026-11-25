@@ -47,12 +47,19 @@ export function attachRulers(view, pick) {
     view, records: [], draft: null, editing: null,
     item(hit) {
       return {point: hit.point.toArray(), frame: hit.object.userData.frame,
-        name: hit.photoLabel, kind: hit.object.isMesh ? 'patch surface' : 'point', unit: hit.object.userData.unit};
+        name: hit.photoLabel, kind: hit.object.userData.surfels ? 'surfel sample'
+          : hit.object.isMesh ? 'patch surface' : 'point', unit: hit.object.userData.unit};
     },
     hit(event) {
-      const pointsOnly = [...view.objects.values()].some(({object}) => object.isPoints);
+      const hasSurfels = [...view.objects.values()].some(({object}) => object.userData.surfels);
+      const pointsOnly = hasSurfels || [...view.objects.values()].some(({object}) => object.isPoints);
       const result = pick(view, event, pointsOnly);
-      if (!result) { status(pointsOnly ? 'No visible point here. Click a cloud point.' : 'No visible patch here. Click inside a visible patch.'); return null; }
+      if (!result) {
+        status(hasSurfels ? 'No visible sample here. Click a point or surfel.'
+          : pointsOnly ? 'No visible point here. Click a cloud point.'
+            : 'No visible patch here. Click inside a visible patch.');
+        return null;
+      }
       return this.item(result);
     },
     create(picks, id = crypto.randomUUID()) {

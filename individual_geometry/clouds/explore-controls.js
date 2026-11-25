@@ -62,10 +62,14 @@ export function attachExplore(view) {
   window.addEventListener('blur', stop, {signal});
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); }, {signal});
   view.plot.addEventListener('focusout', event => { if (!view.plot.contains(event.relatedTarget)) stop(); }, {signal});
-  canvas.addEventListener('pointerdown', event => {
-    if (!enabled || event.button !== 0 || looking) return;
-    event.preventDefault(); canvas.focus({preventScroll:true}); canvas.setPointerCapture(event.pointerId);
+  function lookFrom(event) {
+    if (!enabled) return;
+    canvas.focus({preventScroll:true}); canvas.setPointerCapture(event.pointerId);
     looking = {id:event.pointerId,x:event.clientX,y:event.clientY};
+  }
+  canvas.addEventListener('pointerdown', event => {
+    if (!enabled || event.button !== 0 || looking || event.isPrimary === false) return;
+    event.preventDefault(); lookFrom(event);
   }, {signal});
   canvas.addEventListener('pointermove', event => {
     if (!enabled || !looking || looking.id !== event.pointerId) return;
@@ -117,6 +121,7 @@ export function attachExplore(view) {
       canvas.focus({preventScroll:true});
     },
     gesture(delta) { if (enabled) move([1,0,0],clamp(delta,-1,1) * speed()); },
+    lookFrom,
     stop,
     dispose() { stop(); abort.abort(); root.remove(); },
   };

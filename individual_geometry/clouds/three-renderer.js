@@ -36,6 +36,53 @@ const pointFragment = `
     gl_FragColor = vec4(usePhoto ? pointColor : solidColor, 1.0);
   }`;
 
+// One shared quad per buffer, instanced once per saved sample. Its circular
+// footprint lies in the saved normal's tangent plane and has ordinary depth.
+// Unknown normals explicitly use the old screen-space circular point glyph.
+const surfelVertex = `
+  attribute vec3 instanceCenter;
+  attribute vec3 surfelNormal;
+  attribute vec3 color;
+  attribute float instanceVisible;
+  uniform float surfelRadius;
+  uniform float pointSize;
+  uniform vec2 viewportSize;
+  varying vec2 discCoord;
+  varying vec3 pointColor;
+  varying vec3 worldPosition;
+  void main() {
+    discCoord = position.xy;
+    pointColor = color;
+    worldPosition = (modelMatrix * vec4(instanceCenter, 1.0)).xyz;
+    if (instanceVisible < 0.5) { gl_Position = vec4(0.0, 0.0, 2.0, 1.0); return; }
+    float length2 = dot(surfelNormal, surfelNormal);
+    if (length2 > 1e-12 && length2 < 1e12) {
+      vec3 n = normalize(surfelNormal);
+      vec3 tangent = normalize(cross(abs(n.z) < 0.9 ? vec3(0.0, 0.0, 1.0) : vec3(0.0, 1.0, 0.0), n));
+      vec3 local = instanceCenter + surfelRadius * (position.x * tangent + position.y * cross(n, tangent));
+      worldPosition = (modelMatrix * vec4(local, 1.0)).xyz;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(local, 1.0);
+    } else {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(instanceCenter, 1.0);
+      gl_Position.xy += position.xy * pointSize / viewportSize * gl_Position.w;
+    }
+  }`;
+const surfelFragment = `
+  varying vec2 discCoord;
+  varying vec3 pointColor;
+  varying vec3 worldPosition;
+  uniform int clipCount;
+  uniform vec4 clipPlanes[3];
+  uniform bool usePhoto;
+  uniform vec3 solidColor;
+  void main() {
+    if (dot(discCoord, discCoord) > 1.0) discard;
+    for (int i = 0; i < 3; i++) {
+      if (i < clipCount && dot(clipPlanes[i], vec4(worldPosition, 1.0)) < 0.0) discard;
+    }
+    gl_FragColor = vec4(usePhoto ? pointColor : solidColor, 1.0);
+  }`;
+
 function disposeObject(object) {
   object.traverse(child => {
     child.geometry?.dispose();
@@ -88,6 +135,7 @@ export function rebaseCamera(plot, ranges, rotation) {
 function projection(view) {
   const orthographic = document.getElementById('projection').value === 'orthographic';
   if (!!view.camera.isOrthographicCamera === orthographic) return;
+  view.zoom?.cancel();
   view.rotation?.cancel();
   const old = view.camera;
   const half = old.isOrthographicCamera ? old.top / old.zoom : old.position.distanceTo(view.controls.target) * Math.tan(Math.PI / 8);
@@ -101,6 +149,7 @@ function projection(view) {
   view.plot.dataset.projection = orthographic ? 'orthographic' : 'perspective';
 }
 function setCamera(view, state) {
+  view.zoom?.cancel();
   view.rotation?.cancel();
   view.settingCamera = true;
   const {camera, controls, center, unit} = view;
@@ -133,6 +182,7 @@ function setCamera(view, state) {
 export function navigate(plot, mode, photoId) {
   const view = views.get(plot); if (!view) return false;
   if (mode === 'explore' && !view.canExplore) return false;
+  view.zoom.cancel();
   view.rotation.cancel();
   cancelAnimationFrame(view.transition);
   if (mode === 'inspect') {
@@ -284,10 +334,10 @@ function pick(view, event, pointsOnly = false) {
   ray.params.Points.threshold = view.camera.isOrthographicCamera ? view.camera.top / view.camera.zoom * .02 : view.camera.position.distanceTo(view.controls.target) * .008;
   ray.setFromCamera(new THREE.Vector2((event.clientX - rect.left) / rect.width * 2 - 1,
     1 - (event.clientY - rect.top) / rect.height * 2), view.camera);
-  const objects = [...view.objects.values()].map(o => o.object).filter(o => o.isPoints || (!pointsOnly && o.isMesh));
+  const objects = [...view.objects.values()].map(o => o.object).filter(o => o.isPoints || o.userData.surfels || (!pointsOnly && o.isMesh));
   for (const hit of ray.intersectObjects(objects, true)) {
     const point = pickedPoint(hit);
-    if (!insideClip(point.toArray(), view.clipPlanes)) continue;
+    if (!insideClip((hit.surfacePoint || point).toArray(), view.clipPlanes)) continue;
     const {photo, support, supportNames} = hit.object.userData;
     const names = support && supportingPhotoNames(support[hit.index], supportNames);
     const photoLabel = names?.length ? `Fused surfel · ${names.join(', ')}` : photo;
@@ -299,6 +349,130 @@ function announceCamera(view) {
   if (view.linkedCamera && !view.settingCamera) {
     view.plot.dispatchEvent(new CustomEvent('planrec-camera-change', {bubbles: true, detail: cameraState(view)}));
   }
+}
+
+export function attachZoomGestures(view) {
+  const canvas = view.renderer.domElement, controls = view.controls;
+  const abort = new AbortController(), signal = abort.signal, contacts = new Map();
+  let gesture = null, saved = null;
+  const consume = event => { event.preventDefault(); event.stopImmediatePropagation(); };
+  const contact = event => ({pointerId:event.pointerId, pointerType:'touch',
+    clientX:event.clientX, clientY:event.clientY,
+    pageX:event.pageX ?? event.clientX, pageY:event.pageY ?? event.clientY});
+  const span = () => {
+    const [a,b] = contacts.values();
+    return b ? Math.hypot(a.pageX - b.pageX,a.pageY - b.pageY) : 0;
+  };
+  function bounds() {
+    // Match apparent scale limits across projection modes, even after a fit or
+    // a saved view has changed the orthographic camera's base frustum.
+    if (view.camera.isOrthographicCamera) {
+      const halfAngle = Math.tan(Math.PI / 8);
+      controls.minZoom = view.camera.top / (controls.maxDistance * halfAngle);
+      controls.maxZoom = view.camera.top / (Math.max(controls.minDistance,1e-12) * halfAngle);
+    }
+  }
+  function clearMotion() { syncOrbitFrame(controls,true); }
+  function resetOrbit() {
+    if (!controls._pointers.length) return;
+    // A lost-capture/blur event may arrive after the pointer is no longer
+    // active. Disconnect clears tracking without releasing an invalid ID.
+    controls.disconnect(); controls.connect(canvas);
+  }
+  function restore() {
+    if (saved) Object.assign(controls,saved);
+    saved = null; clearMotion();
+  }
+  canvas.addEventListener('pointerdown',event => {
+    if (event.pointerType !== 'touch' || contacts.has(event.pointerId)) return;
+    contacts.set(event.pointerId,contact(event)); gesture = null;
+    if (!saved) saved = {zoomToCursor:controls.zoomToCursor,enableDamping:controls.enableDamping};
+    // Pointer events are the only touchscreen zoom owner. Cursor zoom uses
+    // changing screen positions; centered dolly + pan keeps the pivot stable.
+    controls.zoomToCursor = false; controls.enableDamping = false;
+    clearMotion(); bounds();
+    if (contacts.size > 1 && view.explore.enabled) view.explore.stop();
+  },{capture:true,signal});
+  canvas.ownerDocument.addEventListener('pointermove',event => {
+    if (!contacts.has(event.pointerId)) return;
+    const previous = span(); contacts.set(event.pointerId,contact(event));
+    if (view.explore.enabled && contacts.size > 1) {
+      if (contacts.size === 2 && previous >= 4 && span() >= 4) view.explore.gesture(Math.log(span() / previous));
+      consume(event); return;
+    }
+    if (contacts.size !== 2 || !controls.enabled) return;
+    const distance = span();
+    if (previous >= 4 && distance >= 4) return;
+    // Coincident contacts have no useful zoom ratio. Keep pan responsive and
+    // rebase the pinch, rather than dividing by zero or jumping to a limit.
+    controls._trackPointer(event); controls._dollyStart.set(0,distance);
+    if (controls.enablePan) controls._handleTouchMovePan(event);
+    controls.update(); consume(event);
+  },{capture:true,passive:false,signal});
+  const end = event => {
+    if (!contacts.delete(event.pointerId)) return;
+    clearMotion();
+    if (!contacts.size) restore();
+    // OrbitControls already rebases two-to-one. Its three-to-two and lost
+    // capture paths need the same reset, after the normal event has finished.
+    queueMicrotask(() => {
+      if (view.disposed) return;
+      if (controls._pointers.includes(event.pointerId)) {
+        if (controls._pointers.length === 1) resetOrbit();
+        else controls._onPointerUp(event);
+      }
+      if (contacts.size === 2 && controls.enabled && controls._pointers.length === 2) {
+        controls._onTouchStart(contacts.values().next().value);
+      }
+      if (contacts.size === 1 && view.explore.enabled) view.explore.lookFrom(contacts.values().next().value);
+    });
+  };
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) {
+    canvas.ownerDocument.addEventListener(type,end,{capture:true,signal});
+  }
+  const cancel = () => {
+    const ids = [...contacts.keys()]; contacts.clear(); gesture = null;
+    const orbitIds = [...controls._pointers]; resetOrbit();
+    for (const id of orbitIds) if (canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
+    for (const id of ids) if (canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
+    restore();
+  };
+  window.addEventListener('blur',cancel,{signal});
+  document.addEventListener('visibilitychange',() => { if (document.hidden) cancel(); },{signal});
+  view.plot.addEventListener('focusout',event => { if (!view.plot.contains(event.relatedTarget)) cancel(); },{signal});
+  // Safari may emit these in addition to touch pointer events. Consume them
+  // before ring handlers; only a trackpad session without touch contacts uses
+  // the native adapter. Wheel-only trackpads keep the normal OrbitControls path.
+  canvas.addEventListener('gesturestart',event => {
+    consume(event); gesture = null;
+    if (contacts.size || !Number.isFinite(event.scale) || event.scale <= 0) return;
+    view.rotation?.cancel(); clearMotion(); bounds();
+    gesture = {scale:event.scale, eye:view.camera.position.clone(), target:controls.target.clone(), zoom:view.camera.zoom};
+  },{capture:true,passive:false,signal});
+  canvas.addEventListener('gesturechange',event => {
+    consume(event);
+    if (!gesture || contacts.size || !Number.isFinite(event.scale) || event.scale <= 0) return;
+    if (view.explore.enabled) {
+      view.explore.gesture(Math.log(event.scale / gesture.scale)); gesture.scale = event.scale; return;
+    }
+    clearMotion(); bounds();
+    const factor = gesture.scale / event.scale;
+    if (view.camera.isOrthographicCamera) {
+      view.camera.zoom = Math.max(controls.minZoom,Math.min(controls.maxZoom,gesture.zoom / factor));
+      view.camera.updateProjectionMatrix();
+    } else {
+      const offset = gesture.eye.clone().sub(gesture.target);
+      const distance = Math.max(controls.minDistance,Math.min(controls.maxDistance,offset.length() * factor));
+      view.camera.position.copy(offset.setLength(distance)).add(gesture.target);
+    }
+    controls.update(); view.invalidate();
+  },{capture:true,passive:false,signal});
+  canvas.addEventListener('gestureend',event => { consume(event); gesture = null; },{capture:true,passive:false,signal});
+  canvas.addEventListener('wheel',event => {
+    bounds();
+    if (gesture || contacts.size) consume(event);
+  },{capture:true,passive:false,signal});
+  return {cancel, dispose() { cancel(); abort.abort(); }};
 }
 
 function makeView(plot) {
@@ -327,6 +501,7 @@ function makeView(plot) {
     });
   };
   view.explore = attachExplore(view);
+  view.zoom = attachZoomGestures(view);
   view.measurements = attachRulers(view, pick); orientationWidget(view);
   view.rotation = attachInspectRings(view,{
     photoHit:event => cameraHit(view,event),
@@ -357,24 +532,9 @@ function makeView(plot) {
     if (event.key.toLowerCase() === 'f') document.getElementById('reset').click();
     if (event.key.toLowerCase() === 't') document.getElementById('top').click();
   });
-  // WebKit trackpads can send native pinch events rather than wheel events.
-  let gesture;
-  const stop = event => { event.preventDefault(); event.stopImmediatePropagation(); };
-  canvas.addEventListener('gesturestart', event => {
-    stop(event); gesture = {scale: event.scale || 1, eye: view.camera.position.clone(), target: controls.target.clone(), zoom: view.camera.zoom};
-  }, {passive: false});
-  canvas.addEventListener('gesturechange', event => {
-    if (!gesture) return;
-    stop(event);
-    const factor = Math.max(.05, Math.min(20, gesture.scale / event.scale));
-    if (view.explore.enabled) { view.explore.gesture(Math.log((event.scale || 1) / gesture.scale)); gesture.scale = event.scale || 1; return; }
-    if (view.camera.isOrthographicCamera) { view.camera.zoom = gesture.zoom / factor; view.camera.updateProjectionMatrix(); }
-    else view.camera.position.copy(gesture.eye).sub(gesture.target).multiplyScalar(factor).add(gesture.target);
-    controls.update(); view.invalidate();
-  }, {passive: false});
-  canvas.addEventListener('gestureend', event => { stop(event); gesture = null; }, {passive: false});
   view.resize = () => {
     if (view.disposed) return;
+    view.zoom.cancel();
     view.rotation.cancel();
     const width = Math.max(1, plot.clientWidth), height = Math.max(1, plot.clientHeight);
     renderer.setSize(width, height, false);
@@ -399,6 +559,103 @@ function pointObject(chunk, cloud, trace) {
   object.userData.support = chunk.support;
   object.userData.supportNames = cloud.supportNames;
   return object;
+}
+
+function surfelRaycast(raycaster, hits) {
+  const {chunk, normalValid} = this.userData, uniforms = this.material.uniforms;
+  const inverse = new THREE.Matrix4().copy(this.matrixWorld).invert();
+  const ray = raycaster.ray.clone().applyMatrix4(inverse), radius = uniforms.surfelRadius.value;
+  const visible = this.geometry.attributes.instanceVisible.array;
+  const center = new THREE.Vector3(), intersection = new THREE.Vector3(), world = new THREE.Vector3();
+  const camera = raycaster.camera, viewNormal = new THREE.Vector3(), normal = new THREE.Vector3();
+  const scale = new THREE.Vector3().setFromMatrixColumn(this.matrixWorld, 0).length();
+  if (camera) {
+    camera.getWorldDirection(viewNormal);
+    // A world camera-facing plane normal becomes A^T n in the local frame.
+    viewNormal.applyMatrix3(new THREE.Matrix3().setFromMatrix4(this.matrixWorld).transpose()).normalize();
+  }
+  for (let i = 0; i < this.geometry.instanceCount; i++) {
+    if (!visible[i]) continue;
+    center.fromArray(chunk.xyz, i * 3);
+    let footprint = radius;
+    if (normalValid[i]) normal.fromArray(chunk.normals, i * 3);
+    else if (camera) {
+      normal.copy(viewNormal);
+      world.copy(center).applyMatrix4(this.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
+      footprint = uniforms.pointSize.value / uniforms.viewportSize.value.y
+        * (camera.isPerspectiveCamera ? -world.z : 1) / camera.projectionMatrix.elements[5] / scale;
+      if (footprint <= 0) continue;
+    } else continue;
+    const denominator = normal.dot(ray.direction);
+    if (Math.abs(denominator) < 1e-10) continue;
+    const distance = normal.dot(intersection.copy(center).sub(ray.origin)) / denominator;
+    if (distance < 0) continue;
+    ray.at(distance, intersection);
+    if (intersection.distanceToSquared(center) > footprint * footprint) continue;
+    world.copy(intersection).applyMatrix4(this.matrixWorld);
+    const worldDistance = raycaster.ray.origin.distanceTo(world);
+    if (worldDistance < raycaster.near || worldDistance > raycaster.far) continue;
+    if (camera) {
+      const projected = world.clone().project(camera);
+      if (projected.z < -1 || projected.z > 1) continue;
+    }
+    hits.push({distance: worldDistance, index: i, object: this,
+      surfacePoint: world.clone(), point: center.clone().applyMatrix4(this.matrixWorld)});
+  }
+}
+
+export function surfelObject(chunk, cloud, trace) {
+  const geometry = new THREE.InstancedBufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute([-1,-1,0, 1,-1,0, 1,1,0, -1,1,0], 3));
+  geometry.setIndex([0, 1, 2, 0, 2, 3]);
+  geometry.setAttribute('instanceCenter', new THREE.InstancedBufferAttribute(chunk.xyz, 3));
+  geometry.setAttribute('surfelNormal', new THREE.InstancedBufferAttribute(chunk.normals, 3));
+  geometry.setAttribute('color', new THREE.InstancedBufferAttribute(chunk.rgb, 3, true));
+  geometry.setAttribute('instanceVisible', new THREE.InstancedBufferAttribute(new Uint8Array(chunk.count).fill(1), 1).setUsage(THREE.DynamicDrawUsage));
+  geometry.instanceCount = chunk.count;
+  const bounds = new THREE.Box3().setFromBufferAttribute(geometry.attributes.instanceCenter);
+  geometry.boundingSphere = bounds.getBoundingSphere(new THREE.Sphere());
+  const centerRadius = geometry.boundingSphere.radius;
+  geometry.boundingSphere.radius += cloud.surfelRadius;
+  const material = new THREE.ShaderMaterial({vertexShader: surfelVertex, fragmentShader: surfelFragment,
+    side: THREE.DoubleSide, uniforms: {surfelRadius: {value: cloud.surfelRadius}, pointSize: {value: 2},
+      viewportSize: {value: new THREE.Vector2(1, 1)}, clipCount: {value: 0},
+      clipPlanes: {value: [new THREE.Vector4(), new THREE.Vector4(), new THREE.Vector4()]},
+      usePhoto: {value: true}, solidColor: {value: new THREE.Vector3(1, 1, 1)}}});
+  const object = new THREE.Mesh(geometry, material); object.matrixAutoUpdate = false;
+  const normalValid = new Uint8Array(chunk.count);
+  for (let i = 0; i < chunk.count; i++) {
+    const start = i * 3, n = chunk.normals;
+    const length2 = n[start] ** 2 + n[start + 1] ** 2 + n[start + 2] ** 2;
+    normalValid[i] = length2 > 1e-12 && length2 < 1e12;
+  }
+  object.userData = {surfels: true, chunk, normalValid, centerRadius, photo: trace.name,
+    support: chunk.support, supportNames: cloud.supportNames};
+  object.raycast = surfelRaycast;
+  object.onBeforeRender = renderer => renderer.getDrawingBufferSize(material.uniforms.viewportSize.value);
+  return object;
+}
+
+export function setSurfelSize(object, baseRadius, multiplier) {
+  const radius = baseRadius * multiplier;
+  object.material.uniforms.surfelRadius.value = radius;
+  object.geometry.boundingSphere.radius = object.userData.centerRadius + radius;
+}
+
+export function selectSurfels(object, selectionMask, count) {
+  const key = `${selectionMask}:${count}`, data = object.userData;
+  if (data.selectionKey !== key) {
+    const visible = object.geometry.attributes.instanceVisible;
+    let selected = 0, oriented = 0;
+    for (let i = 0; i < count; i++) {
+      visible.array[i] = !data.support || Boolean(data.support[i] & selectionMask);
+      selected += visible.array[i]; oriented += visible.array[i] * data.normalValid[i];
+    }
+    visible.needsUpdate = true;
+    data.visibleCount = selected; data.orientedCount = oriented; data.selectionKey = key;
+  }
+  object.geometry.instanceCount = count;
+  return data.visibleCount;
 }
 
 function ordinaryObject(trace, unit) {
@@ -456,7 +713,7 @@ export async function react(plot, data, layout) {
   view.camera.near = Math.max(.0001, view.unit * .0001);
   view.camera.far = Math.max(...spans) * 1000; view.camera.updateProjectionMatrix();
   view.controls.minDistance = view.unit * .0005; view.controls.maxDistance = view.unit * 100;
-  const clip = clipping(ranges, readControls()); view.clipPlanes = clip.planes;
+  const controls = readControls(), clip = clipping(ranges, controls); view.clipPlanes = clip.planes;
   const clippingPlanes = clip.planes.map(p => new THREE.Plane(new THREE.Vector3(...p.slice(0, 3)), p[3]));
   if (view.sectionGuide) { view.scene.remove(view.sectionGuide); disposeObject(view.sectionGuide); view.sectionGuide = null; }
   if (clip.section) {
@@ -470,23 +727,29 @@ export async function react(plot, data, layout) {
       view.sectionGuide = guide; view.scene.add(guide);
     }
   } else view.readout.textContent = '';
-  const active = new Set(); view.points = 0;
+  const active = new Set(); view.points = 0; view.surfels = 0; view.surfelFallback = 0;
   for (let index = 0; index < data.length; index++) {
     const trace = data[index];
     if (trace.cloud) {
       const cloud = trace.cloud, matrix = cloudMatrix(cloud.pose, cloud.rotation, cloud.offset);
       for (const chunk of cloud.chunks) {
-        const key = `${cloud.id}:${chunk.key}`; active.add(key);
+        const oriented = chunk.normals && Number.isFinite(cloud.surfelRadius) && cloud.surfelRadius > 0;
+        const key = `${cloud.id}:${chunk.key}:${oriented ? 'surfels' : 'points'}`; active.add(key);
         let entry = view.objects.get(key);
         if (!entry) {
-          entry = {object: pointObject(chunk, cloud, trace)};
+          entry = {object: oriented ? surfelObject(chunk, cloud, trace) : pointObject(chunk, cloud, trace)};
           view.objects.set(key, entry); view.content.add(entry.object);
         }
         const object = entry.object;
         object.userData.frame = cloud.frame; object.userData.unit = cloud.unitLabel;
         object.matrix.fromArray(matrix); object.matrixWorldNeedsUpdate = true;
         let count = Math.max(0, Math.min(chunk.count, cloud.limit - chunk.start));
-        if (chunk.support) {
+        if (oriented) {
+          setSurfelSize(object, cloud.surfelRadius, controls['surfel-size']);
+          count = selectSurfels(object, cloud.selectionMask, count);
+          view.surfels += object.userData.orientedCount;
+          view.surfelFallback += count - object.userData.orientedCount;
+        } else if (chunk.support) {
           const selectionKey = `${cloud.selectionMask}:${count}`;
           if (object.userData.selectionKey !== selectionKey) {
             const indices = supportedIndices(chunk.support, cloud.selectionMask, count);
@@ -498,8 +761,9 @@ export async function react(plot, data, layout) {
           }
           count = object.userData.visibleCount;
         }
-        object.geometry.setDrawRange(0, count); view.points += count;
-        object.material.uniforms.pointSize.value = Number(document.getElementById('point-size')?.value || 2);
+        if (!oriented) object.geometry.setDrawRange(0, count);
+        view.points += count;
+        object.material.uniforms.pointSize.value = controls['point-size'];
         object.material.uniforms.clipCount.value = clip.planes.length;
         clip.planes.forEach((p, i) => object.material.uniforms.clipPlanes.value[i].set(...p));
         const color = trace.marker.color;
@@ -553,6 +817,8 @@ export async function react(plot, data, layout) {
   setCamera(view, config.camera);
   renderView(view);
   plot.dataset.renderedPoints = String(view.points);
+  plot.dataset.renderedSurfels = String(view.surfels);
+  plot.dataset.surfelFallbackPoints = String(view.surfelFallback);
   plot.dataset.drawCalls = String(view.renderer.info.render.calls);
   plot.dataset.camera = JSON.stringify(cameraState(view));
 }
@@ -564,7 +830,7 @@ export function relayout(plot, changes) { const view = views.get(plot); if (view
 export function purge(plot) {
   const view = views.get(plot); if (!view) return;
   view.disposed = true; cancelAnimationFrame(view.frame); cancelAnimationFrame(view.transition);
-  view.observer.disconnect(); view.rotation.dispose(); view.controls.dispose();
+  view.observer.disconnect(); view.zoom.dispose(); view.rotation.dispose(); view.controls.dispose();
   view.explore.dispose();
   disposeObject(view.content); disposeObject(view.labels); view.objects.clear();
   view.measurements.dispose(); if (view.sectionGuide) disposeObject(view.sectionGuide);

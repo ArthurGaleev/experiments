@@ -17,7 +17,7 @@
     "diagnostic_relative_tolerance": 0.02
   },
   "status": "complete",
-  "title": "Points, surfels and TSDF mesh",
+  "title": "Points, surfels and mesh",
   "run": "20261125-230500-blueprint",
   "params": {
     "configuration": "metricanything_roma_graph_recovered",

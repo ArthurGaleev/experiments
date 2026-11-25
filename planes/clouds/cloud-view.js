@@ -22,6 +22,7 @@
   const sourceRooms = new Map();
   const assets = new Map(), geometry = new Map(), plots = new Map(), cameras = new Map(), selections = new Map();
   const roomSelections = new Map(), inspections = new Map();
+  const surfaceSelections = new Map();
   let observer, expanded, scheduled = false, drawing = false;
   const sceneDialog = document.createElement('dialog');
   sceneDialog.className = 'scene-viewer';
@@ -315,6 +316,7 @@
         const rotation = get('level').checked ? component.rotation : component.fixed;
         const cloud = {id: source.id, chunks, pose: source.pose, rotation, limit, frame: component.id,
           unitLabel: coordinateUnit, selectionMask: selectedSupport(source, state.selected),
+          surfelRadius: source.surfelRadius,
           supportNames: source.supportIds?.map(id => photoNames.get(id) || id)};
         list.push({type: 'scatter3d', mode: 'markers', name: source.name, cloud,
           bounds: transformedBounds(source.bounds, source.pose, rotation),
@@ -517,7 +519,7 @@
       const chunks = await Promise.all(source.chunks.filter(c => c.start < limit).map(loadDense));
       if (version !== state.version) return;
       const cloud = {id:source.id, chunks, pose:identityPose, rotation:cameraAxes, limit,
-        frame:view.key, unitLabel:comparisonUnit};
+        frame:view.key, unitLabel:comparisonUnit, surfelRadius:source.surfelRadius};
       const data = [{type:'scatter3d', mode:'markers', name:view.candidate.label, cloud,
         bounds:transformedBounds(source.bounds, identityPose, cameraAxes),
         marker:{color:get('colour').value === 'rgb' ? 'photo' : palette[views.indexOf(view) % palette.length]}}];
@@ -627,9 +629,7 @@
     sourceColourOption.title = shared ? 'Colours follow the photo used to store each surfel. Pick the surfel to inspect its supporting photos.' : '';
     get('colour').disabled = !!state.variant.wholeComponentMesh;
     if (state.variant.wholeComponentMesh) get('colour').value = 'rgb';
-    get('point-size').disabled = !!state.variant.wholeComponentMesh;
-    get('point-size-control').hidden = !!state.variant.wholeComponentMesh;
-    for (const button of document.querySelectorAll('[data-adjust="point-size"]')) button.hidden = !!state.variant.wholeComponentMesh;
+    updateSizeControls(candidates);
     get('photo-selection-hint').textContent = state.variant.wholeComponentMesh
       ? 'Select whole groups; photo thumbnails show the saved inputs.'
       : 'Select a thumbnail to show or hide it';
@@ -923,8 +923,28 @@
     control.append(document.createTextNode(label + ' '));
     const select = document.createElement('select'); select.id = field; control.append(select);
     select.setAttribute('aria-label', label);
-    get(field === 'surface' ? 'view-controls' : field === 'inputGrouping' ? 'input-group-options' : 'model-options').append(control);
-    select.onchange = () => chooseVariant(selectField(settings.variants, state.variant, field, select.value),field === 'surface');
+    if (field === 'surface') get('detail').parentElement.after(control);
+    else get(field === 'inputGrouping' ? 'input-group-options' : 'model-options').append(control);
+    select.onchange = () => chooseField(field, select.value);
+  }
+  function updateSizeControls(candidates) {
+    const sources = state.compare ? candidates.filter(v => state.compareModels.has(v.id))
+      .flatMap(v => v.sources.filter(s => s.id === state.comparePhoto)) : state.variant.sources;
+    const available = state.variant.wholeComponentMesh ? [] : sources.filter(s => s.available > 0);
+    const oriented = source => Number.isFinite(source.surfelRadius) && source.surfelRadius > 0;
+    for (const [id, visible] of [['point-size', available.some(s => !oriented(s))], ['surfel-size', available.some(oriented)]]) {
+      get(id).disabled = !visible;
+      get(id + '-control').hidden = !visible;
+      for (const button of document.querySelectorAll(`[data-adjust="${id}"]`)) button.hidden = !visible;
+    }
+    tools.updateControlLabels();
+  }
+  function chooseField(field, value) {
+    const surface = field === 'surface';
+    if (surface) surfaceSelections.set(facets(state.variant).surface?.id, {variant:state.variant.id, mode:state.mode});
+    const remembered = surface && surfaceSelections.get(value);
+    const next = selectField(settings.variants, state.variant, field, value, remembered?.variant);
+    chooseVariant(next, surface, remembered && next?.id === remembered.variant ? remembered.mode : undefined);
   }
   function updateControls() {
     for (const [field] of fields) {
@@ -1039,7 +1059,7 @@
     return {...match,view,focus:document.activeElement,
       rotation:view.surfaceRotation ? multiplyRotations(match.rotation,view.surfaceRotation) : match.rotation};
   }
-  function chooseVariant(next, surface = false) {
+  function chooseVariant(next, surface = false, mode) {
     if (!next || next.id === state.variant.id) return;
     let transition = surface ? surfaceTransition(next) : null;
     if (state.room) roomSelections.set(`${state.variant.id}:${state.roomSource}:${state.room}`, new Set(state.selected));
@@ -1049,6 +1069,7 @@
     const selection = state.room ? roomSelections.get(`${next.id}:${state.roomSource}:${state.room}`) || state.selected
       : selections.get(next.id) || (sameInputs ? state.selected : next.initial);
     state.variant = next;
+    if (mode) state.mode = mode;
     state.selected = new Set([...selection].filter(id => next.sources.some(source => source.id === id)));
     if (transition && !transition.component.ids.some(id => state.selected.has(id))) transition = null;
     updateControls(); build(transition);
@@ -1078,7 +1099,7 @@
   get('all').onclick = () => { state.selected = new Set(state.room ? roomNames() : state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
   get('none').onclick = () => { state.selected.clear(); draw(); };
   get('detail').onchange = () => { state.limit = Number(get('detail').value); draw(); };
-  for (const id of ['point-size', 'cut-height', 'section-center', 'section-width', 'section-azimuth', 'section-tilt']) {
+  for (const id of ['point-size', 'surfel-size', 'cut-height', 'section-center', 'section-width', 'section-azimuth', 'section-tilt']) {
     get(id).oninput = () => { if (get(id).validity.valid) { tools.updateControlLabels(); scheduleDraw(); } };
   }
   for (const id of ['cutaway', 'section', 'section-axis', 'section-guide']) get(id).onchange = () => { tools.updateControlLabels(); draw(); };

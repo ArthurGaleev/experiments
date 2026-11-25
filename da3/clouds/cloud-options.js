@@ -109,11 +109,16 @@ export function fieldOptions(variants, current, field) {
   return new Map(candidates.map(v => facets(v)[field]).filter(Boolean).map(c => [c.id, c.label]));
 }
 
-export function selectField(variants, current, field, value) {
+export function selectField(variants, current, field, value, preferredId = null) {
   const index = fields.findIndex(([key]) => key === field), earlier = fields.slice(0, index);
   const candidates = variants.filter(v => facets(v)[field]?.id === value
     && surfaceState(v, current, field)
     && earlier.every(([key]) => equal(v, current, key)));
+  // A return from Surfels or Mesh should recover the exact Points result the
+  // user left, including its optional planar overlays. Memory cannot bypass
+  // the saved configuration, input grouping or connection-state checks above.
+  const remembered = field === 'surface' && candidates.find(v => v.id === preferredId);
+  if (remembered) return remembered;
   const score = v => fields.slice(index + 1).reduce((sum, [key], i) => sum + (facets(current)[key] && equal(v, current, key) ? 2 ** (12 - i) : 0), 0)
     + (!!v.vlm === !!current.vlm ? 2 : 0) + (!!v.recovery === !!current.recovery ? 1 : 0)
     + (field === 'surface' && current.controls?.method?.id === 'fusion' && v.controls?.method?.id === 'fusion' ? 2 ** 20 : 0);

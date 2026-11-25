@@ -54,10 +54,11 @@ dialog.scene-viewer::backdrop{background:#f5f6f4}
 .room-controls{background:#fffaf0;border:1px solid #dbc590;border-radius:8px;padding:12px 16px;margin:12px 0}.room-controls p{font-size:13px;margin:6px 0}.room-controls select{max-width:100%}.room-controls details{margin-top:6px;padding:8px 0}.room-legend{display:flex;gap:8px;flex-wrap:wrap}.room-legend span{background:#fff7dd;border:1px solid #dfc68e;border-radius:5px;padding:5px 8px;font-size:12px}
 .plot{position:relative;overflow:hidden;background:#f8faf7}
 .plot canvas{display:block;width:100%;height:100%;touch-action:none;outline-offset:-3px}
+.plot,.plot *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .cloud-readout{position:absolute;bottom:10px;left:12px;right:12px;pointer-events:none;font-size:12px;color:#365044;text-shadow:0 1px #fff}
 .cloud-readout:empty{display:none}
 .connection-options{margin:8px 0;padding:8px 0}.connection-options summary{font-weight:600}
-#point-size{width:88px}#point-size-value{min-width:34px;font-size:12px}
+#point-size,#surfel-size{width:88px}#point-size-value,#surfel-size-value{min-width:34px;font-size:12px}
 #navigation-help{margin:6px 0;font-size:12px}#benchmark-result{white-space:pre-wrap;font-size:12px}
 #view-controls{padding:10px 12px;border:1px solid #dce3dc;background:#fff;border-radius:7px}
 #measure-status{flex-basis:100%;color:#854100}#clear-measure{font-size:13px}
@@ -85,7 +86,10 @@ dialog.scene-viewer::backdrop{background:#f5f6f4}
 .measurement-row{display:flex;gap:5px;margin:6px 0}.measurement-row>button:first-child{flex:1;text-align:left;font-size:13px}.measurement-row>button:last-child{font-size:20px;padding:2px 10px}
 .scene header{position:relative;z-index:5}.scene{overflow:visible}.scene-viewer .scene header{max-height:none;overflow:visible;padding:7px 12px;z-index:10}
 .scene-viewer .scene header>p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scene-viewer .scene header>.room-legend{max-height:32px;overflow:auto}
-#detail-control{gap:8px}#detail-control label,#detail-control select,#detail-control button{font-size:13px}#counts{font-size:12px}
+#detail-control{gap:8px 14px}#detail-control label,#detail-control select,#detail-control button{font-size:13px}#counts{font-size:12px}
+#detail-control>label{margin:0;white-space:nowrap}#representation{display:flex;align-items:center;gap:7px;font-size:13px;white-space:nowrap}
+#representation .segments{flex-wrap:nowrap}#representation button{line-height:1.5}
+#surface-control{white-space:nowrap}#detail-control #surface{width:auto;max-width:180px}
 .scene-viewer #detail-control,.scene-viewer #view-controls{margin:5px 0}.scene-viewer #detail-control #counts{order:2}
 .scene-viewer #view-controls{padding:6px;gap:6px}
 .orientation-widget{position:absolute;right:12px;top:12px;width:80px;height:80px;border-radius:50%;background:#ffffffb8;border:1px solid #dae3da88;z-index:4}

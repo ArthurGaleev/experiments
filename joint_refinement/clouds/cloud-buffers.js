@@ -24,15 +24,21 @@ export function segmentDistance2D(point, a, b) {
 export function decodePoints(buffer, expectedCount) {
   if (buffer.byteLength < 8) throw new Error('Truncated point buffer');
   const header = new DataView(buffer);
-  const format = header.getUint32(0, true), shared = format === 0x32435250;
-  if (format !== 0x31435250 && !shared) throw new Error('Unknown point format');
+  const format = header.getUint32(0, true), oriented = format === 0x33435250;
+  if (format !== 0x31435250 && format !== 0x32435250 && !oriented) throw new Error('Unknown point format');
+  if (oriented && buffer.byteLength < 12) throw new Error('Truncated surfel header');
+  const flags = oriented ? header.getUint32(8, true) : 0;
+  if (flags & ~1) throw new Error('Unknown surfel flags');
+  const shared = oriented ? Boolean(flags & 1) : format === 0x32435250;
   const count = header.getUint32(4, true);
-  if (count !== expectedCount || buffer.byteLength !== 8 + count * (shared ? 19 : 15)) {
+  const start = oriented ? 12 : 8, supportStart = start + count * (oriented ? 24 : 12);
+  if (count !== expectedCount || buffer.byteLength !== start + count * (15 + (shared ? 4 : 0) + (oriented ? 12 : 0))) {
     throw new Error('Point count or buffer length mismatch');
   }
-  return {xyz: new Float32Array(buffer, 8, count * 3),
-    rgb: new Uint8Array(buffer, 8 + count * (shared ? 16 : 12), count * 3), count,
-    ...(shared ? {support: new Uint32Array(buffer, 8 + count * 12, count)} : {})};
+  return {xyz: new Float32Array(buffer, start, count * 3),
+    rgb: new Uint8Array(buffer, supportStart + (shared ? count * 4 : 0), count * 3), count,
+    ...(oriented ? {normals: new Float32Array(buffer, start + count * 12, count * 3)} : {}),
+    ...(shared ? {support: new Uint32Array(buffer, supportStart, count)} : {})};
 }
 
 export function selectedSupport(source, selected) {

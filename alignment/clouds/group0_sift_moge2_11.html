@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All photos · part 12 · 1 photos · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=0c1060096185">
-<link rel="stylesheet" href="photo-view.css?v=0c1060096185">
-<script src="photo-view.js?v=0c1060096185" defer></script>
-<script src="room-view.js?v=0c1060096185" defer></script>
-<script src="cloud-view.js?v=0c1060096185" defer></script>
+<title>All photos · part 12 · 1 photos · SIFT × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=add34b82d5c9">
+<link rel="stylesheet" href="photo-view.css?v=add34b82d5c9">
+<script src="photo-view.js?v=add34b82d5c9" defer></script>
+<script src="room-view.js?v=add34b82d5c9" defer></script>
+<script src="cloud-view.js?v=add34b82d5c9" defer></script>
 </head><body><main>
 <a href="../component-group0_sift_moge2_11.html">← Report</a><h1>All photos · part 12 · 1 photos · SIFT × MoGe-2</h1>
 <p id="scene-note">Root camera: img_3. Accepted rigid transforms, maximum support spanning tree. Cycle closures: 0, warnings: 0. Loops are not optimized. A component is not a recognized room; hidden surfaces remain unreconstructed.</p>
@@ -46,13 +46,15 @@
     <option value="5000">5k</option><option value="10000">10k</option>
     <option value="25000">25k</option><option value="100000" selected>100k</option>
     <option value="250000">250k</option><option value="0" title="Every saved valid point">Full</option>
-  </select></label><span id="counts" class="muted" aria-live="polite"></span>
-  <div class="segments" id="representation" role="group" aria-label="Planar patch overlay">
-    <span class="muted">Planar patches</span>
-    <button data-mode="points" aria-pressed="true">Points</button>
-    <button data-mode="planes" aria-pressed="false">Patches</button>
-    <button data-mode="both" aria-pressed="false" title="Planar patches and original points">Both</button>
+  </select></label>
+  <div id="representation" role="group" aria-label="Planar patch overlay">
+    <span>Planar patches</span><div class="segments">
+      <button data-mode="points" aria-pressed="true">Points</button>
+      <button data-mode="planes" aria-pressed="false">Patches</button>
+      <button data-mode="both" aria-pressed="false" title="Planar patches and original points">Both</button>
+    </div>
   </div>
+  <span id="counts" class="muted" aria-live="polite"></span>
 </div>
 <p id="plane-note" class="muted" hidden>Simplified surfaces without photo textures; use Both to inspect gaps.</p>
 <p id="mesh-note" class="muted" hidden>The mesh uses every photo in its saved group. Select whole groups below; individual triangle ownership is unknown. Use Points or Surfels for photo selection.</p>
@@ -81,6 +83,8 @@
     <label><input type="checkbox" id="axes"> World axes</label>
     <label id="point-size-control">Point size <input type="range" id="point-size" min="1" max="5" step="0.5" value="2" aria-label="Point size"><output id="point-size-value">2 px</output></label>
     <button class="adjust-in-view" data-adjust="point-size">Adjust with scene visible</button>
+    <label id="surfel-size-control" hidden title="Display footprint relative to half the saved voxel size. Saved centers and normals are unchanged; unknown normals stay point markers.">Surfel size <input type="range" id="surfel-size" min="0.25" max="4" step="0.25" value="1" aria-label="Surfel size multiplier"><output id="surfel-size-value">1×</output></label>
+    <button class="adjust-in-view" data-adjust="surfel-size" hidden>Adjust with scene visible</button>
   </div></details>
   <details class="tool-panel" id="section-panel"><summary>Section</summary><div class="tool-content">
     <h3>Cutaway and cross-section</h3>
@@ -143,8 +147,9 @@
 reconstruction. Separate coordinate frames have unknown relative placement.
 Room hypotheses overlay the selected reconstruction using saved photo IDs.</p>
 <p>Changing reconstruction options selects the corresponding saved geometry and poses. The
-largest group is initially selected; subsequent selections are remembered per
-combination. Offscreen 3D views release resources and restore their view on return.</p>
+largest group is initially selected. A new combination retains the selected shared
+photos; returning to a combination restores its own selection. Offscreen 3D views
+release resources and restore their view on return.</p>
 <p>Where available, the VLM switch selects a saved connection-review experiment. No model runs in the
 browser. Components and poses were recomputed after edge removal; original clouds
 and K were retained. The initial photo selection is preserved. Same-room and doorway

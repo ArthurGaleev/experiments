@@ -1,10 +1,10 @@
 /* One shared mobile adjustment strip; the original controls remain authoritative. */
 export function setupAdjustments({widthRange, unit}) {
   const get = id => document.getElementById(id), strip = get('adjustment-strip'), kind = get('adjustment-kind'), range = get('adjustment-range');
-  const labels = {'section-center':'Slice position','section-width':'Slice width','cut-height':'Cutaway height','point-size':'Point size'};
+  const labels = {'section-center':'Slice position','section-width':'Slice width','cut-height':'Cutaway height','point-size':'Point size','surfel-size':'Surfel size'};
   let dismissed = false, requested = false;
   function sync() {
-    const available = [...(get('section').checked ? ['section-center','section-width'] : []), ...(get('cutaway').checked ? ['cut-height'] : []), ...(get('point-size').disabled ? [] : ['point-size'])];
+    const available = [...(get('section').checked ? ['section-center','section-width'] : []), ...(get('cutaway').checked ? ['cut-height'] : []), ...['point-size','surfel-size'].filter(id => !get(id).disabled)];
     const selected = available.includes(kind.value) ? kind.value : available[0];
     if (Array.from(kind.options, o => o.value).join() !== available.join()) kind.replaceChildren(...available.map(id => new Option(labels[id],id)));
     kind.value = selected;
@@ -15,7 +15,7 @@ export function setupAdjustments({widthRange, unit}) {
     range.step = selected === 'section-width' ? '.001' : source.step;
     range.value = source.value;
     range.setAttribute('aria-label',labels[selected] + ' adjustment');
-    get('adjustment-value').textContent = selected === 'section-width' ? `${Number(source.value).toFixed(2)} ${typeof unit === 'function' ? unit() : unit}` : source.value + (selected === 'point-size' ? ' px' : '%');
+    get('adjustment-value').textContent = selected === 'section-width' ? `${Number(source.value).toFixed(2)} ${typeof unit === 'function' ? unit() : unit}` : source.value + (selected === 'point-size' ? ' px' : selected === 'surfel-size' ? '×' : '%');
   }
   function apply(value) {
     const source = get(kind.value); source.value = value;
@@ -33,7 +33,7 @@ export function setupAdjustments({widthRange, unit}) {
   kind.addEventListener('change',sync);
   get('adjustment-close').onclick = () => { dismissed = true; sync(); };
   get('adjustment-settings').onclick = () => {
-    const panel = get(kind.value === 'point-size' ? 'appearance-panel' : 'section-panel'); panel.open = true;
+    const panel = get(['point-size','surfel-size'].includes(kind.value) ? 'appearance-panel' : 'section-panel'); panel.open = true;
     panel.querySelector('summary').focus({preventScroll:true});
     if (!document.querySelector('.scene-viewer[open]')) panel.scrollIntoView({block:'nearest'});
   };

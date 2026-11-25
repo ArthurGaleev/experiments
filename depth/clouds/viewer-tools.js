@@ -3,7 +3,7 @@ export const controlSpec = {
   navigation: ['inspect','explore'], 'explore-speed': [.1, 5, 1],
   projection: ['perspective', 'orthographic'], colour: ['rgb', 'source', 'group', 'patch'],
   cameras: true, level: true, axes: false, paths: false, 'room-extra': true,
-  'point-size': [1, 5, 2], cutaway: false, 'cut-height': [5, 100, 75],
+  'point-size': [1, 5, 2], 'surfel-size': [.25, 4, 1], cutaway: false, 'cut-height': [5, 100, 75],
   section: false, 'section-axis': ['z', 'x', 'y', 'custom'],
   'section-center': [0, 100, 50], 'section-width': [.001, 10000, .3],
   'section-azimuth': [-180, 180, 0], 'section-tilt': [0, 180, 90],
@@ -71,6 +71,7 @@ export function writeControls(values) {
 export function updateControlLabels() {
   const get = id => document.getElementById(id);
   get('point-size-value').textContent = get('point-size').value + ' px';
+  get('surfel-size-value').textContent = Number(get('surfel-size').value) + '×';
   get('cut-height-control').hidden = !get('cutaway').checked;
   get('cut-height-value').textContent = get('cut-height').value + '%';
   get('section-fields').hidden = !get('section').checked;
