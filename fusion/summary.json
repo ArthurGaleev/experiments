@@ -1,0 +1,604 @@
+{
+  "schema": "fusion-summary-v1",
+  "configurations": {
+    "metricanything_roma_initial": {
+      "summary": [
+        {
+          "dataset": "blueprint",
+          "role": "smoke",
+          "kind": "blueprint_all_photos",
+          "counts": {
+            "cases": 1,
+            "failed": 0,
+            "partial": 0,
+            "input_points": 5699400,
+            "surfels": 5399154,
+            "multi_view_surfels": 273088,
+            "single_view_surfels": 5126066,
+            "merged_observations": 300246,
+            "conflicted_input_points": 2070294,
+            "deleted_input_points": 0,
+            "filled_pixels": 0
+          },
+          "overlay": {
+            "boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_numeric_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            }
+          },
+          "fused": {
+            "boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_numeric_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            }
+          },
+          "change": {},
+          "support": {
+            "conflicted_input_fraction": {
+              "location_mean": 0.3632477102852932,
+              "bootstrap_95": [
+                0.3632477102852932,
+                0.3632477102852932
+              ],
+              "locations": 1
+            },
+            "mean_displacement_predicted_units": {
+              "location_mean": 0.00047433181351285727,
+              "bootstrap_95": [
+                0.00047433181351285727,
+                0.00047433181351285727
+              ],
+              "locations": 1
+            },
+            "merged_observation_fraction": {
+              "location_mean": 0.05268028213496157,
+              "bootstrap_95": [
+                0.05268028213496157,
+                0.05268028213496157
+              ],
+              "locations": 1
+            },
+            "multi_view_surfel_fraction": {
+              "location_mean": 0.05057977601676114,
+              "bootstrap_95": [
+                0.05057977601676114,
+                0.05057977601676114
+              ],
+              "locations": 1
+            }
+          }
+        }
+      ],
+      "order_changes": [
+        {
+          "case": "blueprint-all-23",
+          "dataset": "blueprint",
+          "location": "blueprint",
+          "role": "smoke",
+          "order": "reverse",
+          "before_status": "ok",
+          "after_status": "ok",
+          "count_changes": {
+            "input_points": 0,
+            "surfels": 0,
+            "multi_view_surfels": 0,
+            "single_view_surfels": 0,
+            "merged_observations": 0,
+            "conflicted_input_points": 0,
+            "deleted_input_points": 0,
+            "filled_pixels": 0
+          },
+          "metric_changes": {}
+        }
+      ],
+      "source_scores": {
+        "evaluation/metricanything_roma_initial/blueprint-all-23--canonical_shuffled.json": "20471fba39ba7030669c5f23d553c7da7a29238d869a2bab45c5f7fe6422a69b",
+        "evaluation/metricanything_roma_initial/blueprint-all-23--reverse.json": "8a626f7e51d54302887ede2eea17f9688f76acfff741e96b1d1e4bde8cc70dae"
+      },
+      "producer_sha256": "909d24e024683c237392fd4615b3c3c53415244168e4026b040cc9a6d7121630"
+    },
+    "metricanything_roma_refined": {
+      "summary": [
+        {
+          "dataset": "blueprint",
+          "role": "smoke",
+          "kind": "blueprint_all_photos",
+          "counts": {
+            "cases": 1,
+            "failed": 0,
+            "partial": 0,
+            "input_points": 5699400,
+            "surfels": 5334930,
+            "multi_view_surfels": 289123,
+            "single_view_surfels": 5045807,
+            "merged_observations": 364470,
+            "conflicted_input_points": 3231438,
+            "deleted_input_points": 0,
+            "filled_pixels": 0
+          },
+          "overlay": {
+            "boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_numeric_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            }
+          },
+          "fused": {
+            "boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_numeric_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            }
+          },
+          "change": {},
+          "support": {
+            "conflicted_input_fraction": {
+              "location_mean": 0.5669786293294031,
+              "bootstrap_95": [
+                0.5669786293294031,
+                0.5669786293294031
+              ],
+              "locations": 1
+            },
+            "mean_displacement_predicted_units": {
+              "location_mean": 0.0005722685040744613,
+              "bootstrap_95": [
+                0.0005722685040744613,
+                0.0005722685040744613
+              ],
+              "locations": 1
+            },
+            "merged_observation_fraction": {
+              "location_mean": 0.0639488367196547,
+              "bootstrap_95": [
+                0.0639488367196547,
+                0.0639488367196547
+              ],
+              "locations": 1
+            },
+            "multi_view_surfel_fraction": {
+              "location_mean": 0.05419433807004028,
+              "bootstrap_95": [
+                0.05419433807004028,
+                0.05419433807004028
+              ],
+              "locations": 1
+            }
+          }
+        }
+      ],
+      "order_changes": [
+        {
+          "case": "blueprint-all-23",
+          "dataset": "blueprint",
+          "location": "blueprint",
+          "role": "smoke",
+          "order": "reverse",
+          "before_status": "ok",
+          "after_status": "ok",
+          "count_changes": {
+            "input_points": 0,
+            "surfels": 87813,
+            "multi_view_surfels": -49816,
+            "single_view_surfels": 137629,
+            "merged_observations": -87813,
+            "conflicted_input_points": -12208,
+            "deleted_input_points": 0,
+            "filled_pixels": 0
+          },
+          "metric_changes": {}
+        }
+      ],
+      "source_scores": {
+        "evaluation/metricanything_roma_refined/blueprint-all-23--canonical_shuffled.json": "85bff55f919b0849621b705762f35b4459554d25d1b8089dc82aae580882fb4c",
+        "evaluation/metricanything_roma_refined/blueprint-all-23--reverse.json": "7b94892d5187af10c6b7960fcc8d3081eb12161a4d9d4701b9edaf65a0dfb7cd"
+      },
+      "producer_sha256": "0e7d548dea2fbfa7fef0da162b5be404f47d1bf6392e8783bf934fb22e48f093"
+    },
+    "mast3r_refine_depth": {
+      "summary": [
+        {
+          "dataset": "blueprint",
+          "role": "smoke",
+          "kind": "blueprint_all_photos",
+          "counts": {
+            "cases": 1,
+            "failed": 0,
+            "partial": 0,
+            "input_points": 4117312,
+            "surfels": 3665195,
+            "multi_view_surfels": 353032,
+            "single_view_surfels": 3312163,
+            "merged_observations": 452117,
+            "conflicted_input_points": 2477381,
+            "deleted_input_points": 0,
+            "filled_pixels": 0
+          },
+          "overlay": {
+            "boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_numeric_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            }
+          },
+          "fused": {
+            "boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_numeric_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_numeric_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            }
+          },
+          "change": {},
+          "support": {
+            "conflicted_input_fraction": {
+              "location_mean": 0.6016986325058679,
+              "bootstrap_95": [
+                0.6016986325058679,
+                0.6016986325058679
+              ],
+              "locations": 1
+            },
+            "mean_displacement_predicted_units": {
+              "location_mean": 0.0007528784862073615,
+              "bootstrap_95": [
+                0.0007528784862073615,
+                0.0007528784862073615
+              ],
+              "locations": 1
+            },
+            "merged_observation_fraction": {
+              "location_mean": 0.10980877815429095,
+              "bootstrap_95": [
+                0.10980877815429095,
+                0.10980877815429095
+              ],
+              "locations": 1
+            },
+            "multi_view_surfel_fraction": {
+              "location_mean": 0.09632011393663911,
+              "bootstrap_95": [
+                0.09632011393663911,
+                0.09632011393663911
+              ],
+              "locations": 1
+            }
+          }
+        }
+      ],
+      "order_changes": [
+        {
+          "case": "blueprint-all-23",
+          "dataset": "blueprint",
+          "location": "blueprint",
+          "role": "smoke",
+          "order": "reverse",
+          "before_status": "ok",
+          "after_status": "ok",
+          "count_changes": {
+            "input_points": -1664,
+            "surfels": 907,
+            "multi_view_surfels": -972,
+            "single_view_surfels": 1879,
+            "merged_observations": -2571,
+            "conflicted_input_points": 5777,
+            "deleted_input_points": 0,
+            "filled_pixels": 0
+          },
+          "metric_changes": {}
+        }
+      ],
+      "source_scores": {
+        "evaluation/mast3r_refine_depth/blueprint-all-23--canonical_shuffled.json": "f091a6433e93ae6e361ebb2b0dae017073832b01ebe7d8dc7ce76d4c7bfcfe0a",
+        "evaluation/mast3r_refine_depth/blueprint-all-23--reverse.json": "9d4804f62d952357f2e0eeffa1e9b692674cd656fbcbcfcdd692729378bb1745"
+      },
+      "producer_sha256": "695b45b444f2bc99c6df37afc094fd42064743f55dbe97483334728334eb4e11"
+    }
+  },
+  "analysis_sources": {
+    "scripts/analyze_fusion.py": "c0209b0dde5f14f340522e8aa1ceadc66ed2410d3af59cdba7298a22a1d2b2d7",
+    "planrec/fusion_analysis.py": "99a5e9719742a72b4deec09674e9b7c09929c5ad4fada03defe13092f9f38d2a",
+    "planrec/pair_geometry.py": "bc352ad8ef16db6b519fcb81978e185e51d15fd152300c28bb8621cf37076d02"
+  }
+}

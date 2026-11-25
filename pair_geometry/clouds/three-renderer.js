@@ -2,7 +2,7 @@
 import * as THREE from './vendor/three/three.module.js';
 import {OrbitControls} from './vendor/three/OrbitControls.js';
 const assetQuery = new URL(import.meta.url).search;
-const [{attachExplore},{cloudMatrix,segmentDistance2D},{clipping,insideClip,readControls,hashText},{attachRulers,clearMeasurements,setMeasuring,refreshMeasurements}] = await Promise.all([
+const [{attachExplore},{cloudMatrix,segmentDistance2D,supportedIndices},{clipping,insideClip,readControls,hashText},{attachRulers,clearMeasurements,setMeasuring,refreshMeasurements}] = await Promise.all([
   import('./explore-controls.js' + assetQuery),import('./cloud-buffers.js' + assetQuery),import('./viewer-tools.js' + assetQuery),import('./ruler-tools.js' + assetQuery),
 ]);
 export {clearMeasurements, setMeasuring, refreshMeasurements};
@@ -433,7 +433,19 @@ export async function react(plot, data, layout) {
         const object = entry.object;
         object.userData.frame = cloud.frame; object.userData.unit = cloud.unitLabel;
         object.matrix.fromArray(matrix); object.matrixWorldNeedsUpdate = true;
-        const count = Math.max(0, Math.min(chunk.count, cloud.limit - chunk.start));
+        let count = Math.max(0, Math.min(chunk.count, cloud.limit - chunk.start));
+        if (chunk.support) {
+          const selectionKey = `${cloud.selectionMask}:${count}`;
+          if (object.userData.selectionKey !== selectionKey) {
+            const indices = supportedIndices(chunk.support, cloud.selectionMask, count);
+            if (!object.geometry.index) object.geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(chunk.count), 1).setUsage(THREE.DynamicDrawUsage));
+            object.geometry.index.array.set(indices);
+            object.geometry.index.needsUpdate = true;
+            object.userData.visibleCount = indices.length;
+            object.userData.selectionKey = selectionKey;
+          }
+          count = object.userData.visibleCount;
+        }
         object.geometry.setDrawRange(0, count); view.points += count;
         object.material.uniforms.pointSize.value = Number(document.getElementById('point-size')?.value || 2);
         object.material.uniforms.clipCount.value = clip.planes.length;

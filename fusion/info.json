@@ -1,0 +1,33 @@
+{
+  "created": "2026-11-25T16:27:52",
+  "units": "Saved predicted geometry units; learned metric scale is not calibrated accuracy",
+  "settings": {
+    "absolute_tolerance": 0.03,
+    "relative_tolerance": 0.02,
+    "voxel_size": 0.03,
+    "normal_angle_deg": 30.0,
+    "roundtrip_pixels": 1.0,
+    "chunk_points": 100000
+  },
+  "status": "complete",
+  "title": "Visibility-aware surface fusion · G5",
+  "run": "20261125-162752-883040",
+  "params": {
+    "configurations": [
+      "metricanything_roma_initial",
+      "metricanything_roma_refined",
+      "mast3r_refine_depth"
+    ],
+    "stride": 1,
+    "settings": {
+      "absolute_tolerance": 0.03,
+      "relative_tolerance": 0.02,
+      "voxel_size": 0.03,
+      "normal_angle_deg": 30.0,
+      "roundtrip_pixels": 1.0,
+      "chunk_points": 100000
+    }
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}

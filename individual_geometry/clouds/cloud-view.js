@@ -4,7 +4,7 @@
   const settings = JSON.parse(document.getElementById('scene-data').textContent);
   const assetQuery = new URL(document.currentScript.src).search;
   const renderer = await import('./three-renderer.js' + assetQuery);
-  const {decodePoints, transformedBounds, detailChoices} = await import('./cloud-buffers.js' + assetQuery);
+  const {decodePoints, transformedBounds, detailChoices, pointAssetUrl, selectedSupport, visiblePointCount} = await import('./cloud-buffers.js' + assetQuery);
   const tools = await import('./viewer-tools.js' + assetQuery);
   const {setupAdjustments} = await import('./mobile-tools.js' + assetQuery);
   const {comparisonCandidates, comparisonRanges, cameraAxes, identityPose} = await import('./cloud-comparison.js' + assetQuery);
@@ -179,7 +179,7 @@
   async function loadDense(asset) {
     if (!assets.has(asset.key)) {
       loadedBytes += asset.bytes;
-      const pending = fetch(asset.url).then(async response => {
+      const pending = fetch(pointAssetUrl(asset, location.hostname)).then(async response => {
         if (!response.ok) throw new Error(`Point buffer ${response.status}: ${asset.url}`);
         const decoded = decodePoints(await response.arrayBuffer(), asset.end - asset.start);
         pointCacheSizes.set(asset.key, asset.bytes); pointCacheBytes += asset.bytes;
@@ -302,14 +302,15 @@
 
   async function traces(component, groups) {
     const sources = state.variant.sources.filter(s => component.ids.includes(s.id));
-    const selected = sources.filter(s => state.selected.has(s.id));
+    const selected = sources.filter(s => state.selected.has(s.id) || selectedSupport(s, state.selected));
     const output = (await Promise.all(selected.map(async source => {
       const list = [], hover = `x: %{x:.2f} ${coordinateUnit}<br>y: %{y:.2f} ${coordinateUnit}<br>z: %{z:.2f} ${coordinateUnit}<extra>${source.name}</extra>`;
       if (state.mode !== 'planes') {
         const limit = state.limit || Infinity;
         const chunks = await Promise.all(source.chunks.filter(c => c.start < limit).map(loadDense));
         const rotation = get('level').checked ? component.rotation : component.fixed;
-        const cloud = {id: source.id, chunks, pose: source.pose, rotation, limit, frame: component.id, unitLabel: coordinateUnit};
+        const cloud = {id: source.id, chunks, pose: source.pose, rotation, limit, frame: component.id,
+          unitLabel: coordinateUnit, selectionMask: selectedSupport(source, state.selected)};
         list.push({type: 'scatter3d', mode: 'markers', name: source.name, cloud,
           bounds: transformedBounds(source.bounds, source.pose, rotation),
           marker: {color: get('colour').value === 'rgb' ? 'photo' : colour(source, groups, {}, 'points')},
@@ -323,9 +324,17 @@
           ...(typeof colors === 'string' ? {color: colors} : {vertexcolor: colors}), flatshading: true,
           lighting: {ambient: .8, diffuse: .35, specular: 0}, showlegend: false, hovertemplate: hover});
       }
-      if (get('cameras').checked) list.push(cameraTrace(source, component, groups));
+      if (get('cameras').checked && state.selected.has(source.id)) list.push(cameraTrace(source, component, groups));
       return list;
     }))).flat();
+    for (const hypothesis of state.variant.hypotheses || []) {
+      if (!hypothesis.supportIds.some(id => component.ids.includes(id) && state.selected.has(id))) continue;
+      const rotation = get('level').checked ? component.rotation : component.fixed;
+      const vertices = hypothesis.vertices.map(p => rotate(p, rotation));
+      output.push({type:'scatter3d', mode:'lines', name:hypothesis.label,
+        x:vertices.map(p=>p[0]), y:vertices.map(p=>p[1]), z:vertices.map(p=>p[2]),
+        line:{color:'#c47b32',width:5}, hoverinfo:'name',showlegend:false});
+    }
     if (get('paths').checked && !state.room) {
       const edges = supportingEdges(component), hidden = new Set(), line = [];
       const byId = new Map(sources.map(s => [s.id, s]));
@@ -371,13 +380,17 @@
     if (settings.multiview) text += ' · full-group poses retained';
     get('selection-status').textContent = text + '.';
     const shown = state.room && !get('room-extra').checked ? new Set(roomParts()[0]?.ids || []) : state.selected;
-    const selected = state.variant.sources.filter(s => state.selected.has(s.id) && shown.has(s.id));
+    const visiblePhotos = new Set([...state.selected].filter(id => shown.has(id)));
+    const selected = state.variant.sources.filter(s => visiblePhotos.has(s.id) || selectedSupport(s, visiblePhotos));
     syncDetail(selected.length ? selected : state.variant.sources);
-    const count = selected.reduce((n, s) => n + Math.min(state.limit || Infinity, s.available), 0);
+    const counts = selected.map(s => visiblePointCount(s, visiblePhotos, state.limit));
+    const count = counts.includes(null) ? null : counts.reduce((a, b) => a + b, 0);
     const patches = selected.reduce((n, s) => n + (s.planes?.count || 0), 0);
     const faces = selected.reduce((n, s) => n + (s.planes?.triangles || 0), 0);
     const coverage = selected.filter(s => s.planes).map(s => 100 * s.planes.coverage);
-    get('counts').textContent = [state.mode !== 'planes' ? `${count.toLocaleString('en')} points` : '',
+    const hypotheses = (state.variant.hypotheses || []).filter(h => h.supportIds.some(id => state.selected.has(id)));
+    get('counts').textContent = [state.mode !== 'planes' ? (count === null ? 'Selected surface · custom point limit' : `${count.toLocaleString('en')} points`) : '',
+      hypotheses.length ? `${hypotheses.length} inferred wall bounds` : '',
       state.mode !== 'points' ? `${patches} patches · ${faces.toLocaleString('en')} triangles` : '',
       state.mode !== 'points' && coverage.length ? `photo coverage: ${Math.min(...coverage).toFixed(0)}–${Math.max(...coverage).toFixed(0)}%` : ''].filter(Boolean).join(' · ');
     get('detail').hidden = state.mode === 'planes';

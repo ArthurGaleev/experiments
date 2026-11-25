@@ -12,6 +12,10 @@ export function comparisonCandidates(settings, current) {
     candidates = settings.compareAcrossMethods ? settings.variants : settings.variants.filter(v => v.matcher === current.matcher
       && !!v.vlm === !!current.vlm && !!v.recovery === !!current.recovery);
   }
+  // A fused surfel can belong to several photos while being stored only once
+  // in the scene. Comparison uses its saved per-photo camera-frame projection.
+  candidates = candidates.map(candidate => ({...candidate,
+    sources: candidate.sources.map(source => source.comparison ? {...source, ...source.comparison} : source)}));
   // Changing only saved placement is not a different single-photo depth model.
   const seen = new Set();
   return candidates.filter(candidate => {
@@ -21,8 +25,8 @@ export function comparisonCandidates(settings, current) {
     seen.add(key); return true;
   }).map(candidate => {
     const c = facets(candidate);
-    const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'calibration', 'head', 'reference', 'conditioning', 'camera']
-      .map(key => c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
+    const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'fusion', 'calibration', 'head', 'reference', 'conditioning', 'camera']
+      .map(key => key === 'fusion' && c[key]?.id === 'none' ? null : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
     return {...candidate, label};
   });
 }

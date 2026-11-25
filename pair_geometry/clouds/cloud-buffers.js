@@ -24,13 +24,33 @@ export function segmentDistance2D(point, a, b) {
 export function decodePoints(buffer, expectedCount) {
   if (buffer.byteLength < 8) throw new Error('Truncated point buffer');
   const header = new DataView(buffer);
-  if (header.getUint32(0, true) !== 0x31435250) throw new Error('Unknown point format');
+  const format = header.getUint32(0, true), shared = format === 0x32435250;
+  if (format !== 0x31435250 && !shared) throw new Error('Unknown point format');
   const count = header.getUint32(4, true);
-  if (count !== expectedCount || buffer.byteLength !== 8 + count * 15) {
+  if (count !== expectedCount || buffer.byteLength !== 8 + count * (shared ? 19 : 15)) {
     throw new Error('Point count or buffer length mismatch');
   }
   return {xyz: new Float32Array(buffer, 8, count * 3),
-    rgb: new Uint8Array(buffer, 8 + count * 12, count * 3), count};
+    rgb: new Uint8Array(buffer, 8 + count * (shared ? 16 : 12), count * 3), count,
+    ...(shared ? {support: new Uint32Array(buffer, 8 + count * 12, count)} : {})};
+}
+
+export function selectedSupport(source, selected) {
+  if (!source.supportIds) return null;
+  return source.supportIds.reduce((mask, id, index) => selected.has(id) ? (mask | (1 << index)) >>> 0 : mask, 0);
+}
+
+export function supportedIndices(support, selected, count) {
+  const result = new Uint32Array(count); let length = 0;
+  for (let i = 0; i < count; i++) if (support[i] & selected) result[length++] = i;
+  return result.subarray(0, length);
+}
+
+export function visiblePointCount(source, selected, limit) {
+  const count = Math.min(limit || Infinity, source.available), mask = selectedSupport(source, selected);
+  if (mask === null) return selected.has(source.id) ? count : 0;
+  const counts = source.supportCounts?.[String(count)];
+  return counts ? counts.reduce((sum, [bits, n]) => sum + ((bits & mask) ? n : 0), 0) : null;
 }
 
 export function cloudMatrix(pose, rotation, offset = [0, 0, 0]) {

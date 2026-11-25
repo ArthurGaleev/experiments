@@ -1,7 +1,7 @@
 /* Choices describe saved results; they never synthesize unrun combinations. */
 export const fields = [
   ['method', 'Reconstruction'], ['model', 'Depth / model'], ['matcher', 'Matching'],
-  ['refinement', 'Refinement'], ['calibration', 'Calibration'], ['head', 'Pose head'],
+  ['refinement', 'Refinement'], ['fusion', 'Fusion'], ['surface', 'Surface'], ['calibration', 'Calibration'], ['head', 'Pose head'],
   ['reference', 'Reference photo'], ['conditioning', 'Predicted inputs'], ['camera', 'Cameras'],
 ];
 const choice = (id, label = id) => ({id, label});
@@ -14,9 +14,9 @@ const stages = {initial:'Original placement', pair_refit_tree:'Independent pair 
   tree_cameras_scale:'Cameras + scale · tree edges', cameras_scale:'Cameras + scale · all edges'};
 
 export function facets(variant) {
-  if (variant.controls) return variant.controls;
+  if (variant.controls) return {fusion: choice('none', 'Overlay'), ...variant.controls};
   const key = variant.model || variant.id, label = (variant.label || key).replace(/ · \d+\/\d+ photos$/, '');
-  const c = {method:choice('single', 'Single-photo geometry'), model:choice(key, label)};
+  const c = {method:choice('single', 'Single-photo geometry'), model:choice(key, label), fusion:choice('none', 'Overlay')};
   const model = id => { c.model = choice(id, models[id] || id); };
   if (variant.matcher || /^(roma|loma)_control$/.test(key)) {
     const matcher = variant.matcher || key.split('_')[0];
