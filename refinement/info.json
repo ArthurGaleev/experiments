@@ -1,0 +1,23 @@
+{
+  "created": "2026-11-25T11:03:16",
+  "models": [
+    "metricanything",
+    "moge2"
+  ],
+  "status": "complete",
+  "title": "Controlled camera and scale refinement",
+  "run": "20261125-110316-081596",
+  "params": {
+    "depth": [
+      "MetricAnything",
+      "MoGe-2"
+    ],
+    "matching": "Saved RoMa v2",
+    "VLM_review": false,
+    "recovery": false,
+    "branches": 6,
+    "display_points_per_photo": 25000
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
