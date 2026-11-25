@@ -1,0 +1,39 @@
+{
+  "schema": "tsdf-presentation-v1",
+  "cases": [
+    {
+      "case": "blueprint-all-23",
+      "dataset": "blueprint",
+      "role": "smoke",
+      "groups": [
+        [
+          1,
+          20,
+          5227440,
+          4896532,
+          "ok",
+          293472,
+          507102
+        ],
+        [
+          2,
+          1,
+          157320,
+          157320,
+          "Outside selected mesh scope",
+          0,
+          0
+        ],
+        [
+          3,
+          2,
+          314640,
+          311729,
+          "Outside selected mesh scope",
+          0,
+          0
+        ]
+      ]
+    }
+  ]
+}

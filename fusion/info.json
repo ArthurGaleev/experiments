@@ -10,7 +10,7 @@
     "chunk_points": 100000
   },
   "status": "complete",
-  "title": "VLM connections and surface fusion",
+  "title": "Visibility-aware surface fusion",
   "run": "20261125-193244-446047",
   "params": {
     "configurations": [

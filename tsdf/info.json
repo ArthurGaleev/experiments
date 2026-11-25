@@ -1,0 +1,44 @@
+{
+  "created": "2026-11-25T23:05:00",
+  "settings": {
+    "voxel_size": 0.03,
+    "truncation_voxels": 3.0,
+    "depth_max": 20.0,
+    "weight_threshold": 0.0,
+    "block_resolution": 16,
+    "max_blocks": 8192,
+    "max_photos": 32,
+    "max_input_pixels": 8000000,
+    "max_memory_bytes": 8589934592,
+    "max_abs_coordinate": 1000.0,
+    "chunk_points": 16384,
+    "cpu_threads": 1,
+    "diagnostic_absolute_tolerance": 0.03,
+    "diagnostic_relative_tolerance": 0.02
+  },
+  "status": "complete",
+  "title": "Points, surfels and TSDF mesh",
+  "run": "20261125-230500-blueprint",
+  "params": {
+    "configuration": "metricanything_roma_graph_recovered",
+    "settings": {
+      "voxel_size": 0.03,
+      "truncation_voxels": 3.0,
+      "depth_max": 20.0,
+      "weight_threshold": 0.0,
+      "block_resolution": 16,
+      "max_blocks": 8192,
+      "max_photos": 32,
+      "max_input_pixels": 8000000,
+      "max_memory_bytes": 8589934592,
+      "max_abs_coordinate": 1000.0,
+      "chunk_points": 16384,
+      "cpu_threads": 1,
+      "diagnostic_absolute_tolerance": 0.03,
+      "diagnostic_relative_tolerance": 0.02
+    },
+    "scope": "blueprint-largest"
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}

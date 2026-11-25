@@ -14,7 +14,7 @@ export function comparisonCandidates(settings, current) {
   }
   // A fused surfel can belong to several photos while being stored only once
   // in the scene. Comparison uses its saved per-photo camera-frame projection.
-  candidates = candidates.map(candidate => ({...candidate,
+  candidates = candidates.filter(candidate => !candidate.wholeComponentMesh).map(candidate => ({...candidate,
     sources: candidate.sources.map(source => source.comparison ? {...source, ...source.comparison} : source)}));
   // Keep each exact fusion control available for its before/after comparison.
   // Other placement-only changes do not create a different local depth model.
@@ -27,8 +27,8 @@ export function comparisonCandidates(settings, current) {
   }
   return [...representatives.values()].map(candidate => {
     const c = facets(candidate);
-    const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'fusion', 'calibration', 'head', 'reference', 'conditioning', 'camera']
-      .map(key => key === 'fusion' && c[key]?.id === 'none' && c.method?.id !== 'fusion' ? null : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
+    const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'fusion', 'surface', 'calibration', 'head', 'reference', 'conditioning', 'camera']
+      .map(key => key === 'fusion' && c[key]?.id === 'none' && (c.method?.id !== 'fusion' || c.surface) ? null : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
     const connections = c.method?.id === 'fusion' ? candidate.recovery ? ' · VLM review + recovery'
       : candidate.vlm ? ' · VLM review' : ' · Connections off' : '';
     return {...candidate, label: label + connections};
@@ -41,9 +41,9 @@ export function defaultComparison(candidates, current) {
   const config = facets(first);
   const counterpart = config.method?.id === 'fusion' && candidates.find(candidate => {
     const options = facets(candidate);
-    return options.fusion?.id !== config.fusion?.id
+    return (options.surface?.id !== config.surface?.id || options.fusion?.id !== config.fusion?.id)
       && !!candidate.vlm === !!first.vlm && !!candidate.recovery === !!first.recovery
-      && fields.every(([key]) => key === 'fusion' || options[key]?.id === config[key]?.id);
+      && fields.every(([key]) => ['fusion', 'surface'].includes(key) || options[key]?.id === config[key]?.id);
   });
   return [first, counterpart || candidates.find(candidate => candidate.id !== first.id)]
     .filter(Boolean).map(candidate => candidate.id);
