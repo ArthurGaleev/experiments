@@ -1,5 +1,5 @@
 {
-  "created": "2026-11-25T16:27:52",
+  "created": "2026-11-25T19:32:44",
   "units": "Saved predicted geometry units; learned metric scale is not calibrated accuracy",
   "settings": {
     "absolute_tolerance": 0.03,
@@ -10,13 +10,13 @@
     "chunk_points": 100000
   },
   "status": "complete",
-  "title": "Visibility-aware surface fusion · G5",
-  "run": "20261125-162752-883040",
+  "title": "VLM connections and surface fusion",
+  "run": "20261125-193244-446047",
   "params": {
     "configurations": [
-      "metricanything_roma_initial",
-      "metricanything_roma_refined",
-      "mast3r_refine_depth"
+      "metricanything_roma_graph_baseline",
+      "metricanything_roma_graph_reviewed",
+      "metricanything_roma_graph_recovered"
     ],
     "stride": 1,
     "settings": {

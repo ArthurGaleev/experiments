@@ -112,13 +112,13 @@ dialog.photo-viewer::backdrop{background:#121614}
 </style></head><body><main><div class='eyebrow'>Floor plan from photos · experiment</div>
 <nav><a href='index.html'>← Overview</a></nav>
 <h1>Blueprint sample · All 23 photos</h1>
-<nav aria-label='Sections'><a href='#photos'>Input photos</a></nav>
+<nav aria-label='Sections'><a href='#photos'>Input photos</a><a href='#connections'>Connection evidence</a></nav>
 <section class='section' id='section-0'><h2>All photos in 3D</h2>
-<p>Choose a saved source, then switch Fusion between Overlay and Conservative surfels.</p>
+<p>Choose a source and switch between Overlay and Conservative surfels. Original placement exposes VLM review and recovery in Connections.</p>
 <p><a href='clouds/case-blueprint-all-23.html'>Canonical photo order →</a> · <a href='clouds/case-blueprint-all-23--reverse.html'>Reversed photo order →</a></p>
 </section>
 <section class='section' id='photos'><h2>Input photos</h2>
-<p>All source photos remain available. Five Blueprint collages were manually split.</p>
+<p>All photos remain available. Five Blueprint collages were manually split.</p>
 
 <div class='row' style='--h: 180px'>
 <figure><img src='photos/b000.jpg' loading='lazy' alt='Photo 01' role='button' tabindex='0' data-group='s1' data-index='0'><figcaption>Photo 01</figcaption></figure>
@@ -147,8 +147,12 @@ dialog.photo-viewer::backdrop{background:#121614}
 </div>
 </section>
 <section class='section' id='section-2'><h2>Surface support</h2>
-<p>Fewer points indicate merged observations, not improved accuracy. Conflicting observations remain in the output.</p>
-<table><thead><tr><th>Saved source</th><th>Status</th><th>Input points</th><th>Fused surfels</th><th>Multi-view surfels</th><th>Inputs with visibility conflicts</th></tr></thead><tbody><tr><td>MetricAnything + RoMa · original placement</td><td>ok</td><td>5699400</td><td>5399154</td><td>273088</td><td>2070294</td></tr><tr><td>MetricAnything + RoMa · refined cameras and scale</td><td>ok</td><td>5699400</td><td>5334930</td><td>289123</td><td>3231438</td></tr><tr><td>MASt3R-SfM · refined cameras and dense depth</td><td>ok</td><td>4117312</td><td>3665195</td><td>353032</td><td>2477381</td></tr></tbody></table>
+<p>Fewer points indicate merged observations, not improved accuracy. Conflicting observations remain in the output. Recovery keeps the voxel frame of the largest reviewed constituent; changed support counts reflect the saved grouping and fusion decisions.</p>
+<table><thead><tr><th>Saved source</th><th>Status</th><th>Input points</th><th>Fused surfels</th><th>Multi-view surfels</th><th>Inputs with visibility conflicts</th></tr></thead><tbody><tr><td>MetricAnything + RoMa · connections off</td><td>ok</td><td>5699400</td><td>5399154</td><td>273088</td><td>2070294</td></tr><tr><td>MetricAnything + RoMa · VLM review</td><td>ok</td><td>5699400</td><td>5440420</td><td>239520</td><td>1620612</td></tr><tr><td>MetricAnything + RoMa · VLM review and recovery</td><td>ok</td><td>5699400</td><td>5365581</td><td>297848</td><td>1716565</td></tr><tr><td>MetricAnything + RoMa · refined cameras and scale</td><td>ok</td><td>5699400</td><td>5334930</td><td>289123</td><td>3231438</td></tr><tr><td>MASt3R-SfM · refined cameras and dense depth</td><td>ok</td><td>4117312</td><td>3665195</td><td>353032</td><td>2477381</td></tr></tbody></table>
+</section>
+<section class='section' id='connections'><h2>Connection evidence</h2>
+<p>Saved VLM decisions were verified against the input RGB. Review removes contradicted edges; recovery tests supported similarities between separate groups. Poses inside each reviewed group remain fixed during recovery. All photos remain. These graph checks do not establish room-layout accuracy.</p>
+<table><thead><tr><th>State</th><th>Edges</th><th>Component sizes</th><th>Removed edges</th><th>Bridges</th><th>Constraints</th></tr></thead><tbody><tr><td>Baseline</td><td>26</td><td>19 + 1 + 1 + 1 + 1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Reviewed</td><td>23</td><td>19 + 1 + 1 + 1 + 1</td><td>3</td><td>0</td><td>0</td></tr><tr><td>Recovered</td><td>27</td><td>20 + 2 + 1</td><td>3</td><td>2</td><td>2</td></tr></tbody></table><p><a href='graph.json'>Saved graphs, scale transforms and candidate checks →</a></p>
 </section>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
 window.planrecPhotoViewer = function () {

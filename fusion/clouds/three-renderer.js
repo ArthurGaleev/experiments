@@ -2,7 +2,7 @@
 import * as THREE from './vendor/three/three.module.js';
 import {OrbitControls} from './vendor/three/OrbitControls.js';
 const assetQuery = new URL(import.meta.url).search;
-const [{attachExplore},{cloudMatrix,segmentDistance2D,supportedIndices},{clipping,insideClip,readControls,hashText},{attachRulers,clearMeasurements,setMeasuring,refreshMeasurements}] = await Promise.all([
+const [{attachExplore},{cloudMatrix,segmentDistance2D,supportedIndices,supportingPhotoNames},{clipping,insideClip,readControls,hashText},{attachRulers,clearMeasurements,setMeasuring,refreshMeasurements}] = await Promise.all([
   import('./explore-controls.js' + assetQuery),import('./cloud-buffers.js' + assetQuery),import('./viewer-tools.js' + assetQuery),import('./ruler-tools.js' + assetQuery),
 ]);
 export {clearMeasurements, setMeasuring, refreshMeasurements};
@@ -231,7 +231,11 @@ function pick(view, event, pointsOnly = false) {
   const objects = [...view.objects.values()].map(o => o.object).filter(o => o.isPoints || (!pointsOnly && o.isMesh));
   for (const hit of ray.intersectObjects(objects, true)) {
     const point = pickedPoint(hit);
-    if (insideClip(point.toArray(), view.clipPlanes)) return {...hit, point};
+    if (!insideClip(point.toArray(), view.clipPlanes)) continue;
+    const {photo, support, supportNames} = hit.object.userData;
+    const names = support && supportingPhotoNames(support[hit.index], supportNames);
+    const photoLabel = names?.length ? `Fused surfel · ${names.join(', ')}` : photo;
+    return {...hit, point, photoLabel};
   }
 }
 
@@ -280,7 +284,7 @@ function makeView(plot) {
     const hit = pick(view, event);
     if (hit) {
       controls.target.copy(hit.point); controls.update();
-      const name = hit.object.userData.photo || 'Surface';
+      const name = hit.photoLabel || 'Surface';
       readout.textContent = view.inspection ? `${name} · orbit target set; part placement unknown`
         : `${name} · ${hit.point.toArray().map(v => v.toFixed(2)).join(', ')} ${view.unitLabel}`;
       view.invalidate();
@@ -346,6 +350,8 @@ function pointObject(chunk, cloud, trace) {
     uniforms: {pointSize: {value: 2}, clipCount: {value: 0}, clipPlanes: {value: [new THREE.Vector4(),new THREE.Vector4(),new THREE.Vector4()]}, usePhoto: {value: true}, solidColor: {value: new THREE.Vector3(1, 1, 1)}}});
   const object = new THREE.Points(geometry, material); object.matrixAutoUpdate = false;
   object.userData.photo = trace.name;
+  object.userData.support = chunk.support;
+  object.userData.supportNames = cloud.supportNames;
   return object;
 }
 

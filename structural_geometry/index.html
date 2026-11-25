@@ -129,10 +129,10 @@ dialog.photo-viewer::backdrop{background:#121614}
 
 </section>
 <section class='section' id='section-4'><h2>Order and additional-photo controls</h2>
-<h3>Changing photo order</h3><p>All repeated cases, including calibration locations where present. Each row compares the same photos after matching their IDs. Stable output can still be wrong.</p><div style='overflow-x:auto'><table><tr><th>Configuration</th><th>Comparisons</th><th>Median largest camera rotation change, °</th><th>Largest camera rotation change, °</th><th>Median depth change after one scale fit</th></tr><tr><td>Plane-DUSt3R · native structural geometry</td><td>1</td><td>0.166</td><td>0.166</td><td>0.000</td></tr></table></div>
+<h3>Prediction drift on successful order comparisons</h3><p>Recorded changes between predictions for the same photos, including calibration locations where present. Each count is the number of saved numeric differences behind that statistic. Stable output can still be wrong.</p><div style='overflow-x:auto'><table><tr><th>Configuration</th><th>Camera comparisons with a value</th><th>Median largest camera rotation change, °</th><th>Largest camera rotation change, °</th><th>Depth comparisons with a value</th><th>Median depth change after one scale fit</th></tr><tr><td>Plane-DUSt3R · native structural geometry</td><td>1</td><td>0.166</td><td>0.166</td><td>1</td><td>0.000</td></tr></table></div>
 </section>
 <details class='section' id='section-5'><summary>Protocol and saved evidence</summary>
-<p><a href='info.json'>Run configuration</a> · <a href='summary.json'>Scores and diagnostics</a></p>
+<p><a href='info.json'>Run configuration</a> · <a href='summary.json'>Saved scores and original diagnostics</a></p>
 </details>
 </main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
 window.planrecPhotoViewer = function () {

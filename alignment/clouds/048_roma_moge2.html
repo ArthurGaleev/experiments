@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>img_11_a ↔ img_16_a · RoMa × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=b27372390503">
-<link rel="stylesheet" href="photo-view.css?v=b27372390503">
-<script src="photo-view.js?v=b27372390503" defer></script>
-<script src="room-view.js?v=b27372390503" defer></script>
-<script src="cloud-view.js?v=b27372390503" defer></script>
+<title>img_11_a ↔ img_16_a · RoMa × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=5d20d72031c8">
+<link rel="stylesheet" href="photo-view.css?v=5d20d72031c8">
+<script src="photo-view.js?v=5d20d72031c8" defer></script>
+<script src="room-view.js?v=5d20d72031c8" defer></script>
+<script src="cloud-view.js?v=5d20d72031c8" defer></script>
 </head><body><main>
 <a href="../pair-0048.html">← Report</a><h1>img_11_a ↔ img_16_a · RoMa × MoGe-2</h1>
 <p id="scene-note">rejected; validation matches: 8/78; median 3D residual: 1.295 m; gravity: 7.3°; reason: insufficient spatial coverage, reprojection error, insufficient consistent-point fraction. Rejected hypotheses are not used to assemble groups.</p>
@@ -16,8 +16,11 @@
 
 <section id="compare-controls" hidden>
   <div class="toolbar"><label>Compare photo <select id="compare-photo"></select></label></div>
-  <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
-  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked; panels share axis ranges and the photo camera frame. Relative model scales remain uncertain. This compares local shape and depth, before scene placement.</p>
+  <details id="compare-model-choice">
+    <summary id="compare-model-summary">Models to compare</summary>
+    <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
+  </details>
+  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked. Panels use the selected photo's camera frame and the same numeric axis ranges. A model can have its own relative scale. Fusion panels show saved surfels supported by the selected photo.</p>
   <img id="compare-preview" alt="Source photo for model comparison" hidden>
 </section>
 <details class="connection-options"><summary>Connections and room hypotheses</summary>
@@ -36,7 +39,7 @@
   <p id="room-warning" class="warning">Room membership is hypothesized. Unaligned parts are arranged for inspection; their relative placement is unknown.</p>
   <div id="room-details"></div>
 </section>
-<div class="toolbar" id="detail-control"><label>Detail<span class="detail-extra">per photo</span>
+<div class="toolbar" id="detail-control"><label>Detail <span class="detail-extra" id="detail-unit">per photo</span>
   <select id="detail" aria-label="Points per photo">
     <option value="1000">1k</option><option value="2000">2k</option>
     <option value="5000">5k</option><option value="10000">10k</option>
@@ -59,7 +62,7 @@
       <button id="top" data-orient="top">Top view</button><button data-orient="bottom">Bottom</button>
       <button data-orient="front">Front</button><button data-orient="back">Back</button>
       <button data-orient="left">Left</button><button data-orient="right">Right</button><button data-orient="iso">Isometric</button>
-    </div><p class="muted">Views follow the displayed axes. GeoCalib supplies the estimated vertical.</p>
+    </div><p class="muted">Views follow the displayed axes. GeoCalib supplies an estimated vertical when available.</p>
     <label>Photo viewpoint <select id="photo-view" aria-label="Photo viewpoint"></select></label>
     <div class="button-row"><button id="jump-photo">Go to viewpoint</button><button id="open-view-photo">Open photo</button></div>
     <div id="explore-options" hidden><label>Move speed <input id="explore-speed" type="range" min="0.1" max="5" step="0.1" value="1" aria-label="Explore movement speed"><output id="explore-speed-value">1.0</output><span id="explore-speed-unit">m/s</span></label>
@@ -132,13 +135,13 @@
 <div id="photos"></div>
 
 <details><summary>About this view</summary>
-<p>Photo selection changes visibility only. Poses use the full graph and remain fixed
-when the visible subgraph splits. Originally disconnected components have separate
-frames with unknown relative placement. A connected component is not a room.</p>
-<p>Changing matcher or depth selects that result's edges, groups and poses. The
+<p>Photo selection changes visibility only. Poses come from the full saved
+reconstruction. Separate coordinate frames have unknown relative placement.
+Room hypotheses overlay the selected reconstruction using saved photo IDs.</p>
+<p>Changing reconstruction options selects the corresponding saved geometry and poses. The
 largest group is initially selected; subsequent selections are remembered per
 combination. Offscreen 3D views release resources and restore their view on return.</p>
-<p>The VLM switch selects a saved connection-review experiment. No model runs in the
+<p>Where available, the VLM switch selects a saved connection-review experiment. No model runs in the
 browser. Components and poses were recomputed after edge removal; original clouds
 and K were retained. The initial photo selection is preserved. Same-room and doorway
 relations do not create a shared coordinate frame. Unknown answers are not support.</p>
@@ -154,13 +157,12 @@ and changes no poses. Overlapping hypotheses are alternatives, not a room count.
 Disconnected parts are arranged for inspection, with unknown physical placement.</p>
 <p><span id="scale-note">The model predicts meters; zero height is at the camera, not the floor.</span> GeoCalib applies one rotation per component. Without it, world
 vertical is unknown. Each model's XYZ and K are used together.</p>
-<p>Points are nested uniform pixel samples; Full includes every finite, positive,
-model-valid saved point. It does not change inference or metrics. Detail loads on
-demand. Toggling a photo does not change other samples. Three.js uses binary buffers
-and GPU camera transforms. Lower detail reduces the rendered count; Full does not
-downsample the saved valid cloud.</p>
+<p>All saved loads the complete display cloud. Some reports export a preview sample.
+Fused surfels are stored once and can appear through multiple supporting photos.
+Detail caps each stored surfel buffer before applying the photo selection.
+Lower detail reduces the rendered count. Selection preserves saved geometry and metrics.</p>
 <p>Measure distance: click A, then B to add a ruler. Points/Both snap to saved cloud vertices; Patches uses positions inside visible triangles. Labels retain source photos. Select a ruler to see its 3D length, horizontal distance and vertical difference. Drag A/B to adjust, or click an endpoint then choose a new location. Escape cancels an unfinished pick or edit; completed rulers remain until deleted. Measurements cannot cross disconnected inspection parts. Changing selected geometry, representation or coordinate transforms clears incompatible rulers.</p>
-<p>Distances follow predicted scale (relative units for DA3), including reconstruction/alignment errors. Horizontal and vertical components follow the displayed axes. A cross-section is a visible band, not an estimate of physical wall thickness.</p>
+<p>Distances use the selected reconstruction's units and include reconstruction and alignment errors. Horizontal and vertical components follow the displayed axes. A cross-section shows the band selected by its width control.</p>
 <p>Drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, double-click a surface to focus. The orientation widget and View presets select axis-aligned or isometric views. Orthographic projection removes perspective size changes. Cameras highlight on hover and open the source image on click/tap; measurement mode takes priority.</p>
 <p>Explore opens one aligned group in perspective at a predicted photo position. Drag to look; WASD/arrows or the mobile movement pad moves horizontally, Q/E or the height buttons moves vertically. Scroll moves through the scene, independently of orbit zoom. Returning to Inspect restores the previous camera. No collision detection or measured floor height is implied. Separate components are explored separately; photo jumps are viewpoint changes, not verified walkable paths.</p>
 <p>On mobile, Adjust with scene visible collapses settings to a bottom strip for slice position/width, cutaway height or point size. The strip reserves its own space, leaving the canvas unobscured. Rendering diagnostics stay outside enlarged mode.</p>

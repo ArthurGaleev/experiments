@@ -19715,10 +19715,910 @@
       "sha256": "fffd50a667c5ac58e3841b67ca3da392bf866aa4c358f1bfc9642fa86285bb0c",
       "bytes": 1125008,
       "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/5a252f67bff00fabb1d67f5a13778047666f0d17/points-fffd50a667c5ac58e3841b67.bin"
+    },
+    "points-00c34ec5c8f40dc53fa88dbc.bin": {
+      "sha256": "00c34ec5c8f40dc53fa88dbcc1cee8bd91e0f9a670a3dda7b55ad6a6b701613e",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-00c34ec5c8f40dc53fa88dbc.bin"
+    },
+    "points-01286ec281e56279ed8da4ed.bin": {
+      "sha256": "01286ec281e56279ed8da4ed26f131de9a6c941b679e0f8085227686c89b01d0",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-01286ec281e56279ed8da4ed.bin"
+    },
+    "points-0337070caa6b2ff8123d052a.bin": {
+      "sha256": "0337070caa6b2ff8123d052ace21bbbe2194e7eb5cfa6ffca43e3dc5caab5fe2",
+      "bytes": 1033779,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-0337070caa6b2ff8123d052a.bin"
+    },
+    "points-041684324bc2b1a55105b8c6.bin": {
+      "sha256": "041684324bc2b1a55105b8c64d8360d6869bfe8be56d1e4dc8a9a800193c9a18",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-041684324bc2b1a55105b8c6.bin"
+    },
+    "points-04a40615a717f9f691ea362a.bin": {
+      "sha256": "04a40615a717f9f691ea362acc62679e5e43327f0f23b128e5e60a2397a83ead",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-04a40615a717f9f691ea362a.bin"
+    },
+    "points-0512a53930b542abbada5432.bin": {
+      "sha256": "0512a53930b542abbada543251a99447c33e0c0ce62000a56b1c30018a60b5a7",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-0512a53930b542abbada5432.bin"
+    },
+    "points-0a499bf92455b2733cd48803.bin": {
+      "sha256": "0a499bf92455b2733cd488035708cb4bc82a603d6b5c29144824d4855e468cd1",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-0a499bf92455b2733cd48803.bin"
+    },
+    "points-0c06e0ed3432b9c5ddf37add.bin": {
+      "sha256": "0c06e0ed3432b9c5ddf37add249e5dc554adaddbe41cd57a0cb530524d4d2c0e",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-0c06e0ed3432b9c5ddf37add.bin"
+    },
+    "points-11d4837d7c1b018afe6d5369.bin": {
+      "sha256": "11d4837d7c1b018afe6d5369653c6c32aad165f0d40c6aed3fd4225ea306bf46",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-11d4837d7c1b018afe6d5369.bin"
+    },
+    "points-13464eab10fbccc21a55fa5c.bin": {
+      "sha256": "13464eab10fbccc21a55fa5c1818eed6f98702b3f31808d57fcffc59775d22a0",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-13464eab10fbccc21a55fa5c.bin"
+    },
+    "points-13c8b1a3d5b7642a0392df90.bin": {
+      "sha256": "13c8b1a3d5b7642a0392df903196b85e93be7f5cb851d8bd0c4b4b783e9934df",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-13c8b1a3d5b7642a0392df90.bin"
+    },
+    "points-160e00c882118479ffd550a1.bin": {
+      "sha256": "160e00c882118479ffd550a1f96ba235422886698081cf79e62a1ce417f3573b",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-160e00c882118479ffd550a1.bin"
+    },
+    "points-162b460380ccd8ad27e3e334.bin": {
+      "sha256": "162b460380ccd8ad27e3e3341d5f3d25adf4a94e2501792a90756afc81d4705a",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-162b460380ccd8ad27e3e334.bin"
+    },
+    "points-19ff7e7fa794deb736ac2449.bin": {
+      "sha256": "19ff7e7fa794deb736ac244988528e76e828e21dabccc1bdc000906fc4d652b0",
+      "bytes": 823506,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-19ff7e7fa794deb736ac2449.bin"
+    },
+    "points-1d87c11e7809f13bd31f2c8a.bin": {
+      "sha256": "1d87c11e7809f13bd31f2c8a1b0fb14b4e5abc38fd30699fca45b9eb791b96a4",
+      "bytes": 1223532,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-1d87c11e7809f13bd31f2c8a.bin"
+    },
+    "points-1e0b011cd338049fc7c6ee81.bin": {
+      "sha256": "1e0b011cd338049fc7c6ee814b3a20f6598984004c312a7ea2a8f25487b44017",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-1e0b011cd338049fc7c6ee81.bin"
+    },
+    "points-1e26c313f227edf3d66059f2.bin": {
+      "sha256": "1e26c313f227edf3d66059f2536d8081c2a4db95620595c1d5db5fdca3a215ae",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-1e26c313f227edf3d66059f2.bin"
+    },
+    "points-2347bd10cb8aae2c2e5ed640.bin": {
+      "sha256": "2347bd10cb8aae2c2e5ed640dfe1901d03717271abff958cebf9bbd3289a57b0",
+      "bytes": 343338,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-2347bd10cb8aae2c2e5ed640.bin"
+    },
+    "points-23fb50c0f1cc197de35d267f.bin": {
+      "sha256": "23fb50c0f1cc197de35d267f4829565aa5023b28d8bbb8d4ac03d0d1bd88e65a",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-23fb50c0f1cc197de35d267f.bin"
+    },
+    "points-24060a2e5cada42624213102.bin": {
+      "sha256": "24060a2e5cada4262421310248b320b2890de8a20b8634312b3f451187051da9",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-24060a2e5cada42624213102.bin"
+    },
+    "points-244f711723484d515a72cb76.bin": {
+      "sha256": "244f711723484d515a72cb7682eceb5d3862e4e73821083cc87cf4e1b134b911",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-244f711723484d515a72cb76.bin"
+    },
+    "points-250353c3b657d778f44bc908.bin": {
+      "sha256": "250353c3b657d778f44bc90831baf13be5a0698bb8b5a5d4bef03486790dbeeb",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-250353c3b657d778f44bc908.bin"
+    },
+    "points-251e9a9f1b01d034007a1d23.bin": {
+      "sha256": "251e9a9f1b01d034007a1d23c16a4d2df5538a22846ee9dd3899b6b9feddaaa5",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-251e9a9f1b01d034007a1d23.bin"
+    },
+    "points-2614eb1eb70ac4fdcad0a675.bin": {
+      "sha256": "2614eb1eb70ac4fdcad0a67584c2479c9509548a3425044a3a8e39ff35a6fb21",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-2614eb1eb70ac4fdcad0a675.bin"
+    },
+    "points-27eac9e16c033f908d5c5b98.bin": {
+      "sha256": "27eac9e16c033f908d5c5b98342e806dfee0d8c87da2734b20cdfd060afd39c4",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-27eac9e16c033f908d5c5b98.bin"
+    },
+    "points-285a9966bc905053049099de.bin": {
+      "sha256": "285a9966bc905053049099de3933651faaea328f1d01b690e0f52df4686984d1",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-285a9966bc905053049099de.bin"
+    },
+    "points-2871a3b7b40fdc681b099e0a.bin": {
+      "sha256": "2871a3b7b40fdc681b099e0a4319d9a608b432041994576b52d4268eab98d9ad",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-2871a3b7b40fdc681b099e0a.bin"
+    },
+    "points-293dd31ce76c160b0fcb24df.bin": {
+      "sha256": "293dd31ce76c160b0fcb24dfeed249c10631811f92fb7154a37f1d49e4120ab4",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-293dd31ce76c160b0fcb24df.bin"
+    },
+    "points-29be5a723829e0b12e0de5ad.bin": {
+      "sha256": "29be5a723829e0b12e0de5adaa4ac253483221b999549293e4afc2ae2163c9de",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-29be5a723829e0b12e0de5ad.bin"
+    },
+    "points-29f091979e691b79f3443002.bin": {
+      "sha256": "29f091979e691b79f3443002fcc773e2d30158dc06eec761bd81e1688747aed3",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-29f091979e691b79f3443002.bin"
+    },
+    "points-2b5546eb165ea6dc5a65398f.bin": {
+      "sha256": "2b5546eb165ea6dc5a65398fafa951a5bf0591fce0c76820cd89222674d252df",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-2b5546eb165ea6dc5a65398f.bin"
+    },
+    "points-2dae2dc9f515b2511bda131a.bin": {
+      "sha256": "2dae2dc9f515b2511bda131aa22807465919a76a024b0cc5505e20eb5883aecf",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-2dae2dc9f515b2511bda131a.bin"
+    },
+    "points-2f1af176da5c71d358561439.bin": {
+      "sha256": "2f1af176da5c71d358561439983b70a6c280dffc1fb09acf41f6e78fe0139d9b",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-2f1af176da5c71d358561439.bin"
+    },
+    "points-3000a803f8441a17aedb1bd7.bin": {
+      "sha256": "3000a803f8441a17aedb1bd7e0f0f53cf3d9bbe1facb1a6dab45aef9b1b81a8e",
+      "bytes": 1280608,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3000a803f8441a17aedb1bd7.bin"
+    },
+    "points-3152501295d8714821e81e2a.bin": {
+      "sha256": "3152501295d8714821e81e2a31f239eb82d9812a3da6ecc9f36a8ad38b8f1d35",
+      "bytes": 903705,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3152501295d8714821e81e2a.bin"
+    },
+    "points-3242dd3dfefa2f575713fd32.bin": {
+      "sha256": "3242dd3dfefa2f575713fd3209a181b3f709512f0d28125e54804b8a8a72b752",
+      "bytes": 624994,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3242dd3dfefa2f575713fd32.bin"
+    },
+    "points-348d4708debbf908b8e11bf0.bin": {
+      "sha256": "348d4708debbf908b8e11bf00f0211742d5d4f740c8e06d5a2121a8e2a39c2be",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-348d4708debbf908b8e11bf0.bin"
+    },
+    "points-34e25561067425685241ec62.bin": {
+      "sha256": "34e25561067425685241ec62c50f52dbf7d32da68625906ff0e926e4e20f5f8b",
+      "bytes": 1066535,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-34e25561067425685241ec62.bin"
+    },
+    "points-35f45b25c8404ca0f63e234a.bin": {
+      "sha256": "35f45b25c8404ca0f63e234a1f77db8d6d754371309632fd69226984aec46245",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-35f45b25c8404ca0f63e234a.bin"
+    },
+    "points-375202b3e63a52eb81fe5da5.bin": {
+      "sha256": "375202b3e63a52eb81fe5da5fd6a328562d8871ec427e235eb6a051e79954167",
+      "bytes": 1087682,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-375202b3e63a52eb81fe5da5.bin"
+    },
+    "points-382dca72d1d6059c4cce12aa.bin": {
+      "sha256": "382dca72d1d6059c4cce12aa0b88ab0368b6f08f1318ec0a9eb1d6c519fdcc2f",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-382dca72d1d6059c4cce12aa.bin"
+    },
+    "points-394de59b7e094d1e5a49c420.bin": {
+      "sha256": "394de59b7e094d1e5a49c4208962cb20b0aa79f9ea9feceef4e833fdebcf96eb",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-394de59b7e094d1e5a49c420.bin"
+    },
+    "points-3a56a52d11d93d569e287402.bin": {
+      "sha256": "3a56a52d11d93d569e28740289f5c9ce5d88201099279fcae90ba878e74fae56",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3a56a52d11d93d569e287402.bin"
+    },
+    "points-3a7ea851fb33b6db69c17e8d.bin": {
+      "sha256": "3a7ea851fb33b6db69c17e8dd1040ffc4a17a3e02f03d688d42dc68f02ff0fa5",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3a7ea851fb33b6db69c17e8d.bin"
+    },
+    "points-3a87a366b724e28ca9da6927.bin": {
+      "sha256": "3a87a366b724e28ca9da6927b148640f60ba5cc12b2a84164235b49005bff544",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3a87a366b724e28ca9da6927.bin"
+    },
+    "points-3b1485027c1699533b39882b.bin": {
+      "sha256": "3b1485027c1699533b39882b7fa7f18a970a341ee2720240f7486b9ab5298404",
+      "bytes": 504230,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3b1485027c1699533b39882b.bin"
+    },
+    "points-3e13bc6866e90a9c00a8d3f0.bin": {
+      "sha256": "3e13bc6866e90a9c00a8d3f0e8d8389d762b9430d35fd2c1c4422d970487082c",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3e13bc6866e90a9c00a8d3f0.bin"
+    },
+    "points-3fbc7293c9db8357d21fecde.bin": {
+      "sha256": "3fbc7293c9db8357d21fecde54bcdb644f242e5dccc46be23277b200bb339809",
+      "bytes": 996577,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3fbc7293c9db8357d21fecde.bin"
+    },
+    "points-3fe2770587d188cb6602ebd5.bin": {
+      "sha256": "3fe2770587d188cb6602ebd581deb4477ce05d1bad1a445af2dfbecdf9039a11",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-3fe2770587d188cb6602ebd5.bin"
+    },
+    "points-407673537f3d29e45c3d25e9.bin": {
+      "sha256": "407673537f3d29e45c3d25e97f0e2cb51b759751143fd77fd11b59ba3e32f04a",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-407673537f3d29e45c3d25e9.bin"
+    },
+    "points-413c792ccaacdfec6d3b18a1.bin": {
+      "sha256": "413c792ccaacdfec6d3b18a14a957b2b04515afbe9da1c36e4f92002535aeaf9",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-413c792ccaacdfec6d3b18a1.bin"
+    },
+    "points-42882a98824562bc1493aa4c.bin": {
+      "sha256": "42882a98824562bc1493aa4c8f50bc7db6f7c1aad333bb3e59c1a26001b3b7ab",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-42882a98824562bc1493aa4c.bin"
+    },
+    "points-42fb2ce6e293c8fe83ea3592.bin": {
+      "sha256": "42fb2ce6e293c8fe83ea3592778e3e9a10754c7ee313a5342dc565d0301c379e",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-42fb2ce6e293c8fe83ea3592.bin"
+    },
+    "points-43a2df7faf6904024f763322.bin": {
+      "sha256": "43a2df7faf6904024f76332265cdaba0293fcfce262b1cb22ed4cb861d32163b",
+      "bytes": 1087682,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-43a2df7faf6904024f763322.bin"
+    },
+    "points-45928a9f7a31d6f56f76ced2.bin": {
+      "sha256": "45928a9f7a31d6f56f76ced2e3b6a270d562923d79cd37e703c49baaf7705bce",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-45928a9f7a31d6f56f76ced2.bin"
+    },
+    "points-45a39bd25a1300680fe5828b.bin": {
+      "sha256": "45a39bd25a1300680fe5828ba969295eaaf6c23a360b9740b616081b4ebdd786",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-45a39bd25a1300680fe5828b.bin"
+    },
+    "points-4674f102a0611ca6a17fc231.bin": {
+      "sha256": "4674f102a0611ca6a17fc231f7447e21b815de186153b49f7348d77addbc2c16",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-4674f102a0611ca6a17fc231.bin"
+    },
+    "points-46e4e1bd467d017a65cc1e0a.bin": {
+      "sha256": "46e4e1bd467d017a65cc1e0a10002d05cb1e535f3fb66ecce18638c89bc6a5a2",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-46e4e1bd467d017a65cc1e0a.bin"
+    },
+    "points-490d70559fe316491e04565c.bin": {
+      "sha256": "490d70559fe316491e04565c1260decc272a1f1bc2f3143fbe0d5be361238f42",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-490d70559fe316491e04565c.bin"
+    },
+    "points-4ad5f57e20c03733c54c74a0.bin": {
+      "sha256": "4ad5f57e20c03733c54c74a0ed6e2c1cd8195bd3f9c02f9e71f3980faa722d87",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-4ad5f57e20c03733c54c74a0.bin"
+    },
+    "points-4e46aec9ab0a93c7b0835f1a.bin": {
+      "sha256": "4e46aec9ab0a93c7b0835f1ab2481f2397fc134e056baac1f1f73aec1545b5f2",
+      "bytes": 843513,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-4e46aec9ab0a93c7b0835f1a.bin"
+    },
+    "points-4efca9b73c4c140f0ac94ba4.bin": {
+      "sha256": "4efca9b73c4c140f0ac94ba41e70b9ad20344557e5f28bbb3b55bad1eed532c9",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-4efca9b73c4c140f0ac94ba4.bin"
+    },
+    "points-4f8a1178ee114dad987ecbf1.bin": {
+      "sha256": "4f8a1178ee114dad987ecbf1533cb8bb5d80acb8b07cff86863c820418db3a8b",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-4f8a1178ee114dad987ecbf1.bin"
+    },
+    "points-50976c476c053f431c5e1caf.bin": {
+      "sha256": "50976c476c053f431c5e1caf4cc2a39b6a08cf46cc0531cf0317f04353eb6e71",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-50976c476c053f431c5e1caf.bin"
+    },
+    "points-510c4019ad27392070e48a53.bin": {
+      "sha256": "510c4019ad27392070e48a53a4384ed25a83a4b9fc855f0b1f2e8533748c165a",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-510c4019ad27392070e48a53.bin"
+    },
+    "points-52f24c5f48d57bf53ef2df86.bin": {
+      "sha256": "52f24c5f48d57bf53ef2df86cd759237e34e89eb55e3f2173ec26dbed08a7f6b",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-52f24c5f48d57bf53ef2df86.bin"
+    },
+    "points-5492ebd86d8fb3bda291be39.bin": {
+      "sha256": "5492ebd86d8fb3bda291be39981104b1e71a9b482ef7bcd00be28f798924a2ea",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-5492ebd86d8fb3bda291be39.bin"
+    },
+    "points-55f5579031c01de313c9c6f1.bin": {
+      "sha256": "55f5579031c01de313c9c6f1c28dd6adc823037bccb890ceede617570b70fe95",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-55f5579031c01de313c9c6f1.bin"
+    },
+    "points-5671064474b89afad9dd2248.bin": {
+      "sha256": "5671064474b89afad9dd224864bd46fabec7cb904039aba7394e4c33d3e1b9a5",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-5671064474b89afad9dd2248.bin"
+    },
+    "points-5a310fffa5299f1902dd1f3a.bin": {
+      "sha256": "5a310fffa5299f1902dd1f3a79e71f283126340ae346551f8574ca660eb7b106",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-5a310fffa5299f1902dd1f3a.bin"
+    },
+    "points-5ae471162a3d73959a4ccf35.bin": {
+      "sha256": "5ae471162a3d73959a4ccf351f7d8a3e2432612d1f5265c0083d3ffb208a283a",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-5ae471162a3d73959a4ccf35.bin"
+    },
+    "points-5b63406d14bc964dbca532f7.bin": {
+      "sha256": "5b63406d14bc964dbca532f711975b48ce80e37be80d8147fc010939f2811f98",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-5b63406d14bc964dbca532f7.bin"
+    },
+    "points-5df6a5fb84b3ac26e42b9651.bin": {
+      "sha256": "5df6a5fb84b3ac26e42b96515b04e19b3b1c41863c200d983bca08fc13797b09",
+      "bytes": 1089088,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-5df6a5fb84b3ac26e42b9651.bin"
+    },
+    "points-606472524cf6091755ccae40.bin": {
+      "sha256": "606472524cf6091755ccae40df031af1f5467bf2096ddc71cede669771a45baf",
+      "bytes": 1105485,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-606472524cf6091755ccae40.bin"
+    },
+    "points-6161a0d688d098f74ef17e2c.bin": {
+      "sha256": "6161a0d688d098f74ef17e2cf00fc2761cd145f32b83819901b1cb2323a08433",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-6161a0d688d098f74ef17e2c.bin"
+    },
+    "points-68713f794a4636ccf0419a9f.bin": {
+      "sha256": "68713f794a4636ccf0419a9fe87ac5615f472652fe036c5c60c4e8838b354bae",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-68713f794a4636ccf0419a9f.bin"
+    },
+    "points-6c2bd6160ef91903482731fa.bin": {
+      "sha256": "6c2bd6160ef91903482731fa092d49952efdfb448a115ce272f97ac6b56fd850",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-6c2bd6160ef91903482731fa.bin"
+    },
+    "points-6fb10c5ef3a9e27d504fcf36.bin": {
+      "sha256": "6fb10c5ef3a9e27d504fcf36197071bc5d18d9318faa05b2e6316bcdd3b05f7e",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-6fb10c5ef3a9e27d504fcf36.bin"
+    },
+    "points-73802224402498eeef237ef4.bin": {
+      "sha256": "73802224402498eeef237ef4d460e94b36e802e4e87c6c7f783cb078e397373a",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-73802224402498eeef237ef4.bin"
+    },
+    "points-73994a4947f2025e3845421b.bin": {
+      "sha256": "73994a4947f2025e3845421b98f375cbe90adbf02391c6fa0868dd7b99eb7514",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-73994a4947f2025e3845421b.bin"
+    },
+    "points-73e5f045b536421d4ba70feb.bin": {
+      "sha256": "73e5f045b536421d4ba70feb3da2228d337fee7ed92843c1ae6434d0385f43f5",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-73e5f045b536421d4ba70feb.bin"
+    },
+    "points-749c3dea6cbf8a22e2be82dc.bin": {
+      "sha256": "749c3dea6cbf8a22e2be82dcc313250e11dfd28bf6d0fbb040235f9dacb06ca4",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-749c3dea6cbf8a22e2be82dc.bin"
+    },
+    "points-74b5140e83a620f46ab125ce.bin": {
+      "sha256": "74b5140e83a620f46ab125ce8b7ee1f45464345803f276b1ad19d65498a0241d",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-74b5140e83a620f46ab125ce.bin"
+    },
+    "points-75eee7c35f318591412f8ee4.bin": {
+      "sha256": "75eee7c35f318591412f8ee476d2cfc87aaada233b99b6c0e9fda00edd2583c1",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-75eee7c35f318591412f8ee4.bin"
+    },
+    "points-7a350afc2dc8db2f2b91e5f4.bin": {
+      "sha256": "7a350afc2dc8db2f2b91e5f4696ac9e6be24b414d40589e2bc1585dc4d212fb6",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-7a350afc2dc8db2f2b91e5f4.bin"
+    },
+    "points-7b12e8324c901d989b88e949.bin": {
+      "sha256": "7b12e8324c901d989b88e9491ceae74e410b6cb0441c7d0799b7ccefa8c92e4e",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-7b12e8324c901d989b88e949.bin"
+    },
+    "points-7b34cbc3aea3227bbc9a5221.bin": {
+      "sha256": "7b34cbc3aea3227bbc9a522112f6d38ad2dafca24c0c79ca46e7514d3b8f495a",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-7b34cbc3aea3227bbc9a5221.bin"
+    },
+    "points-7c031e140da07ecda46e42a2.bin": {
+      "sha256": "7c031e140da07ecda46e42a2e5e68026c6dd4a8fd17257d12c324f86e8f728ff",
+      "bytes": 1089088,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-7c031e140da07ecda46e42a2.bin"
+    },
+    "points-7c2031c0dd53f400808c20b5.bin": {
+      "sha256": "7c2031c0dd53f400808c20b5eb4ca1c466f60a2ea3e2f007b1216f8c34252514",
+      "bytes": 1045008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-7c2031c0dd53f400808c20b5.bin"
+    },
+    "points-7de9d40145a9f2f2cf7b1b8a.bin": {
+      "sha256": "7de9d40145a9f2f2cf7b1b8a80599c7a293a671a15b532360172da9c6fb8858c",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-7de9d40145a9f2f2cf7b1b8a.bin"
+    },
+    "points-809b98c57636cfbc3ee4d360.bin": {
+      "sha256": "809b98c57636cfbc3ee4d360c19e954c9c6ae68d4c5b6c138640c44c1d08411e",
+      "bytes": 343338,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-809b98c57636cfbc3ee4d360.bin"
+    },
+    "points-80fe83797120a75a88234fd0.bin": {
+      "sha256": "80fe83797120a75a88234fd0229a49f91ef29b0922ff26dba9818103c4db0145",
+      "bytes": 1089088,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-80fe83797120a75a88234fd0.bin"
+    },
+    "points-813397989597ce25729fdad8.bin": {
+      "sha256": "813397989597ce25729fdad874ff4c26750f71c4588af27ce9d67cafb89a73af",
+      "bytes": 962377,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-813397989597ce25729fdad8.bin"
+    },
+    "points-82377e45849232b35ebb5229.bin": {
+      "sha256": "82377e45849232b35ebb522921050e2c0c8a69ae07643336521457d909f7718c",
+      "bytes": 1223532,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-82377e45849232b35ebb5229.bin"
+    },
+    "points-86149cd8af698bf984f656ea.bin": {
+      "sha256": "86149cd8af698bf984f656ea4dbb88e738e2430c0c5c6376d0b69abec351eae1",
+      "bytes": 624994,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-86149cd8af698bf984f656ea.bin"
+    },
+    "points-86e669097d2793af777f46d4.bin": {
+      "sha256": "86e669097d2793af777f46d439119269f40b07fbe5aff56e9e788b7671cb9620",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-86e669097d2793af777f46d4.bin"
+    },
+    "points-8b537527677ce84a8aeaf7fe.bin": {
+      "sha256": "8b537527677ce84a8aeaf7fe0991efc2f2aada3a7347e62a8413126174bc2a3e",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-8b537527677ce84a8aeaf7fe.bin"
+    },
+    "points-8b6c67b1ef785e7843275e87.bin": {
+      "sha256": "8b6c67b1ef785e7843275e871d99878a142d7fd215ce32a48aced25e52e9ce65",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-8b6c67b1ef785e7843275e87.bin"
+    },
+    "points-8d6c966484aa73bd9c392057.bin": {
+      "sha256": "8d6c966484aa73bd9c39205724402d874322730edade803b92ac39c008c182f5",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-8d6c966484aa73bd9c392057.bin"
+    },
+    "points-8dcc4f4229e840da1e07ed9a.bin": {
+      "sha256": "8dcc4f4229e840da1e07ed9abfe13b678fd8455e8fac50f90fe755ad561fdd2f",
+      "bytes": 983619,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-8dcc4f4229e840da1e07ed9a.bin"
+    },
+    "points-8fd6bf9d5e1c6076c6c4005b.bin": {
+      "sha256": "8fd6bf9d5e1c6076c6c4005be3776dfc90147e99eda83bea0c57e5c14a88852a",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-8fd6bf9d5e1c6076c6c4005b.bin"
+    },
+    "points-90fa0f419f16bf021e0c8355.bin": {
+      "sha256": "90fa0f419f16bf021e0c83552bb0477e77fe8ed30f059d6ebc4f313fa8b96cfe",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-90fa0f419f16bf021e0c8355.bin"
+    },
+    "points-915fb70f1192087e0af2be2c.bin": {
+      "sha256": "915fb70f1192087e0af2be2cc9d52c7b1d14deba9ed51c4bb6a08e396c17f5d7",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-915fb70f1192087e0af2be2c.bin"
+    },
+    "points-91882ef4240f0a2fc3bc5fb6.bin": {
+      "sha256": "91882ef4240f0a2fc3bc5fb60b6ce3c0a1f80283e533bd295cd705160349bfa6",
+      "bytes": 1076795,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-91882ef4240f0a2fc3bc5fb6.bin"
+    },
+    "points-92b8ad21938dcb03cf6846ba.bin": {
+      "sha256": "92b8ad21938dcb03cf6846ba05675076447f79c069e536fc3134a0460721551b",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-92b8ad21938dcb03cf6846ba.bin"
+    },
+    "points-92e9dbf64e3c11216e840d6c.bin": {
+      "sha256": "92e9dbf64e3c11216e840d6c83857785a7e5f5b4c025b705ad95c74b81a2f5c7",
+      "bytes": 903705,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-92e9dbf64e3c11216e840d6c.bin"
+    },
+    "points-941affe063a231f5345cd2ce.bin": {
+      "sha256": "941affe063a231f5345cd2ceede84ce773b0c4c1f0d8ef51315615deb6f92ae2",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-941affe063a231f5345cd2ce.bin"
+    },
+    "points-95e11815516b362d9b14d631.bin": {
+      "sha256": "95e11815516b362d9b14d6312afd3ea9beefcf1f04e9f81eda476ea7c42ec21f",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-95e11815516b362d9b14d631.bin"
+    },
+    "points-9647a255f708443af782a9c5.bin": {
+      "sha256": "9647a255f708443af782a9c5dcb3b31c521b08179ba9711a8af6d26f3a1bc6a1",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-9647a255f708443af782a9c5.bin"
+    },
+    "points-9864781902e100bf1c768e54.bin": {
+      "sha256": "9864781902e100bf1c768e548fafeba585cf6ff0645d8362773a9033f5b79426",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-9864781902e100bf1c768e54.bin"
+    },
+    "points-9a3886d8385f70e41026d1bd.bin": {
+      "sha256": "9a3886d8385f70e41026d1bd559ae75009c537a28cdfe68ea75f3070db97259b",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-9a3886d8385f70e41026d1bd.bin"
+    },
+    "points-9e18db949c7c3fe2f4ba2b7d.bin": {
+      "sha256": "9e18db949c7c3fe2f4ba2b7d5ae41b68e477a89c984b230212853f92b1aa18cf",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-9e18db949c7c3fe2f4ba2b7d.bin"
+    },
+    "points-a199c20468972628166316d3.bin": {
+      "sha256": "a199c20468972628166316d3325f40d5a714e57b51090e6b502ffbf35448240a",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a199c20468972628166316d3.bin"
+    },
+    "points-a2afbee6f782b7981a7aab46.bin": {
+      "sha256": "a2afbee6f782b7981a7aab46c89d0150d27b53c1a469cf1c70897a95196c9962",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a2afbee6f782b7981a7aab46.bin"
+    },
+    "points-a70db641f8846d565e3f47e0.bin": {
+      "sha256": "a70db641f8846d565e3f47e0e123ef4962ff8e299ba684b3e9fd821e8e4889f7",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a70db641f8846d565e3f47e0.bin"
+    },
+    "points-a7e7c16badeef2ba351823f7.bin": {
+      "sha256": "a7e7c16badeef2ba351823f7aae2989c8006ce3e5354a1f9f20b3f3c40f016ed",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a7e7c16badeef2ba351823f7.bin"
+    },
+    "points-a82d2e44987e554261610aff.bin": {
+      "sha256": "a82d2e44987e554261610aff124761c551ed1eb961e3b1d49e8485e6484f3cbd",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a82d2e44987e554261610aff.bin"
+    },
+    "points-a937fe71bd2c91cf007cee86.bin": {
+      "sha256": "a937fe71bd2c91cf007cee86c63191051511f79df476a01a9e19e0f4a0524c03",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a937fe71bd2c91cf007cee86.bin"
+    },
+    "points-a93fbfe2fe2eb52cfdc44787.bin": {
+      "sha256": "a93fbfe2fe2eb52cfdc44787676ff151cd21efbf9886e451b6a07b594e7a0877",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a93fbfe2fe2eb52cfdc44787.bin"
+    },
+    "points-a975379b14ca18958be0e54d.bin": {
+      "sha256": "a975379b14ca18958be0e54dc4c1011b09761502abaf755932838298590af8c3",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-a975379b14ca18958be0e54d.bin"
+    },
+    "points-ac91f530f3b0e0138193c089.bin": {
+      "sha256": "ac91f530f3b0e0138193c08954b36faf48b6c162ff67d274893f5c41e1bf176a",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ac91f530f3b0e0138193c089.bin"
+    },
+    "points-acc52ee4463742e71e85db83.bin": {
+      "sha256": "acc52ee4463742e71e85db837acce7ee730cbc428adec3b9dc6f3187768cd916",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-acc52ee4463742e71e85db83.bin"
+    },
+    "points-acd4ba01498f5ed82509c586.bin": {
+      "sha256": "acd4ba01498f5ed82509c5863f3af51a6d9189014ae5ecc64a1a43fc03382477",
+      "bytes": 907144,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-acd4ba01498f5ed82509c586.bin"
+    },
+    "points-afd54e092781f62833e428de.bin": {
+      "sha256": "afd54e092781f62833e428de0392d8332f3716895953a67756293a7d9b983baf",
+      "bytes": 1057719,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-afd54e092781f62833e428de.bin"
+    },
+    "points-b0dae7ba082db8ddfa8ec5ce.bin": {
+      "sha256": "b0dae7ba082db8ddfa8ec5ce28cc5307f65b4538bd41d8e9a34655f7c51950b0",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-b0dae7ba082db8ddfa8ec5ce.bin"
+    },
+    "points-b610100019d0b7fea52982ca.bin": {
+      "sha256": "b610100019d0b7fea52982ca195e30e463326922db91995bfc5cd635f7c3b696",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-b610100019d0b7fea52982ca.bin"
+    },
+    "points-b7d7a6d647ecde21da5f7073.bin": {
+      "sha256": "b7d7a6d647ecde21da5f7073e575ef5f2032c14088a8abb259b3793795dfd794",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-b7d7a6d647ecde21da5f7073.bin"
+    },
+    "points-b85e906ae4049fa8db9008d9.bin": {
+      "sha256": "b85e906ae4049fa8db9008d91545f653d51251b7809b3e4956b96482a9511680",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-b85e906ae4049fa8db9008d9.bin"
+    },
+    "points-b9614f2b390df3381dd57f1b.bin": {
+      "sha256": "b9614f2b390df3381dd57f1be386a68e4e3f1eff90c9b16cdd019a57fd6c153a",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-b9614f2b390df3381dd57f1b.bin"
+    },
+    "points-b97a110a5c790560496da0f0.bin": {
+      "sha256": "b97a110a5c790560496da0f0752a06917bb56b072ae82c0ff6753fabbc768f0e",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-b97a110a5c790560496da0f0.bin"
+    },
+    "points-ba11657be4bd99c7a95f6ec6.bin": {
+      "sha256": "ba11657be4bd99c7a95f6ec6c359695fbf409367f682f86b05ab4b286098c4ac",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ba11657be4bd99c7a95f6ec6.bin"
+    },
+    "points-ba7e016d583cee3dda8515ab.bin": {
+      "sha256": "ba7e016d583cee3dda8515ab49a5f209a63ae10acdc35eabd609b8c87b176383",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ba7e016d583cee3dda8515ab.bin"
+    },
+    "points-bd85d2ca799017dcaf29c001.bin": {
+      "sha256": "bd85d2ca799017dcaf29c00171425d728159ce52fd6cc76344e15e05e8ee19dc",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-bd85d2ca799017dcaf29c001.bin"
+    },
+    "points-bd99b261b51c67ab3376cb58.bin": {
+      "sha256": "bd99b261b51c67ab3376cb5883af826abdf24256ef868c2e31654cf08d8fe82f",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-bd99b261b51c67ab3376cb58.bin"
+    },
+    "points-becacc857d1918ebbbffc0a7.bin": {
+      "sha256": "becacc857d1918ebbbffc0a7c48cfcc226334d8bbba96711f33af89c9de1ec37",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-becacc857d1918ebbbffc0a7.bin"
+    },
+    "points-c33738ac64b6e75d27b497e7.bin": {
+      "sha256": "c33738ac64b6e75d27b497e724c418f28c03e26a654a8cc4d5510ecb2ddd6755",
+      "bytes": 1280608,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c33738ac64b6e75d27b497e7.bin"
+    },
+    "points-c3a192afbd8fe0cf6882e796.bin": {
+      "sha256": "c3a192afbd8fe0cf6882e7960785941d6f31ae87cedc4e8e4257b37526237c0f",
+      "bytes": 334560,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c3a192afbd8fe0cf6882e796.bin"
+    },
+    "points-c3cf1677ea678a911657d19f.bin": {
+      "sha256": "c3cf1677ea678a911657d19f9a34e06fd75e013bf56a5b90fc5a1165032d3ef1",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c3cf1677ea678a911657d19f.bin"
+    },
+    "points-c504f7f4e157400906088bcd.bin": {
+      "sha256": "c504f7f4e157400906088bcdd3eccf44d69ccb142d6f7e455dbb4fc28141d2ff",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c504f7f4e157400906088bcd.bin"
+    },
+    "points-c68f0c1ee4065494a95f0ff6.bin": {
+      "sha256": "c68f0c1ee4065494a95f0ff696fbdb86494035768bfe7159e6f18bebc9d29733",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c68f0c1ee4065494a95f0ff6.bin"
+    },
+    "points-c6a0a4a56887e0a40eff3bfb.bin": {
+      "sha256": "c6a0a4a56887e0a40eff3bfb3ca5592052cbcc14a9fffbf656c89fa72e25088d",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c6a0a4a56887e0a40eff3bfb.bin"
+    },
+    "points-c828523965dc1acf89473700.bin": {
+      "sha256": "c828523965dc1acf89473700987edfc1458d72c29e52466d6de47ddafbf45f45",
+      "bytes": 1089088,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c828523965dc1acf89473700.bin"
+    },
+    "points-c835ceacd52ce528c2b5b035.bin": {
+      "sha256": "c835ceacd52ce528c2b5b0352cfa9cb991613bd9a31ba66e786f753c3c819706",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c835ceacd52ce528c2b5b035.bin"
+    },
+    "points-c90b79993b5b7c1288dbcdfb.bin": {
+      "sha256": "c90b79993b5b7c1288dbcdfb98e29a923714b87d815f07f27a44d04e6ce1fbcc",
+      "bytes": 962377,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c90b79993b5b7c1288dbcdfb.bin"
+    },
+    "points-c9a68149914f9dbbb72414db.bin": {
+      "sha256": "c9a68149914f9dbbb72414dbdcaf9725a26bdad6411fdd66e8b7215d5a11e91f",
+      "bytes": 1280608,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-c9a68149914f9dbbb72414db.bin"
+    },
+    "points-cb6dae2f3d7eebad1a485092.bin": {
+      "sha256": "cb6dae2f3d7eebad1a485092d91cebaa562ade9baf25f38cea526a416684edde",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-cb6dae2f3d7eebad1a485092.bin"
+    },
+    "points-cc01c35dd7e02887f12c3a8a.bin": {
+      "sha256": "cc01c35dd7e02887f12c3a8af798b11ba48ac2e889566def74f3263001c9a871",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-cc01c35dd7e02887f12c3a8a.bin"
+    },
+    "points-cd2b15a58dd8b64bab18011d.bin": {
+      "sha256": "cd2b15a58dd8b64bab18011dcdf2a05d13a5fe9275fd9db4a2ae6c7eb56397bb",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-cd2b15a58dd8b64bab18011d.bin"
+    },
+    "points-ce057109cd59eb7df8c22e54.bin": {
+      "sha256": "ce057109cd59eb7df8c22e54a86c3afc843884020f934b69b903be0f14d167b6",
+      "bytes": 639985,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ce057109cd59eb7df8c22e54.bin"
+    },
+    "points-cecdfe00dde8d4e34f903d98.bin": {
+      "sha256": "cecdfe00dde8d4e34f903d98add5fe1d9281eae2fe50d1f4fed294b754609c89",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-cecdfe00dde8d4e34f903d98.bin"
+    },
+    "points-cf4f5e13121ee7955bd5db90.bin": {
+      "sha256": "cf4f5e13121ee7955bd5db9062bffce8a9c37f41a5a2e5c2acf3ea8d553e5424",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-cf4f5e13121ee7955bd5db90.bin"
+    },
+    "points-cfdb41b9679b524924af7c73.bin": {
+      "sha256": "cfdb41b9679b524924af7c737ea9cbc96664cd3e506b996e5ffd6c28bacad6dd",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-cfdb41b9679b524924af7c73.bin"
+    },
+    "points-d2984ec181808b71020aec4e.bin": {
+      "sha256": "d2984ec181808b71020aec4e401ce9bdf84ddec46169dc96cb8949ebc980918e",
+      "bytes": 1045008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-d2984ec181808b71020aec4e.bin"
+    },
+    "points-d2bb59b7ccbcbf7ab12bd31b.bin": {
+      "sha256": "d2bb59b7ccbcbf7ab12bd31be24312f720e6997c32ec1fba1180c8a1f67e4d7a",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-d2bb59b7ccbcbf7ab12bd31b.bin"
+    },
+    "points-d42e3e97f1dee8c3984168e7.bin": {
+      "sha256": "d42e3e97f1dee8c3984168e7a634607a113a1daefec359af264a4a38b6fdb369",
+      "bytes": 1089088,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-d42e3e97f1dee8c3984168e7.bin"
+    },
+    "points-d44de0311a6ddfff532f0708.bin": {
+      "sha256": "d44de0311a6ddfff532f0708dc7bf8c81d9b535ee9274e5b650b5a13ef3f9648",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-d44de0311a6ddfff532f0708.bin"
+    },
+    "points-d4c16166016ad6e3f7c137f8.bin": {
+      "sha256": "d4c16166016ad6e3f7c137f8153e562d8b81e8181d18876dbd4e6a46332a24dc",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-d4c16166016ad6e3f7c137f8.bin"
+    },
+    "points-d9b73174e03295f0b6fa2d52.bin": {
+      "sha256": "d9b73174e03295f0b6fa2d5227dbe2eac3e62a302d01fe1b656d6ecb519a5ed8",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-d9b73174e03295f0b6fa2d52.bin"
+    },
+    "points-daebc4690a99f1ae1cf326b9.bin": {
+      "sha256": "daebc4690a99f1ae1cf326b9639ef9f95ca53d77421f39bc5490f8c0fadda00d",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-daebc4690a99f1ae1cf326b9.bin"
+    },
+    "points-df9cf941e986209661918f27.bin": {
+      "sha256": "df9cf941e986209661918f27b7e6fb438a8f91997bc193c979c04f6194b035d0",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-df9cf941e986209661918f27.bin"
+    },
+    "points-e1c620859f9ac08a783f5741.bin": {
+      "sha256": "e1c620859f9ac08a783f574125bd8f2fda73f5a97362a175f2466ba7d6173419",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-e1c620859f9ac08a783f5741.bin"
+    },
+    "points-e37fd1e802d52eea1b0c2bd9.bin": {
+      "sha256": "e37fd1e802d52eea1b0c2bd9fd477cfb9e30ebeca1c19a7196c041ed22111caf",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-e37fd1e802d52eea1b0c2bd9.bin"
+    },
+    "points-e7ff1d3eeafe8b871699e17b.bin": {
+      "sha256": "e7ff1d3eeafe8b871699e17b7ab3830d7d9eb3bfd1784d35c0a49060b867daf1",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-e7ff1d3eeafe8b871699e17b.bin"
+    },
+    "points-eadfef37771c77c32dc49ace.bin": {
+      "sha256": "eadfef37771c77c32dc49aceb8645b1d1ea32e74043748570bdb92483251f19e",
+      "bytes": 1105485,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-eadfef37771c77c32dc49ace.bin"
+    },
+    "points-ec91bafc753120b7fc25d8a1.bin": {
+      "sha256": "ec91bafc753120b7fc25d8a174e4aac4df2e4b241537c361878a33b0a119f03c",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ec91bafc753120b7fc25d8a1.bin"
+    },
+    "points-ee2d1f6605531b1382229d40.bin": {
+      "sha256": "ee2d1f6605531b1382229d405554328924f49531cc99413628548e8c2cd0a0f6",
+      "bytes": 174029,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ee2d1f6605531b1382229d40.bin"
+    },
+    "points-ee631c2435625276e5b036ec.bin": {
+      "sha256": "ee631c2435625276e5b036ec86227262997ee6e11110c257be091c80069e0c87",
+      "bytes": 1125008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ee631c2435625276e5b036ec.bin"
+    },
+    "points-f4c97e21f8417d6b3b70b1f0.bin": {
+      "sha256": "f4c97e21f8417d6b3b70b1f0332f81f1d5a2cd7ce96b5767b79265a0da723af8",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-f4c97e21f8417d6b3b70b1f0.bin"
+    },
+    "points-f5ac61e7a4d2d0280873cc17.bin": {
+      "sha256": "f5ac61e7a4d2d0280873cc177e051762683a97379adeec6d07f8cff39051d464",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-f5ac61e7a4d2d0280873cc17.bin"
+    },
+    "points-f7582989076abde1de655cca.bin": {
+      "sha256": "f7582989076abde1de655ccae6ccc7d92b03182ec5de2f703efa219f9d3fc93f",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-f7582989076abde1de655cca.bin"
+    },
+    "points-f8e4f63d3fb152ff4c555f7b.bin": {
+      "sha256": "f8e4f63d3fb152ff4c555f7b552ef0710ae6094687ba506890c47ae21e8eb1a6",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-f8e4f63d3fb152ff4c555f7b.bin"
+    },
+    "points-f9bd3783332474e86243f59b.bin": {
+      "sha256": "f9bd3783332474e86243f59b8316c08c97cce133b8c0323105c847cf78bad1e2",
+      "bytes": 859808,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-f9bd3783332474e86243f59b.bin"
+    },
+    "points-fab0c7362914f4d42f92b96b.bin": {
+      "sha256": "fab0c7362914f4d42f92b96b17296caff0ecda3f78b52cafda3c851fdfa2a602",
+      "bytes": 1280608,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-fab0c7362914f4d42f92b96b.bin"
+    },
+    "points-fb4e97a46dfaf8c1ab8e4d85.bin": {
+      "sha256": "fb4e97a46dfaf8c1ab8e4d8510abf1cfb7f6f9977017f4ad3458a301284972f1",
+      "bytes": 639985,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-fb4e97a46dfaf8c1ab8e4d85.bin"
+    },
+    "points-fb6a3d2301b01664404b0839.bin": {
+      "sha256": "fb6a3d2301b01664404b0839d623e2e6c8f05d2fde912d967e986b36b9295e3c",
+      "bytes": 1425008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-fb6a3d2301b01664404b0839.bin"
+    },
+    "points-fc3f3cd1d79847ebe7df5e19.bin": {
+      "sha256": "fc3f3cd1d79847ebe7df5e19b805f9e0617657a225a2c51a682a63d3963909c0",
+      "bytes": 2850008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-fc3f3cd1d79847ebe7df5e19.bin"
+    },
+    "points-fe454f10ff73e47cc481cb4d.bin": {
+      "sha256": "fe454f10ff73e47cc481cb4d8b1e2827a05d859701af46b6ec41d33cbeee8d85",
+      "bytes": 1011008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-fe454f10ff73e47cc481cb4d.bin"
+    },
+    "points-ff51ab1a9fe0fdd23834b9a6.bin": {
+      "sha256": "ff51ab1a9fe0fdd23834b9a67826e220d73c52afa16c31050064f1d736bcc818",
+      "bytes": 2250008,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ff51ab1a9fe0fdd23834b9a6.bin"
+    },
+    "points-ff71130c5905ad853a04e20a.bin": {
+      "sha256": "ff71130c5905ad853a04e20ae87d7a52f2c468867fc32da9f20c7d4ba88a9817",
+      "bytes": 868802,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ff71130c5905ad853a04e20a.bin"
+    },
+    "points-ff7de5e3fb190a9ba4f12d6e.bin": {
+      "sha256": "ff7de5e3fb190a9ba4f12d6eb74a81df7c6ae59f29e33207a7ab9ae269106b52",
+      "bytes": 1066535,
+      "url": "https://raw.githubusercontent.com/ArthurGaleev/experiments/7c89a5305ad2729dafd599c0e980624595b5afe8/points-ff7de5e3fb190a9ba4f12d6e.bin"
     }
   },
   "pending": {},
-  "preview_files": 1822,
-  "full_files": 3943,
+  "preview_files": 1891,
+  "full_files": 4123,
   "publication_order": "Publish pending point assets before committing/pushing the Pages branch."
 }

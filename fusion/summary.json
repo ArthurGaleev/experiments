@@ -1,7 +1,7 @@
 {
   "schema": "fusion-summary-v1",
   "configurations": {
-    "metricanything_roma_initial": {
+    "metricanything_roma_graph_baseline": {
       "summary": [
         {
           "dataset": "blueprint",
@@ -194,12 +194,12 @@
         }
       ],
       "source_scores": {
-        "evaluation/metricanything_roma_initial/blueprint-all-23--canonical_shuffled.json": "20471fba39ba7030669c5f23d553c7da7a29238d869a2bab45c5f7fe6422a69b",
-        "evaluation/metricanything_roma_initial/blueprint-all-23--reverse.json": "8a626f7e51d54302887ede2eea17f9688f76acfff741e96b1d1e4bde8cc70dae"
+        "evaluation/metricanything_roma_graph_baseline/blueprint-all-23--canonical_shuffled.json": "20471fba39ba7030669c5f23d553c7da7a29238d869a2bab45c5f7fe6422a69b",
+        "evaluation/metricanything_roma_graph_baseline/blueprint-all-23--reverse.json": "8a626f7e51d54302887ede2eea17f9688f76acfff741e96b1d1e4bde8cc70dae"
       },
-      "producer_sha256": "909d24e024683c237392fd4615b3c3c53415244168e4026b040cc9a6d7121630"
+      "producer_sha256": "d59e755316700847c3c43f2c764e4fb086d8c78601ddaef7b486d2466e3045e3"
     },
-    "metricanything_roma_refined": {
+    "metricanything_roma_graph_reviewed": {
       "summary": [
         {
           "dataset": "blueprint",
@@ -210,11 +210,11 @@
             "failed": 0,
             "partial": 0,
             "input_points": 5699400,
-            "surfels": 5334930,
-            "multi_view_surfels": 289123,
-            "single_view_surfels": 5045807,
-            "merged_observations": 364470,
-            "conflicted_input_points": 3231438,
+            "surfels": 5440420,
+            "multi_view_surfels": 239520,
+            "single_view_surfels": 5200900,
+            "merged_observations": 258980,
+            "conflicted_input_points": 1620612,
             "deleted_input_points": 0,
             "filled_pixels": 0
           },
@@ -335,34 +335,34 @@
           "change": {},
           "support": {
             "conflicted_input_fraction": {
-              "location_mean": 0.5669786293294031,
+              "location_mean": 0.2843478260869565,
               "bootstrap_95": [
-                0.5669786293294031,
-                0.5669786293294031
+                0.2843478260869565,
+                0.2843478260869565
               ],
               "locations": 1
             },
             "mean_displacement_predicted_units": {
-              "location_mean": 0.0005722685040744613,
+              "location_mean": 0.0003966555309118188,
               "bootstrap_95": [
-                0.0005722685040744613,
-                0.0005722685040744613
+                0.0003966555309118188,
+                0.0003966555309118188
               ],
               "locations": 1
             },
             "merged_observation_fraction": {
-              "location_mean": 0.0639488367196547,
+              "location_mean": 0.04543987086359968,
               "bootstrap_95": [
-                0.0639488367196547,
-                0.0639488367196547
+                0.04543987086359968,
+                0.04543987086359968
               ],
               "locations": 1
             },
             "multi_view_surfel_fraction": {
-              "location_mean": 0.05419433807004028,
+              "location_mean": 0.044026012697549084,
               "bootstrap_95": [
-                0.05419433807004028,
-                0.05419433807004028
+                0.044026012697549084,
+                0.044026012697549084
               ],
               "locations": 1
             }
@@ -380,11 +380,11 @@
           "after_status": "ok",
           "count_changes": {
             "input_points": 0,
-            "surfels": 87813,
-            "multi_view_surfels": -49816,
-            "single_view_surfels": 137629,
-            "merged_observations": -87813,
-            "conflicted_input_points": -12208,
+            "surfels": 0,
+            "multi_view_surfels": 0,
+            "single_view_surfels": 0,
+            "merged_observations": 0,
+            "conflicted_input_points": 0,
             "deleted_input_points": 0,
             "filled_pixels": 0
           },
@@ -392,12 +392,12 @@
         }
       ],
       "source_scores": {
-        "evaluation/metricanything_roma_refined/blueprint-all-23--canonical_shuffled.json": "85bff55f919b0849621b705762f35b4459554d25d1b8089dc82aae580882fb4c",
-        "evaluation/metricanything_roma_refined/blueprint-all-23--reverse.json": "7b94892d5187af10c6b7960fcc8d3081eb12161a4d9d4701b9edaf65a0dfb7cd"
+        "evaluation/metricanything_roma_graph_reviewed/blueprint-all-23--canonical_shuffled.json": "18e0184c1e3304b9262b3098a3a36f5aa2389a2de82692d3d8b0e58a661d3aec",
+        "evaluation/metricanything_roma_graph_reviewed/blueprint-all-23--reverse.json": "3ae11c5040f66939684ecc98f78dfc12fdeb20677b6401291a88e5b51b5c6652"
       },
-      "producer_sha256": "0e7d548dea2fbfa7fef0da162b5be404f47d1bf6392e8783bf934fb22e48f093"
+      "producer_sha256": "b5922055dc5b6e7c29db9f8c2f36f2e624f46afb48528238453fb8e2fa2f6c0c"
     },
-    "mast3r_refine_depth": {
+    "metricanything_roma_graph_recovered": {
       "summary": [
         {
           "dataset": "blueprint",
@@ -407,12 +407,12 @@
             "cases": 1,
             "failed": 0,
             "partial": 0,
-            "input_points": 4117312,
-            "surfels": 3665195,
-            "multi_view_surfels": 353032,
-            "single_view_surfels": 3312163,
-            "merged_observations": 452117,
-            "conflicted_input_points": 2477381,
+            "input_points": 5699400,
+            "surfels": 5365581,
+            "multi_view_surfels": 297848,
+            "single_view_surfels": 5067733,
+            "merged_observations": 333819,
+            "conflicted_input_points": 1716565,
             "deleted_input_points": 0,
             "filled_pixels": 0
           },
@@ -533,34 +533,34 @@
           "change": {},
           "support": {
             "conflicted_input_fraction": {
-              "location_mean": 0.6016986325058679,
+              "location_mean": 0.30118345790784995,
               "bootstrap_95": [
-                0.6016986325058679,
-                0.6016986325058679
+                0.30118345790784995,
+                0.30118345790784995
               ],
               "locations": 1
             },
             "mean_displacement_predicted_units": {
-              "location_mean": 0.0007528784862073615,
+              "location_mean": 0.000487404028218675,
               "bootstrap_95": [
-                0.0007528784862073615,
-                0.0007528784862073615
+                0.000487404028218675,
+                0.000487404028218675
               ],
               "locations": 1
             },
             "merged_observation_fraction": {
-              "location_mean": 0.10980877815429095,
+              "location_mean": 0.0585709022002316,
               "bootstrap_95": [
-                0.10980877815429095,
-                0.10980877815429095
+                0.0585709022002316,
+                0.0585709022002316
               ],
               "locations": 1
             },
             "multi_view_surfel_fraction": {
-              "location_mean": 0.09632011393663911,
+              "location_mean": 0.05551085707214186,
               "bootstrap_95": [
-                0.09632011393663911,
-                0.09632011393663911
+                0.05551085707214186,
+                0.05551085707214186
               ],
               "locations": 1
             }
@@ -577,12 +577,12 @@
           "before_status": "ok",
           "after_status": "ok",
           "count_changes": {
-            "input_points": -1664,
-            "surfels": 907,
-            "multi_view_surfels": -972,
-            "single_view_surfels": 1879,
-            "merged_observations": -2571,
-            "conflicted_input_points": 5777,
+            "input_points": 0,
+            "surfels": 0,
+            "multi_view_surfels": 0,
+            "single_view_surfels": 0,
+            "merged_observations": 0,
+            "conflicted_input_points": 0,
             "deleted_input_points": 0,
             "filled_pixels": 0
           },
@@ -590,10 +590,10 @@
         }
       ],
       "source_scores": {
-        "evaluation/mast3r_refine_depth/blueprint-all-23--canonical_shuffled.json": "f091a6433e93ae6e361ebb2b0dae017073832b01ebe7d8dc7ce76d4c7bfcfe0a",
-        "evaluation/mast3r_refine_depth/blueprint-all-23--reverse.json": "9d4804f62d952357f2e0eeffa1e9b692674cd656fbcbcfcdd692729378bb1745"
+        "evaluation/metricanything_roma_graph_recovered/blueprint-all-23--canonical_shuffled.json": "0fe1fae0c81049a8bc2e17113606e41a2b66bb151d0764cfe0f554aac09ff82e",
+        "evaluation/metricanything_roma_graph_recovered/blueprint-all-23--reverse.json": "d709dea5e875a5bb86c4e22bc89147ed254fd00eaa2494b812976760a41256a8"
       },
-      "producer_sha256": "695b45b444f2bc99c6df37afc094fd42064743f55dbe97483334728334eb4e11"
+      "producer_sha256": "b45064fca5d8db78d5a441a0819db6205fb9ab4c14dcd0843cd93bc4eb8030b5"
     }
   },
   "analysis_sources": {

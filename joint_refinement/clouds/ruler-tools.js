@@ -47,7 +47,7 @@ export function attachRulers(view, pick) {
     view, records: [], draft: null, editing: null,
     item(hit) {
       return {point: hit.point.toArray(), frame: hit.object.userData.frame,
-        name: hit.object.userData.photo, kind: hit.object.isMesh ? 'patch surface' : 'point', unit: hit.object.userData.unit};
+        name: hit.photoLabel, kind: hit.object.isMesh ? 'patch surface' : 'point', unit: hit.object.userData.unit};
     },
     hit(event) {
       const pointsOnly = [...view.objects.values()].some(({object}) => object.isPoints);

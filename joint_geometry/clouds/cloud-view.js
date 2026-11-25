@@ -7,7 +7,7 @@
   const {decodePoints, transformedBounds, detailChoices, pointAssetUrl, selectedSupport, visiblePointCount} = await import('./cloud-buffers.js' + assetQuery);
   const tools = await import('./viewer-tools.js' + assetQuery);
   const {setupAdjustments} = await import('./mobile-tools.js' + assetQuery);
-  const {comparisonCandidates, comparisonRanges, cameraAxes, identityPose} = await import('./cloud-comparison.js' + assetQuery);
+  const {comparisonCandidates, comparisonSelection, comparisonRanges, cameraAxes, identityPose} = await import('./cloud-comparison.js' + assetQuery);
   const {fields, facets, fieldOptions, selectField, selectConnections, sameConfiguration} = await import('./cloud-options.js' + assetQuery);
   let coordinateUnit;
   const get = id => document.getElementById(id);
@@ -16,7 +16,7 @@
   const defaultCamera = {eye: {x: 1.35, y: -1.8, z: .8}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}, fit: true};
   const roomCamera = {eye: {x: 0, y: -2.1, z: 1}, up: {x: 0, y: 0, z: 1}, center: {x: 0, y: 0, z: 0}, fit: true};
   const preferred = settings.variants.find(v => v.id === settings.defaultVariant) || settings.variants[0];
-  const state = {variant: preferred, selected: new Set(), limit: settings.defaultLimit ?? 100000, mode: 'points', version: 0, room: null, roomSource: 'pairwise', compare: false, compareModels: new Set(), comparePhoto: null};
+  const state = {variant: preferred, selected: new Set(), limit: settings.defaultLimit ?? 100000, mode: 'points', version: 0, room: null, roomSource: 'pairwise', compare: false, compareModels: new Set(), compareCustom: false, comparePhoto: null};
   let comparisonCamera = null;
   const semanticVariants = [{id: 'pairwise', label: 'Pairwise hypotheses', semantics: settings.semantics}, ...(settings.roomVariants || [])].filter(v => v.semantics);
   const sourceRooms = new Map();
@@ -302,6 +302,7 @@
 
   async function traces(component, groups) {
     const sources = state.variant.sources.filter(s => component.ids.includes(s.id));
+    const photoNames = new Map(sources.map(source => [source.id, source.name]));
     const selected = sources.filter(s => state.selected.has(s.id) || selectedSupport(s, state.selected));
     const output = (await Promise.all(selected.map(async source => {
       const list = [], hover = `x: %{x:.2f} ${coordinateUnit}<br>y: %{y:.2f} ${coordinateUnit}<br>z: %{z:.2f} ${coordinateUnit}<extra>${source.name}</extra>`;
@@ -310,7 +311,8 @@
         const chunks = await Promise.all(source.chunks.filter(c => c.start < limit).map(loadDense));
         const rotation = get('level').checked ? component.rotation : component.fixed;
         const cloud = {id: source.id, chunks, pose: source.pose, rotation, limit, frame: component.id,
-          unitLabel: coordinateUnit, selectionMask: selectedSupport(source, state.selected)};
+          unitLabel: coordinateUnit, selectionMask: selectedSupport(source, state.selected),
+          supportNames: source.supportIds?.map(id => photoNames.get(id) || id)};
         list.push({type: 'scatter3d', mode: 'markers', name: source.name, cloud,
           bounds: transformedBounds(source.bounds, source.pose, rotation),
           marker: {color: get('colour').value === 'rgb' ? 'photo' : colour(source, groups, {}, 'points')},
@@ -388,8 +390,9 @@
     const patches = selected.reduce((n, s) => n + (s.planes?.count || 0), 0);
     const faces = selected.reduce((n, s) => n + (s.planes?.triangles || 0), 0);
     const coverage = selected.filter(s => s.planes).map(s => 100 * s.planes.coverage);
-    const hypotheses = (state.variant.hypotheses || []).filter(h => h.supportIds.some(id => state.selected.has(id)));
-    get('counts').textContent = [state.mode !== 'planes' ? (count === null ? 'Selected surface · custom point limit' : `${count.toLocaleString('en')} points`) : '',
+    const hypotheses = (state.variant.hypotheses || []).filter(h => h.supportIds.some(id => visiblePhotos.has(id)));
+    const unit = state.variant.sources.some(s => s.supportIds) ? 'unique surfels' : 'points';
+    get('counts').textContent = [state.mode !== 'planes' ? (count === null ? 'Selected surface · custom point limit' : `${count.toLocaleString('en')} ${unit}`) : '',
       hypotheses.length ? `${hypotheses.length} inferred wall bounds` : '',
       state.mode !== 'points' ? `${patches} patches · ${faces.toLocaleString('en')} triangles` : '',
       state.mode !== 'points' && coverage.length ? `photo coverage: ${Math.min(...coverage).toFixed(0)}–${Math.max(...coverage).toFixed(0)}%` : ''].filter(Boolean).join(' · ');
@@ -407,11 +410,17 @@
   function syncDetail(sources) {
     const {maximum, levels, selected} = detailChoices(sources, state.limit);
     const control = get('detail');
+    const shared = !state.compare && state.variant.sources.some(s => s.supportIds);
+    const unit = shared ? 'buffer' : 'photo';
+    get('detail-unit').textContent = `per ${unit}`;
+    control.setAttribute('aria-label', `Point limit per ${unit}`);
     const options = levels.map(n => new Option(`${n / 1000}k`, String(n)));
-    options.push(new Option(`All saved (≤${maximum.toLocaleString('en')}/photo)`, '0'));
+    options.push(new Option(`All saved (≤${maximum.toLocaleString('en')}/${unit})`, '0'));
     control.replaceChildren(...options); control.value = String(selected);
     control.disabled = maximum === 0;
-    control.title = 'Only counts below the saved maximum are offered. All saved includes every point exported to this view; a report may use a display sample.';
+    control.title = shared
+      ? 'The limit applies to each saved surfel buffer before selection by supporting photos. One photo can draw from several buffers.'
+      : 'Only counts below the saved maximum are offered. All saved includes every point exported to this view; a report may use a display sample.';
   }
 
   function updateComparisonControls() {
@@ -422,11 +431,11 @@
     get('compare-toggle').textContent = state.compare ? 'Return to scene' : 'Compare models';
     get('compare-controls').hidden = !state.compare;
     if (!state.compare) return candidates;
-    state.compareModels = new Set([...state.compareModels].filter(id => candidates.some(c => c.id === id)));
-    if (!state.compareModels.size) {
-      const first = candidates.find(c => c.id === state.variant.id) || candidates[0];
-      state.compareModels = new Set([first, candidates.find(c => c.id !== first.id)].filter(Boolean).map(c => c.id));
-    }
+    const {models, custom} = comparisonSelection(candidates, state.variant, state.compareModels, state.compareCustom);
+    if (models.length !== state.compareModels.size || models.some(id => !state.compareModels.has(id))) comparisonCamera = null;
+    state.compareModels = new Set(models);
+    state.compareCustom = custom;
+    get('compare-model-summary').textContent = `Models to compare · ${models.length} selected`;
     const photos = new Map(candidates.flatMap(c => c.sources.map(s => [s.id, s])));
     if (!photos.has(state.comparePhoto)) state.comparePhoto = [...state.selected].find(id => photos.has(id)) || photos.keys().next().value;
     get('compare-photo').replaceChildren(...[...photos].map(([id, s]) => new Option(s.name, id)));
@@ -441,7 +450,9 @@
       input.onchange = () => {
         if (input.checked) state.compareModels.add(candidate.id); else state.compareModels.delete(candidate.id);
         if (!state.compareModels.size) state.compareModels.add(candidate.id);
+        state.compareCustom = true;
         comparisonCamera = null; build();
+        [...get('compare-models').querySelectorAll('input')].find(choice => choice.value === candidate.id)?.focus({preventScroll: true});
       };
       label.append(input, document.createTextNode(candidate.label || candidate.model || candidate.id)); return label;
     });
@@ -474,7 +485,7 @@
     syncDetail(sources);
     const count = sources.reduce((sum, source) => sum + Math.min(state.limit || Infinity, source.available), 0);
     get('counts').textContent = `${count.toLocaleString('en')} points across ${sources.length} model panels`;
-    get('selection-status').textContent = `One photo · ${sources.length} saved models · linked cameras · shared axis ranges; no scene poses applied.`;
+    get('selection-status').textContent = `One photo · ${sources.length} saved model panels · linked cameras · shared numeric axis ranges.`;
     for (const view of views) {
       const source = view.source, limit = state.limit || Infinity;
       const comparisonUnit = (view.candidate.relativeScale ?? settings.relativeScale) ? 'rel. units' : 'm';
@@ -578,6 +589,10 @@
     get('photo-controls').hidden = get('photos').hidden = state.compare;
     const selectionLink = document.querySelector('a[href="#photo-controls"]');
     if (selectionLink) selectionLink.parentElement.hidden = state.compare;
+    const shared = !state.compare && state.variant.sources.some(s => s.supportIds);
+    const sourceColourOption = get('colour').querySelector('option[value="source"]');
+    sourceColourOption.textContent = shared ? 'Surfel storage group' : 'Source';
+    sourceColourOption.title = shared ? 'Colours follow the photo used to store each surfel. Pick the surfel to inspect its supporting photos.' : '';
     get('navigation').disabled = false;
     if (state.compare) { buildComparison(candidates); draw(); return; }
     observer = new IntersectionObserver(entries => {
@@ -595,6 +610,7 @@
     const photoSources = sorted.flatMap(c => state.variant.sources.filter(s => c.ids.includes(s.id) && s.photo));
     const photoItems = photoSources.map(s => ({src: s.photo, caption: s.name, href: s.href}));
     const isolated = sorted.filter(c => photoIds(c.ids).length === 1).length;
+    const hasGraph = state.variant.edges !== null;
     let isolatedGrid;
     for (let index = 0; index < sorted.length; index++) {
       const component = sorted[index], section = document.createElement('section'), header = document.createElement('header'), plot = document.createElement('div');
@@ -632,8 +648,9 @@
         const group = document.createElement('div'); group.className = 'photo-group'; group.dataset.component = component.id;
         const heading = document.createElement('div'); heading.className = 'group-heading';
         const label = document.createElement('span');
-        label.textContent = state.room ? `Part ${index + 1} · ${photoCount} photos` + (sorted.length > 1 ? ' · placement relative to other parts is unknown' : ' · poses from the selected graph')
-          : singleton ? `No accepted connections · photos: ${isolated} · each shown separately` : title.textContent + (index ? ' · no accepted connection to the main group' : '');
+        label.textContent = state.room ? `Part ${index + 1} · ${photoCount} photos` + (sorted.length > 1 ? ' · placement relative to other parts is unknown' : ' · saved poses')
+          : singleton ? `${hasGraph ? 'No accepted connections' : 'Separate photo frames'} · photos: ${isolated}`
+          : title.textContent + (index && hasGraph ? ' · no accepted connection to the main group' : '');
         heading.append(label);
         if (settings.multiview && !singleton) {
           const only = document.createElement('button'); only.className = 'group-only'; only.textContent = 'Only this group';
@@ -705,7 +722,7 @@
       : state.room && !roomNames().length
       ? 'No cameras are assigned to this room. Supporting photos and doorways are retained; the room geometry and placement are unknown.'
       : state.room && roomParts().length === 1
-      ? 'Room membership is hypothesized. All photos share a geometric path; poses follow the selected branch.'
+          ? 'Room membership is hypothesized. These photos share a saved coordinate frame.'
       : 'Room membership is hypothesized. Unaligned parts are arranged for inspection; their relative placement is unknown.';
     if (!semantic) return;
     get('room-source-control').hidden = semanticVariants.length < 2;
@@ -738,7 +755,9 @@
     const ambiguous = names.filter(n => semantic.ambiguous.includes(n));
     status.textContent = `This is a hypothesis, not an established room. Geometric parts: ${parts.length}. `
       + (ambiguous.length ? `Alternative assignments: ${ambiguous.join(', ')}. ` : '')
-      + (names.length ? 'Poses within each part follow the selected graph, including paths through photos outside this hypothesis.'
+      + (names.length ? (state.variant.edges === null
+        ? 'Each part uses the selected reconstruction’s saved poses.'
+        : 'Each part uses saved graph poses. Placement can involve photos outside this hypothesis.')
         : `No assigned cameras. Supporting photos: ${(semantic.rooms[index]?.evidence_photos || []).join(', ') || 'not specified'}. Placement and geometry are unknown.`);
     details.append(status);
     const evidence = document.createElement('a');
@@ -759,10 +778,13 @@
       list.append(item);
     }
     doorDetails.append(list); details.append(doorDetails);
-    const recovery = semantic.kind === 'global' && settings.variants.find(v => v.recovery);
+    const recovery = semantic.kind === 'global' && (state.variant.recoveryInfo || settings.variants.find(v => v.recovery)?.recoveryInfo);
     const report = document.createElement('a');
-    report.href = recovery ? recovery.recoveryInfo.href : settings.semantics.href + '#candidates';
-    report.textContent = recovery ? 'Recovered connections and 3D checks ↗' : 'New overlap candidates and saved 3D variants ↗'; details.append(report);
+    report.href = recovery ? recovery.href : settings.semantics.href + '#candidates';
+    report.textContent = recovery
+      ? state.variant.recovery ? 'Recovered connections and 3D checks ↗' : 'Alignment recovery experiment ↗'
+      : 'New overlap candidates and saved 3D variants ↗';
+    details.append(report);
     const section = document.createElement('section'); section.className = 'scene';
     const header = document.createElement('header'), heading = document.createElement('div'); heading.className = 'scene-heading';
     const h2 = document.createElement('h2'); h2.textContent = title;
@@ -772,7 +794,7 @@
     const note = document.createElement('p'); note.className = 'warning';
     note.textContent = state.room === 'unassigned' ? 'Rooms are undetermined; relative cloud placement is unknown.'
       : !names.length ? 'Room hypothesis retained from supporting photos. No assigned cameras or reconstructed geometry.'
-      : parts.length === 1 ? 'Hypothesized same room. One geometric part; poses from the selected graph.'
+      : parts.length === 1 ? 'Hypothesized same room. One geometric part with saved poses.'
       : 'Hypothesized same room; relative placement of unaligned parts is unknown. Inspection layout, not a floor plan.'; header.append(note);
     const warnings = parts.reduce((n, p) => n + (p.component.warnings || 0), 0);
     if (warnings) { const warning = document.createElement('p'); warning.className = 'warning'; warning.textContent = `Original components have path conflicts: ${warnings}. The room view does not correct poses.`; header.append(warning); }
@@ -849,7 +871,7 @@
     get('scale-note').textContent = relative ? 'Relative model units; absolute scale is not established.'
       : 'Scale comes from predicted depth, not a measured room dimension.';
     const description = state.variant.description || fields.map(([field]) => facets(state.variant)[field]?.label).filter(Boolean).join(' · ');
-    const connectionLabel = facets(state.variant).method?.id === 'matching'
+    const connectionLabel = ['matching', 'fusion'].includes(facets(state.variant).method?.id)
       ? state.variant.recovery ? ' · VLM review + recovery' : state.variant.vlm ? ' · VLM review' : ' · Geometric connections only' : '';
     get('variant-description').textContent = description + connectionLabel;
     const evidence = get('variant-report'); evidence.hidden = !state.variant.report;
@@ -870,7 +892,7 @@
     const visible = !!reviewed || !!recovered;
     document.querySelector('.connection-options').hidden = !visible && !semanticVariants.length;
     get('vlm-control').hidden = !visible;
-    get('vlm-status').hidden = !visible;
+    get('vlm-status').hidden = !visible && !semanticVariants.length;
     get('vlm').disabled = !reviewed;
     get('vlm').checked = !!state.variant.vlm;
     const status = get('vlm-status'); status.replaceChildren();
@@ -883,14 +905,15 @@
       const link = document.createElement('a'); link.href = result.href;
       link.textContent = 'Decisions and evidence ↗'; status.append(link);
     } else {
-      status.textContent = 'No saved VLM review for this combination.';
+      status.textContent = 'No saved connection review or recovery branch for this reconstruction.';
     }
   }
   function chooseVariant(next) {
     if (!next || next.id === state.variant.id) return;
     if (state.room) roomSelections.set(`${state.variant.id}:${state.roomSource}:${state.room}`, new Set(state.selected));
     else selections.set(state.variant.id, new Set(state.selected));
-    const sameInputs = next.sources.some(source => state.selected.has(source.id));
+    const previousIds = new Set(state.variant.sources.map(source => source.id));
+    const sameInputs = next.sources.some(source => previousIds.has(source.id));
     const selection = state.room ? roomSelections.get(`${next.id}:${state.roomSource}:${state.room}`) || state.selected
       : selections.get(next.id) || (sameInputs ? state.selected : next.initial);
     state.variant = next;
@@ -903,7 +926,11 @@
       || choices.find(v => !!v.vlm === !!vlm && !v.recovery) || choices.find(v => !v.vlm)
       || settings.variants.find(v => v.matcher === matcher && !v.vlm);
   }
-  get('compare-toggle').onclick = () => { state.compare = !state.compare; comparisonCamera = null; build(); };
+  get('compare-toggle').onclick = () => {
+    state.compare = !state.compare;
+    if (state.compare && !state.compareCustom) get('compare-model-choice').open = false;
+    comparisonCamera = null; build();
+  };
   get('compare-photo').onchange = () => { state.comparePhoto = get('compare-photo').value; comparisonCamera = null; build(); };
   get('vlm').onchange = () => chooseVariant(selectConnections(settings.variants, state.variant, get('vlm').checked, false));
   get('recovery').onchange = () => chooseVariant(selectConnections(settings.variants, state.variant, true, get('recovery').checked));
@@ -986,6 +1013,7 @@
   if (params.get('compare') === '1') {
     state.compare = true; state.comparePhoto = params.get('photo');
     state.compareModels = new Set((params.get('models') || '').split(',').filter(Boolean).slice(0, 4));
+    state.compareCustom = state.compareModels.size > 0;
   }
   const sceneId = tools.sceneIdentity(settings);
   function captureView() {
@@ -995,7 +1023,7 @@
     const keys = new Set([...plots.values()].map(v => v.key));
     return {version:1, scene:sceneId, variant:state.variant.id, photos:[...state.selected], limit:state.limit,
       mode:state.mode, room:state.room, roomSource:state.roomSource, controls:tools.readControls(),
-      comparison:state.compare ? {photo:state.comparePhoto, models:[...state.compareModels], camera:comparisonCamera} : null,
+      comparison:state.compare ? {photo:state.comparePhoto, models:[...state.compareModels], custom:state.compareCustom, camera:comparisonCamera} : null,
       cameras:Object.fromEntries([...cameras].filter(([key]) => keys.has(key))),
       inspections:Object.fromEntries([...inspections].filter(([key]) => keys.has(key))),
       expanded:expanded?.view.plot.dataset.component || null};
@@ -1011,6 +1039,8 @@
     state.room = saved.room || null; state.roomSource = saved.roomSource || 'pairwise';
     state.compare = !!saved.comparison; state.comparePhoto = saved.comparison?.photo || null;
     state.compareModels = new Set((saved.comparison?.models || []).slice(0, 4));
+    const custom = saved.comparison?.custom;
+    state.compareCustom = typeof custom === 'boolean' ? custom : state.compareModels.size > 0;
     comparisonCamera = saved.comparison?.camera || null;
     tools.writeControls(saved.controls); get('measure').checked = false; tools.updateControlLabels();
     if (state.variant.relativeScale ?? settings.relativeScale) get('measure-units').value = 'm';
