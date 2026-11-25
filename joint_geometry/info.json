@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-25T08:43:21",
+  "selection": "All E1 screen cases; repeat three E1 orders on common_4, bridge_3 and redundant_3. Blueprint all photos in both orders. Identical orders deduplicated with aliases.",
+  "units": "relative, one scale per inference set",
+  "status": "complete",
+  "title": "Joint cameras and depth",
+  "run": "20261125-084321-734239",
+  "params": {
+    "configurations": [
+      "da3small_camera_first",
+      "da3small_ray_first",
+      "da3small_camera_saddle"
+    ],
+    "seed": 20261125
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
