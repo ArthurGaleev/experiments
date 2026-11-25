@@ -1,0 +1,21 @@
+{
+  "created": "2026-11-25T13:52:38",
+  "units": "arbitrary native scale, not calibrated metres",
+  "status": "complete_with_failures",
+  "title": "Joint camera and surface refinement · G4",
+  "run": "20261125-135238-146115",
+  "params": {
+    "configurations": [
+      "ggpt_initial",
+      "ggpt_native_shared_camera",
+      "ggpt_native_shared_aligned",
+      "ggpt_native_shared_refined",
+      "ggpt_independent_pinhole_camera",
+      "ggpt_independent_pinhole_aligned",
+      "ggpt_independent_pinhole_refined"
+    ],
+    "seed": 20261125
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
