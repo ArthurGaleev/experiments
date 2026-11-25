@@ -22,6 +22,10 @@ These are tool experiments, not a completed apartment plan.
 | [Joint DA3-Small](https://arthurgaleev.github.io/experiments/da3/) | Shared cameras and depth within groups of 20, 2 and 1 photos |
 | [Individual geometry · G1](https://arthurgaleev.github.io/experiments/individual_geometry/) | MetricAnything, MoGe-2/3, DA3 metric depth and independent camera calibration, with one shared photo/3D browser |
 
+The main viewer now combines saved depth, matching, joint reconstruction, refinement
+and SfM choices with separate controls. Blueprint views retain full saved geometry;
+linked comparison keeps the same photo across models.
+
 The viewer retains all photos, including singletons. Selecting photos changes
 visibility while preserving established poses. Originally disconnected components
 have unknown relative placement. The Three.js viewer loads detail on demand,
@@ -135,5 +139,13 @@ From that source checkout, `uv run python scripts/refresh_experiments.py --expor
 stages selected runs, rerenders and verifies preserved data before replacing
 presentation files. Then run
 `uv run python scripts/check_gallery.py outputs/experiments --public`.
-No model inference, commit or push is performed by those commands. This is a
+Full point chunks live on the `codex/cloud-assets` branch of this repository;
+Pages retains small previews and streams larger chunks from immutable commit URLs.
+After exporting new geometry, run `uv run python scripts/publish_experiment_assets.py
+--publish` when publication is authorized, and confirm `cloud-assets/manifest.json`
+has no pending assets before pushing Pages. Local loopback previews use identical
+ignored files under `cloud-assets/full/`.
+
+No model inference, commit or push is performed by the refresh/check commands;
+the explicit asset-publish command commits and pushes only the asset branch. This is a
 separate Git repository; publishing its prepared changes is a separate action.

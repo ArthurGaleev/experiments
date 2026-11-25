@@ -14,7 +14,7 @@ export function setupAdjustments({widthRange, unit}) {
     range.step = selected === 'section-width' ? '.001' : source.step;
     range.value = source.value;
     range.setAttribute('aria-label',labels[selected] + ' adjustment');
-    get('adjustment-value').textContent = selected === 'section-width' ? `${Number(source.value).toFixed(2)} ${unit}` : source.value + (selected === 'point-size' ? ' px' : '%');
+    get('adjustment-value').textContent = selected === 'section-width' ? `${Number(source.value).toFixed(2)} ${typeof unit === 'function' ? unit() : unit}` : source.value + (selected === 'point-size' ? ' px' : '%');
   }
   function apply(value) {
     const source = get(kind.value); source.value = value;

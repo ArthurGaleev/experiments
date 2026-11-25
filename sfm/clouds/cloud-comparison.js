@@ -1,3 +1,4 @@
+import {facets} from './cloud-options.js';
 /* Compare saved local geometry in the same photo camera frame. No pose fitting. */
 export const cameraAxes = [[1, 0, 0], [0, 0, 1], [0, -1, 0]];
 export const identityPose = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
@@ -8,7 +9,7 @@ export function comparisonCandidates(settings, current) {
     candidates = current.sources.map(source => ({id: source.id, label: source.name,
       sources: [{...source, id: 'single-photo'}]}));
   } else {
-    candidates = settings.variants.filter(v => v.matcher === current.matcher
+    candidates = settings.compareAcrossMethods ? settings.variants : settings.variants.filter(v => v.matcher === current.matcher
       && !!v.vlm === !!current.vlm && !!v.recovery === !!current.recovery);
   }
   // Changing only saved placement is not a different single-photo depth model.
@@ -18,7 +19,12 @@ export function comparisonCandidates(settings, current) {
       .sort((a, b) => a[0].localeCompare(b[0])));
     if (seen.has(key)) return false;
     seen.add(key); return true;
-  }).map(candidate => ({...candidate, label:(candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '')}));
+  }).map(candidate => {
+    const c = facets(candidate);
+    const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'calibration', 'head', 'reference', 'conditioning', 'camera']
+      .map(key => c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
+    return {...candidate, label};
+  });
 }
 
 export function comparisonRanges(sources) {

@@ -1,4 +1,7 @@
 /* Lossless point buffers and camera-space transforms; no rendering dependencies. */
+export function pointAssetUrl(asset, hostname) {
+  return ['localhost', '127.0.0.1', '[::1]'].includes(hostname) && asset.localUrl ? asset.localUrl : asset.url;
+}
 // Display offsets cancel only within one known geometric frame.
 export function measurementDistance(a, b) {
   if (a.frame == null || a.frame !== b.frame) return null;

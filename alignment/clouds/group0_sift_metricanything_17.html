@@ -1,23 +1,22 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All photos · part 18 · 1 photos · SIFT × MetricAnything</title><link rel="stylesheet" href="cloud-view.css?v=81e22d0a5580">
-<link rel="stylesheet" href="photo-view.css?v=81e22d0a5580">
-<script src="photo-view.js?v=81e22d0a5580" defer></script>
-<script src="room-view.js?v=81e22d0a5580" defer></script>
-<script src="cloud-view.js?v=81e22d0a5580" defer></script>
+<title>All photos · part 18 · 1 photos · SIFT × MetricAnything</title><link rel="stylesheet" href="cloud-view.css?v=56cf2f824524">
+<link rel="stylesheet" href="photo-view.css?v=56cf2f824524">
+<script src="photo-view.js?v=56cf2f824524" defer></script>
+<script src="room-view.js?v=56cf2f824524" defer></script>
+<script src="cloud-view.js?v=56cf2f824524" defer></script>
 </head><body><main>
 <a href="../component-group0_sift_metricanything_17.html">← Report</a><h1>All photos · part 18 · 1 photos · SIFT × MetricAnything</h1>
 <p id="scene-note">Root camera: img_6. Accepted rigid transforms, maximum support spanning tree. Cycle closures: 0, warnings: 0. Loops are not optimized. A component is not a recognized room; hidden surfaces remain unreconstructed.</p>
-<div class="toolbar">
-  <label id="matcher-control" hidden>Matching <select id="matcher"></select></label>
-  <label id="model-control" hidden><span id="model-label">Model</span> <select id="model"></select></label>
+<div class="toolbar"><div id="model-options" class="toolbar"></div>
   <button id="compare-toggle" hidden aria-pressed="false">Compare models</button>
 </div>
+<p class="muted"><span id="variant-description"></span> <a id="variant-report" hidden>Method and results ↗</a></p>
 <section id="compare-controls" hidden>
   <div class="toolbar"><label>Compare photo <select id="compare-photo"></select></label></div>
   <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
-  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked; every panel uses the same scale and photo camera frame. This compares local shape and depth, before scene placement.</p>
+  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked; panels share axis ranges and the photo camera frame. Relative model scales remain uncertain. This compares local shape and depth, before scene placement.</p>
   <img id="compare-preview" alt="Source photo for model comparison" hidden>
 </section>
 <details class="connection-options"><summary>Connections and room hypotheses</summary>
@@ -152,7 +151,7 @@ metric accuracy of the scale corrections is not established.</p>
 Orders and repeats remain separate. Semantic selection adds no geometric edges
 and changes no poses. Overlapping hypotheses are alternatives, not a room count.
 Disconnected parts are arranged for inspection, with unknown physical placement.</p>
-<p>The model predicts meters; zero height is at the camera, not the floor. GeoCalib applies one rotation per component. Without it, world
+<p><span id="scale-note">The model predicts meters; zero height is at the camera, not the floor.</span> GeoCalib applies one rotation per component. Without it, world
 vertical is unknown. Each model's XYZ and K are used together.</p>
 <p>Points are nested uniform pixel samples; Full includes every finite, positive,
 model-valid saved point. It does not change inference or metrics. Detail loads on
@@ -174,4 +173,4 @@ rendered; boundary strips and nonplanar regions can be missing. Vertex colors lo
 fine image detail. Use Both to compare patch support with the original cloud.</p>
 </details>
 <noscript>JavaScript is required for the interactive viewer.</noscript>
-</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"recovery":false,"recoveryInfo":null,"sources":[{"id":"img_6","name":"img_6","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.2363910427025755,-0.15759403340282943,0.3],[0.23639104270257544,-0.15759403340282943,0.3],[0.23639104270257544,0.15759403340282938,0.3],[-0.2363910427025755,0.15759403340282938,0.3]],"chunks":[{"key":"318a99683c5b042623ee0c1e","url":"../../cloud-assets/points-318a99683c5b042623ee0c1e.bin","bytes":375008,"start":0,"end":25000},{"key":"cd16e0396d8a0520e7bed646","url":"../../cloud-assets/points-cd16e0396d8a0520e7bed646.bin","bytes":1125008,"start":25000,"end":100000},{"key":"1b94091647c8ddf4a50841ed","url":"../../cloud-assets/points-1b94091647c8ddf4a50841ed.bin","bytes":2250008,"start":100000,"end":250000},{"key":"e3968b63ae0595b40675e699","url":"../../cloud-assets/points-e3968b63ae0595b40675e699.bin","bytes":1011008,"start":250000,"end":317400}],"available":317400,"bounds":[[-0.9963340759277344,3.362212896347046],[-1.5574555397033691,1.3121836185455322],[0.5929420590400696,8.606343269348145]],"photo":"../photos/img_6.jpg","href":"../photo-img_6.html","reference":false,"planes":{"key":"4d4bde7f03f10ca1644d8e2c","url":"planes-4d4bde7f03f10ca1644d8e2c.js","bytes":62943,"count":46,"coverage":0.5658475110270952,"triangles":1024}}],"components":[{"id":"0","ids":["img_6"],"rotation":[[0.999999818135333,-0.0006030997437367665,0.0],[9.151885532803211e-07,0.0015174743420871188,0.999998848634729],[-0.0006030990493486665,-0.9999986667702714,0.0015174746180621349]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[-0.0006030990493486665,-0.9999986667702714,0.0015174746180621349],"ranges":[[-1.1715363466638515,3.5375626602461954],[-0.344333105693416,8.952660748028816],[-1.4286868060137294,1.686491222890421]],"rawRanges":[[-1.1706759548187256,3.536554775238037],[-0.3442537307739258,8.95059700012207],[-1.4269691848754882,1.672241106033325]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":[],"treeEdges":[],"initial":["img_6"]}],"defaultLimit":100000,"multiview":true,"semantics":null,"roomVariants":null,"defaultVariant":"scene"}</script></body></html>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"recovery":false,"recoveryInfo":null,"sources":[{"id":"img_6","name":"img_6","pose":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]],"corners":[[-0.2363910427025755,-0.15759403340282943,0.3],[0.23639104270257544,-0.15759403340282943,0.3],[0.23639104270257544,0.15759403340282938,0.3],[-0.2363910427025755,0.15759403340282938,0.3]],"chunks":[{"key":"318a99683c5b042623ee0c1e","url":"../../cloud-assets/points-318a99683c5b042623ee0c1e.bin","bytes":375008,"start":0,"end":25000},{"key":"cd16e0396d8a0520e7bed646","url":"https://raw.githubusercontent.com/ArthurGaleev/experiments/c5ae4873b0cf7e5558c6bafcaf5f1350ec5011f5/points-cd16e0396d8a0520e7bed646.bin","bytes":1125008,"start":25000,"end":100000,"localUrl":"../../cloud-assets/full/points-cd16e0396d8a0520e7bed646.bin"},{"key":"1b94091647c8ddf4a50841ed","url":"https://raw.githubusercontent.com/ArthurGaleev/experiments/c5ae4873b0cf7e5558c6bafcaf5f1350ec5011f5/points-1b94091647c8ddf4a50841ed.bin","bytes":2250008,"start":100000,"end":250000,"localUrl":"../../cloud-assets/full/points-1b94091647c8ddf4a50841ed.bin"},{"key":"e3968b63ae0595b40675e699","url":"https://raw.githubusercontent.com/ArthurGaleev/experiments/c5ae4873b0cf7e5558c6bafcaf5f1350ec5011f5/points-e3968b63ae0595b40675e699.bin","bytes":1011008,"start":250000,"end":317400,"localUrl":"../../cloud-assets/full/points-e3968b63ae0595b40675e699.bin"}],"available":317400,"bounds":[[-0.9963340759277344,3.362212896347046],[-1.5574555397033691,1.3121836185455322],[0.5929420590400696,8.606343269348145]],"photo":"../photos/img_6.jpg","href":"../photo-img_6.html","reference":false,"planes":{"key":"4d4bde7f03f10ca1644d8e2c","url":"planes-4d4bde7f03f10ca1644d8e2c.js","bytes":62943,"count":46,"coverage":0.5658475110270952,"triangles":1024}}],"components":[{"id":"0","ids":["img_6"],"rotation":[[0.999999818135333,-0.0006030997437367665,0.0],[9.151885532803211e-07,0.0015174743420871188,0.999998848634729],[-0.0006030990493486665,-0.9999986667702714,0.0015174746180621349]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":true,"up":[-0.0006030990493486665,-0.9999986667702714,0.0015174746180621349],"ranges":[[-1.1715363466638515,3.5375626602461954],[-0.344333105693416,8.952660748028816],[-1.4286868060137294,1.686491222890421]],"rawRanges":[[-1.1706759548187256,3.536554775238037],[-0.3442537307739258,8.95059700012207],[-1.4269691848754882,1.672241106033325]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":[],"treeEdges":[],"initial":["img_6"]}],"defaultLimit":100000,"multiview":true,"semantics":null,"roomVariants":null,"defaultVariant":"scene"}</script></body></html>

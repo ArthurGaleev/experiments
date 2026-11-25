@@ -8,7 +8,8 @@
   const tools = await import('./viewer-tools.js' + assetQuery);
   const {setupAdjustments} = await import('./mobile-tools.js' + assetQuery);
   const {comparisonCandidates, comparisonRanges, cameraAxes, identityPose} = await import('./cloud-comparison.js' + assetQuery);
-  const coordinateUnit = settings.relativeScale ? 'rel. units' : 'm';
+  const {fields, facets, fieldOptions, selectField, selectConnections, sameConfiguration} = await import('./cloud-options.js' + assetQuery);
+  let coordinateUnit;
   const get = id => document.getElementById(id);
   const photoViewer = window.planrecPhotoViewer();
   const palette = ['#168575', '#ce621c', '#6551c5', '#bd3c8a', '#267bb7', '#7c4f37', '#85801d'];
@@ -460,13 +461,14 @@
     syncDetail(sources);
     const count = sources.reduce((sum, source) => sum + Math.min(state.limit || Infinity, source.available), 0);
     get('counts').textContent = `${count.toLocaleString('en')} points across ${sources.length} model panels`;
-    get('selection-status').textContent = `One photo · ${sources.length} saved models · linked cameras · common scale; no scene poses applied.`;
+    get('selection-status').textContent = `One photo · ${sources.length} saved models · linked cameras · shared axis ranges; no scene poses applied.`;
     for (const view of views) {
       const source = view.source, limit = state.limit || Infinity;
+      const comparisonUnit = (view.candidate.relativeScale ?? settings.relativeScale) ? 'rel. units' : 'm';
       const chunks = await Promise.all(source.chunks.filter(c => c.start < limit).map(loadDense));
       if (version !== state.version) return;
       const cloud = {id:source.id, chunks, pose:identityPose, rotation:cameraAxes, limit,
-        frame:view.key, unitLabel:coordinateUnit};
+        frame:view.key, unitLabel:comparisonUnit};
       const data = [{type:'scatter3d', mode:'markers', name:view.candidate.label, cloud,
         bounds:transformedBounds(source.bounds, identityPose, cameraAxes),
         marker:{color:get('colour').value === 'rgb' ? 'photo' : palette[views.indexOf(view) % palette.length]}}];
@@ -475,8 +477,8 @@
         data.push(cameraTrace({...source, pose:identityPose}, component, {membership:new Map()}));
       }
       const scene = {camera:comparisonCamera || defaultCamera, aspectmode:'manual', aspectratio:fixedAspect(ranges),
-        unitLabel:coordinateUnit, linkedCamera:true, canExplore:false};
-      ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title:{text:['camera x','camera z','camera −y'][i] + ', ' + coordinateUnit},range:ranges[i],autorange:false}; });
+        unitLabel:comparisonUnit, linkedCamera:true, canExplore:false};
+      ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title:{text:['camera x','camera z','camera −y'][i] + ', ' + comparisonUnit},range:ranges[i],autorange:false}; });
       view.rendering = true;
       try { await renderer.react(view.plot, data, {scene}); restoreAnnotations(view); }
       finally { view.rendering = false; if (view.disposed) release(view); }
@@ -809,17 +811,39 @@
     }
     select.value = current;
   }
-  const matchers = new Map(settings.variants.filter(v => v.matcher).map(v => [v.matcher, v.matcherLabel]));
+  for (const [field, label] of fields) {
+    const control = document.createElement('label'); control.id = field + '-control'; control.hidden = true;
+    control.append(document.createTextNode(label + ' '));
+    const select = document.createElement('select'); select.id = field; control.append(select);
+    get('model-options').append(control);
+    select.onchange = () => chooseVariant(selectField(settings.variants, state.variant, field, select.value));
+  }
   function updateControls() {
-    get('matcher-control').hidden = matchers.size < 2;
-    options(get('matcher'), matchers, state.variant.matcher);
-    const choices = settings.variants.filter(v => v.matcher === state.variant.matcher);
-    const models = new Map(choices.map(v => [v.model, v.label]));
-    options(get('model'), models, state.variant.model);
-    get('model-control').hidden = models.size < 2;
-    get('model-label').textContent = matchers.size ? 'Depth' : 'Model';
-    const reviewed = choices.find(v => v.model === state.variant.model && v.vlm && !v.recovery);
-    const recovered = choices.find(v => v.model === state.variant.model && v.recovery);
+    for (const [field] of fields) {
+      const values = fieldOptions(settings.variants, state.variant, field);
+      options(get(field), values, facets(state.variant)[field]?.id);
+      get(field + '-control').hidden = values.size < 2;
+    }
+    const relative = state.variant.relativeScale ?? settings.relativeScale ?? false;
+    coordinateUnit = relative ? 'rel. units' : 'm';
+    get('section-unit').textContent = coordinateUnit;
+    get('explore-speed-unit').textContent = coordinateUnit + '/s';
+    get('measure-units').disabled = relative;
+    const previousUnit = get('measure-units').value;
+    get('measure-units').replaceChildren(...(relative ? [new Option('Relative units', 'm')]
+      : [new Option('Metres', 'm'), new Option('Centimetres', 'cm')]));
+    get('measure-units').value = relative ? 'm' : previousUnit || 'm';
+    get('scale-note').textContent = relative ? 'Relative model units; absolute scale is not established.'
+      : 'Scale comes from predicted depth, not a measured room dimension.';
+    const description = state.variant.description || fields.map(([field]) => facets(state.variant)[field]?.label).filter(Boolean).join(' · ');
+    const connectionLabel = facets(state.variant).method?.id === 'matching'
+      ? state.variant.recovery ? ' · VLM review + recovery' : state.variant.vlm ? ' · VLM review' : ' · Geometric connections only' : '';
+    get('variant-description').textContent = description + connectionLabel;
+    const evidence = get('variant-report'); evidence.hidden = !state.variant.report;
+    if (state.variant.report) evidence.href = state.variant.report;
+    const choices = settings.variants.filter(v => sameConfiguration(v, state.variant));
+    const reviewed = choices.find(v => v.vlm && !v.recovery && v.review);
+    const recovered = choices.find(v => v.recovery && v.recoveryInfo);
     get('recovery-control').hidden = !recovered;
     get('recovery').disabled = !recovered || !state.variant.vlm;
     get('recovery').checked = !!state.variant.recovery;
@@ -830,7 +854,7 @@
       recoveryStatus.append(document.createTextNode(`Recovered bridges: ${result.bridges}; additional constraints: ${result.constraints}; total edges: ${result.edges}. Scale follows the anchor component; internal poses are preserved. `));
       const link = document.createElement('a'); link.href = result.href; link.textContent = 'Checks and scale corrections ↗'; recoveryStatus.append(link);
     }
-    const visible = settings.multiview && !!state.variant.matcher;
+    const visible = !!reviewed || !!recovered;
     document.querySelector('.connection-options').hidden = !visible && !semanticVariants.length;
     get('vlm-control').hidden = !visible;
     get('vlm-status').hidden = !visible;
@@ -853,11 +877,11 @@
     if (!next || next.id === state.variant.id) return;
     if (state.room) roomSelections.set(`${state.variant.id}:${state.roomSource}:${state.room}`, new Set(state.selected));
     else selections.set(state.variant.id, new Set(state.selected));
-    const sameInputs = next.matcher === state.variant.matcher && next.model === state.variant.model;
+    const sameInputs = next.sources.some(source => state.selected.has(source.id));
     const selection = state.room ? roomSelections.get(`${next.id}:${state.roomSource}:${state.room}`) || state.selected
       : selections.get(next.id) || (sameInputs ? state.selected : next.initial);
     state.variant = next;
-    state.selected = new Set(selection);
+    state.selected = new Set([...selection].filter(id => next.sources.some(source => source.id === id)));
     updateControls(); build();
   }
   function variantFor(matcher, model, vlm, recovery = false) {
@@ -866,18 +890,17 @@
       || choices.find(v => !!v.vlm === !!vlm && !v.recovery) || choices.find(v => !v.vlm)
       || settings.variants.find(v => v.matcher === matcher && !v.vlm);
   }
-  get('matcher').onchange = () => chooseVariant(variantFor(get('matcher').value, state.variant.model, state.variant.vlm, state.variant.recovery));
-  get('model').onchange = () => chooseVariant(variantFor(state.variant.matcher, get('model').value, state.variant.vlm, state.variant.recovery));
   get('compare-toggle').onclick = () => { state.compare = !state.compare; comparisonCamera = null; build(); };
   get('compare-photo').onchange = () => { state.comparePhoto = get('compare-photo').value; comparisonCamera = null; build(); };
-  get('vlm').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, get('vlm').checked));
-  get('recovery').onchange = () => chooseVariant(variantFor(state.variant.matcher, state.variant.model, true, get('recovery').checked));
+  get('vlm').onchange = () => chooseVariant(selectConnections(settings.variants, state.variant, get('vlm').checked, false));
+  get('recovery').onchange = () => chooseVariant(selectConnections(settings.variants, state.variant, true, get('recovery').checked));
   const params = new URLSearchParams(location.search);
   if (['matcher', 'model', 'vlm', 'recovery'].some(key => params.has(key))) {
     const recovery = params.has('recovery') ? params.get('recovery') === '1' : state.variant.recovery;
     const vlm = params.has('vlm') ? params.get('vlm') === '1' : params.has('recovery') ? recovery : state.variant.vlm;
     state.variant = variantFor(params.get('matcher') || state.variant.matcher, params.get('model') || state.variant.model, vlm, vlm && recovery) || state.variant;
   }
+  if (params.has('variant')) state.variant = settings.variants.find(v => v.id === params.get('variant')) || state.variant;
   updateControls();
   get('all').onclick = () => { state.selected = new Set(state.room ? roomNames() : state.variant.sources.filter(s => !s.reference).map(s => s.id)); draw(); };
   get('none').onclick = () => { state.selected.clear(); draw(); };
@@ -977,7 +1000,7 @@
     state.compareModels = new Set((saved.comparison?.models || []).slice(0, 4));
     comparisonCamera = saved.comparison?.camera || null;
     tools.writeControls(saved.controls); get('measure').checked = false; tools.updateControlLabels();
-    if (settings.relativeScale) get('measure-units').value = 'm';
+    if (state.variant.relativeScale ?? settings.relativeScale) get('measure-units').value = 'm';
     get('detail').value = String(state.limit);
     for (const [key, value] of Object.entries(saved.cameras)) cameras.set(key, value);
     for (const [key, value] of Object.entries(saved.inspections || {})) inspections.set(key, value);
@@ -998,10 +1021,7 @@
     }
   }
   tools.setupPanels(); tools.updateControlLabels();
-  setupAdjustments({unit:coordinateUnit,widthRange:() => Math.max(.1,...['x','y','z'].map(a => { const r = activeView()?.plot.layout?.scene[a+'axis'].range; return r ? r[1]-r[0] : 1; }))});
-  get('section-unit').textContent = coordinateUnit;
-  get('explore-speed-unit').textContent = settings.relativeScale ? 'rel. units/s' : 'm/s';
-  if (settings.relativeScale) { get('measure-units').disabled = true; get('measure-units').replaceChildren(new Option('Relative units','m')); }
+  setupAdjustments({unit:() => coordinateUnit,widthRange:() => Math.max(.1,...['x','y','z'].map(a => { const r = activeView()?.plot.layout?.scene[a+'axis'].range; return r ? r[1]-r[0] : 1; }))});
   const initialView = tools.setupBookmarks({scene:sceneId, capture:captureView, restore:restoreView});
   if (initialView) await restoreView(initialView);
   else { updateRoomControls(); build(); }

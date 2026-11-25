@@ -1,23 +1,22 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Joint DA3 cloud · group-02</title><link rel="stylesheet" href="cloud-view.css?v=81e22d0a5580">
-<link rel="stylesheet" href="photo-view.css?v=81e22d0a5580">
-<script src="photo-view.js?v=81e22d0a5580" defer></script>
-<script src="room-view.js?v=81e22d0a5580" defer></script>
-<script src="cloud-view.js?v=81e22d0a5580" defer></script>
+<title>Joint DA3 cloud · group-02</title><link rel="stylesheet" href="cloud-view.css?v=56cf2f824524">
+<link rel="stylesheet" href="photo-view.css?v=56cf2f824524">
+<script src="photo-view.js?v=56cf2f824524" defer></script>
+<script src="room-view.js?v=56cf2f824524" defer></script>
+<script src="cloud-view.js?v=56cf2f824524" defer></script>
 </head><body><main>
 <a href="../group-group-02.html">← Report</a><h1>Joint DA3 cloud · group-02</h1>
 <p id="scene-note">A singleton shows depth in its own camera frame. Placement relative to other groups is unknown.</p>
-<div class="toolbar">
-  <label id="matcher-control" hidden>Matching <select id="matcher"></select></label>
-  <label id="model-control" hidden><span id="model-label">Model</span> <select id="model"></select></label>
+<div class="toolbar"><div id="model-options" class="toolbar"></div>
   <button id="compare-toggle" hidden aria-pressed="false">Compare models</button>
 </div>
+<p class="muted"><span id="variant-description"></span> <a id="variant-report" hidden>Method and results ↗</a></p>
 <section id="compare-controls" hidden>
   <div class="toolbar"><label>Compare photo <select id="compare-photo"></select></label></div>
   <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
-  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked; every panel uses the same scale and photo camera frame. This compares local shape and depth, before scene placement.</p>
+  <p class="muted">Choose up to four models. Rotation, pan and zoom are linked; panels share axis ranges and the photo camera frame. Relative model scales remain uncertain. This compares local shape and depth, before scene placement.</p>
   <img id="compare-preview" alt="Source photo for model comparison" hidden>
 </section>
 <details class="connection-options"><summary>Connections and room hypotheses</summary>
@@ -152,7 +151,7 @@ metric accuracy of the scale corrections is not established.</p>
 Orders and repeats remain separate. Semantic selection adds no geometric edges
 and changes no poses. Overlapping hypotheses are alternatives, not a room count.
 Disconnected parts are arranged for inspection, with unknown physical placement.</p>
-<p>Coordinates use relative model units. Lengths in meters require a separate scale estimate. GeoCalib applies one rotation per component. Without it, world
+<p><span id="scale-note">Coordinates use relative model units. Lengths in meters require a separate scale estimate.</span> GeoCalib applies one rotation per component. Without it, world
 vertical is unknown. Each model's XYZ and K are used together.</p>
 <p>Points are nested uniform pixel samples; Full includes every finite, positive,
 model-valid saved point. It does not change inference or metrics. Detail loads on
@@ -174,4 +173,4 @@ rendered; boundary strips and nonplanar regions can be missing. Vertex colors lo
 fine image detail. Use Both to compare patch support with the original cloud.</p>
 </details>
 <noscript>JavaScript is required for the interactive viewer.</noscript>
-</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"recovery":false,"recoveryInfo":null,"sources":[{"id":"img_16_b","name":"img_16_b","pose":[[1.0,0.0,9.113462398802982e-21,0.0],[0.0,1.0,0.0,-9.843449289381029e-23],[1.4843756092264082e-20,0.0,1.0,-3.3881317890172014e-21],[0.0,0.0,0.0,1.0]],"corners":[[-0.13507720056222752,-0.1741232609376311,0.3],[0.1343643864034675,-0.1741232609376311,0.3],[0.1343643864034675,0.17343365494161844,0.3],[-0.13507720056222752,0.17343365494161844,0.3]],"chunks":[{"key":"99172fb78766e8dce0ed9a07","url":"../../cloud-assets/points-99172fb78766e8dce0ed9a07.bin","bytes":375008,"start":0,"end":25000},{"key":"edd8a38db9605bafc40a2158","url":"../../cloud-assets/points-edd8a38db9605bafc40a2158.bin","bytes":1125008,"start":25000,"end":100000},{"key":"8dacb7bc00198f12e995819e","url":"../../cloud-assets/points-8dacb7bc00198f12e995819e.bin","bytes":1357688,"start":100000,"end":190512}],"available":190512,"bounds":[[-0.3325909972190857,0.5955702066421509],[-0.6647528409957886,0.3738235533237457],[0.5193101763725281,1.340416669845581]],"photo":"../photos/0009.jpg","href":"../group-group-02.html#frame-0","reference":false}],"components":[{"id":"0","ids":["img_16_b"],"rotation":[[1,0,0],[0,0,1],[0,-1,0]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":false,"up":null,"ranges":[[-0.3825909972190857,0.6455702066421509],[-0.053616666793823244,1.3940333366394042],[-0.4238235533237457,0.7147528409957886]],"rawRanges":[[-0.3825909972190857,0.6455702066421509],[-0.053616666793823244,1.3940333366394042],[-0.4238235533237457,0.7147528409957886]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":null,"treeEdges":[],"initial":["img_16_b"]}],"defaultLimit":100000,"multiview":true,"semantics":null,"roomVariants":null,"defaultVariant":"scene","relativeScale":true}</script></body></html>
+</main><script id="scene-data" type="application/json">{"variants":[{"id":"scene","label":"","matcher":null,"matcherLabel":null,"model":"scene","vlm":false,"review":null,"recovery":false,"recoveryInfo":null,"sources":[{"id":"img_16_b","name":"img_16_b","pose":[[1.0,0.0,9.113462398802982e-21,0.0],[0.0,1.0,0.0,-9.843449289381029e-23],[1.4843756092264082e-20,0.0,1.0,-3.3881317890172014e-21],[0.0,0.0,0.0,1.0]],"corners":[[-0.13507720056222752,-0.1741232609376311,0.3],[0.1343643864034675,-0.1741232609376311,0.3],[0.1343643864034675,0.17343365494161844,0.3],[-0.13507720056222752,0.17343365494161844,0.3]],"chunks":[{"key":"99172fb78766e8dce0ed9a07","url":"../../cloud-assets/points-99172fb78766e8dce0ed9a07.bin","bytes":375008,"start":0,"end":25000},{"key":"edd8a38db9605bafc40a2158","url":"https://raw.githubusercontent.com/ArthurGaleev/experiments/c5ae4873b0cf7e5558c6bafcaf5f1350ec5011f5/points-edd8a38db9605bafc40a2158.bin","bytes":1125008,"start":25000,"end":100000,"localUrl":"../../cloud-assets/full/points-edd8a38db9605bafc40a2158.bin"},{"key":"8dacb7bc00198f12e995819e","url":"https://raw.githubusercontent.com/ArthurGaleev/experiments/c5ae4873b0cf7e5558c6bafcaf5f1350ec5011f5/points-8dacb7bc00198f12e995819e.bin","bytes":1357688,"start":100000,"end":190512,"localUrl":"../../cloud-assets/full/points-8dacb7bc00198f12e995819e.bin"}],"available":190512,"bounds":[[-0.3325909972190857,0.5955702066421509],[-0.6647528409957886,0.3738235533237457],[0.5193101763725281,1.340416669845581]],"photo":"../photos/0009.jpg","href":"../group-group-02.html#frame-0","reference":false}],"components":[{"id":"0","ids":["img_16_b"],"rotation":[[1,0,0],[0,0,1],[0,-1,0]],"fixed":[[1,0,0],[0,0,1],[0,-1,0]],"levelled":false,"up":null,"ranges":[[-0.3825909972190857,0.6455702066421509],[-0.053616666793823244,1.3940333366394042],[-0.4238235533237457,0.7147528409957886]],"rawRanges":[[-0.3825909972190857,0.6455702066421509],[-0.053616666793823244,1.3940333366394042],[-0.4238235533237457,0.7147528409957886]],"warnings":0,"cycleChecks":null,"notes":[]}],"edges":null,"treeEdges":[],"initial":["img_16_b"]}],"defaultLimit":100000,"multiview":true,"semantics":null,"roomVariants":null,"defaultVariant":"scene","relativeScale":true}</script></body></html>
