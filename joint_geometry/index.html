@@ -1,4 +1,4 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Joint camera and depth prediction · G3</title><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Joint models and predicted geometric inputs · G3</title><style>
 * { box-sizing: border-box; }
 body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
 main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
@@ -110,11 +110,11 @@ dialog.photo-viewer::backdrop{background:#121614}
  .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
  .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
 </style></head><body><main><nav style="margin-bottom:20px"><a href="../">← All experiments</a> · <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">Photo source</a> · <a href="../LICENSE">Apache 2.0</a></nav><div class='eyebrow'>Floor plan from photos · experiment</div>
-<h1>Joint camera and depth prediction · G3</h1>
+<h1>Joint models and predicted geometric inputs · G3</h1>
 <nav aria-label='Sections'><a href='#scenes'>All photos in 3D</a></nav>
 <section class='section' id='section-0'><h2>What changes here</h2>
-<p>The same DA3-Small checkpoint predicts geometry jointly. Compare its camera decoder with its ray-derived cameras, or change how the reference photo is selected. MetricAnything with RoMa/LoMa remains the saved rigid control. A camera prediction for every input does not establish a correct shared scene.</p>
-<div class='stats'><div><strong>23</strong><span>input photos</span></div><div><strong>1</strong><span>photo sets</span></div><div><strong>19</strong><span>joint configurations</span></div></div><p></p>
+<p>Compare DA3-Small, DA3-Large, VGGT-Omega, Pi3X and MapAnything on the same 23 photos. Available controls separate model choices, camera heads, reference selection and predicted calibration, depth or supported camera inputs.</p>
+<div class='stats'><div><strong>23</strong><span>input photos</span></div><div><strong>1</strong><span>photo sets</span></div><div><strong>19</strong><span>joint configurations</span></div></div><p>Optional geometric inputs come from predictions, not reference labels. VLM review and recovery are off in these controlled joint-model comparisons. Native pointmap geometry is retained. A shared camera prediction for every photo does not establish a correct whole-apartment reconstruction. MapAnything development evaluation is still running. The Blueprint sample supports visual and execution checks, not an accuracy ranking.</p>
 </section>
 <section class='section' id='scenes'><h2>All photos in 3D</h2>
 <p>Choose a location preview, then a photo set. The same viewer serves local results and the public sample.</p>

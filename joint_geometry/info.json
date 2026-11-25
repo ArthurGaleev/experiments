@@ -3,7 +3,7 @@
   "selection": "Exact frozen source RGB, cases and orders; predicted conditions only.",
   "units": "learned approximate metric",
   "status": "complete",
-  "title": "Joint camera and depth prediction · G3",
+  "title": "Joint models and predicted geometric inputs · G3",
   "run": "20261125-144943-510516",
   "params": {
     "configurations": [
