@@ -20,6 +20,7 @@ These are tool experiments, not a completed apartment plan.
 | [Connection recovery](https://arthurgaleev.github.io/experiments/alignment/grouping/recovery.html) | Validated component bridges, scale corrections and path checks |
 | [Global Qwen](https://arthurgaleev.github.io/experiments/alignment/grouping/global.html) | All-photo room reasoning, revisions and repeat/order differences |
 | [Joint DA3-Small](https://arthurgaleev.github.io/experiments/da3/) | Shared cameras and depth within groups of 20, 2 and 1 photos |
+| [Individual geometry · G1](https://arthurgaleev.github.io/experiments/individual_geometry/) | MetricAnything, MoGe-2/3, DA3 metric depth and independent camera calibration, with one shared photo/3D browser |
 
 The viewer retains all photos, including singletons. Selecting photos changes
 visibility while preserving established poses. Originally disconnected components
@@ -28,6 +29,12 @@ starting at 100k points per photo; Full displays all saved valid points. The
 all-photo view defaults to RoMa + MoGe-2 with VLM review and supported recovery.
 Matcher/depth, VLM review, supported recovery and semantic room
 source select separately saved results; the browser runs no inference.
+
+The G1 gallery compares individual photo geometry before alignment and starts at
+25k points per photo. Its model selector changes saved depth/calibration variants;
+it does not claim those clouds share an apartment coordinate frame. The local
+development report uses the same viewer and adds dataset/scene navigation and
+reference comparisons. Only the bundled Blueprint sample is published here.
 
 In Inspect, drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, and double-click a
 surface to focus. The compact toolbar provides View, Display, Section, Rulers

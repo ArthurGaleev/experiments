@@ -1,0 +1,13 @@
+{
+  "created": "2026-11-25T05:22:04",
+  "status": "complete",
+  "title": "Individual geometry and calibration · G1",
+  "run": "20261125-052204-069289",
+  "params": {
+    "display_points_per_photo": 25000,
+    "depth_color_max_m": 10,
+    "calibration": "Each derived branch names its focal/ray source"
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
