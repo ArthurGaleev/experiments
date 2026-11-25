@@ -919,6 +919,8 @@
       status.append(document.createTextNode(`Checked pairs: ${result.checkedPairs}/${result.possiblePairs}. `));
       const link = document.createElement('a'); link.href = result.href;
       link.textContent = 'Decisions and evidence ↗'; status.append(link);
+    } else if (inputGrouping) {
+      status.textContent = 'Input grouping selects saved photo groups. Each group has independently estimated cameras and scale.';
     } else {
       status.textContent = 'No saved connection review or recovery branch for this reconstruction.';
     }

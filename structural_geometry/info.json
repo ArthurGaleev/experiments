@@ -1,9 +1,9 @@
 {
-  "created": "2026-11-25T16:08:36",
+  "created": "2026-11-25T19:58:17",
   "units": "native relative scale; not calibrated metres",
   "status": "complete",
-  "title": "Inferred structural surfaces · G5",
-  "run": "20261125-160836-147914",
+  "title": "Structural surfaces and input grouping",
+  "run": "20261125-195817-093398",
   "params": {
     "configurations": [
       "planedust3r_native"
