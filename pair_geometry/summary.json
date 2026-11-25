@@ -1,0 +1,846 @@
+{
+  "pairs": [
+    {
+      "comparison": "M1",
+      "configuration": "loma_rigid",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 36,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 36,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "insufficient_spatially_held_out_matches": 174,
+        "test_reprojection": 28,
+        "train_poor_spatial_coverage": 20,
+        "train_reprojection": 19,
+        "test_poor_spatial_coverage": 17,
+        "train_weak_consensus": 7,
+        "degenerate_or_no_consensus": 1,
+        "test_weak_consensus": 9,
+        "gravity_disagreement": 1
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.1422924901185771,
+          "bootstrap_95": [
+            0.1422924901185771,
+            0.1422924901185771
+          ],
+          "locations": 1
+        },
+        "matches": {
+          "location_mean": 114.72727272727273,
+          "bootstrap_95": [
+            114.72727272727273,
+            114.72727272727273
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "M1",
+      "configuration": "roma_rigid",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 26,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 26,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "degenerate_or_no_consensus": 8,
+        "insufficient_spatially_held_out_matches": 93,
+        "train_poor_spatial_coverage": 86,
+        "train_reprojection": 91,
+        "test_weak_consensus": 58,
+        "test_poor_spatial_coverage": 70,
+        "test_reprojection": 111,
+        "train_weak_consensus": 40,
+        "gravity_disagreement": 36
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.10276679841897234,
+          "bootstrap_95": [
+            0.10276679841897234,
+            0.10276679841897234
+          ],
+          "locations": 1
+        },
+        "matches": {
+          "location_mean": 631.6719367588933,
+          "bootstrap_95": [
+            631.6719367588933,
+            631.6719367588933
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1",
+      "configuration": "roma_rigid",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 26,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 26,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "degenerate_or_no_consensus": 8,
+        "insufficient_spatially_held_out_matches": 93,
+        "train_poor_spatial_coverage": 86,
+        "train_reprojection": 91,
+        "test_weak_consensus": 58,
+        "test_poor_spatial_coverage": 70,
+        "test_reprojection": 111,
+        "train_weak_consensus": 40,
+        "gravity_disagreement": 36
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.10276679841897234,
+          "bootstrap_95": [
+            0.10276679841897234,
+            0.10276679841897234
+          ],
+          "locations": 1
+        },
+        "matches": {
+          "location_mean": 631.6719367588933,
+          "bootstrap_95": [
+            631.6719367588933,
+            631.6719367588933
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1",
+      "configuration": "madpose_calibrated",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 67,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 67,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 85,
+        "test_weak_epipolar_consensus": 50,
+        "test_poor_spatial_coverage": 66,
+        "insufficient_spatially_held_out_matches": 93,
+        "train_weak_epipolar_consensus": 10,
+        "gravity_disagreement": 23
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2648221343873518,
+          "bootstrap_95": [
+            0.2648221343873518,
+            0.2648221343873518
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1_camera_regime",
+      "configuration": "madpose_calibrated",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 67,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 67,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 85,
+        "test_weak_epipolar_consensus": 50,
+        "test_poor_spatial_coverage": 66,
+        "insufficient_spatially_held_out_matches": 93,
+        "train_weak_epipolar_consensus": 10,
+        "gravity_disagreement": 23
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2648221343873518,
+          "bootstrap_95": [
+            0.2648221343873518,
+            0.2648221343873518
+          ],
+          "locations": 1
+        }
+      },
+      "camera_regime": "unknown"
+    },
+    {
+      "comparison": "P1",
+      "configuration": "madpose_separate",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 72,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 72,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 78,
+        "test_weak_epipolar_consensus": 44,
+        "test_poor_spatial_coverage": 62,
+        "insufficient_spatially_held_out_matches": 93,
+        "gravity_disagreement": 28,
+        "solver_failed": 3,
+        "train_weak_epipolar_consensus": 9
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2845849802371542,
+          "bootstrap_95": [
+            0.2845849802371542,
+            0.2845849802371542
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1_camera_regime",
+      "configuration": "madpose_separate",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 72,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 72,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 78,
+        "test_weak_epipolar_consensus": 44,
+        "test_poor_spatial_coverage": 62,
+        "insufficient_spatially_held_out_matches": 93,
+        "gravity_disagreement": 28,
+        "solver_failed": 3,
+        "train_weak_epipolar_consensus": 9
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2845849802371542,
+          "bootstrap_95": [
+            0.2845849802371542,
+            0.2845849802371542
+          ],
+          "locations": 1
+        }
+      },
+      "camera_regime": "unknown"
+    },
+    {
+      "comparison": "P1",
+      "configuration": "madpose_shared",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 70,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 70,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 79,
+        "test_weak_epipolar_consensus": 45,
+        "test_poor_spatial_coverage": 64,
+        "insufficient_spatially_held_out_matches": 93,
+        "train_weak_epipolar_consensus": 11,
+        "gravity_disagreement": 26
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2766798418972332,
+          "bootstrap_95": [
+            0.2766798418972332,
+            0.2766798418972332
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1_camera_regime",
+      "configuration": "madpose_shared",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 70,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 70,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 79,
+        "test_weak_epipolar_consensus": 45,
+        "test_poor_spatial_coverage": 64,
+        "insufficient_spatially_held_out_matches": 93,
+        "train_weak_epipolar_consensus": 11,
+        "gravity_disagreement": 26
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2766798418972332,
+          "bootstrap_95": [
+            0.2766798418972332,
+            0.2766798418972332
+          ],
+          "locations": 1
+        }
+      },
+      "camera_regime": "unknown"
+    },
+    {
+      "comparison": "P1",
+      "configuration": "poselib_calibrated",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 66,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 66,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 84,
+        "test_weak_epipolar_consensus": 51,
+        "test_poor_spatial_coverage": 65,
+        "insufficient_spatially_held_out_matches": 93,
+        "gravity_disagreement": 36,
+        "train_weak_epipolar_consensus": 7
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2608695652173913,
+          "bootstrap_95": [
+            0.2608695652173913,
+            0.2608695652173913
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1_camera_regime",
+      "configuration": "poselib_calibrated",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 66,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 66,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 84,
+        "test_weak_epipolar_consensus": 51,
+        "test_poor_spatial_coverage": 65,
+        "insufficient_spatially_held_out_matches": 93,
+        "gravity_disagreement": 36,
+        "train_weak_epipolar_consensus": 7
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2608695652173913,
+          "bootstrap_95": [
+            0.2608695652173913,
+            0.2608695652173913
+          ],
+          "locations": 1
+        }
+      },
+      "camera_regime": "unknown"
+    },
+    {
+      "comparison": "P1",
+      "configuration": "poselib_separate",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 49,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 49,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 27,
+        "test_poor_spatial_coverage": 18,
+        "gravity_disagreement": 21,
+        "insufficient_spatially_held_out_matches": 93,
+        "solver_failed": 80,
+        "test_weak_epipolar_consensus": 11,
+        "train_weak_epipolar_consensus": 1
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.19367588932806323,
+          "bootstrap_95": [
+            0.19367588932806323,
+            0.19367588932806323
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1_camera_regime",
+      "configuration": "poselib_separate",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 49,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 49,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 27,
+        "test_poor_spatial_coverage": 18,
+        "gravity_disagreement": 21,
+        "insufficient_spatially_held_out_matches": 93,
+        "solver_failed": 80,
+        "test_weak_epipolar_consensus": 11,
+        "train_weak_epipolar_consensus": 1
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.19367588932806323,
+          "bootstrap_95": [
+            0.19367588932806323,
+            0.19367588932806323
+          ],
+          "locations": 1
+        }
+      },
+      "camera_regime": "unknown"
+    },
+    {
+      "comparison": "P1",
+      "configuration": "poselib_shared",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 70,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 70,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 79,
+        "test_poor_spatial_coverage": 57,
+        "gravity_disagreement": 48,
+        "insufficient_spatially_held_out_matches": 93,
+        "test_weak_epipolar_consensus": 42,
+        "train_weak_epipolar_consensus": 5
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2766798418972332,
+          "bootstrap_95": [
+            0.2766798418972332,
+            0.2766798418972332
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "comparison": "P1_camera_regime",
+      "configuration": "poselib_shared",
+      "seed": 0,
+      "dataset": "blueprint",
+      "role": "smoke",
+      "locations": 1,
+      "counts": {
+        "pairs": 253,
+        "accepted": 70,
+        "positive": 0,
+        "positive_with_pose_reference": 0,
+        "negative": 0,
+        "ambiguous": 0,
+        "unknown": 253,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_unknown": 70,
+        "accepted_ambiguous": 0,
+        "accepted_positive_pose_unscored": 0,
+        "input_failed": 0,
+        "accepted_invalid_positive": 0
+      },
+      "reasons": {
+        "train_poor_spatial_coverage": 79,
+        "test_poor_spatial_coverage": 57,
+        "gravity_disagreement": 48,
+        "insufficient_spatially_held_out_matches": 93,
+        "test_weak_epipolar_consensus": 42,
+        "train_weak_epipolar_consensus": 5
+      },
+      "metrics": {
+        "acceptance": {
+          "location_mean": 0.2766798418972332,
+          "bootstrap_95": [
+            0.2766798418972332,
+            0.2766798418972332
+          ],
+          "locations": 1
+        }
+      },
+      "camera_regime": "unknown"
+    }
+  ],
+  "cases": [
+    {
+      "matcher": "roma",
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos_per_case": 23,
+      "cases": 1,
+      "locations": 1,
+      "metrics": {
+        "placed_fraction": {
+          "location_mean": 0.8260869565217391,
+          "bootstrap_95": [
+            0.8260869565217391,
+            0.8260869565217391
+          ],
+          "locations": 1
+        },
+        "largest_fraction": {
+          "location_mean": 0.8260869565217391,
+          "bootstrap_95": [
+            0.8260869565217391,
+            0.8260869565217391
+          ],
+          "locations": 1
+        },
+        "surface_photos_scored": {
+          "location_mean": 0.0,
+          "bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "locations": 1
+        },
+        "raw_tracks_clean_tracks_3plus": {
+          "location_mean": 3186.0,
+          "bootstrap_95": [
+            3186.0,
+            3186.0
+          ],
+          "locations": 1
+        },
+        "raw_tracks_conflicting_tracks": {
+          "location_mean": 3802.0,
+          "bootstrap_95": [
+            3802.0,
+            3802.0
+          ],
+          "locations": 1
+        },
+        "raw_tracks_matched_observations": {
+          "location_mean": 135266.0,
+          "bootstrap_95": [
+            135266.0,
+            135266.0
+          ],
+          "locations": 1
+        },
+        "accepted_tracks_clean_tracks_3plus": {
+          "location_mean": 2274.0,
+          "bootstrap_95": [
+            2274.0,
+            2274.0
+          ],
+          "locations": 1
+        },
+        "accepted_tracks_conflicting_tracks": {
+          "location_mean": 2789.0,
+          "bootstrap_95": [
+            2789.0,
+            2789.0
+          ],
+          "locations": 1
+        },
+        "accepted_tracks_matched_observations": {
+          "location_mean": 52037.0,
+          "bootstrap_95": [
+            52037.0,
+            52037.0
+          ],
+          "locations": 1
+        }
+      }
+    },
+    {
+      "matcher": "loma",
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos_per_case": 23,
+      "cases": 1,
+      "locations": 1,
+      "metrics": {
+        "placed_fraction": {
+          "location_mean": 0.782608695652174,
+          "bootstrap_95": [
+            0.782608695652174,
+            0.782608695652174
+          ],
+          "locations": 1
+        },
+        "largest_fraction": {
+          "location_mean": 0.6956521739130435,
+          "bootstrap_95": [
+            0.6956521739130435,
+            0.6956521739130435
+          ],
+          "locations": 1
+        },
+        "surface_photos_scored": {
+          "location_mean": 0.0,
+          "bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "locations": 1
+        },
+        "raw_tracks_clean_tracks_3plus": {
+          "location_mean": 1317.0,
+          "bootstrap_95": [
+            1317.0,
+            1317.0
+          ],
+          "locations": 1
+        },
+        "raw_tracks_conflicting_tracks": {
+          "location_mean": 956.0,
+          "bootstrap_95": [
+            956.0,
+            956.0
+          ],
+          "locations": 1
+        },
+        "raw_tracks_matched_observations": {
+          "location_mean": 27881.0,
+          "bootstrap_95": [
+            27881.0,
+            27881.0
+          ],
+          "locations": 1
+        },
+        "accepted_tracks_clean_tracks_3plus": {
+          "location_mean": 1377.0,
+          "bootstrap_95": [
+            1377.0,
+            1377.0
+          ],
+          "locations": 1
+        },
+        "accepted_tracks_conflicting_tracks": {
+          "location_mean": 608.0,
+          "bootstrap_95": [
+            608.0,
+            608.0
+          ],
+          "locations": 1
+        },
+        "accepted_tracks_matched_observations": {
+          "location_mean": 15935.0,
+          "bootstrap_95": [
+            15935.0,
+            15935.0
+          ],
+          "locations": 1
+        }
+      }
+    }
+  ],
+  "stability": []
+}

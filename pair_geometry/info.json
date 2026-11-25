@@ -1,0 +1,28 @@
+{
+  "created": "2026-11-25T06:32:51",
+  "settings": {
+    "roma": "precise",
+    "max_matches": 2048,
+    "confidence": 0.2,
+    "seed": 0,
+    "pose_error_px": 1.5,
+    "gravity_veto_deg": 15,
+    "minimum_translation_m": 0.02,
+    "pose_invalid_rotation_deg": 20,
+    "pose_invalid_translation_direction_deg": 30
+  },
+  "status": "complete",
+  "title": "Matching and camera geometry",
+  "run": "20261125-063251-954063",
+  "params": {
+    "depth": "MetricAnything",
+    "matchers": [
+      "roma",
+      "loma"
+    ],
+    "gravity": "GeoCalib hard veto",
+    "display_points": 25000
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
