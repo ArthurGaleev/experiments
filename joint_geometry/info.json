@@ -1,17 +1,19 @@
 {
-  "created": "2026-11-25T10:08:13",
+  "created": "2026-11-25T14:49:43",
   "selection": "Exact frozen source RGB, cases and orders; predicted conditions only.",
   "units": "learned approximate metric",
   "status": "complete",
-  "title": "Joint reconstruction and predicted conditions",
-  "run": "20261125-100813-508586",
+  "title": "Joint camera and depth prediction · G3",
+  "run": "20261125-144943-510516",
   "params": {
     "configurations": [
-      "pi3x_rgb",
-      "pi3x_predicted_k",
-      "pi3x_predicted_k_depth",
-      "pi3x_predicted_k_pose",
-      "pi3x_predicted_k_depth_pose"
+      "mapanything_rgb",
+      "mapanything_predicted_k",
+      "mapanything_predicted_k_depth",
+      "mapanything_predicted_k_pose",
+      "mapanything_predicted_k_depth_pose",
+      "mapanything_k_pose_order_control",
+      "mapanything_k_depth_pose_order_control"
     ],
     "seed": 20261125
   },

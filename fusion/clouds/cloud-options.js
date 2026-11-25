@@ -62,7 +62,8 @@ export function facets(variant) {
     c.method = choice('joint_refined', 'Joint reconstruction + refinement');
     c.model = choice('ggpt', 'GGPT · VGGT');
     const rest = key.slice(5), camera = rest.startsWith('independent') ? 'independent' : 'shared';
-    c.camera = choice(camera, camera === 'shared' ? 'Shared camera' : 'Independent cameras');
+    c.camera = rest === 'initial' ? choice('initial', 'VGGT cameras')
+      : choice(camera, camera === 'shared' ? 'Shared intrinsics' : 'Independent intrinsics');
     const stage = rest.replace(/^(native_shared|independent_pinhole)_/, '');
     const names = {initial:'Initial predictions', camera:'Cameras only', aligned:'Aligned original depth', refined:'Point cloud refinement'};
     c.refinement = choice(stage, names[stage] || stage);

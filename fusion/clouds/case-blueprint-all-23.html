@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Surface fusion · Blueprint sample</title><link rel="stylesheet" href="cloud-view.css?v=7a794577771d">
-<link rel="stylesheet" href="photo-view.css?v=7a794577771d">
-<script src="photo-view.js?v=7a794577771d" defer></script>
-<script src="room-view.js?v=7a794577771d" defer></script>
-<script src="cloud-view.js?v=7a794577771d" defer></script>
+<title>Surface fusion · Blueprint sample</title><link rel="stylesheet" href="cloud-view.css?v=b27372390503">
+<link rel="stylesheet" href="photo-view.css?v=b27372390503">
+<script src="photo-view.js?v=b27372390503" defer></script>
+<script src="room-view.js?v=b27372390503" defer></script>
+<script src="cloud-view.js?v=b27372390503" defer></script>
 </head><body><main>
 <a href="../case-blueprint-all-23.html">← Report</a><h1>Surface fusion · Blueprint sample</h1>
 <p id="scene-note">Overlay and fused surfels use exactly the same input samples and cameras. Shared points are drawn once and remain selectable through every supporting photo. Conflicts and single-view points remain; no holes are filled. Compare models uses each photo&#x27;s full contribution. Full includes every valid native Blueprint point. Disconnected groups retain independent frames. VLM review and recovery are off in this controlled experiment.</p>
@@ -13,6 +13,7 @@
   <button id="compare-toggle" hidden aria-pressed="false">Compare models</button>
 </div>
 <p class="muted"><span id="variant-description"></span> <a id="variant-report" hidden>Method and results ↗</a></p>
+
 <section id="compare-controls" hidden>
   <div class="toolbar"><label>Compare photo <select id="compare-photo"></select></label></div>
   <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
