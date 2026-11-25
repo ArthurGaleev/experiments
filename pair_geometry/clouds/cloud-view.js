@@ -294,7 +294,7 @@
       opacity: ghost ? .3 : 1, line: {width: ghost ? 2 : 4, color: ghost ? '#89958c' : palette[(groups.membership.get(source.id) || 0) % palette.length]}};
   }
   function photoViews(component) {
-    return state.variant.sources.filter(s => s.photo && component.ids.includes(s.id)).map(source => {
+    return state.variant.sources.filter(s => s.photo && !s.unavailableReason && component.ids.includes(s.id)).map(source => {
       const origin = position([0,0,0],source,component), forward = position([0,0,1],source,component);
       return {id:source.id,name:source.name,position:origin,direction:forward.map((n,i) => n - origin[i]),frame:component.id};
     });
@@ -369,8 +369,9 @@
       card.querySelector('.photo-toggle').setAttribute('aria-pressed', selected);
       card.style.setProperty('--group-colour', palette[(group || 0) % palette.length]);
       const hiddenExtra = state.room && !get('room-extra').checked && !roomParts()[0]?.ids.includes(id);
-      const reference = state.variant.sources.find(s => s.id === id)?.reference;
-      card.querySelector('.badge').textContent = hiddenExtra ? 'Hidden: unaligned' : selected ? (reference ? 'Reference overlay' : state.variant.edges === null ? 'Visible' : `Subgroup ${(group || 0) + 1}`) : 'Hidden';
+      const source = state.variant.sources.find(s => s.id === id);
+      card.querySelector('.badge').textContent = source?.unavailableReason ? 'No saved geometry'
+        : hiddenExtra ? 'Hidden: unaligned' : selected ? (source?.reference ? 'Reference overlay' : state.variant.edges === null ? 'Visible' : `Subgroup ${(group || 0) + 1}`) : 'Hidden';
     }
     const split = [...groups.counts.values()].some(n => n > 1);
     get('selection-status').classList.toggle('split', split);
@@ -379,7 +380,9 @@
     if (references) text += ` · reference overlays: ${references}`;
     if (state.room) text += ' in the hypothesized room' + (!roomNames().length ? ' · no assigned cameras' : roomParts().length > 1 ? ' · parts arranged for inspection' : ' · one geometric part');
     if (split) text += ` · visible subgroups: ${groups.total}`;
-    if (settings.multiview) text += ' · full-group poses retained';
+    const unavailable = state.variant.sources.filter(s => s.unavailableReason && state.selected.has(s.id)).length;
+    if (unavailable) text += ` · photos without saved geometry: ${unavailable}`;
+    else if (settings.multiview) text += ' · full-group poses retained';
     get('selection-status').textContent = text + '.';
     const shown = state.room && !get('room-extra').checked ? new Set(roomParts()[0]?.ids || []) : state.selected;
     const visiblePhotos = new Set([...state.selected].filter(id => shown.has(id)));
@@ -469,7 +472,7 @@
       heading.textContent = candidate.label || candidate.model || candidate.id; header.append(heading);
       const source = candidate.sources.find(s => s.id === state.comparePhoto);
       section.append(header, plot); get('scenes').append(section);
-      if (!source) { plot.className = 'scene-empty'; plot.textContent = 'This model has no saved prediction for this photo.'; continue; }
+      if (!source || source.unavailableReason) { plot.className = 'scene-empty'; plot.textContent = source?.unavailableReason || 'This model has no saved prediction for this photo.'; continue; }
       const view = {section, plot, source, candidate, key:`compare:${candidate.id}:${source.id}`, nearby:true, needsInspection:true};
       plots.set(candidate.id, view);
     }
@@ -545,7 +548,7 @@
         const view = plots.get(component.id), visible = component.ids.some(id => state.selected.has(id));
         view.section.hidden = !visible;
         // Many SIFT components can be isolated. Only nearby plots keep WebGL contexts.
-        if (!visible || !view.nearby) { release(view); continue; }
+        if (!visible || !view.nearby || component.unavailableReason) { release(view); continue; }
         const data = await traces(component, groups);
         if (version !== state.version) return;
         const level = get('level').checked && component.levelled;
@@ -622,7 +625,14 @@
       expand.textContent = '⤢'; expand.title = 'Expand 3D';
       expand.setAttribute('aria-label', 'Expand 3D'); expand.setAttribute('aria-haspopup', 'dialog');
       expand.setAttribute('aria-expanded', 'false'); heading.append(title, expand); header.append(heading);
-      if (index) { const note = document.createElement('p'); note.textContent = 'Separate coordinate frame · placement relative to other groups is unknown'; header.append(note); }
+      if (component.unavailableReason) {
+        expand.hidden = true; plot.className = 'scene-empty';
+        plot.textContent = component.unavailableReason;
+      } else if (index) {
+        const note = document.createElement('p');
+        note.textContent = 'Separate coordinate frame · placement relative to other groups is unknown';
+        header.append(note);
+      }
       if (component.warnings) {
         const warning = document.createElement('p'); warning.className = 'warning';
         warning.textContent = `Path conflicts: ${component.warnings}${component.cycleChecks == null ? '' : ' of ' + component.cycleChecks}. Joint pose refinement has not been performed.`;
@@ -678,9 +688,11 @@
           enlarge.title = 'Enlarge'; enlarge.setAttribute('aria-label', 'Enlarge ' + source.name);
           enlarge.onclick = () => photoViewer.open(photoItems, photoSources.indexOf(source), enlarge);
           actions.append(enlarge);
-          const viewpoint = document.createElement('button'); viewpoint.className = 'photo-viewpoint'; viewpoint.textContent = 'Viewpoint';
-          viewpoint.setAttribute('aria-label','Explore from ' + source.name); viewpoint.onclick = () => explorePhoto(source.id);
-          card.append(viewpoint);
+          if (!source.unavailableReason) {
+            const viewpoint = document.createElement('button'); viewpoint.className = 'photo-viewpoint'; viewpoint.textContent = 'Viewpoint';
+            viewpoint.setAttribute('aria-label','Explore from ' + source.name); viewpoint.onclick = () => explorePhoto(source.id);
+            card.append(viewpoint);
+          }
         }
         if (source.href) {
           const link = document.createElement('a'); link.href = source.href; link.textContent = 'Report ↗';
@@ -850,7 +862,7 @@
     const control = document.createElement('label'); control.id = field + '-control'; control.hidden = true;
     control.append(document.createTextNode(label + ' '));
     const select = document.createElement('select'); select.id = field; control.append(select);
-    get('model-options').append(control);
+    get(field === 'inputGrouping' ? 'input-group-options' : 'model-options').append(control);
     select.onchange = () => chooseVariant(selectField(settings.variants, state.variant, field, select.value));
   }
   function updateControls() {
@@ -890,7 +902,10 @@
       const link = document.createElement('a'); link.href = result.href; link.textContent = 'Checks and scale corrections ↗'; recoveryStatus.append(link);
     }
     const visible = !!reviewed || !!recovered;
-    document.querySelector('.connection-options').hidden = !visible && !semanticVariants.length;
+    const inputGrouping = !get('inputGrouping-control').hidden;
+    get('input-group-options').hidden = !inputGrouping;
+    get('connection-summary').textContent = inputGrouping ? 'Connections and input grouping' : 'Connections and room hypotheses';
+    document.querySelector('.connection-options').hidden = !visible && !semanticVariants.length && !inputGrouping;
     get('vlm-control').hidden = !visible;
     get('vlm-status').hidden = !visible && !semanticVariants.length;
     get('vlm').disabled = !reviewed;

@@ -1,7 +1,8 @@
 /* Choices describe saved results; they never synthesize unrun combinations. */
 export const fields = [
   ['method', 'Reconstruction'], ['model', 'Depth / model'], ['matcher', 'Matching'],
-  ['refinement', 'Refinement'], ['fusion', 'Fusion'], ['surface', 'Surface'], ['calibration', 'Calibration'], ['head', 'Pose head'],
+  ['refinement', 'Refinement'], ['fusion', 'Fusion'], ['inputGrouping', 'Input grouping'],
+  ['surface', 'Surface'], ['calibration', 'Calibration'], ['head', 'Pose head'],
   ['reference', 'Reference photo'], ['conditioning', 'Predicted inputs'], ['camera', 'Cameras'],
 ];
 const choice = (id, label = id) => ({id, label});

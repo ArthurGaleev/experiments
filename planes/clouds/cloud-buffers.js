@@ -46,6 +46,10 @@ export function supportedIndices(support, selected, count) {
   return result.subarray(0, length);
 }
 
+export function supportingPhotoNames(mask, names) {
+  return names.filter((_, index) => mask & (1 << index));
+}
+
 export function visiblePointCount(source, selected, limit) {
   const count = Math.min(limit || Infinity, source.available), mask = selectedSupport(source, selected);
   if (mask === null) return selected.has(source.id) ? count : 0;

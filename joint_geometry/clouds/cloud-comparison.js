@@ -18,14 +18,14 @@ export function comparisonCandidates(settings, current) {
     sources: candidate.sources.map(source => source.comparison ? {...source, ...source.comparison} : source)}));
   // Keep each exact fusion control available for its before/after comparison.
   // Other placement-only changes do not create a different local depth model.
-  const seen = new Set();
-  return candidates.filter(candidate => {
-    if (facets(candidate).method?.id === 'fusion') return true;
-    const key = JSON.stringify(candidate.sources.map(source => [source.id, source.chunks.map(c => c.key)])
-      .sort((a, b) => a[0].localeCompare(b[0])));
-    if (seen.has(key)) return false;
-    seen.add(key); return true;
-  }).map(candidate => {
+  const representatives = new Map();
+  for (const candidate of candidates) {
+    const key = facets(candidate).method?.id === 'fusion' ? `fusion:${candidate.id}`
+      : JSON.stringify(candidate.sources.map(source => [source.id, source.chunks.map(c => c.key)])
+        .sort((a, b) => a[0].localeCompare(b[0])));
+    if (!representatives.has(key) || candidate.id === current.id) representatives.set(key, candidate);
+  }
+  return [...representatives.values()].map(candidate => {
     const c = facets(candidate);
     const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'fusion', 'calibration', 'head', 'reference', 'conditioning', 'camera']
       .map(key => key === 'fusion' && c[key]?.id === 'none' && c.method?.id !== 'fusion' ? null : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');

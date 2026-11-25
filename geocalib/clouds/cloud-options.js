@@ -1,7 +1,8 @@
 /* Choices describe saved results; they never synthesize unrun combinations. */
 export const fields = [
   ['method', 'Reconstruction'], ['model', 'Depth / model'], ['matcher', 'Matching'],
-  ['refinement', 'Refinement'], ['fusion', 'Fusion'], ['surface', 'Surface'], ['calibration', 'Calibration'], ['head', 'Pose head'],
+  ['refinement', 'Refinement'], ['fusion', 'Fusion'], ['inputGrouping', 'Input grouping'],
+  ['surface', 'Surface'], ['calibration', 'Calibration'], ['head', 'Pose head'],
   ['reference', 'Reference photo'], ['conditioning', 'Predicted inputs'], ['camera', 'Cameras'],
 ];
 const choice = (id, label = id) => ({id, label});
@@ -44,7 +45,7 @@ export function facets(variant) {
     const condition = key.slice(depth.length + 1);
     c.method = choice('joint', 'Joint reconstruction');
     const names = {rgb:'RGB only', predicted_k:'Intrinsics', predicted_k_depth:'Intrinsics + depth',
-      predicted_k_pose:'Intrinsics + poses', predicted_k_depth_pose:'Intrinsics + depth + poses',
+      predicted_k_pose:'Intrinsics + supported poses', predicted_k_depth_pose:'Intrinsics + depth + supported poses',
       k_pose_order_control:'Intrinsics · poses set order only',
       k_depth_pose_order_control:'Intrinsics + depth · poses set order only'};
     c.conditioning = choice(condition, names[condition] || condition);

@@ -1,4 +1,4 @@
-import {facets} from './cloud-options.js';
+import {facets, fields} from './cloud-options.js';
 /* Compare saved local geometry in the same photo camera frame. No pose fitting. */
 export const cameraAxes = [[1, 0, 0], [0, 0, 1], [0, -1, 0]];
 export const identityPose = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
@@ -16,19 +16,44 @@ export function comparisonCandidates(settings, current) {
   // in the scene. Comparison uses its saved per-photo camera-frame projection.
   candidates = candidates.map(candidate => ({...candidate,
     sources: candidate.sources.map(source => source.comparison ? {...source, ...source.comparison} : source)}));
-  // Changing only saved placement is not a different single-photo depth model.
-  const seen = new Set();
-  return candidates.filter(candidate => {
-    const key = JSON.stringify(candidate.sources.map(source => [source.id, source.chunks.map(c => c.key)])
-      .sort((a, b) => a[0].localeCompare(b[0])));
-    if (seen.has(key)) return false;
-    seen.add(key); return true;
-  }).map(candidate => {
+  // Keep each exact fusion control available for its before/after comparison.
+  // Other placement-only changes do not create a different local depth model.
+  const representatives = new Map();
+  for (const candidate of candidates) {
+    const key = facets(candidate).method?.id === 'fusion' ? `fusion:${candidate.id}`
+      : JSON.stringify(candidate.sources.map(source => [source.id, source.chunks.map(c => c.key)])
+        .sort((a, b) => a[0].localeCompare(b[0])));
+    if (!representatives.has(key) || candidate.id === current.id) representatives.set(key, candidate);
+  }
+  return [...representatives.values()].map(candidate => {
     const c = facets(candidate);
     const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'fusion', 'calibration', 'head', 'reference', 'conditioning', 'camera']
-      .map(key => key === 'fusion' && c[key]?.id === 'none' ? null : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
-    return {...candidate, label};
+      .map(key => key === 'fusion' && c[key]?.id === 'none' && c.method?.id !== 'fusion' ? null : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
+    const connections = c.method?.id === 'fusion' ? candidate.recovery ? ' · VLM review + recovery'
+      : candidate.vlm ? ' · VLM review' : ' · Connections off' : '';
+    return {...candidate, label: label + connections};
   });
+}
+
+export function defaultComparison(candidates, current) {
+  const first = candidates.find(candidate => candidate.id === current.id) || candidates[0];
+  if (!first) return [];
+  const config = facets(first);
+  const counterpart = config.method?.id === 'fusion' && candidates.find(candidate => {
+    const options = facets(candidate);
+    return options.fusion?.id !== config.fusion?.id
+      && !!candidate.vlm === !!first.vlm && !!candidate.recovery === !!first.recovery
+      && fields.every(([key]) => key === 'fusion' || options[key]?.id === config[key]?.id);
+  });
+  return [first, counterpart || candidates.find(candidate => candidate.id !== first.id)]
+    .filter(Boolean).map(candidate => candidate.id);
+}
+
+export function comparisonSelection(candidates, current, previous, custom) {
+  const available = new Set(candidates.map(candidate => candidate.id));
+  const retained = [...previous].filter(id => available.has(id));
+  if (custom && retained.length) return {models: retained, custom: true};
+  return {models: defaultComparison(candidates, current), custom: false};
 }
 
 export function comparisonRanges(sources) {
