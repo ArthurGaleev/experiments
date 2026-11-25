@@ -86,6 +86,7 @@ export function updateControlLabels() {
 const finiteVector = v => v && ['x', 'y', 'z'].every(a => Number.isFinite(v[a]) && Math.abs(v[a]) < 1e8);
 export function validCamera(camera, nested = false) {
   return camera && finiteVector(camera.eye) && finiteVector(camera.center)
+    && (camera.up == null || finiteVector(camera.up) && Math.hypot(camera.up.x, camera.up.y, camera.up.z) > 1e-8)
     && (camera.scale == null || Number.isFinite(camera.scale) && camera.scale > 0 && camera.scale < 1e8)
     && (camera.navigation == null || ['inspect','explore'].includes(camera.navigation))
     && (camera.projection == null || ['perspective','orthographic'].includes(camera.projection))

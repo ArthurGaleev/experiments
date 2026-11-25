@@ -130,8 +130,11 @@
       const view = component ? plots.get(state.room ? '__room__' : component.id)
         : activeView() || plots.get(state.room ? '__room__' : selectedComponent?.id);
       if (!view) throw new Error('Select a photo or aligned group first.');
+      const meshComponent = state.variant.wholeComponentMesh && (component || state.variant.components.find(c => c.id === view.plot.dataset.component));
+      if (state.variant.wholeComponentMesh && !meshComponent?.mesh) throw new Error('This group has no saved mesh. Choose Points or Surfels to explore its photos.');
       if (expanded && expanded.view !== view) collapseScene();
-      if (id) state.selected.add(id);
+      if (meshComponent) for (const photo of meshComponent.ids) state.selected.add(photo);
+      else if (id) state.selected.add(id);
       if (!expanded) expandScene(view,view.section.querySelector('.scene-expand'));
       view.nearby = true; await draw();
       const deadline = performance.now() + 20000;
@@ -246,13 +249,13 @@
     return state.variant.treeEdges.filter(([a, b]) => adjacent.get(a)?.has(b));
   }
 
-  async function preparedPlanes(source, component) {
-    const key = `${state.variant.id}:${source.id}:planes`;
+  async function preparedSurface(source, component, asset) {
+    const key = `${state.variant.id}:${source.id}:${asset.key}`;
     const signature = String(get('level').checked);
     const prior = geometry.get(key);
     if (prior?.signature === signature) return prior.data;
     const rotation = get('level').checked ? component.rotation : component.fixed;
-    const chunks = [source.planes];
+    const chunks = [asset];
     const raw = await Promise.all(chunks.map(load));
     const n = raw.reduce((sum, c) => sum + c.xyz.length / 3, 0);
     const data = {x: new Float32Array(n), y: new Float32Array(n), z: new Float32Array(n), rgb: [], patch: []};
@@ -306,7 +309,7 @@
     const selected = sources.filter(s => state.selected.has(s.id) || selectedSupport(s, state.selected));
     const output = (await Promise.all(selected.map(async source => {
       const list = [], hover = `x: %{x:.2f} ${coordinateUnit}<br>y: %{y:.2f} ${coordinateUnit}<br>z: %{z:.2f} ${coordinateUnit}<extra>${source.name}</extra>`;
-      if (state.mode !== 'planes') {
+      if (state.mode !== 'planes' && !state.variant.wholeComponentMesh) {
         const limit = state.limit || Infinity;
         const chunks = await Promise.all(source.chunks.filter(c => c.start < limit).map(loadDense));
         const rotation = get('level').checked ? component.rotation : component.fixed;
@@ -319,7 +322,7 @@
           showlegend: false, hovertemplate: hover});
       }
       if (state.mode !== 'points' && source.planes?.triangles) {
-        const data = await preparedPlanes(source, component), colors = colour(source, groups, data, 'planes');
+        const data = await preparedSurface(source, component, source.planes), colors = colour(source, groups, data, 'planes');
         list.push({type: 'mesh3d', name: source.name, x: data.x, y: data.y, z: data.z, i: data.i, j: data.j, k: data.k,
           surface: {id: source.id, frame: component.id, unitLabel: coordinateUnit, pose: source.pose,
             rotation: get('level').checked ? component.rotation : component.fixed},
@@ -329,6 +332,16 @@
       if (get('cameras').checked && state.selected.has(source.id)) list.push(cameraTrace(source, component, groups));
       return list;
     }))).flat();
+    if (state.variant.wholeComponentMesh && component.mesh && selected.length) {
+      const source = {id:`mesh:${component.id}`, pose:component.mesh.pose};
+      const data = await preparedSurface(source, component, component.mesh);
+      output.push({type:'mesh3d', name:'TSDF mesh · whole saved group',
+        x:data.x, y:data.y, z:data.z, i:data.i, j:data.j, k:data.k,
+        vertexcolor:data.rgb, flatshading:false,
+        surface:{id:source.id, frame:component.id, unitLabel:coordinateUnit, pose:source.pose,
+          rotation:get('level').checked ? component.rotation : component.fixed},
+        lighting:{ambient:.8, diffuse:.35, specular:0}, showlegend:false});
+    }
     for (const hypothesis of state.variant.hypotheses || []) {
       if (!hypothesis.supportIds.some(id => component.ids.includes(id) && state.selected.has(id))) continue;
       const rotation = get('level').checked ? component.rotation : component.fixed;
@@ -370,7 +383,8 @@
       card.style.setProperty('--group-colour', palette[(group || 0) % palette.length]);
       const hiddenExtra = state.room && !get('room-extra').checked && !roomParts()[0]?.ids.includes(id);
       const source = state.variant.sources.find(s => s.id === id);
-      card.querySelector('.badge').textContent = source?.unavailableReason ? 'No saved geometry'
+      const noMesh = state.variant.wholeComponentMesh && state.variant.components.some(c => c.ids.includes(id) && !c.mesh);
+      card.querySelector('.badge').textContent = noMesh ? 'No saved mesh' : source?.unavailableReason ? 'No saved geometry'
         : hiddenExtra ? 'Hidden: unaligned' : selected ? (source?.reference ? 'Reference overlay' : state.variant.edges === null ? 'Visible' : `Subgroup ${(group || 0) + 1}`) : 'Hidden';
     }
     const split = [...groups.counts.values()].some(n => n > 1);
@@ -399,9 +413,16 @@
       hypotheses.length ? `${hypotheses.length} inferred wall bounds` : '',
       state.mode !== 'points' ? `${patches} patches · ${faces.toLocaleString('en')} triangles` : '',
       state.mode !== 'points' && coverage.length ? `photo coverage: ${Math.min(...coverage).toFixed(0)}–${Math.max(...coverage).toFixed(0)}%` : ''].filter(Boolean).join(' · ');
-    get('detail').hidden = state.mode === 'planes';
-    get('detail-control').firstElementChild.hidden = state.mode === 'planes';
+    if (state.variant.wholeComponentMesh) {
+      const meshes = state.variant.components.filter(c => c.mesh && c.ids.some(id => visiblePhotos.has(id)));
+      const triangles = meshes.reduce((n, c) => n + c.mesh.triangles, 0);
+      const vertices = meshes.reduce((n, c) => n + c.mesh.vertices, 0);
+      get('counts').textContent = `${triangles.toLocaleString('en')} triangles · ${vertices.toLocaleString('en')} vertices · whole saved groups`;
+    }
+    get('detail').hidden = state.mode === 'planes' || !!state.variant.wholeComponentMesh;
+    get('detail-control').firstElementChild.hidden = get('detail').hidden;
     get('plane-note').hidden = state.mode === 'points';
+    get('mesh-note').hidden = !state.variant.wholeComponentMesh;
     for (const group of get('photos').querySelectorAll('.photo-group')) {
       const button = group.querySelector('.group-only');
       if (!button) continue;
@@ -427,18 +448,18 @@
   }
 
   function updateComparisonControls() {
-    const candidates = comparisonCandidates(settings, state.variant);
+    const candidates = state.variant.wholeComponentMesh ? [] : comparisonCandidates(settings, state.variant);
     get('compare-toggle').hidden = candidates.length < 2;
     if (candidates.length < 2) state.compare = false;
     get('compare-toggle').setAttribute('aria-pressed', state.compare);
-    get('compare-toggle').textContent = state.compare ? 'Return to scene' : 'Compare models';
+    get('compare-toggle').textContent = state.compare ? 'Return to scene' : 'Compare geometry';
     get('compare-controls').hidden = !state.compare;
     if (!state.compare) return candidates;
     const {models, custom} = comparisonSelection(candidates, state.variant, state.compareModels, state.compareCustom);
     if (models.length !== state.compareModels.size || models.some(id => !state.compareModels.has(id))) comparisonCamera = null;
     state.compareModels = new Set(models);
     state.compareCustom = custom;
-    get('compare-model-summary').textContent = `Models to compare · ${models.length} selected`;
+    get('compare-model-summary').textContent = `Results to compare · ${models.length} selected`;
     const photos = new Map(candidates.flatMap(c => c.sources.map(s => [s.id, s])));
     if (!photos.has(state.comparePhoto)) state.comparePhoto = [...state.selected].find(id => photos.has(id)) || photos.keys().next().value;
     get('compare-photo').replaceChildren(...[...photos].map(([id, s]) => new Option(s.name, id)));
@@ -479,6 +500,7 @@
     get('representation').hidden = true;
     get('detail').hidden = false; get('detail-control').firstElementChild.hidden = false;
     get('plane-note').hidden = true;
+    get('mesh-note').hidden = true;
     get('level-label').hidden = true; get('paths-label').hidden = true;
     get('navigation').value = 'inspect'; get('navigation').disabled = true;
   }
@@ -581,6 +603,11 @@
   }
 
   function build() {
+    if (state.variant.wholeComponentMesh) {
+      state.room = null;
+      state.selected = new Set(state.variant.components
+        .filter(c => c.ids.some(id => state.selected.has(id))).flatMap(c => c.ids));
+    }
     updateRoomControls();
     collapseScene();
     get('scenes').after(get('inspection-footer'));
@@ -596,6 +623,14 @@
     const sourceColourOption = get('colour').querySelector('option[value="source"]');
     sourceColourOption.textContent = shared ? 'Surfel storage group' : 'Source';
     sourceColourOption.title = shared ? 'Colours follow the photo used to store each surfel. Pick the surfel to inspect its supporting photos.' : '';
+    get('colour').disabled = !!state.variant.wholeComponentMesh;
+    if (state.variant.wholeComponentMesh) get('colour').value = 'rgb';
+    get('point-size').disabled = !!state.variant.wholeComponentMesh;
+    get('point-size-control').hidden = !!state.variant.wholeComponentMesh;
+    for (const button of document.querySelectorAll('[data-adjust="point-size"]')) button.hidden = !!state.variant.wholeComponentMesh;
+    get('photo-selection-hint').textContent = state.variant.wholeComponentMesh
+      ? 'Select whole groups; photo thumbnails show the saved inputs.'
+      : 'Select a thumbnail to show or hide it';
     get('navigation').disabled = false;
     if (state.compare) { buildComparison(candidates); draw(); return; }
     observer = new IntersectionObserver(entries => {
@@ -680,6 +715,10 @@
         const name = document.createElement('span'); name.className = 'name'; name.textContent = source.name; button.append(name);
         const badge = document.createElement('span'); badge.className = 'badge'; button.append(badge);
         if (source.planes) button.title = `Planar patches cover ${(source.planes.coverage * 100).toFixed(0)}% valid pixels`;
+        if (state.variant.wholeComponentMesh) {
+          button.disabled = true;
+          button.title = 'The mesh uses the whole saved group. Use Points or Surfels to select individual photos.';
+        }
         button.onclick = () => { if (!state.selected.delete(source.id)) state.selected.add(source.id); draw(); };
         card.append(button);
         const actions = document.createElement('div'); actions.className = 'photo-actions';
@@ -688,7 +727,7 @@
           enlarge.title = 'Enlarge'; enlarge.setAttribute('aria-label', 'Enlarge ' + source.name);
           enlarge.onclick = () => photoViewer.open(photoItems, photoSources.indexOf(source), enlarge);
           actions.append(enlarge);
-          if (!source.unavailableReason) {
+          if (!source.unavailableReason && !component.unavailableReason) {
             const viewpoint = document.createElement('button'); viewpoint.className = 'photo-viewpoint'; viewpoint.textContent = 'Viewpoint';
             viewpoint.setAttribute('aria-label','Explore from ' + source.name); viewpoint.onclick = () => explorePhoto(source.id);
             card.append(viewpoint);
@@ -727,6 +766,9 @@
   function updateRoomControls() {
     const semantic = currentSemantics();
     get('rooms-control').hidden = !semantic;
+    get('rooms').disabled = !!state.variant.wholeComponentMesh;
+    get('rooms').title = state.variant.wholeComponentMesh
+      ? 'Room-specific mesh boundaries are unknown. Use Points or Surfels for room hypotheses.' : '';
     get('room-controls').hidden = !state.room;
     get('rooms').checked = !!state.room;
     get('room-warning').textContent = state.room === 'unassigned'
@@ -882,7 +924,9 @@
     get('measure-units').value = relative ? 'm' : previousUnit || 'm';
     get('scale-note').textContent = relative ? 'Relative model units; absolute scale is not established.'
       : 'Scale comes from predicted depth, not a measured room dimension.';
-    const description = state.variant.description || fields.map(([field]) => facets(state.variant)[field]?.label).filter(Boolean).join(' · ');
+    const choicesForDescription = facets(state.variant);
+    const description = state.variant.description || fields.map(([field]) => field === 'fusion' && choicesForDescription.surface && choicesForDescription.fusion?.id === 'none'
+      ? null : choicesForDescription[field]?.label).filter(Boolean).join(' · ');
     const connectionLabel = ['matching', 'fusion'].includes(facets(state.variant).method?.id)
       ? state.variant.recovery ? ' · VLM review + recovery' : state.variant.vlm ? ' · VLM review' : ' · Geometric connections only' : '';
     get('variant-description').textContent = description + connectionLabel;
@@ -891,8 +935,11 @@
     const choices = settings.variants.filter(v => sameConfiguration(v, state.variant));
     const reviewed = choices.find(v => v.vlm && !v.recovery && v.review);
     const recovered = choices.find(v => v.recovery && v.recoveryInfo);
+    const reviewEvidence = reviewed?.review || state.variant.review;
     get('recovery-control').hidden = !recovered;
-    get('recovery').disabled = !recovered || !state.variant.vlm;
+    get('recovery').disabled = !recovered || !state.variant.vlm || !choices.some(v => v.vlm && !v.recovery);
+    get('recovery').title = get('recovery').disabled && state.variant.recovery
+      ? 'This surface was saved with recovery on. No matched recovery-off surface is available.' : '';
     get('recovery').checked = !!state.variant.recovery;
     const recoveryStatus = get('recovery-status'); recoveryStatus.replaceChildren();
     recoveryStatus.hidden = !state.variant.recovery;
@@ -901,24 +948,28 @@
       recoveryStatus.append(document.createTextNode(`Recovered bridges: ${result.bridges}; additional constraints: ${result.constraints}; total edges: ${result.edges}. Scale follows the anchor component; internal poses are preserved. `));
       const link = document.createElement('a'); link.href = result.href; link.textContent = 'Checks and scale corrections ↗'; recoveryStatus.append(link);
     }
-    const visible = !!reviewed || !!recovered;
+    const visible = !!reviewEvidence || !!recovered;
     const inputGrouping = !get('inputGrouping-control').hidden;
     get('input-group-options').hidden = !inputGrouping;
     get('connection-summary').textContent = inputGrouping ? 'Connections and input grouping' : 'Connections and room hypotheses';
     document.querySelector('.connection-options').hidden = !visible && !semanticVariants.length && !inputGrouping;
     get('vlm-control').hidden = !visible;
     get('vlm-status').hidden = !visible && !semanticVariants.length;
-    get('vlm').disabled = !reviewed;
+    get('vlm').disabled = !reviewed || !choices.some(v => !v.vlm);
+    get('vlm').title = get('vlm').disabled && state.variant.vlm
+      ? 'This surface was saved with VLM review on. No matched review-off surface is available.' : '';
     get('vlm').checked = !!state.variant.vlm;
     const status = get('vlm-status'); status.replaceChildren();
-    if (reviewed) {
-      const result = reviewed.review;
+    if (reviewEvidence) {
+      const result = reviewEvidence;
       status.append(document.createTextNode(state.variant.vlm
         ? `VLM experiment: removed edges ${result.removed}; retained ${result.kept}, of which not supported by VLM ${result.unresolved}. `
         : 'Original geometry. A saved VLM experiment is available. '));
       status.append(document.createTextNode(`Checked pairs: ${result.checkedPairs}/${result.possiblePairs}. `));
       const link = document.createElement('a'); link.href = result.href;
       link.textContent = 'Decisions and evidence ↗'; status.append(link);
+    } else if (inputGrouping) {
+      status.textContent = 'Input grouping selects saved photo groups. Each group has independently estimated cameras and scale.';
     } else {
       status.textContent = 'No saved connection review or recovery branch for this reconstruction.';
     }
@@ -1022,7 +1073,7 @@
     if ([0, 1000, 2000, 5000, 10000, 25000, 100000, 250000].includes(value)) state.limit = value;
   }
   get('detail').value = String(state.limit);
-  get('navigation-help').textContent = 'Inspect: drag to orbit; Shift/right-drag to pan; scroll/pinch to zoom; double-click to focus. Explore: drag to look; WASD/arrows or the movement pad to move; scroll to move forward/back. F: fit; T: top.';
+  get('navigation-help').textContent = 'Inspect: drag a ring to rotate around its axis, or drag elsewhere to orbit; Shift/right-drag or two fingers to pan; scroll/pinch to zoom; double-click to focus the pivot. The ring button shows or hides the pivot guide. Escape ends a ring drag. Explore: drag to look; WASD/arrows or the movement pad to move; scroll to move forward/back. F: fit; T: top.';
   state.selected = new Set(state.room ? roomNames() : state.variant.initial);
   if (params.get('photos') === 'all') state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id));
   if (params.get('compare') === '1') {

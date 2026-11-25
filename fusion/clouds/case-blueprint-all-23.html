@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Surface fusion · Blueprint sample</title><link rel="stylesheet" href="cloud-view.css?v=4ce07950b9e6">
-<link rel="stylesheet" href="photo-view.css?v=4ce07950b9e6">
-<script src="photo-view.js?v=4ce07950b9e6" defer></script>
-<script src="room-view.js?v=4ce07950b9e6" defer></script>
-<script src="cloud-view.js?v=4ce07950b9e6" defer></script>
+<title>Surface fusion · Blueprint sample</title><link rel="stylesheet" href="cloud-view.css?v=83691eaeb432">
+<link rel="stylesheet" href="photo-view.css?v=83691eaeb432">
+<script src="photo-view.js?v=83691eaeb432" defer></script>
+<script src="room-view.js?v=83691eaeb432" defer></script>
+<script src="cloud-view.js?v=83691eaeb432" defer></script>
 </head><body><main>
 <a href="../case-blueprint-all-23.html">← Report</a><h1>Surface fusion · Blueprint sample</h1>
 <p id="scene-note">Points and surfels use the same input samples and cameras. Shared points are drawn once and selectable through supporting photos. Conflicts and single-view points remain; no holes are filled. Compare models uses each photo&#x27;s full contribution. Full includes every valid native Blueprint point. Disconnected groups retain independent frames. Connections selects baseline, VLM review, or review with recovery. Each state has its own matched overlay and fused result; camera refinement is a separate experiment.</p>
@@ -121,6 +121,7 @@
     <div class="adjustment-slider"><button id="adjustment-less" aria-label="Decrease adjustment">−</button><input id="adjustment-range" type="range" aria-label="Adjust visible scene"><button id="adjustment-more" aria-label="Increase adjustment">+</button></div>
   </div>
   <details id="inspection-guide"><summary>Inspection tips</summary>
+    <p><strong>Rotate around the pivot:</strong> Drag an X, Y or Z ring for one axis, or drag elsewhere to orbit. The small three-ring button shows or hides the guide. Escape ends a ring drag; Fit and View presets restore upright orientation.</p>
     <p><strong>Wall alignment:</strong> Top + orthographic + a horizontal slice.</p>
     <p><strong>Floor/ceiling alignment:</strong> Front or Side + orthographic + a vertical slice.</p>
     <p><strong>Rooms and doorways:</strong> Explore or jump to a photo viewpoint. Turn off slices to see the whole room.</p>
@@ -165,7 +166,7 @@ Detail caps each stored surfel buffer before applying the photo selection.
 Lower detail reduces the rendered count. Selection preserves saved geometry and metrics.</p>
 <p>Measure distance: click A, then B to add a ruler. Points/Both snap to saved cloud vertices; Patches uses positions inside visible triangles. Labels retain source photos. Select a ruler to see its 3D length, horizontal distance and vertical difference. Drag A/B to adjust, or click an endpoint then choose a new location. Escape cancels an unfinished pick or edit; completed rulers remain until deleted. Measurements cannot cross disconnected inspection parts. Changing selected geometry, representation or coordinate transforms clears incompatible rulers.</p>
 <p>Distances use the selected reconstruction's units and include reconstruction and alignment errors. Horizontal and vertical components follow the displayed axes. A cross-section shows the band selected by its width control.</p>
-<p>Drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, double-click a surface to focus. The orientation widget and View presets select axis-aligned or isometric views. Orthographic projection removes perspective size changes. Cameras highlight on hover and open the source image on click/tap; measurement mode takes priority.</p>
+<p>In Inspect, three rotation rings mark the current pivot. Drag a ring to rotate the camera around its displayed X, Y or Z axis, including roll; the active ring brightens. Drag elsewhere to orbit, Shift/right-drag or two fingers to pan, scroll/pinch to zoom, and double-click a surface to focus the pivot. The square three-ring button hides/shows the guide; Escape ends a ring drag. The orientation widget and View presets select upright axis-aligned or isometric views. Orthographic projection removes perspective size changes. Cameras highlight on hover and open the source image on click/tap; camera selection and measurement mode take priority over the rings.</p>
 <p>Explore opens one aligned group in perspective at a predicted photo position. Drag to look; WASD/arrows or the mobile movement pad moves horizontally, Q/E or the height buttons moves vertically. Scroll moves through the scene, independently of orbit zoom. Returning to Inspect restores the previous camera. No collision detection or measured floor height is implied. Separate components are explored separately; photo jumps are viewpoint changes, not verified walkable paths.</p>
 <p>On mobile, Adjust with scene visible collapses settings to a bottom strip for slice position/width, cutaway height or point size. The strip reserves its own space, leaving the canvas unobscured. Rendering diagnostics stay outside enlarged mode.</p>
 <p>Cutaway and cross-section clip reconstructed surfaces consistently, including picking. Rulers and camera annotations remain visible. Display controls preserve saved geometry and metrics. Cross-section position is relative to each group's bounds; width is in its model units.</p>

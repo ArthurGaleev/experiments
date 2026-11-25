@@ -4,11 +4,12 @@ export function setupAdjustments({widthRange, unit}) {
   const labels = {'section-center':'Slice position','section-width':'Slice width','cut-height':'Cutaway height','point-size':'Point size'};
   let dismissed = false, requested = false;
   function sync() {
-    const available = [...(get('section').checked ? ['section-center','section-width'] : []), ...(get('cutaway').checked ? ['cut-height'] : []), 'point-size'];
+    const available = [...(get('section').checked ? ['section-center','section-width'] : []), ...(get('cutaway').checked ? ['cut-height'] : []), ...(get('point-size').disabled ? [] : ['point-size'])];
     const selected = available.includes(kind.value) ? kind.value : available[0];
     if (Array.from(kind.options, o => o.value).join() !== available.join()) kind.replaceChildren(...available.map(id => new Option(labels[id],id)));
     kind.value = selected;
-    strip.hidden = dismissed || !requested && !get('section').checked && !get('cutaway').checked;
+    strip.hidden = !available.length || dismissed || !requested && !get('section').checked && !get('cutaway').checked;
+    if (!available.length) return;
     const source = get(selected);
     range.min = source.min; range.max = selected === 'section-width' ? Math.max(Number(source.value), widthRange(), .1) : source.max;
     range.step = selected === 'section-width' ? '.001' : source.step;

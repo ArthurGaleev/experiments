@@ -2,8 +2,8 @@
 import * as THREE from './vendor/three/three.module.js';
 import {OrbitControls} from './vendor/three/OrbitControls.js';
 const assetQuery = new URL(import.meta.url).search;
-const [{attachExplore},{cloudMatrix,segmentDistance2D,supportedIndices,supportingPhotoNames},{clipping,insideClip,readControls,hashText},{attachRulers,clearMeasurements,setMeasuring,refreshMeasurements}] = await Promise.all([
-  import('./explore-controls.js' + assetQuery),import('./cloud-buffers.js' + assetQuery),import('./viewer-tools.js' + assetQuery),import('./ruler-tools.js' + assetQuery),
+const [{attachExplore},{cloudMatrix,segmentDistance2D,supportedIndices,supportingPhotoNames},{clipping,insideClip,readControls,hashText},{attachRulers,clearMeasurements,setMeasuring,refreshMeasurements},{attachInspectRings,syncOrbitFrame}] = await Promise.all([
+  import('./explore-controls.js' + assetQuery),import('./cloud-buffers.js' + assetQuery),import('./viewer-tools.js' + assetQuery),import('./ruler-tools.js' + assetQuery),import('./inspect-rings.js' + assetQuery),
 ]);
 export {clearMeasurements, setMeasuring, refreshMeasurements};
 
@@ -51,7 +51,7 @@ function cameraState(view) {
   return {
     eye: Object.fromEntries(axes.map(a => [a, (camera.position[a] - center[a]) / unit])),
     center: Object.fromEntries(axes.map(a => [a, (controls.target[a] - center[a]) / unit])),
-    up: {x: 0, y: 0, z: 1},
+    up: Object.fromEntries(axes.map(a => [a, camera.up[a]])),
     scale: camera.isOrthographicCamera ? camera.top / camera.zoom / unit : camera.position.distanceTo(controls.target) * Math.tan(Math.PI / 8) / unit,
     projection: camera.isOrthographicCamera ? 'orthographic' : 'perspective',
     ...view.explore.snapshot(),
@@ -61,21 +61,27 @@ function cameraState(view) {
 function projection(view) {
   const orthographic = document.getElementById('projection').value === 'orthographic';
   if (!!view.camera.isOrthographicCamera === orthographic) return;
+  view.rotation?.cancel();
   const old = view.camera;
   const half = old.isOrthographicCamera ? old.top / old.zoom : old.position.distanceTo(view.controls.target) * Math.tan(Math.PI / 8);
   const aspect = Math.max(1, view.plot.clientWidth) / Math.max(1, view.plot.clientHeight);
   const camera = orthographic ? new THREE.OrthographicCamera(-half * aspect, half * aspect, half, -half, old.near, old.far)
     : new THREE.PerspectiveCamera(45, aspect, old.near, old.far);
-  camera.up.set(0, 0, 1); camera.position.copy(old.position);
+  camera.up.copy(old.up); camera.position.copy(old.position);
   if (!orthographic) camera.position.sub(view.controls.target).normalize().multiplyScalar(half / Math.tan(Math.PI / 8)).add(view.controls.target);
   camera.lookAt(view.controls.target); view.camera = camera; view.controls.object = camera;
+  syncOrbitFrame(view.controls,true);
   view.plot.dataset.projection = orthographic ? 'orthographic' : 'perspective';
 }
 function setCamera(view, state) {
+  view.rotation?.cancel();
   view.settingCamera = true;
   const {camera, controls, center, unit} = view;
   const aspect = Math.max(1, view.plot.clientWidth) / Math.max(1, view.plot.clientHeight);
-  camera.up.set(0, 0, 1);
+  const up = state.up;
+  camera.up.set(up?.x ?? 0, up?.y ?? 0, up?.z ?? 1);
+  if (!camera.up.toArray().every(Number.isFinite) || camera.up.lengthSq() < 1e-12) camera.up.set(0,0,1);
+  camera.up.normalize();
   controls.target.set(...axes.map(a => center[a] + (state.center?.[a] || 0) * unit));
   camera.position.set(...axes.map(a => center[a] + state.eye[a] * unit));
   let half = (state.scale || camera.position.distanceTo(controls.target) / unit * Math.tan(Math.PI / 8)) * unit;
@@ -90,8 +96,8 @@ function setCamera(view, state) {
   } else if (state.scale && !state.fit) {
     camera.position.sub(controls.target).normalize().multiplyScalar(half / Math.tan(Math.PI / 8)).add(controls.target);
   }
-  if (Math.hypot(camera.position.x - controls.target.x, camera.position.y - controls.target.y) < unit * 1e-6) camera.position.y -= unit * 1e-5;
   view.explore.restore(state);
+  syncOrbitFrame(controls,true);
   camera.updateProjectionMatrix(); camera.lookAt(controls.target);
   if (!view.explore.enabled) controls.update();
   view.settingCamera = false;
@@ -100,6 +106,7 @@ function setCamera(view, state) {
 export function navigate(plot, mode, photoId) {
   const view = views.get(plot); if (!view) return false;
   if (mode === 'explore' && !view.canExplore) return false;
+  view.rotation.cancel();
   cancelAnimationFrame(view.transition);
   if (mode === 'inspect') {
     const saved = view.explore.leave();
@@ -134,7 +141,7 @@ export function orient(plot, name, animate = true) {
     if (view.disposed) return;
     const t = duration ? Math.min(1, (now - began) / duration) : 1, eased = t * t * (3 - 2 * t);
     const vector = start.clone().normalize().applyQuaternion(new THREE.Quaternion().slerp(rotation, eased)).multiplyScalar(distance / view.unit);
-    setCamera(view, {...saved, eye:Object.fromEntries(axes.map(a => [a, saved.center[a] + vector[a]]))});
+    setCamera(view, {...saved, up:{x:0,y:0,z:1}, eye:Object.fromEntries(axes.map(a => [a, saved.center[a] + vector[a]]))});
     announceCamera(view);
     if (t < 1) view.transition = requestAnimationFrame(step);
   };
@@ -172,7 +179,7 @@ function label(text, color = '#647369', compact = false) {
 function renderView(view) {
   view.renderer.render(view.scene, view.camera);
   view.plot.dataset.camera = JSON.stringify(cameraState(view));
-  view.measurements.render(); renderOrientation(view);
+  view.measurements.render(); renderOrientation(view); view.rotation.render();
 }
 
 function cameraHit(view, event) {
@@ -273,6 +280,11 @@ function makeView(plot) {
   };
   view.explore = attachExplore(view);
   view.measurements = attachRulers(view, pick); orientationWidget(view);
+  view.rotation = attachInspectRings(view,{
+    photoHit:event => cameraHit(view,event),
+    start:() => { cancelAnimationFrame(view.transition); cameraHover(view,null); },
+    hover:() => cameraHover(view,null),
+  });
   controls.addEventListener('change', () => { view.invalidate(); announceCamera(view); });
   controls.addEventListener('start', () => { cancelAnimationFrame(view.transition); cameraHover(view, null); });
   canvas.addEventListener('webglcontextlost', event => {
@@ -330,6 +342,7 @@ function makeView(plot) {
   canvas.addEventListener('gestureend', event => { stop(event); gesture = null; }, {passive: false});
   view.resize = () => {
     if (view.disposed) return;
+    view.rotation.cancel();
     const width = Math.max(1, plot.clientWidth), height = Math.max(1, plot.clientHeight);
     renderer.setSize(width, height, false);
     if (view.camera.isOrthographicCamera) { view.camera.left = -view.camera.top * width / height; view.camera.right = view.camera.top * width / height; }
@@ -518,7 +531,7 @@ export function relayout(plot, changes) { const view = views.get(plot); if (view
 export function purge(plot) {
   const view = views.get(plot); if (!view) return;
   view.disposed = true; cancelAnimationFrame(view.frame); cancelAnimationFrame(view.transition);
-  view.observer.disconnect(); view.controls.dispose();
+  view.observer.disconnect(); view.rotation.dispose(); view.controls.dispose();
   view.explore.dispose();
   disposeObject(view.content); disposeObject(view.labels); view.objects.clear();
   view.measurements.dispose(); if (view.sectionGuide) disposeObject(view.sectionGuide);

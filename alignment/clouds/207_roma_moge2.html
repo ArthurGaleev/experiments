@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>img_18 ↔ img_9 · RoMa × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=efc0d2f75acb">
-<link rel="stylesheet" href="photo-view.css?v=efc0d2f75acb">
-<script src="photo-view.js?v=efc0d2f75acb" defer></script>
-<script src="room-view.js?v=efc0d2f75acb" defer></script>
-<script src="cloud-view.js?v=efc0d2f75acb" defer></script>
+<title>img_18 ↔ img_9 · RoMa × MoGe-2</title><link rel="stylesheet" href="cloud-view.css?v=83691eaeb432">
+<link rel="stylesheet" href="photo-view.css?v=83691eaeb432">
+<script src="photo-view.js?v=83691eaeb432" defer></script>
+<script src="room-view.js?v=83691eaeb432" defer></script>
+<script src="cloud-view.js?v=83691eaeb432" defer></script>
 </head><body><main>
 <a href="../pair-0207.html">← Report</a><h1>img_18 ↔ img_9 · RoMa × MoGe-2</h1>
 <p id="scene-note">rejected; validation matches: 544/1132; median 3D residual: 0.163 m; gravity: 3.4°; reason: reprojection error. Rejected hypotheses are not used to assemble groups.</p>
 <div class="toolbar"><div id="model-options" class="toolbar"></div>
-  <button id="compare-toggle" hidden aria-pressed="false">Compare models</button>
+  <button id="compare-toggle" hidden aria-pressed="false">Compare geometry</button>
 </div>
 <p class="muted"><span id="variant-description"></span> <a id="variant-report" hidden>Method and results ↗</a></p>
 
 <section id="compare-controls" hidden>
   <div class="toolbar"><label>Compare photo <select id="compare-photo"></select></label></div>
   <details id="compare-model-choice">
-    <summary id="compare-model-summary">Models to compare</summary>
-    <div id="compare-models" class="comparison-models" role="group" aria-label="Models to compare"></div>
+    <summary id="compare-model-summary">Results to compare</summary>
+    <div id="compare-models" class="comparison-models" role="group" aria-label="Results to compare"></div>
   </details>
   <p class="muted">Choose up to four models. Rotation, pan and zoom are linked. Panels use the selected photo's camera frame and the same numeric axis ranges. A model can have its own relative scale. Fusion panels show saved surfels supported by the selected photo.</p>
   <img id="compare-preview" alt="Source photo for model comparison" hidden>
@@ -54,6 +54,7 @@
   </div>
 </div>
 <p id="plane-note" class="muted" hidden>Simplified surfaces without photo textures; use Both to inspect gaps.</p>
+<p id="mesh-note" class="muted" hidden>The mesh uses every photo in its saved group. Select whole groups below; individual triangle ownership is unknown. Use Points or Surfels for photo selection.</p>
 <div class="toolbar" id="view-controls" role="group" aria-label="Viewer tools">
   <button id="reset" title="Fit the current group (F)" aria-label="Fit / reset">Fit</button>
   <label class="compact-label"><select id="navigation" aria-label="Navigation"><option value="inspect">Inspect</option><option value="explore">Explore</option></select></label>
@@ -120,6 +121,7 @@
     <div class="adjustment-slider"><button id="adjustment-less" aria-label="Decrease adjustment">−</button><input id="adjustment-range" type="range" aria-label="Adjust visible scene"><button id="adjustment-more" aria-label="Increase adjustment">+</button></div>
   </div>
   <details id="inspection-guide"><summary>Inspection tips</summary>
+    <p><strong>Rotate around the pivot:</strong> Drag an X, Y or Z ring for one axis, or drag elsewhere to orbit. The small three-ring button shows or hides the guide. Escape ends a ring drag; Fit and View presets restore upright orientation.</p>
     <p><strong>Wall alignment:</strong> Top + orthographic + a horizontal slice.</p>
     <p><strong>Floor/ceiling alignment:</strong> Front or Side + orthographic + a vertical slice.</p>
     <p><strong>Rooms and doorways:</strong> Explore or jump to a photo viewpoint. Turn off slices to see the whole room.</p>
@@ -131,7 +133,7 @@
 <pre id="benchmark-result" aria-live="polite"></pre>
 </details>
 <div class="toolbar" id="photo-controls"><strong>Photos</strong><button id="all">All</button>
-<button id="none">Clear selection</button><span class="muted">Select a thumbnail to show or hide it</span>
+<button id="none">Clear selection</button><span id="photo-selection-hint" class="muted">Select a thumbnail to show or hide it</span>
 <a href="#scenes">3D ↑</a></div>
 <div id="photos"></div>
 
@@ -164,7 +166,7 @@ Detail caps each stored surfel buffer before applying the photo selection.
 Lower detail reduces the rendered count. Selection preserves saved geometry and metrics.</p>
 <p>Measure distance: click A, then B to add a ruler. Points/Both snap to saved cloud vertices; Patches uses positions inside visible triangles. Labels retain source photos. Select a ruler to see its 3D length, horizontal distance and vertical difference. Drag A/B to adjust, or click an endpoint then choose a new location. Escape cancels an unfinished pick or edit; completed rulers remain until deleted. Measurements cannot cross disconnected inspection parts. Changing selected geometry, representation or coordinate transforms clears incompatible rulers.</p>
 <p>Distances use the selected reconstruction's units and include reconstruction and alignment errors. Horizontal and vertical components follow the displayed axes. A cross-section shows the band selected by its width control.</p>
-<p>Drag to orbit, Shift/right-drag to pan, scroll/pinch to zoom, double-click a surface to focus. The orientation widget and View presets select axis-aligned or isometric views. Orthographic projection removes perspective size changes. Cameras highlight on hover and open the source image on click/tap; measurement mode takes priority.</p>
+<p>In Inspect, three rotation rings mark the current pivot. Drag a ring to rotate the camera around its displayed X, Y or Z axis, including roll; the active ring brightens. Drag elsewhere to orbit, Shift/right-drag or two fingers to pan, scroll/pinch to zoom, and double-click a surface to focus the pivot. The square three-ring button hides/shows the guide; Escape ends a ring drag. The orientation widget and View presets select upright axis-aligned or isometric views. Orthographic projection removes perspective size changes. Cameras highlight on hover and open the source image on click/tap; camera selection and measurement mode take priority over the rings.</p>
 <p>Explore opens one aligned group in perspective at a predicted photo position. Drag to look; WASD/arrows or the mobile movement pad moves horizontally, Q/E or the height buttons moves vertically. Scroll moves through the scene, independently of orbit zoom. Returning to Inspect restores the previous camera. No collision detection or measured floor height is implied. Separate components are explored separately; photo jumps are viewpoint changes, not verified walkable paths.</p>
 <p>On mobile, Adjust with scene visible collapses settings to a bottom strip for slice position/width, cutaway height or point size. The strip reserves its own space, leaving the canvas unobscured. Rendering diagnostics stay outside enlarged mode.</p>
 <p>Cutaway and cross-section clip reconstructed surfaces consistently, including picking. Rulers and camera annotations remain visible. Display controls preserve saved geometry and metrics. Cross-section position is relative to each group's bounds; width is in its model units.</p>

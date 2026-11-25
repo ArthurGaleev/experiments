@@ -1073,7 +1073,7 @@
     if ([0, 1000, 2000, 5000, 10000, 25000, 100000, 250000].includes(value)) state.limit = value;
   }
   get('detail').value = String(state.limit);
-  get('navigation-help').textContent = 'Inspect: drag to orbit; Shift/right-drag to pan; scroll/pinch to zoom; double-click to focus. Explore: drag to look; WASD/arrows or the movement pad to move; scroll to move forward/back. F: fit; T: top.';
+  get('navigation-help').textContent = 'Inspect: drag a ring to rotate around its axis, or drag elsewhere to orbit; Shift/right-drag or two fingers to pan; scroll/pinch to zoom; double-click to focus the pivot. The ring button shows or hides the pivot guide. Escape ends a ring drag. Explore: drag to look; WASD/arrows or the movement pad to move; scroll to move forward/back. F: fit; T: top.';
   state.selected = new Set(state.room ? roomNames() : state.variant.initial);
   if (params.get('photos') === 'all') state.selected = new Set(state.variant.sources.filter(s => !s.reference).map(s => s.id));
   if (params.get('compare') === '1') {
