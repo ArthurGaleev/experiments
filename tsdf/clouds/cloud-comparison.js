@@ -2,6 +2,7 @@ import {facets, fields} from './cloud-options.js';
 /* Compare saved local geometry in the same photo camera frame. No pose fitting. */
 export const cameraAxes = [[1, 0, 0], [0, 0, 1], [0, -1, 0]];
 export const identityPose = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
+const fusionResult = variant => variant.controls?.method?.id === 'fusion';
 
 export function comparisonCandidates(settings, current) {
   let candidates;
@@ -20,7 +21,7 @@ export function comparisonCandidates(settings, current) {
   // Other placement-only changes do not create a different local depth model.
   const representatives = new Map();
   for (const candidate of candidates) {
-    const key = facets(candidate).method?.id === 'fusion' ? `fusion:${candidate.id}`
+    const key = fusionResult(candidate) ? `fusion:${candidate.id}`
       : JSON.stringify(candidate.sources.map(source => [source.id, source.chunks.map(c => c.key)])
         .sort((a, b) => a[0].localeCompare(b[0])));
     if (!representatives.has(key) || candidate.id === current.id) representatives.set(key, candidate);
@@ -28,8 +29,11 @@ export function comparisonCandidates(settings, current) {
   return [...representatives.values()].map(candidate => {
     const c = facets(candidate);
     const label = settings.compareAcrossMethods ? ['model', 'matcher', 'refinement', 'fusion', 'surface', 'calibration', 'head', 'reference', 'conditioning', 'camera']
-      .map(key => key === 'fusion' && c[key]?.id === 'none' && (c.method?.id !== 'fusion' || c.surface) ? null : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
-    const connections = c.method?.id === 'fusion' ? candidate.recovery ? ' · VLM review + recovery'
+      .map(key => key === 'surface' && !candidate.controls?.surface ? null
+        : key === 'calibration' && c[key]?.id === 'native' ? null
+        : key === 'fusion' && c[key]?.id === 'none' && (!fusionResult(candidate) || candidate.controls?.surface) ? null
+        : c[key]?.label).filter(Boolean).join(' · ') : (candidate.label || candidate.model || candidate.id).replace(/ · \d+\/\d+ photos$/, '');
+    const connections = fusionResult(candidate) ? candidate.recovery ? ' · VLM review + recovery'
       : candidate.vlm ? ' · VLM review' : ' · Connections off' : '';
     return {...candidate, label: label + connections};
   });
@@ -39,7 +43,7 @@ export function defaultComparison(candidates, current) {
   const first = candidates.find(candidate => candidate.id === current.id) || candidates[0];
   if (!first) return [];
   const config = facets(first);
-  const counterpart = config.method?.id === 'fusion' && candidates.find(candidate => {
+  const counterpart = candidates.find(candidate => {
     const options = facets(candidate);
     return (options.surface?.id !== config.surface?.id || options.fusion?.id !== config.fusion?.id)
       && !!candidate.vlm === !!first.vlm && !!candidate.recovery === !!first.recovery

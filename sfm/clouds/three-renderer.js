@@ -58,6 +58,33 @@ function cameraState(view) {
   };
 }
 
+export function cameraFrame(ranges) {
+  const spans = ranges.map(r => Math.max(.1, r[1] - r[0]));
+  return {center:Object.fromEntries(axes.map((a,i) => [a,(ranges[i][0] + ranges[i][1]) / 2])),
+    unit:Math.cbrt(spans[0] * spans[1] * spans[2])};
+}
+
+// Saved camera coordinates are normalized by each scene's bounds. Surface
+// changes must pass through actual world coordinates, including Explore's
+// saved Inspect camera. The optional rotation changes only the display frame.
+export function rebaseCameraState(state, from, to, rotation = [[1,0,0],[0,1,0],[0,0,1]]) {
+  const rotate = values => rotation.map(row => row.reduce((sum,n,i) => sum + n * values[i],0));
+  const position = value => {
+    const world = rotate(axes.map(a => from.center[a] + (value?.[a] || 0) * from.unit));
+    return Object.fromEntries(axes.map((a,i) => [a,(world[i] - to.center[a]) / to.unit]));
+  };
+  const up = rotate(axes.map(a => state.up?.[a] ?? Number(a === 'z')));
+  const scale = state.scale ?? Math.hypot(...axes.map(a => state.eye[a] - state.center[a])) * Math.tan(Math.PI / 8);
+  return {...state, eye:position(state.eye), center:position(state.center),
+    up:Object.fromEntries(axes.map((a,i) => [a,up[i]])), scale:scale * from.unit / to.unit,
+    fit:false, ...(state.inspect ? {inspect:rebaseCameraState(state.inspect,from,to,rotation)} : {})};
+}
+
+export function rebaseCamera(plot, ranges, rotation) {
+  const view = views.get(plot);
+  return view && rebaseCameraState(cameraState(view),view,cameraFrame(ranges),rotation);
+}
+
 function projection(view) {
   const orthographic = document.getElementById('projection').value === 'orthographic';
   if (!!view.camera.isOrthographicCamera === orthographic) return;
@@ -183,7 +210,6 @@ function renderView(view) {
 }
 
 function cameraHit(view, event) {
-  if (view.explore.enabled) return null;
   if (!document.getElementById('cameras').checked || document.getElementById('measure').checked) return null;
   const rect = view.renderer.domElement.getBoundingClientRect();
   const pointer = [event.clientX - rect.left, event.clientY - rect.top];
@@ -204,7 +230,7 @@ function cameraHit(view, event) {
   return best;
 }
 
-function cameraHover(view, object, event) {
+function cameraHover(view, object) {
   if (view.hoveredCamera !== object) {
     if (view.hoveredCamera) {
       view.hoveredCamera.material.color.copy(view.hoveredCamera.userData.baseColor);
@@ -214,15 +240,38 @@ function cameraHover(view, object, event) {
     if (object) { object.material.color.set('#1768cc'); object.material.opacity = 1; }
     view.invalidate();
   }
-  view.cameraHint.hidden = !object;
   view.renderer.domElement.style.cursor = object ? 'pointer' : document.getElementById('measure').checked ? 'crosshair' : '';
-  if (object) {
-    const rect = view.renderer.domElement.getBoundingClientRect();
-    view.cameraHint.textContent = `${object.userData.cameraPhoto.name} · click/tap to open photo`;
-    view.cameraHint.style.left = `${Math.max(8, Math.min(rect.width - 235, event.clientX - rect.left + 12))}px`;
-    view.cameraHint.style.top = `${Math.max(8, Math.min(rect.height - 32, event.clientY - rect.top + 12))}px`;
-    view.plot.dataset.hoveredCamera = object.userData.cameraPhoto.id;
-  } else delete view.plot.dataset.hoveredCamera;
+  if (object) view.plot.dataset.hoveredCamera = object.userData.cameraPhoto.id;
+  else delete view.plot.dataset.hoveredCamera;
+}
+
+function attachCameraPicks(view) {
+  const canvas = view.renderer.domElement;
+  let down;
+  const moved = event => down && Math.hypot(event.clientX - down.x,event.clientY - down.y) >= 4;
+  canvas.addEventListener('pointerdown', event => {
+    down = event.isPrimary && event.button === 0 ? {id:event.pointerId,x:event.clientX,y:event.clientY,dragged:false} : null;
+    cameraHover(view,down ? cameraHit(view,event) : null);
+  });
+  canvas.addEventListener('pointermove', event => {
+    if (down?.id === event.pointerId && moved(event)) down.dragged = true;
+    cameraHover(view,event.buttons ? null : cameraHit(view,event));
+  });
+  canvas.addEventListener('pointerleave', () => cameraHover(view,null));
+  canvas.addEventListener('pointerup', event => {
+    // A drag that returns to its starting pixel is still a drag. Explore owns
+    // drag-to-look; a stationary click/tap can open the pointed-at camera photo.
+    if (down?.id === event.pointerId && !down.dragged && !moved(event)) {
+      if (document.getElementById('measure').checked) {
+        if (!view.explore.enabled) view.measurements.measure(event);
+      } else {
+        const hit = cameraHit(view,event);
+        if (hit) view.plot.dispatchEvent(new CustomEvent('planrec-camera-open',{bubbles:true,detail:{id:hit.userData.cameraPhoto.id}}));
+      }
+    }
+    down = null; cameraHover(view,cameraHit(view,event));
+  });
+  for (const type of ['pointercancel','lostpointercapture']) canvas.addEventListener(type,() => { down = null; });
 }
 
 function pickedPoint(hit) {
@@ -266,10 +315,9 @@ function makeView(plot) {
   controls.screenSpacePanning = true; controls.zoomToCursor = true;
   controls.minPolarAngle = .00001; controls.maxPolarAngle = Math.PI - .00001;
   const readout = document.createElement('div'); readout.className = 'cloud-readout';
-  const cameraHint = document.createElement('div'); cameraHint.className = 'camera-hint'; cameraHint.hidden = true; cameraHint.setAttribute('role', 'tooltip');
-  const view = {plot, renderer, scene, content, camera, controls, readout, cameraHint, center: new THREE.Vector3(),
+  const view = {plot, renderer, scene, content, camera, controls, readout, center: new THREE.Vector3(),
     unit: 1, frame: 0, objects: new Map(), labels: new THREE.Group(), disposed: false, points: 0, clipPlanes: []};
-  scene.add(view.labels); plot.replaceChildren(canvas, readout, cameraHint);
+  scene.add(view.labels); plot.replaceChildren(canvas, readout);
   view.invalidate = () => {
     if (!view.frame && !view.disposed) view.frame = requestAnimationFrame(() => {
       view.frame = 0;
@@ -302,22 +350,7 @@ function makeView(plot) {
       view.invalidate();
     }
   });
-  let down;
-  canvas.addEventListener('pointerdown', event => { down = event.isPrimary && event.button === 0 ? [event.clientX, event.clientY] : null; });
-  canvas.addEventListener('pointermove', event => cameraHover(view, event.buttons ? null : cameraHit(view, event), event));
-  canvas.addEventListener('pointerleave', () => cameraHover(view, null));
-  canvas.addEventListener('pointerup', event => {
-    if (!view.explore.enabled && down && Math.hypot(event.clientX - down[0], event.clientY - down[1]) < 4) {
-      if (document.getElementById('measure').checked) view.measurements.measure(event);
-      else {
-        const hit = cameraHit(view, event);
-        if (hit) plot.dispatchEvent(new CustomEvent('planrec-camera-open', {bubbles: true, detail: {id: hit.userData.cameraPhoto.id}}));
-      }
-    }
-    down = null;
-    cameraHover(view, cameraHit(view, event), event);
-  });
-  canvas.addEventListener('pointercancel', () => { down = null; });
+  attachCameraPicks(view);
   canvas.addEventListener('keydown', event => {
     if (event.key === 'Escape' && view.measurements.cancel()) { event.preventDefault(); event.stopPropagation();
     }
@@ -412,8 +445,8 @@ export async function react(plot, data, layout) {
   view.controls.enableDamping = !view.linkedCamera;
   const spans = ranges.map(r => Math.max(.1, r[1] - r[0]));
   view.spans = spans;
-  view.center.set(...ranges.map(r => (r[0] + r[1]) / 2));
-  view.unit = Math.cbrt(spans[0] * spans[1] * spans[2]);
+  const frame = cameraFrame(ranges);
+  view.center.set(...axes.map(a => frame.center[a])); view.unit = frame.unit;
   view.unitLabel = config.xaxis.title?.text?.includes('rel.') ? 'relative units' : 'm';
   if (config.unitLabel) view.unitLabel = config.unitLabel;
   view.inspection = config.xaxis.visible === false;

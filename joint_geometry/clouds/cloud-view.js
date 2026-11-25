@@ -576,12 +576,14 @@
         const level = get('level').checked && component.levelled;
         const ranges = level ? component.ranges : component.rawRanges;
         const labels = (level ? ['x', 'y', 'z up'] : ['camera x', 'camera z', 'camera -y']).map(axis => axis + ', ' + coordinateUnit);
-        const camera = currentCamera(view.plot) || cameras.get(view.key) || defaultCamera;
+        const camera = (view.surfaceRotation && renderer.rebaseCamera(view.plot,ranges,view.surfaceRotation))
+          || currentCamera(view.plot) || cameras.get(view.key) || defaultCamera;
         const scene = {aspectmode: 'manual', aspectratio: fixedAspect(ranges), camera, photoViews:photoViews(component), unitLabel:coordinateUnit};
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis, i) => { scene[axis] = {title: {text: labels[i], font: {size: 12}}, tickfont: {size: 10}, range: ranges[i].slice(), autorange: false}; });
         view.rendering = true;
         try {
           await renderer.react(view.plot, data, {scene});
+          delete view.surfaceRotation;
           restoreAnnotations(view);
         } finally {
           view.rendering = false;
@@ -602,17 +604,17 @@
     }
   }
 
-  function build() {
+  function build(transition = null) {
     if (state.variant.wholeComponentMesh) {
       state.room = null;
       state.selected = new Set(state.variant.components
         .filter(c => c.ids.some(id => state.selected.has(id))).flatMap(c => c.ids));
     }
     updateRoomControls();
-    collapseScene();
-    get('scenes').after(get('inspection-footer'));
+    const retained = transition?.view, keepExpanded = retained && expanded?.view === retained;
+    if (!keepExpanded) { collapseScene(); get('scenes').after(get('inspection-footer')); }
     observer?.disconnect();
-    for (const view of plots.values()) release(view);
+    for (const view of plots.values()) if (view !== retained) release(view);
     plots.clear(); geometry.clear(); get('scenes').replaceChildren(); get('photos').replaceChildren();
     const candidates = updateComparisonControls();
     get('scenes').classList.remove('comparison-grid');
@@ -651,7 +653,8 @@
     const hasGraph = state.variant.edges !== null;
     let isolatedGrid;
     for (let index = 0; index < sorted.length; index++) {
-      const component = sorted[index], section = document.createElement('section'), header = document.createElement('header'), plot = document.createElement('div');
+      const component = sorted[index], reused = transition?.component.id === component.id ? retained : null;
+      const section = document.createElement('section'), header = document.createElement('header'), plot = reused?.plot || document.createElement('div');
       section.className = 'scene' + (index ? ' secondary' : ''); plot.className = 'plot';
       const photoCount = photoIds(component.ids).length, referenceCount = component.ids.length - photoCount;
       const title = document.createElement('h2'); title.textContent = `Group ${Number(component.id) + 1} · ${settings.multiview ? 'photos' : 'sources'}: ${photoCount}` + (referenceCount ? ` · reference overlays: ${referenceCount}` : '');
@@ -680,9 +683,23 @@
         link.href = note.href; link.textContent = note.text; row.append(link); header.append(row);
       }
       if (!state.room) {
-        section.append(header, plot); get('scenes').append(section);
+        section.append(header, plot);
         plot.dataset.component = component.id;
-        const view = {section, plot, key: `${state.variant.id}:${component.id}`, nearby: index === 0, needsInspection:true};
+        const view = reused || {section, plot, nearby:index === 0};
+        if (keepExpanded && reused) {
+          // Keep the dialog open and retain its renderer. Footer slots live in
+          // the old section; toolbar slots remain at their normal page positions.
+          for (const [slot,control] of expanded.tools) {
+            if (control.id === 'inspection-footer') section.append(slot,control);
+            else header.append(control);
+          }
+          view.section.replaceWith(section); get('scenes').append(expanded.placeholder);
+          expanded.button = expand;
+          expand.textContent = '⤡'; expand.title = 'Collapse 3D (Esc)';
+          expand.setAttribute('aria-expanded','true'); expand.setAttribute('aria-label','Collapse 3D');
+        } else get('scenes').append(section);
+        Object.assign(view,{section,key:`${state.variant.id}:${component.id}`,needsInspection:true});
+        if (reused) view.surfaceRotation = transition.rotation;
         plots.set(component.id, view);
         expand.onclick = () => expandScene(view, expand);
         observer.observe(plot);
@@ -742,7 +759,7 @@
       }
     }
     const hasPlanes = state.variant.sources.some(s => s.planes);
-    const firstScene = get('scenes').querySelector('.scene'); if (firstScene) firstScene.append(get('inspection-footer'));
+    const firstScene = get('scenes').querySelector('.scene'); if (firstScene && !keepExpanded) firstScene.append(get('inspection-footer'));
     get('representation').hidden = !hasPlanes;
     if (!hasPlanes) state.mode = 'points';
     for (const button of get('representation').querySelectorAll('button')) {
@@ -750,6 +767,7 @@
     }
     get('level-label').hidden = !state.variant.components.some(c => c.levelled);
     get('paths-label').hidden = !!state.room || !state.variant.treeEdges.length;
+    if (transition?.focus?.isConnected) transition.focus.focus({preventScroll:true});
     draw();
   }
 
@@ -904,8 +922,9 @@
     const control = document.createElement('label'); control.id = field + '-control'; control.hidden = true;
     control.append(document.createTextNode(label + ' '));
     const select = document.createElement('select'); select.id = field; control.append(select);
-    get(field === 'inputGrouping' ? 'input-group-options' : 'model-options').append(control);
-    select.onchange = () => chooseVariant(selectField(settings.variants, state.variant, field, select.value));
+    select.setAttribute('aria-label', label);
+    get(field === 'surface' ? 'view-controls' : field === 'inputGrouping' ? 'input-group-options' : 'model-options').append(control);
+    select.onchange = () => chooseVariant(selectField(settings.variants, state.variant, field, select.value),field === 'surface');
   }
   function updateControls() {
     for (const [field] of fields) {
@@ -974,8 +993,55 @@
       status.textContent = 'No saved connection review or recovery branch for this reconstruction.';
     }
   }
-  function chooseVariant(next) {
+  function multiplyRotations(a,b) {
+    return a.map(row => b[0].map((_,j) => row.reduce((sum,n,k) => sum + n * b[k][j],0)));
+  }
+  function matchingSurfaceComponent(current,next,id,level,relativeScale = false) {
+    const a = facets(current), b = facets(next);
+    if (a.surface?.id === b.surface?.id || !!current.vlm !== !!next.vlm || !!current.recovery !== !!next.recovery
+        || !!(current.relativeScale ?? relativeScale) !== !!(next.relativeScale ?? relativeScale)
+        || fields.some(([field]) => field !== 'surface' && a[field]?.id !== b[field]?.id)) return null;
+    const source = current.components.find(c => c.id === id);
+    if (!source || source.unavailableReason || current.wholeComponentMesh && !source.mesh) return null;
+    const members = new Set(source.ids);
+    if (members.size !== source.ids.length) return null;
+    const matches = next.components.filter(c => c.ids.length === members.size && new Set(c.ids).size === members.size && c.ids.every(photo => members.has(photo)));
+    if (matches.length !== 1) return null;
+    const component = matches[0];
+    if (component.unavailableReason || next.wholeComponentMesh && !component.mesh) return null;
+    const matrix = (value,size) => Array.isArray(value) && value.length === size
+      && value.every(row => Array.isArray(row) && row.length === size && row.every(Number.isFinite));
+    const from = new Map(current.sources.map(s => [s.id,s])), to = new Map(next.sources.map(s => [s.id,s]));
+    // Check every saved camera-to-component matrix, not component numbers or
+    // method labels. 1e-6 allows the frozen float32/float64 serialization delta.
+    for (const photo of members) {
+      const x = from.get(photo)?.pose, y = to.get(photo)?.pose;
+      if (!matrix(x,4) || !matrix(y,4) || x.some((row,i) => row.some((n,j) => Math.abs(n-y[i][j]) > 1e-6))) return null;
+    }
+    const oldRotation = level ? source.rotation : source.fixed, newRotation = level ? component.rotation : component.fixed;
+    const transpose = value => value[0].map((_,j) => value.map(row => row[j]));
+    for (const rotation of [oldRotation,newRotation]) {
+      if (!matrix(rotation,3) || multiplyRotations(rotation,transpose(rotation))
+          .some((row,i) => row.some((n,j) => Math.abs(n - Number(i === j)) > 1e-6))) return null;
+    }
+    return {component,rotation:multiplyRotations(newRotation,transpose(oldRotation))};
+  }
+  function surfaceTransition(next) {
+    if (state.compare || state.room) return null;
+    const view = activeView();
+    if (!view?.plot.data || view.rendering) return null;
+    const match = matchingSurfaceComponent(state.variant,next,view.plot.dataset.component,get('level').checked,settings.relativeScale);
+    if (!match) return null;
+    const component = state.variant.components.find(c => c.id === view.plot.dataset.component);
+    const ranges = get('level').checked && component.levelled ? component.ranges : component.rawRanges;
+    cameras.set(view.key,view.surfaceRotation ? renderer.rebaseCamera(view.plot,ranges,view.surfaceRotation) : currentCamera(view.plot));
+    inspections.set(view.key,renderer.inspectionState(view.plot));
+    return {...match,view,focus:document.activeElement,
+      rotation:view.surfaceRotation ? multiplyRotations(match.rotation,view.surfaceRotation) : match.rotation};
+  }
+  function chooseVariant(next, surface = false) {
     if (!next || next.id === state.variant.id) return;
+    let transition = surface ? surfaceTransition(next) : null;
     if (state.room) roomSelections.set(`${state.variant.id}:${state.roomSource}:${state.room}`, new Set(state.selected));
     else selections.set(state.variant.id, new Set(state.selected));
     const previousIds = new Set(state.variant.sources.map(source => source.id));
@@ -984,7 +1050,8 @@
       : selections.get(next.id) || (sameInputs ? state.selected : next.initial);
     state.variant = next;
     state.selected = new Set([...selection].filter(id => next.sources.some(source => source.id === id)));
-    updateControls(); build();
+    if (transition && !transition.component.ids.some(id => state.selected.has(id))) transition = null;
+    updateControls(); build(transition);
   }
   function variantFor(matcher, model, vlm, recovery = false) {
     const choices = settings.variants.filter(v => v.matcher === matcher && v.model === model);

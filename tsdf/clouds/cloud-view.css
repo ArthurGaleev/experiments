@@ -61,9 +61,8 @@ dialog.scene-viewer::backdrop{background:#f5f6f4}
 #navigation-help{margin:6px 0;font-size:12px}#benchmark-result{white-space:pre-wrap;font-size:12px}
 #view-controls{padding:10px 12px;border:1px solid #dce3dc;background:#fff;border-radius:7px}
 #measure-status{flex-basis:100%;color:#854100}#clear-measure{font-size:13px}
-.ruler-distance,.camera-hint{position:absolute;pointer-events:none;padding:4px 8px;border:1px solid #be9965;border-radius:5px;background:#fffdf3;color:#783c0b;font-size:13px;font-weight:650;white-space:nowrap;box-shadow:0 1px 5px #0002}
+.ruler-distance{position:absolute;pointer-events:none;padding:4px 8px;border:1px solid #be9965;background:#fffdf3;border-radius:5px;color:#783c0b;font-size:13px;font-weight:650;white-space:nowrap;box-shadow:0 1px 5px #0002}
 .ruler-distance{transform:translate(-50%,-50%)}
-.camera-hint{border-color:#6993bf;background:#f5faff;color:#164c84;font-size:12px;max-width:calc(100% - 16px);overflow:hidden;text-overflow:ellipsis}
 
 /* Fixed canvas framing only for the explicit comparison protocol. */
 .viewer-benchmark .scene-viewer .scene header{height:320px;min-height:320px;max-height:320px}

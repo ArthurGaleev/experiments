@@ -15,9 +15,24 @@ const stages = {initial:'Original placement', pair_refit_tree:'Independent pair 
   tree_cameras_scale:'Cameras + scale · tree edges', cameras_scale:'Cameras + scale · all edges'};
 
 export function facets(variant) {
-  if (variant.controls) return {fusion: choice('none', 'Overlay'), ...variant.controls};
+  if (variant.controls) {
+    const c = {fusion:choice('none', 'Overlay'), surface:choice('points', 'Points'), ...variant.controls};
+    // Fusion changes the saved surface representation, not the estimator that
+    // supplied its cameras/depth. Keep those choices beside their source method.
+    if (c.method?.id === 'fusion') {
+      if (c.model?.id === 'metricanything' && c.matcher?.id === 'roma') {
+        c.method = choice('matching', 'Depth + matching');
+        c.refinement = choice(c.refinement.id, stages[c.refinement.id] || c.refinement.label);
+      } else if (c.model?.id === 'mast3r') {
+        c.method = choice('joint_refined', 'Joint reconstruction + refinement');
+      }
+    }
+    if (c.method?.id === 'matching' && !c.calibration) c.calibration = choice('native', 'Model camera');
+    return c;
+  }
   const key = variant.model || variant.id, label = (variant.label || key).replace(/ · \d+\/\d+ photos$/, '');
-  const c = {method:choice('single', 'Single-photo geometry'), model:choice(key, label), fusion:choice('none', 'Overlay')};
+  const c = {method:choice('single', 'Single-photo geometry'), model:choice(key, label),
+    fusion:choice('none', 'Overlay'), surface:choice('points', 'Points')};
   const model = id => { c.model = choice(id, models[id] || id); };
   if (variant.matcher || /^(roma|loma)_control$/.test(key)) {
     const matcher = variant.matcher || key.split('_')[0];
@@ -77,25 +92,31 @@ export function facets(variant) {
     c.calibration = choice(cal, {metricanything:'MetricAnything focal', anycalib_pinhole:'AnyCalib pinhole',
       anycalib_edit:'AnyCalib edited camera', reference:'Reference camera (evaluation only)'}[cal] || cal);
   } else if (models[key]) model(key);
-  if (c.method.id === 'single' && !c.calibration) c.calibration = choice('native', 'Model camera');
+  if (['single','matching'].includes(c.method.id) && !c.calibration) c.calibration = choice('native', 'Model camera');
   return c;
 }
 
 const equal = (a, b, key) => facets(a)[key]?.id === facets(b)[key]?.id;
 export function sameConfiguration(a, b) { return fields.every(([key]) => equal(a, b, key)); }
+const surfaceState = (a, b, field) => field !== 'surface'
+  || (!!a.vlm === !!b.vlm && !!a.recovery === !!b.recovery
+    && fields.every(([key]) => key === 'surface' || equal(a, b, key)));
 
 export function fieldOptions(variants, current, field) {
   const earlier = fields.slice(0, fields.findIndex(([key]) => key === field));
-  const candidates = variants.filter(v => earlier.every(([key]) => equal(v, current, key)));
+  const candidates = variants.filter(v => surfaceState(v, current, field)
+    && earlier.every(([key]) => equal(v, current, key)));
   return new Map(candidates.map(v => facets(v)[field]).filter(Boolean).map(c => [c.id, c.label]));
 }
 
 export function selectField(variants, current, field, value) {
   const index = fields.findIndex(([key]) => key === field), earlier = fields.slice(0, index);
   const candidates = variants.filter(v => facets(v)[field]?.id === value
+    && surfaceState(v, current, field)
     && earlier.every(([key]) => equal(v, current, key)));
   const score = v => fields.slice(index + 1).reduce((sum, [key], i) => sum + (facets(current)[key] && equal(v, current, key) ? 2 ** (12 - i) : 0), 0)
-    + (!!v.vlm === !!current.vlm ? 2 : 0) + (!!v.recovery === !!current.recovery ? 1 : 0);
+    + (!!v.vlm === !!current.vlm ? 2 : 0) + (!!v.recovery === !!current.recovery ? 1 : 0)
+    + (field === 'surface' && current.controls?.method?.id === 'fusion' && v.controls?.method?.id === 'fusion' ? 2 ** 20 : 0);
   return candidates.sort((a, b) => score(b) - score(a))[0];
 }
 
