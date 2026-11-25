@@ -1,0 +1,736 @@
+{
+  "jobs": 2,
+  "summary": [
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "branch": "native_sfm",
+      "counts": {
+        "cases": 1,
+        "input_photos": 23,
+        "placed_photos": 7,
+        "wrong_poses": 0,
+        "reference_pairs": 0,
+        "available_pairs": 0
+      },
+      "metrics": {
+        "auc@10": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@20": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@5": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_abs_rel": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "local_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "ray_error_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "rotation_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_direction_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_numeric_subset_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "matched_surface_changes": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "branch": "metricanything",
+      "counts": {
+        "cases": 1,
+        "input_photos": 23,
+        "placed_photos": 7,
+        "wrong_poses": 0,
+        "reference_pairs": 0,
+        "available_pairs": 0
+      },
+      "metrics": {
+        "auc@10": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@20": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@5": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_abs_rel": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "local_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "rotation_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_direction_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_numeric_subset_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "matched_surface_changes": {
+        "metricanything__initial": {},
+        "metricanything__cameras_scale": {}
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "branch": "metricanything__initial",
+      "counts": {
+        "cases": 1,
+        "input_photos": 23,
+        "placed_photos": 19,
+        "wrong_poses": 0,
+        "reference_pairs": 0,
+        "available_pairs": 0
+      },
+      "metrics": {
+        "auc@10": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@20": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@5": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_abs_rel": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "local_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "rotation_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_direction_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_numeric_subset_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "matched_surface_changes": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "branch": "metricanything__cameras_scale",
+      "counts": {
+        "cases": 1,
+        "input_photos": 23,
+        "placed_photos": 19,
+        "wrong_poses": 0,
+        "reference_pairs": 0,
+        "available_pairs": 0
+      },
+      "metrics": {
+        "auc@10": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@20": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@5": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_abs_rel": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "local_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "rotation_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_direction_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_numeric_subset_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "matched_surface_changes": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "branch": "moge2",
+      "counts": {
+        "cases": 1,
+        "input_photos": 23,
+        "placed_photos": 7,
+        "wrong_poses": 0,
+        "reference_pairs": 0,
+        "available_pairs": 0
+      },
+      "metrics": {
+        "auc@10": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@20": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@5": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_abs_rel": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "local_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "rotation_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_direction_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_numeric_subset_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "matched_surface_changes": {
+        "moge2__initial": {},
+        "moge2__cameras_scale": {}
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "branch": "moge2__initial",
+      "counts": {
+        "cases": 1,
+        "input_photos": 23,
+        "placed_photos": 23,
+        "wrong_poses": 0,
+        "reference_pairs": 0,
+        "available_pairs": 0
+      },
+      "metrics": {
+        "auc@10": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@20": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@5": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_abs_rel": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "local_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "rotation_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_direction_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_numeric_subset_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "matched_surface_changes": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "branch": "moge2__cameras_scale",
+      "counts": {
+        "cases": 1,
+        "input_photos": 23,
+        "placed_photos": 23,
+        "wrong_poses": 0,
+        "reference_pairs": 0,
+        "available_pairs": 0
+      },
+      "metrics": {
+        "auc@10": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@20": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "auc@5": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_abs_rel": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "depth_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "local_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "rotation_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_direction_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "translation_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_coverage": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_numeric_subset_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "world_rmse_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "matched_surface_changes": {}
+    }
+  ],
+  "orders": [
+    {
+      "case": "blueprint-all-23",
+      "order": "reverse",
+      "branch": "native_sfm",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "lost_pairs": [],
+      "gained_pairs": [],
+      "shared_pairs": [
+        {
+          "a": "b003",
+          "b": "b006",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 8.537736462515939e-07,
+          "translation_axis_error_deg": 8.537736462515939e-07,
+          "baseline_m": 9.999999999999998,
+          "translation_error_m": null
+        },
+        {
+          "a": "b007",
+          "b": "b013",
+          "rotation_error_deg": 1.2074182697257333e-06,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 9.999999318670783,
+          "translation_error_m": null
+        },
+        {
+          "a": "b007",
+          "b": "b022",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 9.999999999999998,
+          "translation_error_m": null
+        },
+        {
+          "a": "b013",
+          "b": "b022",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": null,
+          "translation_axis_error_deg": null,
+          "baseline_m": 7.958495679249371e-07,
+          "translation_error_m": null
+        },
+        {
+          "a": "b017",
+          "b": "b018",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 8.537736462515939e-07,
+          "translation_axis_error_deg": 8.537736462515939e-07,
+          "baseline_m": 10.000000000000002,
+          "translation_error_m": null
+        }
+      ]
+    },
+    {
+      "case": "blueprint-all-23",
+      "order": "reverse",
+      "branch": "metricanything",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "lost_pairs": [],
+      "gained_pairs": [],
+      "shared_pairs": [
+        {
+          "a": "b003",
+          "b": "b006",
+          "rotation_error_deg": 1.7075472925031877e-06,
+          "translation_direction_error_deg": 1.2074182697257333e-06,
+          "translation_axis_error_deg": 1.2074182697257333e-06,
+          "baseline_m": 0.55931497020013,
+          "translation_error_m": 1.8410966031475738e-16
+        },
+        {
+          "a": "b007",
+          "b": "b013",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 5999847.058935385,
+          "translation_error_m": 4.802132025361061e-10
+        },
+        {
+          "a": "b007",
+          "b": "b022",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 5999847.467722522,
+          "translation_error_m": 4.656612873077393e-10
+        },
+        {
+          "a": "b013",
+          "b": "b022",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 0.4774976012381728,
+          "translation_error_m": 8.338860175535618e-10
+        },
+        {
+          "a": "b017",
+          "b": "b018",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 8.537736462515939e-07,
+          "translation_axis_error_deg": 8.537736462515939e-07,
+          "baseline_m": 2.7303838795186066,
+          "translation_error_m": 0.0
+        }
+      ]
+    },
+    {
+      "case": "blueprint-all-23",
+      "order": "reverse",
+      "branch": "moge2",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "all_photos_smoke",
+      "lost_pairs": [],
+      "gained_pairs": [],
+      "shared_pairs": [
+        {
+          "a": "b003",
+          "b": "b006",
+          "rotation_error_deg": 1.7075472925031877e-06,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 0.5754150136762132,
+          "translation_error_m": 1.2412670766236366e-16
+        },
+        {
+          "a": "b007",
+          "b": "b013",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 5889255.369180881,
+          "translation_error_m": 9.848110095882224e-10
+        },
+        {
+          "a": "b007",
+          "b": "b022",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 5889255.770433083,
+          "translation_error_m": 4.799926683327254e-10
+        },
+        {
+          "a": "b013",
+          "b": "b022",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 0.0,
+          "translation_axis_error_deg": 0.0,
+          "baseline_m": 0.46869616508095907,
+          "translation_error_m": 1.0388348377942754e-09
+        },
+        {
+          "a": "b017",
+          "b": "b018",
+          "rotation_error_deg": 0.0,
+          "translation_direction_error_deg": 8.537736462515939e-07,
+          "translation_axis_error_deg": 8.537736462515939e-07,
+          "baseline_m": 2.715122955832077,
+          "translation_error_m": 4.443059973708341e-16
+        }
+      ]
+    }
+  ],
+  "control_run": "20261125-110316-081596",
+  "source_scores": {
+    "scores/blueprint-all-23--canonical_shuffled.json": "054a961f67387e5010777d985da4976d43b44a14338ef9872d4c9e5975de43cd",
+    "scores/blueprint-all-23--reverse.json": "a5c100aca9c22dbc87ecfc235ad1b13d77aa4a3498e2a40a23092f6318d80d52"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "created": "2026-11-25",
+  "models": [
+    "metricanything",
+    "moge2"
+  ],
+  "settings": {
+    "features": "Native HLoc sift configuration (DoG, RootSIFT, longest side <=1600)",
+    "feature_precision": "float32",
+    "matching": "Native NN-ratio 0.8 with mutual check",
+    "camera_mode": "PER_IMAGE",
+    "camera_model": "PINHOLE",
+    "verification": {
+      "ransac": {
+        "max_num_trials": 20000,
+        "min_inlier_ratio": 0.1,
+        "random_seed": 20261125
+      }
+    },
+    "mapper": {
+      "num_threads": 4,
+      "random_seed": 20261125,
+      "min_model_size": 2,
+      "triangulation": {
+        "ignore_two_view_tracks": false
+      }
+    },
+    "metric_scale": "Unknown natively. Predicted depth supplies one scale per component."
+  },
+  "status": "complete",
+  "title": "Native SfM and monocular placement · G4",
+  "run": "20261125-115011-331556",
+  "params": {
+    "front_end": "Native HLoc SIFT / NN-ratio 0.8",
+    "configuration": "two_view_tracks",
+    "seed": 20261125,
+    "depth_models": [
+      "metricanything",
+      "moge2"
+    ],
+    "vlm_recovery": false,
+    "mvs": false
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
