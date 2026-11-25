@@ -1,0 +1,267 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Saved depth + matching</title><style>
+* { box-sizing: border-box; }
+body { font: 15px/1.6 system-ui, sans-serif; margin: 0; color: #20342e; background: #f6f8f6; }
+main { max-width: 1250px; padding: 36px 28px 72px; margin: auto; }
+h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 14px 0 24px;
+ letter-spacing: -.025em; }
+h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 17px; }
+section, details.section { margin: 28px 0; padding: 24px; background: white;
+ border: 1px solid #dce4de; border-radius: 14px; scroll-margin-top: 16px; }
+a { color: #176650; text-underline-offset: 3px; }
+button, select, input { font: inherit; color: inherit; padding: 7px 10px;
+ border: 1px solid #aabbb1; border-radius: 6px; background: white; }
+button, select, summary { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid #dc8d24; outline-offset: 3px; }
+[hidden] { display: none !important; }
+nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0; }
+nav a { padding: 4px 0; }
+.eyebrow, .muted { color: #596d64; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.callout { padding: 16px 20px; background: #eff5f1; border-left: 4px solid #21856b;
+ border-radius: 4px; }
+.warning { background: #fff5e7; border-left-color: #c67918; }
+.stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+.stats > div { min-width: 140px; padding: 10px 18px; border-left: 2px solid #b9d3c4; }
+.stats strong { display: block; font-size: 30px; line-height: 1.2; }
+.stats span { display: block; font-size: 13px; color: #596d64; }
+.cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; align-items: stretch; }
+.card { display: flex; flex-direction: column; max-width: 100%; min-width: 145px;
+ padding: 10px; border: 1px solid #dce4de; border-radius: 10px; text-decoration: none;
+ background: #fff; }
+.card:hover { border-color: #21856b; box-shadow: 0 3px 12px #163f2312; }
+.card img { height: var(--h); width: auto; max-width: 100%; object-fit: contain;
+ align-self: flex-start; }
+.card strong { margin-top: 8px; }
+.card span { font-size: 12px; color: #596d64; max-width: 270px; }
+.card-photo { display: flex; flex-direction: column; align-items: flex-start;
+ padding: 0; border: 0; background: none; cursor: zoom-in; }
+.photo-card .photo-report { font-size: 12px; padding: 8px 0 2px; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 18px 0; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.table-scroll, .graph { overflow-x: auto; }
+.graph svg { display: block; width: 100%; min-width: 740px; }
+.graph-label { font: 14px system-ui; fill: #20342e; }
+.graph a:hover line { stroke: #d28a19; }
+.data-table, table:not(.m) { width: 100%; border-collapse: collapse;
+ font-variant-numeric: tabular-nums; }
+table:not(.m) th, table:not(.m) td { text-align: left; padding: 9px;
+ border-bottom: 1px solid #e2e8e3; }
+.data-table th button { border: 0; padding: 0; background: transparent; font-size: 12px;
+ text-align: left; }
+.data-table td { font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: space-between;
+ gap: 12px; margin: 16px 0 0; }
+.switcher > label { font-size: 13px; }
+.switcher > select { margin-bottom: 18px; max-width: 100%; }
+details { margin: 16px 0; }
+summary { font-weight: 600; }
+details[open] > summary { margin-bottom: 16px; }
+p { white-space: pre-line; max-width: 1000px; margin: 6px 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.row figure { margin: 0; width: min-content; background: #fff; padding: 5px;
+  border: 1px solid #ddd; }
+.row img { display: block; height: var(--h); width: auto; cursor: zoom-in; }
+figcaption { font-size: 12px; color: #555; margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin: 6px 0 10px; }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 5px;
+  vertical-align: -2px; border: 1px solid #bbb; }
+.mwrap { overflow-x: auto; }
+table.m { border-collapse: collapse; font-size: 10px; }
+table.m td { width: 26px; min-width: 26px; height: 26px; padding: 0; text-align: center;
+  border: 1px solid #fff; }
+table.m td[data-index] { cursor: pointer; }
+table.m td[data-index]:hover { outline: 2px solid #000; outline-offset: -2px; }
+table.m td.diag { background: #fff; }
+table.m td a { display: block; color: inherit; text-decoration: none; line-height: 26px; }
+table.m th { font-weight: normal; color: #555; white-space: nowrap; }
+table.m th.rh { text-align: right; padding-right: 6px; }
+table.m th.rh img { height: 24px; vertical-align: middle; margin-right: 6px; }
+table.m th.ch { vertical-align: bottom; padding-bottom: 4px; }
+table.m th.ch span { writing-mode: vertical-rl; transform: rotate(180deg); }
+table.m th.hl { color: #000; font-weight: 700; }
+@media(max-width: 600px) {
+ main { padding: 20px 12px 40px; } section, details.section { padding: 16px; }
+ .row { overflow-x: auto; flex-wrap: nowrap; } .row figure { flex-shrink: 0; }
+ .stats > div { min-width: 110px; padding: 8px; } .stats strong { font-size: 25px; }
+ .filters input { max-width: 180px; } .card { min-width: 100px; }
+}
+
+body.photo-viewer-open{overflow:hidden}
+dialog.photo-viewer{box-sizing:border-box;position:fixed;inset:0;width:100%;max-width:none;
+ height:100%;height:100dvh;max-height:none;margin:0;padding:56px 12px 16px;border:0;
+ background:rgba(18,22,20,.97);color:#f4f6f4;text-align:center;overflow:auto}
+dialog.photo-viewer[open]{display:flex;flex-direction:column;align-items:center;gap:10px}
+dialog.photo-viewer::backdrop{background:#121614}
+.photo-viewer .photo-stage{display:flex;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:8px}
+.photo-viewer img{display:block;min-width:0;max-width:calc(100% - 104px);max-height:100%;
+ width:auto;height:100%;object-fit:contain}
+.photo-viewer button{flex:none;width:44px;height:44px;padding:0;border:1px solid #ffffff55;
+ border-radius:6px;background:#ffffff0d;color:inherit;font:32px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.photo-viewer button:hover{background:#ffffff26}
+.photo-viewer .photo-close{position:absolute;right:12px;top:8px}
+.photo-viewer .photo-caption{white-space:pre-line;max-width:960px;font:14px/1.45 system-ui}
+.photo-viewer a.photo-report{color:#d0e7d7;font:14px/1.5 system-ui;padding:4px 12px}
+.photo-viewer [hidden]{display:none!important}
+.photo-viewer :focus-visible{outline:3px solid #e9bd6d;outline-offset:3px}
+@media(max-width:600px){.photo-viewer .photo-stage{position:relative}
+ .photo-viewer img{max-width:100%;width:100%}
+ .photo-viewer .photo-prev,.photo-viewer .photo-next{position:absolute;top:calc(50% - 22px);background:#172019bb}
+ .photo-viewer .photo-prev{left:0}.photo-viewer .photo-next{right:0}}
+</style></head><body><main><nav style="margin-bottom:20px"><a href="../">← All experiments</a> · <a href="https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house">Photo source</a> · <a href="../LICENSE">Apache 2.0</a></nav><div class='eyebrow'>Floor plan from photos · experiment</div>
+<h1>Saved depth + matching</h1>
+<nav aria-label='Sections'><a href='#scope'>Scope</a><a href='#connections'>Complete photo sets and connections</a><a href='#rigid'>Rigid pair placement</a><a href='#similarity'>Similarity diagnostics</a><a href='#orders'>Input-order checks</a><a href='#diagnostics'>Diagnostic poses</a></nav>
+<section class='section' id='scope'><h2>Scope</h2>
+<p>Blueprint is a visual smoke test without camera-placement truth. All eight depth/camera configurations use the same 23 RGB inputs, all 253 RoMa pairs and the same cached VLM observations. The two edited-camera configurations have no matched dev evaluation.</p>
+<p><a href='summary.json'>Saved scorecard</a> · <a href='scores.json'>Pair evidence</a></p>
+</section>
+<section class='section' id='connections'><h2>Complete photo sets and connections</h2>
+<p>Components are alignment groups, not rooms. All original nodes remain. Reviewed and recovered states use this configuration&#x27;s own saved fits.</p>
+<div style='overflow-x:auto'><table><thead><tr><th>Photo set</th><th>Depth and camera</th><th>Connections</th><th>Component sizes</th><th>Accepted edges</th><th>Pose screen exceeded</th><th>Scored connected poses</th><th>Recovery bridges</th><th>Evaluation role</th></tr></thead><tbody><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything</td><td>Geometry</td><td>19 + 1 + 1 + 1 + 1</td><td>26</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything</td><td>VLM-reviewed geometry</td><td>19 + 1 + 1 + 1 + 1</td><td>23</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything</td><td>VLM review + connection recovery</td><td>20 + 2 + 1</td><td>27</td><td>0</td><td>0</td><td>2</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MoGe-2</td><td>Geometry</td><td>21 + 2</td><td>37</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MoGe-2</td><td>VLM-reviewed geometry</td><td>15 + 5 + 2 + 1</td><td>33</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MoGe-2</td><td>VLM review + connection recovery</td><td>20 + 2 + 1</td><td>34</td><td>0</td><td>0</td><td>1</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MoGe-3 · 3 refinement steps</td><td>Geometry</td><td>21 + 2</td><td>40</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MoGe-3 · 3 refinement steps</td><td>VLM-reviewed geometry</td><td>16 + 5 + 2</td><td>35</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MoGe-3 · 3 refinement steps</td><td>VLM review + connection recovery</td><td>21 + 2</td><td>36</td><td>0</td><td>0</td><td>1</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + MetricAnything focal</td><td>Geometry</td><td>21 + 1 + 1</td><td>35</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + MetricAnything focal</td><td>VLM-reviewed geometry</td><td>16 + 5 + 1 + 1</td><td>31</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + MetricAnything focal</td><td>VLM review + connection recovery</td><td>21 + 2</td><td>33</td><td>0</td><td>0</td><td>2</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + AnyCalib focal</td><td>Geometry</td><td>21 + 1 + 1</td><td>36</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + AnyCalib focal</td><td>VLM-reviewed geometry</td><td>16 + 5 + 1 + 1</td><td>31</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + AnyCalib focal</td><td>VLM review + connection recovery</td><td>21 + 2</td><td>33</td><td>0</td><td>0</td><td>2</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything + AnyCalib rays · ablation</td><td>Geometry</td><td>6 + 5 + 4 + 2 + 1 + 1 + 1 + 1 + 1 + 1</td><td>14</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything + AnyCalib rays · ablation</td><td>VLM-reviewed geometry</td><td>5 + 4 + 3 + 2 + 2 + 1 + 1 + 1 + 1 + 1 + 1 + 1</td><td>12</td><td>0</td><td>0</td><td>0</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything + AnyCalib rays · ablation</td><td>VLM review + connection recovery</td><td>19 + 2 + 1 + 1</td><td>27</td><td>0</td><td>0</td><td>8</td><td>smoke</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + AnyCalib edited focal</td><td>Geometry</td><td>15 + 3 + 2 + 2 + 1</td><td>24</td><td>0</td><td>0</td><td>0</td><td>smoke only</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + AnyCalib edited focal</td><td>VLM-reviewed geometry</td><td>7 + 4 + 3 + 3 + 2 + 1 + 1 + 1 + 1</td><td>19</td><td>0</td><td>0</td><td>0</td><td>smoke only</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>DA3-Metric + AnyCalib edited focal</td><td>VLM review + connection recovery</td><td>18 + 2 + 1 + 1 + 1</td><td>24</td><td>0</td><td>0</td><td>4</td><td>smoke only</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything + AnyCalib edited rays · ablation</td><td>Geometry</td><td>14 + 2 + 1 + 1 + 1 + 1 + 1 + 1 + 1</td><td>18</td><td>0</td><td>0</td><td>0</td><td>smoke only</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything + AnyCalib edited rays · ablation</td><td>VLM-reviewed geometry</td><td>8 + 4 + 2 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1</td><td>14</td><td>0</td><td>0</td><td>0</td><td>smoke only</td></tr><tr><td><a href='clouds/case-blueprint-all-23.html'>blueprint-all-23</a></td><td>MetricAnything + AnyCalib edited rays · ablation</td><td>VLM review + connection recovery</td><td>18 + 2 + 1 + 1 + 1</td><td>22</td><td>0</td><td>0</td><td>7</td><td>smoke only</td></tr></tbody></table></div>
+</section>
+<section class='section' id='rigid'><h2>Rigid pair placement</h2>
+<p>Hard gravity veto and all existing gates remain unchanged. Pose means average within each location first. Pure-rotation ZInD cannot score direction, so its translation error exposes camera drift. The pose screen is rotation &gt;20° or direction &gt;30°; it is not a complete metric accuracy test. Denominators and 95% location bootstrap intervals are in the scorecard.</p>
+<div style='overflow-x:auto'><table><thead><tr><th>Dataset · role</th><th>Depth and camera</th><th>Accepted positives / total</th><th>False joins / negatives</th><th>Accepted ambiguous / unknown</th><th>Accepted positive, pose screen exceeded</th><th>Accepted positive, pose unscored</th><th>Rotation ° ↓</th><th>Translation direction ° ↓</th><th>Translation error, m ↓</th><th>Accepted similarity scale min / median / max</th></tr></thead><tbody><tr><td>blueprint · smoke</td><td>DA3-Metric + AnyCalib edited focal</td><td>0 / 0</td><td>0 / 0</td><td>0 / 24</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>blueprint · smoke</td><td>DA3-Metric + AnyCalib focal</td><td>0 / 0</td><td>0 / 0</td><td>0 / 36</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>blueprint · smoke</td><td>DA3-Metric + MetricAnything focal</td><td>0 / 0</td><td>0 / 0</td><td>0 / 35</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>blueprint · smoke</td><td>MetricAnything</td><td>0 / 0</td><td>0 / 0</td><td>0 / 26</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>blueprint · smoke</td><td>MetricAnything + AnyCalib edited rays · ablation</td><td>0 / 0</td><td>0 / 0</td><td>0 / 18</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>blueprint · smoke</td><td>MetricAnything + AnyCalib rays · ablation</td><td>0 / 0</td><td>0 / 0</td><td>0 / 14</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>blueprint · smoke</td><td>MoGe-2</td><td>0 / 0</td><td>0 / 0</td><td>0 / 37</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>blueprint · smoke</td><td>MoGe-3 · 3 refinement steps</td><td>0 / 0</td><td>0 / 0</td><td>0 / 40</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div>
+</section>
+<section class='section' id='similarity'><h2>Similarity diagnostics</h2>
+<p>Similarity acceptance alone does not join a scene. Blueprint recovery also requires bidirectional VLM landmarks and consistent component paths. Scales remain diagnostics, not calibrated uncertainty.</p>
+<div style='overflow-x:auto'><table><thead><tr><th>Dataset · role</th><th>Depth and camera</th><th>Accepted positives / total</th><th>False joins / negatives</th><th>Accepted ambiguous / unknown</th><th>Accepted positive, pose screen exceeded</th><th>Accepted positive, pose unscored</th><th>Rotation ° ↓</th><th>Translation direction ° ↓</th><th>Translation error, m ↓</th><th>Accepted similarity scale min / median / max</th></tr></thead><tbody><tr><td>blueprint · smoke</td><td>DA3-Metric + AnyCalib edited focal</td><td>0 / 0</td><td>0 / 0</td><td>0 / 34</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.880 / 1.006 / 1.186</td></tr><tr><td>blueprint · smoke</td><td>DA3-Metric + AnyCalib focal</td><td>0 / 0</td><td>0 / 0</td><td>0 / 42</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.885 / 1.014 / 1.167</td></tr><tr><td>blueprint · smoke</td><td>DA3-Metric + MetricAnything focal</td><td>0 / 0</td><td>0 / 0</td><td>0 / 46</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.905 / 1.005 / 1.108</td></tr><tr><td>blueprint · smoke</td><td>MetricAnything</td><td>0 / 0</td><td>0 / 0</td><td>0 / 45</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.804 / 1.008 / 1.158</td></tr><tr><td>blueprint · smoke</td><td>MetricAnything + AnyCalib edited rays · ablation</td><td>0 / 0</td><td>0 / 0</td><td>0 / 33</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.808 / 1.012 / 1.138</td></tr><tr><td>blueprint · smoke</td><td>MetricAnything + AnyCalib rays · ablation</td><td>0 / 0</td><td>0 / 0</td><td>0 / 44</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.776 / 0.938 / 1.287</td></tr><tr><td>blueprint · smoke</td><td>MoGe-2</td><td>0 / 0</td><td>0 / 0</td><td>0 / 48</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.814 / 0.998 / 1.146</td></tr><tr><td>blueprint · smoke</td><td>MoGe-3 · 3 refinement steps</td><td>0 / 0</td><td>0 / 0</td><td>0 / 49</td><td>0</td><td>0</td><td>—</td><td>—</td><td>—</td><td>0.826 / 1.004 / 1.148</td></tr></tbody></table></div>
+</section>
+<section class='section' id='orders'><h2>Input-order checks</h2>
+<p>24 comparisons against the first saved order; 0 changed component partitions. Relative-camera changes are saved per case, independent of component roots.</p>
+
+</section>
+<section class='section' id='diagnostics'><h2>Diagnostic poses</h2>
+<p>Deterministic examples expose accepted links, wrong poses and rejections. They do not define the scoring subset.</p>
+<ul><li><a href='clouds/pair-q0b28b190c1617424eab4.html'>blueprint: Blueprint pose candidate</a></li></ul>
+</section>
+<details class='section' id='section-6'><summary>All pair evidence</summary>
+<ul><li><a href='pair-q17b037bf7e7e689812cd.html'>b000 ↔ b001</a> · blueprint / unknown</li><li><a href='pair-qad22136837626b1936df.html'>b000 ↔ b002</a> · blueprint / unknown</li><li><a href='pair-qcd70da601270e1a02fe4.html'>b000 ↔ b003</a> · blueprint / unknown</li><li><a href='pair-qbe16c88dfa9ca408a599.html'>b000 ↔ b004</a> · blueprint / unknown</li><li><a href='pair-qeddc6619fa2351f2fd76.html'>b000 ↔ b005</a> · blueprint / unknown</li><li><a href='pair-q7602b0fd9c8ff0138a05.html'>b000 ↔ b006</a> · blueprint / unknown</li><li><a href='pair-qf5860ecc76b4dd142683.html'>b000 ↔ b007</a> · blueprint / unknown</li><li><a href='pair-qe2495c737c1278d9e1c1.html'>b000 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-q868d6850b3217600a25e.html'>b000 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-q60b4001ddb6bd37daf3d.html'>b000 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-q10442fca7dfbb8625f93.html'>b000 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-qcd1908b1cac7dc8a0498.html'>b000 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-qace30be3afa466368c7a.html'>b000 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q40c626d3fbd6b7340c0d.html'>b000 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q926d6d3a8303f09753c6.html'>b000 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q128879d1baeb98785dcf.html'>b000 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q9f0cbabe349e63536aa4.html'>b000 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q110286f19fc252e9f44f.html'>b000 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q84ee1941edd3d30fdfab.html'>b000 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q104edefc30b4d0b929cd.html'>b000 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q925ddb570fac2b300af9.html'>b000 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q45ccf87e25511b8d2adb.html'>b000 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q7096358ea497c310cff0.html'>b001 ↔ b002</a> · blueprint / unknown</li><li><a href='pair-q031509f62f3db05800f0.html'>b001 ↔ b003</a> · blueprint / unknown</li><li><a href='pair-q61524aa5c22e56a895dc.html'>b001 ↔ b004</a> · blueprint / unknown</li><li><a href='pair-qe7b8e8bfd7a42ae4d10e.html'>b001 ↔ b005</a> · blueprint / unknown</li><li><a href='pair-q498c1c7bb382979eb120.html'>b001 ↔ b006</a> · blueprint / unknown</li><li><a href='pair-qf7a20d0267376aaa164d.html'>b001 ↔ b007</a> · blueprint / unknown</li><li><a href='pair-q70c0fc50f765d5b34b8a.html'>b001 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-q07016f92c69005c80840.html'>b001 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-q7b1945690994b55e926f.html'>b001 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-qb18f40905fe5f904dbf4.html'>b001 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-qd83f2182302fb2a00ae5.html'>b001 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-q042333ccf9bbdb8f720d.html'>b001 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q09a4ebc4ff80f87a2c7d.html'>b001 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q926b5c847234f6d7353d.html'>b001 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-qe56ab2b349a68afee122.html'>b001 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q6861828734a720f1bd97.html'>b001 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qe61322054b1e8328dc03.html'>b001 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-qfe7580d95008c489f99d.html'>b001 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q62063ce1de9a2ce7b11e.html'>b001 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q57d937d07c39dec4a17a.html'>b001 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qa1e8aaad98234593438a.html'>b001 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q84da610e7a54f5ea1563.html'>b002 ↔ b003</a> · blueprint / unknown</li><li><a href='pair-qbcbcd83e83640afce38d.html'>b002 ↔ b004</a> · blueprint / unknown</li><li><a href='pair-q7ac3a903a15ccfd00d54.html'>b002 ↔ b005</a> · blueprint / unknown</li><li><a href='pair-qc4a4650fb0aedfde8c91.html'>b002 ↔ b006</a> · blueprint / unknown</li><li><a href='pair-q2310eca6bcbad644452d.html'>b002 ↔ b007</a> · blueprint / unknown</li><li><a href='pair-q560d59fcefee2e203316.html'>b002 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-qfcd62e31350227c23a61.html'>b002 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-q25d0de06ec244d0e050e.html'>b002 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-q902657696009310bb208.html'>b002 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-qc5226527f53db33865a1.html'>b002 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-q630b01e407bc48f91d0a.html'>b002 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-qeeeac8d3730f725b5fec.html'>b002 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-qff7997dc7790c013b9e5.html'>b002 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-qcfce43ef091069d8b6e8.html'>b002 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-qd0d011742750b8ef1187.html'>b002 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q2547b68b0db654d96e9c.html'>b002 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-qe83ba4ed1e96993146ad.html'>b002 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qd10b1f2c02fa55bd7ca3.html'>b002 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q46d36b72647cbd7b156f.html'>b002 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q1656ec13c3e9fb6808ba.html'>b002 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q8be6df695ffa7d121857.html'>b003 ↔ b004</a> · blueprint / unknown</li><li><a href='pair-q852b5971d7ecaafab9a1.html'>b003 ↔ b005</a> · blueprint / unknown</li><li><a href='pair-q4d4db40e80c14739a17e.html'>b003 ↔ b006</a> · blueprint / unknown</li><li><a href='pair-q87a7604e40dd3ac865fb.html'>b003 ↔ b007</a> · blueprint / unknown</li><li><a href='pair-qb77cde176170dc34df3b.html'>b003 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-q64e68854faca33f62c1b.html'>b003 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-qc2eb80aa5dd36d0a8cfe.html'>b003 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-q2cf62a5c094f0dafee28.html'>b003 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-q5f60808d7712e557c90e.html'>b003 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-q582df276f1160060d4b3.html'>b003 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q1860e385b35e58f9a080.html'>b003 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q74462a87ed15de14903e.html'>b003 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q14f7ef9517cbf575d7cb.html'>b003 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q9e6347486ec607844cf5.html'>b003 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q89a3a3e8c5ee31aa11e6.html'>b003 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q989ff70fb369b97f49c5.html'>b003 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q17403027fa2a4149c555.html'>b003 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q7e9f72452db74ffab1fe.html'>b003 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q3fdfcf2bcabba9c69d4b.html'>b003 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q85b7dde5953b4eb52cdc.html'>b004 ↔ b005</a> · blueprint / unknown</li><li><a href='pair-q4a23c6056771c5f5761c.html'>b004 ↔ b006</a> · blueprint / unknown</li><li><a href='pair-qe813acef5a6e798d473f.html'>b004 ↔ b007</a> · blueprint / unknown</li><li><a href='pair-qa1f9d5b8aa5e394c268d.html'>b004 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-qbfe026ddc105370b50d9.html'>b004 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-qe2f472678f528a9635e5.html'>b004 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-qb6498bf3edd2df42fa45.html'>b004 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-qa40107cd0566780e6f03.html'>b004 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-qe3baa2575ec16c4f5d2e.html'>b004 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-qbf8356f60f50e93bbcc5.html'>b004 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q676730a3ec56ac207f79.html'>b004 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q417fa1df2f691a58151f.html'>b004 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q98125cd9f094500f739a.html'>b004 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q00bc98a89bfebd7b88e4.html'>b004 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-qd6bce359625fe8254f92.html'>b004 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q556fda8ead7efe2a38f7.html'>b004 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q8da16ad8ec3f48ea17bc.html'>b004 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qebf9e33dd5341c510320.html'>b004 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q2561ce4b1bf664a0a14a.html'>b005 ↔ b006</a> · blueprint / unknown</li><li><a href='pair-qf502ee04ecd2186af7c7.html'>b005 ↔ b007</a> · blueprint / unknown</li><li><a href='pair-q3481d104b5d6a7d1d6b3.html'>b005 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-q897b69e8af0931ecf60f.html'>b005 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-q0b9c3fc217773c60435f.html'>b005 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-q761194ceb8f6a910c38f.html'>b005 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-q331db0b5968cf4f65f47.html'>b005 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-qccc187e23db89c15cf7d.html'>b005 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q56360351bc3436f9eb0b.html'>b005 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q1b87998d775c416450db.html'>b005 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q5563ab295ea6e4362d81.html'>b005 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q6f6378f0ed7581bb4873.html'>b005 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qb50ee3241f95049bb126.html'>b005 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q90fc1776b4d63ff96609.html'>b005 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q92ce1e0e2bd984297b89.html'>b005 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q840ba7da851ff165fe3f.html'>b005 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qd95f35d791e736f92e88.html'>b005 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q784dd1d95092362adc2e.html'>b006 ↔ b007</a> · blueprint / unknown</li><li><a href='pair-qf0c856d3de385090deca.html'>b006 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-q30ed26cead1d15c198b9.html'>b006 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-qc7f10215500cf328972a.html'>b006 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-qe1a355a272b7c1a54db2.html'>b006 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-qc4fb16151cdc477c8431.html'>b006 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-qeec235e3e07eb3068317.html'>b006 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q3667dee2102da749a6d5.html'>b006 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q6d09a63a8f758764e3cd.html'>b006 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-qa1642f2dc7115f6489a9.html'>b006 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-qb4112d1d8803ede2658f.html'>b006 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qa9734021d47fb346c3f2.html'>b006 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q89e07afa5d84991f281d.html'>b006 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qc7fa1eb775f9dd6c2282.html'>b006 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qdfd16b1cf9ff91fd78e3.html'>b006 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qf76fc87c2ed0e3674617.html'>b006 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-qb54b90f1b2493ca377bd.html'>b007 ↔ b008</a> · blueprint / unknown</li><li><a href='pair-qc34dbbf34d8ec7280e90.html'>b007 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-q930ae146219236619668.html'>b007 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-qe8f6fcc1fd638f109854.html'>b007 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-qf5c0d6c16f7b5afe8472.html'>b007 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-q399773138b493384ff52.html'>b007 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-qcd7a2957cc6a8aa37cc5.html'>b007 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-qf2c003095dc2f06ab3f9.html'>b007 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-qa76972076756947a3161.html'>b007 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q43fcb2f51c018f9df59f.html'>b007 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qe186dd098f7dfd0f7132.html'>b007 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-qd5f8a4cddfbb16dfde9d.html'>b007 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qeb6dd0d3f551960d193e.html'>b007 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q591e1ace3c147d17754c.html'>b007 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qb29c692e118f6a684f50.html'>b007 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-qfa8fe52cc791cc631a8a.html'>b008 ↔ b009</a> · blueprint / unknown</li><li><a href='pair-q848a307f3e1d72ec7351.html'>b008 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-q1522b4e4555dfc17dbba.html'>b008 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-q3ba4f11cfe4a6034ccc5.html'>b008 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-qaca0e4ce1b6cef7efdac.html'>b008 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q74a0d30f88894eaa4840.html'>b008 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-qeb25b1cc527986b0af71.html'>b008 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q3b075fa66edc805f5869.html'>b008 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-qe0fe165b03ac793014a4.html'>b008 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qced032042dfbb7f8d672.html'>b008 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q96d140fea62067102356.html'>b008 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q38337ae571c86e24d406.html'>b008 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qbc08c185d532b1211c7f.html'>b008 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q8d3309c8cdfbc5b70a74.html'>b008 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q23834575369ff509c3ca.html'>b009 ↔ b010</a> · blueprint / unknown</li><li><a href='pair-qd6de48f3453e8b29c928.html'>b009 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-q5136815ec87bdb2a5288.html'>b009 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-qf40f917a0d5e2b1cf775.html'>b009 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q9746a0c6433b95294817.html'>b009 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q0f596eecaf75efd82fa4.html'>b009 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q20307dd5b2ccdd774e4c.html'>b009 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q766a79a66586debc47d9.html'>b009 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qd7cbfc72b0e228c50be8.html'>b009 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-qda0ce4f9340c6d1df0b5.html'>b009 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q0587bb056cdaba1bc249.html'>b009 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qe353d0003b7a47869473.html'>b009 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qeedaecf5e1514d915224.html'>b009 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q4d0fa6307177c6197473.html'>b010 ↔ b011</a> · blueprint / unknown</li><li><a href='pair-qda3e4718f484d7a81af1.html'>b010 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-qcf2eb69df96938771e15.html'>b010 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q1c21c49ae734612ad0a2.html'>b010 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-q6b194e13857771dbd8ca.html'>b010 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q2f0c001929eb623e31c1.html'>b010 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q724aba4e4886abbcc56a.html'>b010 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q0c621da48248ab5540a6.html'>b010 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q9137d551c6e646bf137e.html'>b010 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qc27bc6f71392e444bb6a.html'>b010 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qd19c2c05df5c136f69d2.html'>b010 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q0b7d1cc933fb84528954.html'>b010 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-qf67289c0d5c0b9caac8b.html'>b011 ↔ b012</a> · blueprint / unknown</li><li><a href='pair-q228b9ce021e15c0ca296.html'>b011 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q6b7df4ee7bb7df26e2d6.html'>b011 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-qfe493b2b596db28d5729.html'>b011 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q00c104c52b113ff0ffe5.html'>b011 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-qe4295985054f29ff5073.html'>b011 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q2490b390581ee95a3719.html'>b011 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-qb09f36bf57a0a449453a.html'>b011 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q23739264b9823e6dcc07.html'>b011 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qff14926c1ff010c62f4f.html'>b011 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qd08138d3971858e39423.html'>b011 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q6564a8b2888a177d03ea.html'>b012 ↔ b013</a> · blueprint / unknown</li><li><a href='pair-q6369cc1894d2ca60f37a.html'>b012 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-qe3fd2b84f682ce045ce6.html'>b012 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q3264576ba5338b1da376.html'>b012 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q4409f5dde52bac505d97.html'>b012 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qc0fed67a121f35e6fa39.html'>b012 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q45c881781878b9c1a17f.html'>b012 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q48f1e1214d813ee2c762.html'>b012 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qb7366a20532121ee381b.html'>b012 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q091af7d42c433e2530b6.html'>b012 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q3f7483275f8946fb65f8.html'>b013 ↔ b014</a> · blueprint / unknown</li><li><a href='pair-qb695c6df9a6ead56053c.html'>b013 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-qe3a24ca7a71341372a27.html'>b013 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q5aed93b286a76b77f273.html'>b013 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q972b3291afd3eb138c83.html'>b013 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q66dab509411f51ba1e5e.html'>b013 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q8210b97816ce845cd756.html'>b013 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q96e9093a942d696f95e7.html'>b013 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q58bbbefae8f083401412.html'>b013 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-qe937d7e032dfbd2c1bf7.html'>b014 ↔ b015</a> · blueprint / unknown</li><li><a href='pair-q3bbdbefcea653bd574fd.html'>b014 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-q0d92b69f6ac6c9938cca.html'>b014 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qfb7f5f3cf66ed288b94b.html'>b014 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q9896c1279ec42a344308.html'>b014 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-q0b28b190c1617424eab4.html'>b014 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q4c1cc5445208748d96b3.html'>b014 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q8f4576f039b956deb4cd.html'>b014 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q69a22dcafbac526589ad.html'>b015 ↔ b016</a> · blueprint / unknown</li><li><a href='pair-qe8c64e1c605aa41cb89b.html'>b015 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-q31673c5f599b5365399e.html'>b015 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q27aaca555415a134f515.html'>b015 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qd0353b99d44dd6758b68.html'>b015 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qee827b5e83335f274f72.html'>b015 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qb28bb0a50e8ca1ef703b.html'>b015 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q1e3d46b7b7880ef1276e.html'>b016 ↔ b017</a> · blueprint / unknown</li><li><a href='pair-qcd0d25871a01dd7bbcde.html'>b016 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q84a107a56de5648e7dcb.html'>b016 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qcf82f6f84884c4c68933.html'>b016 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qec06b3d5edb38763c087.html'>b016 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qc840680dc726b4a2449f.html'>b016 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-qd9ecbf905cd78d88cfe0.html'>b017 ↔ b018</a> · blueprint / unknown</li><li><a href='pair-q32a58d41d7aee09d6a91.html'>b017 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qfdc3cc104e167100eb40.html'>b017 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-qe602f01e5217e51b902b.html'>b017 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q3f656366393ca63ee3f5.html'>b017 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q5c278a8af8c4f9defd70.html'>b018 ↔ b019</a> · blueprint / unknown</li><li><a href='pair-qe64f5b54781a0f5e7258.html'>b018 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q6e5584524019d51bcbe6.html'>b018 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-qc075b12c6baee38486d6.html'>b018 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q5305e41f4e831d625c90.html'>b019 ↔ b020</a> · blueprint / unknown</li><li><a href='pair-q431085087c5ff107bc1b.html'>b019 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q91eaab6bc759818882c9.html'>b019 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q4a31adb7be6df79603e9.html'>b020 ↔ b021</a> · blueprint / unknown</li><li><a href='pair-q51b8fe8c15fe2acadec7.html'>b020 ↔ b022</a> · blueprint / unknown</li><li><a href='pair-q2d2de06f76f0254de5be.html'>b021 ↔ b022</a> · blueprint / unknown</li></ul>
+</details>
+</main><script>/* Shared image inspection; opening a photo never changes the 3D selection. */
+window.planrecPhotoViewer = function () {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'photo-viewer';
+  dialog.setAttribute('aria-label', 'Photo viewer');
+  dialog.innerHTML = `<button class="photo-close" aria-label="Close (Esc)">×</button>
+    <div class="photo-stage"><button class="photo-prev" aria-label="Previous photo (←)">‹</button>
+    <img alt=""><button class="photo-next" aria-label="Next photo (→)">›</button></div>
+    <div class="photo-caption" aria-live="polite"></div>
+    <a class="photo-report" hidden>Photo report ↗</a>`;
+  document.body.append(dialog);
+  const image = dialog.querySelector('img'), caption = dialog.querySelector('.photo-caption');
+  const report = dialog.querySelector('.photo-report');
+  const previous = dialog.querySelector('.photo-prev'), next = dialog.querySelector('.photo-next');
+  let items = [], index = 0, opener;
+  function show() {
+    const item = items[index];
+    image.src = item.src; image.alt = item.caption || '';
+    caption.textContent = [item.caption, `${index + 1} / ${items.length}`].filter(Boolean).join('\n');
+    report.hidden = !item.href;
+    if (item.href) report.href = item.href; else report.removeAttribute('href');
+    previous.hidden = next.hidden = items.length < 2;
+  }
+  function step(direction) {
+    index = (index + direction + items.length) % items.length;
+    show();
+  }
+  previous.onclick = () => step(-1);
+  next.onclick = () => step(1);
+  dialog.querySelector('.photo-close').onclick = () => dialog.close();
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog || event.target.classList.contains('photo-stage')) dialog.close();
+  });
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1);
+    }
+  });
+  dialog.addEventListener('close', () => {
+    document.body.classList.remove('photo-viewer-open');
+    image.removeAttribute('src');
+    if (opener?.isConnected) opener.focus({preventScroll: true});
+  });
+  return {
+    open(photos, selectedIndex, trigger = document.activeElement) {
+      if (!photos?.length || !photos[selectedIndex]) return;
+      items = photos; index = selectedIndex; opener = trigger;
+      show();
+      if (!dialog.open) dialog.showModal();
+      document.body.classList.add('photo-viewer-open');
+      dialog.querySelector('.photo-close').focus({preventScroll: true});
+    },
+  };
+};
+
+const groups = {};
+
+const photoViewer = window.planrecPhotoViewer();
+function openViewer(group, index, trigger = document.activeElement) {
+  photoViewer.open(groups[group], index, trigger);
+}
+document.addEventListener("click", event => {
+  const target = event.target.closest("[data-group]");
+  if (target) openViewer(target.dataset.group, Number(target.dataset.index), target);
+});
+for (const table of document.querySelectorAll("table.m")) {
+  table.addEventListener("mouseover", (e) => {
+    for (const th of table.querySelectorAll("th.hl")) th.classList.remove("hl");
+    const td = e.target.closest("td[data-r]");
+    if (!td) return;
+    table.querySelector(`th.rh[data-r="${td.dataset.r}"]`).classList.add("hl");
+    table.querySelector(`th.ch[data-c="${td.dataset.c}"]`).classList.add("hl");
+  });
+}
+document.addEventListener('keydown', e => {
+ const el=e.target.closest('img[data-group]');
+ if(el && (e.key==='Enter'||e.key===' ')){e.preventDefault();openViewer(el.dataset.group,
++el.dataset.index);}
+});
+for(const select of document.querySelectorAll('[data-panel-select]')) {
+ select.addEventListener('change',()=>{
+  for(const panel of select.parentElement.querySelectorAll(':scope > [data-panel]')) {
+   panel.hidden=panel.dataset.panel!==select.value;
+  }
+ });
+}
+for(const browser of document.querySelectorAll('.pair-browser')) {
+ const body=browser.querySelector('tbody'),rows=Array.from(body.rows),q=s=>browser.querySelector(s);
+ let page=0,sort=-1,ascending=false;
+ const storageKey='pair-browser:'+location.pathname;
+ try {
+  const saved=JSON.parse(sessionStorage.getItem(storageKey)||'null');
+  if(saved){page=saved.page;sort=saved.sort;ascending=saved.ascending;
+   for(const key of ['photo','status','query','count'])q(`[data-${key}]`).value=saved[key];}
+ } catch {}
+ const hash=new URLSearchParams(location.hash.slice(1));
+ if(hash.has('photo'))q('[data-photo]').value=hash.get('photo');
+ function draw(){
+  const photo=q('[data-photo]').value,status=q('[data-status]').value,
+query=q('[data-query]').value.toLowerCase().trim(),limit=+q('[data-count]').value;
+  let selected=rows.filter(r=>(!photo||r.dataset.a===photo||r.dataset.b===photo)
+   &&(!status||r.dataset.status===status)
+   &&(!query||r.textContent.toLowerCase().includes(query)));
+  if(sort>=0)selected.sort((a,b)=>{let x=a.cells[sort].dataset.value,y=b.cells[sort].dataset.value;
+   const cmp=x!==''&&y!==''&&!isNaN(x)&&!isNaN(y)?Number(x)-Number(y):x.localeCompare(y,
+'ru');return ascending?cmp:-cmp;});
+  page=Math.min(page,Math.max(0,Math.ceil(selected.length/limit)-1));
+  for(const row of rows)row.hidden=true;
+  selected.slice(page*limit,(page+1)*limit).forEach(r=>{r.hidden=false;body.append(r);});
+  const end=Math.min((page+1)*limit,selected.length);
+  q('[data-total]').textContent=selected.length?
+   `${page*limit+1}–${end} of ${selected.length} pairs`:'No pairs found';
+  q('[data-prev]').disabled=page===0;q('[data-next]').disabled=(page+1)*limit>=selected.length;
+  try{sessionStorage.setItem(storageKey,JSON.stringify({photo,status,query,count:limit,
+   page,sort,ascending}));}catch{}
+ }
+ for(const el of browser.querySelectorAll('.filters select,.filters input')) {
+  el.addEventListener('input',()=>{page=0;draw();});
+ }
+ for(const button of browser.querySelectorAll('[data-sort]'))button.onclick=()=>{
+const n=+button.dataset.sort;ascending=sort===n?!ascending:false;sort=n;page=0;
+  for(const th of browser.querySelectorAll('th'))th.removeAttribute('aria-sort');
+button.parentElement.setAttribute('aria-sort',ascending?'ascending':'descending');draw();};
+ q('[data-prev]').onclick=()=>{page--;draw();};q('[data-next]').onclick=()=>{page++;draw();};draw();
+}
+</script></body></html>

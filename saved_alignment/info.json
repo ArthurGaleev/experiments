@@ -1,0 +1,88 @@
+{
+  "created": "2026-11-25T21:20:41.970437+00:00",
+  "status": "complete",
+  "title": "Depth with RoMa matching",
+  "run": "20261126-002041-965012-blueprint",
+  "params": {
+    "configurations": {
+      "metricanything": {
+        "depth_model": "metricanything",
+        "calibration": "native",
+        "sources": [
+          "metricanything"
+        ]
+      },
+      "moge2": {
+        "depth_model": "moge2",
+        "calibration": "native",
+        "sources": [
+          "moge2"
+        ]
+      },
+      "moge3": {
+        "depth_model": "moge3",
+        "calibration": "native",
+        "sources": [
+          "moge3"
+        ]
+      },
+      "da3metric_metricanything": {
+        "depth_model": "da3metric",
+        "calibration": "metricanything",
+        "sources": [
+          "da3metric",
+          "metricanything"
+        ]
+      },
+      "da3metric_anycalib_pinhole": {
+        "depth_model": "da3metric",
+        "calibration": "anycalib_pinhole",
+        "sources": [
+          "da3metric",
+          "anycalib_pinhole"
+        ]
+      },
+      "metricanything_anycalib_pinhole": {
+        "depth_model": "metricanything",
+        "calibration": "anycalib_pinhole_rays",
+        "sources": [
+          "metricanything",
+          "anycalib_pinhole"
+        ]
+      },
+      "da3metric_anycalib_edit": {
+        "depth_model": "da3metric",
+        "calibration": "anycalib_edit",
+        "sources": [
+          "da3metric",
+          "anycalib_edit"
+        ]
+      },
+      "metricanything_anycalib_edit": {
+        "depth_model": "metricanything",
+        "calibration": "anycalib_edit_rays",
+        "sources": [
+          "metricanything",
+          "anycalib_edit"
+        ]
+      }
+    },
+    "matcher": "roma",
+    "settings": {
+      "min_confidence": 0.2,
+      "base_error_m": 0.03,
+      "relative_error": 0.04,
+      "iterations": 1200,
+      "min_inliers": 20,
+      "min_fraction": 0.3,
+      "min_cells": 6,
+      "max_reprojection_diagonal": 0.015,
+      "max_gravity_deg": 15.0,
+      "grid": 8,
+      "seed": 0
+    },
+    "model_inference": false
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}

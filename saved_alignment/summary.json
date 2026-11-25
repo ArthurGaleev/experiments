@@ -1,0 +1,1654 @@
+{
+  "pairs": [
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "da3metric_anycalib_edit",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 24,
+        "estimated": 153,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 24,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "da3metric_anycalib_edit",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 34,
+        "estimated": 155,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 34,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 155,
+          "min": 0.03835813030033847,
+          "median": 0.9603833174256471,
+          "max": 2.9412138093014883,
+          "outside_0_9_to_1_1": 84
+        },
+        "accepted": {
+          "count": 34,
+          "min": 0.880386415165507,
+          "median": 1.0055728802421413,
+          "max": 1.1864159917504513,
+          "outside_0_9_to_1_1": 4
+        },
+        "accepted_unknown": {
+          "count": 34,
+          "min": 0.880386415165507,
+          "median": 1.0055728802421413,
+          "max": 1.1864159917504513,
+          "outside_0_9_to_1_1": 4
+        }
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "da3metric_anycalib_pinhole",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 36,
+        "estimated": 153,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 36,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "da3metric_anycalib_pinhole",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 42,
+        "estimated": 155,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 42,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 155,
+          "min": 0.042296612419334974,
+          "median": 0.9640193290014077,
+          "max": 2.9494816395162076,
+          "outside_0_9_to_1_1": 81
+        },
+        "accepted": {
+          "count": 42,
+          "min": 0.88482908387722,
+          "median": 1.0135270647535917,
+          "max": 1.166561977415617,
+          "outside_0_9_to_1_1": 4
+        },
+        "accepted_unknown": {
+          "count": 42,
+          "min": 0.88482908387722,
+          "median": 1.0135270647535917,
+          "max": 1.166561977415617,
+          "outside_0_9_to_1_1": 4
+        }
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "da3metric_metricanything",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 35,
+        "estimated": 152,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 35,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "da3metric_metricanything",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 46,
+        "estimated": 155,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 46,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 155,
+          "min": 0.03914009342295372,
+          "median": 0.9632712232692011,
+          "max": 2.9147622927905696,
+          "outside_0_9_to_1_1": 77
+        },
+        "accepted": {
+          "count": 46,
+          "min": 0.9051744054615096,
+          "median": 1.0047006501020794,
+          "max": 1.1080028191116542,
+          "outside_0_9_to_1_1": 3
+        },
+        "accepted_unknown": {
+          "count": 46,
+          "min": 0.9051744054615096,
+          "median": 1.0047006501020794,
+          "max": 1.1080028191116542,
+          "outside_0_9_to_1_1": 3
+        }
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "metricanything",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 26,
+        "estimated": 152,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 26,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "metricanything",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 45,
+        "estimated": 155,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 45,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 155,
+          "min": 0.04308498730777202,
+          "median": 0.9407276608558409,
+          "max": 3.069890160705438,
+          "outside_0_9_to_1_1": 84
+        },
+        "accepted": {
+          "count": 45,
+          "min": 0.803632439210289,
+          "median": 1.007681342617161,
+          "max": 1.1583792945214615,
+          "outside_0_9_to_1_1": 9
+        },
+        "accepted_unknown": {
+          "count": 45,
+          "min": 0.803632439210289,
+          "median": 1.007681342617161,
+          "max": 1.1583792945214615,
+          "outside_0_9_to_1_1": 9
+        }
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "metricanything_anycalib_edit",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 18,
+        "estimated": 151,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 18,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "metricanything_anycalib_edit",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 33,
+        "estimated": 154,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 33,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 154,
+          "min": 0.04487827617096473,
+          "median": 0.9174733014594556,
+          "max": 2.7724125623331046,
+          "outside_0_9_to_1_1": 99
+        },
+        "accepted": {
+          "count": 33,
+          "min": 0.8079359892276738,
+          "median": 1.0123332294366145,
+          "max": 1.1378439066810762,
+          "outside_0_9_to_1_1": 7
+        },
+        "accepted_unknown": {
+          "count": 33,
+          "min": 0.8079359892276738,
+          "median": 1.0123332294366145,
+          "max": 1.1378439066810762,
+          "outside_0_9_to_1_1": 7
+        }
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "metricanything_anycalib_pinhole",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 14,
+        "estimated": 150,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 14,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "metricanything_anycalib_pinhole",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 44,
+        "estimated": 155,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 44,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 155,
+          "min": 0.044711175656469024,
+          "median": 0.8900729841070185,
+          "max": 3.32108268204029,
+          "outside_0_9_to_1_1": 111
+        },
+        "accepted": {
+          "count": 44,
+          "min": 0.7763229635170432,
+          "median": 0.9380395134575206,
+          "max": 1.2871352980162507,
+          "outside_0_9_to_1_1": 23
+        },
+        "accepted_unknown": {
+          "count": 44,
+          "min": 0.7763229635170432,
+          "median": 0.9380395134575206,
+          "max": 1.2871352980162507,
+          "outside_0_9_to_1_1": 23
+        }
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "moge2",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 37,
+        "estimated": 151,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 37,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "moge2",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 48,
+        "estimated": 154,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 48,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 154,
+          "min": 0.04120195665256246,
+          "median": 0.9698636453069341,
+          "max": 2.8895682552207083,
+          "outside_0_9_to_1_1": 70
+        },
+        "accepted": {
+          "count": 48,
+          "min": 0.8135867162063549,
+          "median": 0.9976567025722064,
+          "max": 1.1459404611494297,
+          "outside_0_9_to_1_1": 3
+        },
+        "accepted_unknown": {
+          "count": 48,
+          "min": 0.8135867162063549,
+          "median": 0.9976567025722064,
+          "max": 1.1459404611494297,
+          "outside_0_9_to_1_1": 3
+        }
+      }
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "moge3",
+      "mode": "rigid",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 40,
+        "estimated": 152,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 40,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {}
+    },
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "model": "moge3",
+      "mode": "similarity",
+      "counts": {
+        "pairs": 253,
+        "unknown": 253,
+        "accepted": 49,
+        "estimated": 154,
+        "input_failed": 0,
+        "positive_pose_references": 0,
+        "accepted_positive": 0,
+        "false_joins": 0,
+        "accepted_ambiguous": 0,
+        "accepted_unknown": 49,
+        "accepted_invalid_positive": 0,
+        "accepted_positive_pose_unscored": 0
+      },
+      "rates": {
+        "positive_acceptance": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "false_join_rate": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "accepted_positive_pose": {},
+      "similarity_scale": {
+        "estimated": {
+          "count": 154,
+          "min": 0.03995605079711969,
+          "median": 0.9650100844831242,
+          "max": 2.5249205002623136,
+          "outside_0_9_to_1_1": 66
+        },
+        "accepted": {
+          "count": 49,
+          "min": 0.8255296324954502,
+          "median": 1.0041141573239194,
+          "max": 1.1475141710163554,
+          "outside_0_9_to_1_1": 2
+        },
+        "accepted_unknown": {
+          "count": 49,
+          "min": 0.8255296324954502,
+          "median": 1.0041141573239194,
+          "max": 1.1475141710163554,
+          "outside_0_9_to_1_1": 2
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "path": "graphs/blueprint-all-23--metricanything.json",
+      "id": "blueprint-all-23",
+      "model": "metricanything",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 171,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 4.2031143446110574e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 171,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 3.552713678800501e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 191,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 3.552713678800501e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 19,
+            "singleton_photos": 4,
+            "largest_component": 19,
+            "connected_pair_labels": {
+              "unknown": 171
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 19,
+            "singleton_photos": 4,
+            "largest_component": 19,
+            "connected_pair_labels": {
+              "unknown": 171
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 20,
+            "connected_pair_labels": {
+              "unknown": 191
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 19,
+            "singleton_photos": 4,
+            "largest_component": 19,
+            "connected_pair_labels": {
+              "unknown": 171
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 19,
+            "singleton_photos": 4,
+            "largest_component": 19,
+            "connected_pair_labels": {
+              "unknown": 171
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 20,
+            "connected_pair_labels": {
+              "unknown": 191
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    },
+    {
+      "path": "graphs/blueprint-all-23--moge2.json",
+      "id": "blueprint-all-23",
+      "model": "moge2",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 211,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 3.584904172485171e-15,
+          "max_relative_scale_change": 3.3306690738754696e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 116,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 2.6750673452018387e-15,
+          "max_relative_scale_change": 2.220446049250313e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 191,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 4.128122880912827e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 15,
+            "connected_pair_labels": {
+              "unknown": 116
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 20,
+            "connected_pair_labels": {
+              "unknown": 191
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 15,
+            "connected_pair_labels": {
+              "unknown": 116
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 20,
+            "connected_pair_labels": {
+              "unknown": 191
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    },
+    {
+      "path": "graphs/blueprint-all-23--moge3.json",
+      "id": "blueprint-all-23",
+      "model": "moge3",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 211,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 3.774860324903728e-15,
+          "max_relative_scale_change": 2.220446049250313e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 131,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 2.9919429108042608e-15,
+          "max_relative_scale_change": 2.220446049250313e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 211,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 4.468561475845092e-15,
+          "max_relative_scale_change": 2.220446049250313e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 16,
+            "connected_pair_labels": {
+              "unknown": 131
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 16,
+            "connected_pair_labels": {
+              "unknown": 131
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    },
+    {
+      "path": "graphs/blueprint-all-23--da3metric_metricanything.json",
+      "id": "blueprint-all-23",
+      "model": "da3metric_metricanything",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 210,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 5.618430578060438e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 130,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 2.3929427303327026e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 211,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 5.182067057996697e-15,
+          "max_relative_scale_change": 6.661338147750939e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 210
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 16,
+            "connected_pair_labels": {
+              "unknown": 130
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 210
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 16,
+            "connected_pair_labels": {
+              "unknown": 130
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    },
+    {
+      "path": "graphs/blueprint-all-23--da3metric_anycalib_pinhole.json",
+      "id": "blueprint-all-23",
+      "model": "da3metric_anycalib_pinhole",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 210,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 4.131853506481832e-15,
+          "max_relative_scale_change": 3.3306690738754696e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 130,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 2.4673817880027047e-15,
+          "max_relative_scale_change": 3.3306690738754696e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 211,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 3.1671775324958466e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 210
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 16,
+            "connected_pair_labels": {
+              "unknown": 130
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 210
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 16,
+            "connected_pair_labels": {
+              "unknown": 130
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 23,
+            "singleton_photos": 0,
+            "largest_component": 21,
+            "connected_pair_labels": {
+              "unknown": 211
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    },
+    {
+      "path": "graphs/blueprint-all-23--metricanything_anycalib_pinhole.json",
+      "id": "blueprint-all-23",
+      "model": "metricanything_anycalib_pinhole",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 32,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 1.4049503905841223e-15,
+          "max_relative_scale_change": 2.220446049250313e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 21,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 1.4049503905841223e-15,
+          "max_relative_scale_change": 2.220446049250313e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 172,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 2.682975169497797e-15,
+          "max_relative_scale_change": 3.3306690738754696e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 17,
+            "singleton_photos": 6,
+            "largest_component": 6,
+            "connected_pair_labels": {
+              "unknown": 32
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 16,
+            "singleton_photos": 7,
+            "largest_component": 5,
+            "connected_pair_labels": {
+              "unknown": 21
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 19,
+            "connected_pair_labels": {
+              "unknown": 172
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 17,
+            "singleton_photos": 6,
+            "largest_component": 6,
+            "connected_pair_labels": {
+              "unknown": 32
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 16,
+            "singleton_photos": 7,
+            "largest_component": 5,
+            "connected_pair_labels": {
+              "unknown": 21
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 21,
+            "singleton_photos": 2,
+            "largest_component": 19,
+            "connected_pair_labels": {
+              "unknown": 172
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    },
+    {
+      "path": "graphs/blueprint-all-23--da3metric_anycalib_edit.json",
+      "id": "blueprint-all-23",
+      "model": "da3metric_anycalib_edit",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 110,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 3.839610466999929e-15,
+          "max_relative_scale_change": 5.551115123125783e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 34,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 1.4930923776697046e-15,
+          "max_relative_scale_change": 3.3306690738754696e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 154,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 4.803559250984066e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 15,
+            "connected_pair_labels": {
+              "unknown": 110
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 19,
+            "singleton_photos": 4,
+            "largest_component": 7,
+            "connected_pair_labels": {
+              "unknown": 34
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 20,
+            "singleton_photos": 3,
+            "largest_component": 18,
+            "connected_pair_labels": {
+              "unknown": 154
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 22,
+            "singleton_photos": 1,
+            "largest_component": 15,
+            "connected_pair_labels": {
+              "unknown": 110
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 19,
+            "singleton_photos": 4,
+            "largest_component": 7,
+            "connected_pair_labels": {
+              "unknown": 34
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 20,
+            "singleton_photos": 3,
+            "largest_component": 18,
+            "connected_pair_labels": {
+              "unknown": 154
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    },
+    {
+      "path": "graphs/blueprint-all-23--metricanything_anycalib_edit.json",
+      "id": "blueprint-all-23",
+      "model": "metricanything_anycalib_edit",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "photos": 23,
+      "order_checks": [
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "baseline",
+          "same_partition": true,
+          "common_camera_pairs": 92,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 2.3914935841127266e-15,
+          "max_relative_scale_change": 2.220446049250313e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "review",
+          "same_partition": true,
+          "common_camera_pairs": 35,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 1.7772239894833365e-15,
+          "max_relative_scale_change": 3.3306690738754696e-16
+        },
+        {
+          "reference_order": "canonical_shuffled",
+          "order": "reverse",
+          "state": "recovery",
+          "same_partition": true,
+          "common_camera_pairs": 154,
+          "max_rotation_change_deg": 1.2074182697257333e-06,
+          "max_translation_change_m": 3.2705679798968724e-15,
+          "max_relative_scale_change": 4.440892098500626e-16
+        }
+      ],
+      "orders": {
+        "canonical_shuffled": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 16,
+            "singleton_photos": 7,
+            "largest_component": 14,
+            "connected_pair_labels": {
+              "unknown": 92
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 14,
+            "singleton_photos": 9,
+            "largest_component": 8,
+            "connected_pair_labels": {
+              "unknown": 35
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 20,
+            "singleton_photos": 3,
+            "largest_component": 18,
+            "connected_pair_labels": {
+              "unknown": 154
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        },
+        "reverse": {
+          "baseline": {
+            "input_photos": 23,
+            "placed_photos": 16,
+            "singleton_photos": 7,
+            "largest_component": 14,
+            "connected_pair_labels": {
+              "unknown": 92
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "review": {
+            "input_photos": 23,
+            "placed_photos": 14,
+            "singleton_photos": 9,
+            "largest_component": 8,
+            "connected_pair_labels": {
+              "unknown": 35
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          },
+          "recovery": {
+            "input_photos": 23,
+            "placed_photos": 20,
+            "singleton_photos": 3,
+            "largest_component": 18,
+            "connected_pair_labels": {
+              "unknown": 154
+            },
+            "pose_scored_pairs": 0,
+            "invalid_pose_pairs": 0
+          }
+        }
+      }
+    }
+  ],
+  "scope": {
+    "input_photos": 23,
+    "pairs": 253,
+    "cases": 1,
+    "models": [
+      "metricanything",
+      "moge2",
+      "moge3",
+      "da3metric_metricanything",
+      "da3metric_anycalib_pinhole",
+      "metricanything_anycalib_pinhole",
+      "da3metric_anycalib_edit",
+      "metricanything_anycalib_edit"
+    ],
+    "panel": "blueprint"
+  }
+}
