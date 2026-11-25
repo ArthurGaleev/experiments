@@ -1,0 +1,2259 @@
+{
+  "configurations": {
+    "planedust3r_native": {
+      "summary": [
+        {
+          "dataset": "blueprint",
+          "role": "smoke",
+          "kind": "blueprint_all_photos",
+          "counts": {
+            "cases": 1,
+            "failed": false,
+            "input_photos": 23,
+            "camera_predictions": 23,
+            "camera_pairs": 253,
+            "reference_camera_pairs": 0,
+            "wrong_poses": 0,
+            "reference_pairs_without_prediction": 0
+          },
+          "metrics": {
+            "aligned_translation_error_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_delta1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "depth_numeric_subset_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_depth_delta1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_depth_numeric_subset_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_normal_within_20deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_world_point_numeric_subset_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_aligned_world_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_boundary_f1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_depth_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_depth_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_depth_delta1": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_depth_numeric_subset_abs_rel": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_local_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_normal_within_20deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_world_point_numeric_subset_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "monocular_native_world_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_coverage": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "normal_within_20deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "pose_10": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "pose_20": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "pose_5": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "ray_error_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "rotation_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "translation_direction_deg": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "valid_pose_fraction": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_point_numeric_subset_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            },
+            "world_point_rmse_m": {
+              "location_mean": null,
+              "bootstrap_95": null,
+              "locations": 0
+            }
+          },
+          "controls": {
+            "roma": {
+              "common_reference_pairs": 0,
+              "additional_reference_pairs": 0,
+              "additional_wrong_poses": 0,
+              "metrics": {
+                "common_control_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_control_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_control_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_delta_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_delta_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_delta_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_joint_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_joint_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_joint_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_boundary_f1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_delta1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_numeric_subset_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_local_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_normal_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_normal_within_20deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_ray_error_deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_world_point_numeric_subset_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_world_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_boundary_f1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_delta1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_numeric_subset_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_local_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_normal_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_normal_within_20deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_ray_error_deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_world_point_numeric_subset_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_world_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "extra_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "extra_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "extra_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_boundary_f1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_delta1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_numeric_subset_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_local_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_normal_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_normal_within_20deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_ray_error_deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_world_point_numeric_subset_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_world_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "placed_fraction": {
+                  "location_mean": 0.8260869565217391,
+                  "bootstrap_95": [
+                    0.8260869565217391,
+                    0.8260869565217391
+                  ],
+                  "locations": 1
+                }
+              }
+            },
+            "loma": {
+              "common_reference_pairs": 0,
+              "additional_reference_pairs": 0,
+              "additional_wrong_poses": 0,
+              "metrics": {
+                "common_control_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_control_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_control_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_delta_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_delta_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_delta_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_joint_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_joint_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "common_joint_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_boundary_f1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_delta1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_depth_numeric_subset_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_local_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_normal_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_normal_within_20deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_ray_error_deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_world_point_numeric_subset_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_group_aligned_world_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_boundary_f1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_delta1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_depth_numeric_subset_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_local_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_normal_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_normal_within_20deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_ray_error_deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_world_point_numeric_subset_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "control_native_world_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "extra_10": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "extra_20": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "extra_5": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_boundary_f1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_delta1": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_depth_numeric_subset_abs_rel": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_local_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_normal_coverage": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_normal_within_20deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_ray_error_deg": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_world_point_numeric_subset_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "joint_world_point_rmse_m": {
+                  "location_mean": null,
+                  "bootstrap_95": null,
+                  "locations": 0
+                },
+                "placed_fraction": {
+                  "location_mean": 0.782608695652174,
+                  "bootstrap_95": [
+                    0.782608695652174,
+                    0.782608695652174
+                  ],
+                  "locations": 1
+                }
+              }
+            }
+          }
+        }
+      ],
+      "bridges": [],
+      "orders": [
+        {
+          "case": "blueprint-all-23",
+          "order": "reverse",
+          "status": "compared",
+          "depth_scale_base_over_other": 0.999683141708374,
+          "raw_depth_relative_difference": 0.00032973013644187996,
+          "normalized_depth_relative_difference": 0.000235891242522292,
+          "max_rotation_difference_deg": 0.1659596780198094,
+          "camera_pairs": [
+            {
+              "a": "b000",
+              "b": "b001",
+              "rotation_deg": 0.10416307133844456,
+              "translation_difference_relative_units": 9.763025294676501e-05
+            },
+            {
+              "a": "b000",
+              "b": "b002",
+              "rotation_deg": 0.14694231593307172,
+              "translation_difference_relative_units": 9.474984274394545e-05
+            },
+            {
+              "a": "b000",
+              "b": "b003",
+              "rotation_deg": 0.05259422266057971,
+              "translation_difference_relative_units": 0.0001151585187291969
+            },
+            {
+              "a": "b000",
+              "b": "b004",
+              "rotation_deg": 0.1134732478467834,
+              "translation_difference_relative_units": 8.074687781199694e-05
+            },
+            {
+              "a": "b000",
+              "b": "b005",
+              "rotation_deg": 0.04577981620271233,
+              "translation_difference_relative_units": 0.0001241971154755388
+            },
+            {
+              "a": "b000",
+              "b": "b006",
+              "rotation_deg": 0.08211475936340748,
+              "translation_difference_relative_units": 8.428187571982455e-05
+            },
+            {
+              "a": "b000",
+              "b": "b007",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0003956960540079713
+            },
+            {
+              "a": "b000",
+              "b": "b008",
+              "rotation_deg": 0.1215456088097897,
+              "translation_difference_relative_units": 0.0001884470986948768
+            },
+            {
+              "a": "b000",
+              "b": "b009",
+              "rotation_deg": 0.08875723167533356,
+              "translation_difference_relative_units": 0.0001429430262937203
+            },
+            {
+              "a": "b000",
+              "b": "b010",
+              "rotation_deg": 0.061638211355186344,
+              "translation_difference_relative_units": 5.739707377601467e-05
+            },
+            {
+              "a": "b000",
+              "b": "b011",
+              "rotation_deg": 0.08045412493266665,
+              "translation_difference_relative_units": 7.523600813751162e-05
+            },
+            {
+              "a": "b000",
+              "b": "b012",
+              "rotation_deg": 0.10876842921962895,
+              "translation_difference_relative_units": 8.067360509059634e-05
+            },
+            {
+              "a": "b000",
+              "b": "b013",
+              "rotation_deg": 0.07114596254710628,
+              "translation_difference_relative_units": 5.230393161902341e-05
+            },
+            {
+              "a": "b000",
+              "b": "b014",
+              "rotation_deg": 0.07676511186006271,
+              "translation_difference_relative_units": 3.240933734230044e-05
+            },
+            {
+              "a": "b000",
+              "b": "b015",
+              "rotation_deg": 0.04123481859061338,
+              "translation_difference_relative_units": 0.00034634958191172435
+            },
+            {
+              "a": "b000",
+              "b": "b016",
+              "rotation_deg": 0.06768807260135412,
+              "translation_difference_relative_units": 0.00012487007647455273
+            },
+            {
+              "a": "b000",
+              "b": "b017",
+              "rotation_deg": 0.08303291382159919,
+              "translation_difference_relative_units": 6.699582775222049e-05
+            },
+            {
+              "a": "b000",
+              "b": "b018",
+              "rotation_deg": 0.058247060700491245,
+              "translation_difference_relative_units": 7.069245173413474e-05
+            },
+            {
+              "a": "b000",
+              "b": "b019",
+              "rotation_deg": 0.09958003810314403,
+              "translation_difference_relative_units": 6.165007529754841e-05
+            },
+            {
+              "a": "b000",
+              "b": "b020",
+              "rotation_deg": 0.07750148337524457,
+              "translation_difference_relative_units": 7.669351909811666e-05
+            },
+            {
+              "a": "b000",
+              "b": "b021",
+              "rotation_deg": 0.05944546213578696,
+              "translation_difference_relative_units": 5.8210830349960706e-05
+            },
+            {
+              "a": "b000",
+              "b": "b022",
+              "rotation_deg": 0.08535485804835659,
+              "translation_difference_relative_units": 6.947719212422437e-05
+            },
+            {
+              "a": "b001",
+              "b": "b002",
+              "rotation_deg": 0.0573938704564866,
+              "translation_difference_relative_units": 0.000330990463618024
+            },
+            {
+              "a": "b001",
+              "b": "b003",
+              "rotation_deg": 0.012343709998942663,
+              "translation_difference_relative_units": 0.00010855617041014918
+            },
+            {
+              "a": "b001",
+              "b": "b004",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0001451039279812347
+            },
+            {
+              "a": "b001",
+              "b": "b005",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00014574852899090318
+            },
+            {
+              "a": "b001",
+              "b": "b006",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 9.315695942019782e-05
+            },
+            {
+              "a": "b001",
+              "b": "b007",
+              "rotation_deg": 0.06646292720381781,
+              "translation_difference_relative_units": 0.00044227135067281354
+            },
+            {
+              "a": "b001",
+              "b": "b008",
+              "rotation_deg": 0.018842275049281654,
+              "translation_difference_relative_units": 0.00010574001348211645
+            },
+            {
+              "a": "b001",
+              "b": "b009",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 8.508763586455306e-05
+            },
+            {
+              "a": "b001",
+              "b": "b010",
+              "rotation_deg": 0.12363168109438878,
+              "translation_difference_relative_units": 0.0002820306568816192
+            },
+            {
+              "a": "b001",
+              "b": "b011",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 7.52155799924654e-05
+            },
+            {
+              "a": "b001",
+              "b": "b012",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00019803495601502022
+            },
+            {
+              "a": "b001",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 7.309925224313114e-05
+            },
+            {
+              "a": "b001",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 9.672254852719724e-05
+            },
+            {
+              "a": "b001",
+              "b": "b015",
+              "rotation_deg": 0.062031173311865966,
+              "translation_difference_relative_units": 0.00041806298960022937
+            },
+            {
+              "a": "b001",
+              "b": "b016",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 9.895704536951195e-05
+            },
+            {
+              "a": "b001",
+              "b": "b017",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 4.7160167316965176e-05
+            },
+            {
+              "a": "b001",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 7.373392984100227e-05
+            },
+            {
+              "a": "b001",
+              "b": "b019",
+              "rotation_deg": 0.003610254525164803,
+              "translation_difference_relative_units": 0.00013297123197734005
+            },
+            {
+              "a": "b001",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 7.395570033719364e-05
+            },
+            {
+              "a": "b001",
+              "b": "b021",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 9.185754469542522e-05
+            },
+            {
+              "a": "b001",
+              "b": "b022",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00014163950659754437
+            },
+            {
+              "a": "b002",
+              "b": "b003",
+              "rotation_deg": 0.07379644759862167,
+              "translation_difference_relative_units": 0.0002731311920880199
+            },
+            {
+              "a": "b002",
+              "b": "b004",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00020579094030692788
+            },
+            {
+              "a": "b002",
+              "b": "b005",
+              "rotation_deg": 0.026219719931502752,
+              "translation_difference_relative_units": 0.00033498937313717714
+            },
+            {
+              "a": "b002",
+              "b": "b006",
+              "rotation_deg": 0.008301505780058416,
+              "translation_difference_relative_units": 0.00029394710518509785
+            },
+            {
+              "a": "b002",
+              "b": "b007",
+              "rotation_deg": 0.11524860224838436,
+              "translation_difference_relative_units": 0.0004380862163692751
+            },
+            {
+              "a": "b002",
+              "b": "b008",
+              "rotation_deg": 0.017613221104142013,
+              "translation_difference_relative_units": 0.00037688186899558954
+            },
+            {
+              "a": "b002",
+              "b": "b009",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0003618657762919927
+            },
+            {
+              "a": "b002",
+              "b": "b010",
+              "rotation_deg": 0.1659596780198094,
+              "translation_difference_relative_units": 0.0005877575752956765
+            },
+            {
+              "a": "b002",
+              "b": "b011",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.000287405816171125
+            },
+            {
+              "a": "b002",
+              "b": "b012",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0001898662342255304
+            },
+            {
+              "a": "b002",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00027884017301995885
+            },
+            {
+              "a": "b002",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0002504562904004271
+            },
+            {
+              "a": "b002",
+              "b": "b015",
+              "rotation_deg": 0.11256428176464568,
+              "translation_difference_relative_units": 0.0004998609705333342
+            },
+            {
+              "a": "b002",
+              "b": "b016",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00038681050633775386
+            },
+            {
+              "a": "b002",
+              "b": "b017",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00031440198782439413
+            },
+            {
+              "a": "b002",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0003290773078710379
+            },
+            {
+              "a": "b002",
+              "b": "b019",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00022094069136111783
+            },
+            {
+              "a": "b002",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0002879908546198132
+            },
+            {
+              "a": "b002",
+              "b": "b021",
+              "rotation_deg": 0.055945066526134846,
+              "translation_difference_relative_units": 0.0003647287771907129
+            },
+            {
+              "a": "b002",
+              "b": "b022",
+              "rotation_deg": 0.041333780522740726,
+              "translation_difference_relative_units": 0.00023209718138787665
+            },
+            {
+              "a": "b003",
+              "b": "b004",
+              "rotation_deg": 0.0725941590748031,
+              "translation_difference_relative_units": 0.00018549928179387753
+            },
+            {
+              "a": "b003",
+              "b": "b005",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00012752003320968695
+            },
+            {
+              "a": "b003",
+              "b": "b006",
+              "rotation_deg": 0.033770795252804874,
+              "translation_difference_relative_units": 0.00015039957261290662
+            },
+            {
+              "a": "b003",
+              "b": "b007",
+              "rotation_deg": 0.02484203538824551,
+              "translation_difference_relative_units": 0.0003239184030903429
+            },
+            {
+              "a": "b003",
+              "b": "b008",
+              "rotation_deg": 0.07878465604718417,
+              "translation_difference_relative_units": 0.00032672150262723105
+            },
+            {
+              "a": "b003",
+              "b": "b009",
+              "rotation_deg": 0.038140633564845365,
+              "translation_difference_relative_units": 0.0002548275145644614
+            },
+            {
+              "a": "b003",
+              "b": "b010",
+              "rotation_deg": 0.08890898549745012,
+              "translation_difference_relative_units": 6.075294628945888e-05
+            },
+            {
+              "a": "b003",
+              "b": "b011",
+              "rotation_deg": 0.03107215708242035,
+              "translation_difference_relative_units": 0.00016649001331474372
+            },
+            {
+              "a": "b003",
+              "b": "b012",
+              "rotation_deg": 0.06202048799954967,
+              "translation_difference_relative_units": 0.00019664882809723247
+            },
+            {
+              "a": "b003",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00015337164519607774
+            },
+            {
+              "a": "b003",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00012342559065155412
+            },
+            {
+              "a": "b003",
+              "b": "b015",
+              "rotation_deg": 0.033703469263302054,
+              "translation_difference_relative_units": 0.00029673131487148734
+            },
+            {
+              "a": "b003",
+              "b": "b016",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0002225797405182866
+            },
+            {
+              "a": "b003",
+              "b": "b017",
+              "rotation_deg": 0.032194868085363315,
+              "translation_difference_relative_units": 0.00018965857445655363
+            },
+            {
+              "a": "b003",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00017391351789720224
+            },
+            {
+              "a": "b003",
+              "b": "b019",
+              "rotation_deg": 0.061774623945560166,
+              "translation_difference_relative_units": 0.0001575801543915964
+            },
+            {
+              "a": "b003",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00017382229010094055
+            },
+            {
+              "a": "b003",
+              "b": "b021",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00013718130883293465
+            },
+            {
+              "a": "b003",
+              "b": "b022",
+              "rotation_deg": 0.04567239232929411,
+              "translation_difference_relative_units": 8.975702516542695e-05
+            },
+            {
+              "a": "b004",
+              "b": "b005",
+              "rotation_deg": 0.05002475575386323,
+              "translation_difference_relative_units": 0.0001025094220087701
+            },
+            {
+              "a": "b004",
+              "b": "b006",
+              "rotation_deg": 0.04818568969514093,
+              "translation_difference_relative_units": 4.271634574010449e-05
+            },
+            {
+              "a": "b004",
+              "b": "b007",
+              "rotation_deg": 0.11473245816363127,
+              "translation_difference_relative_units": 0.0004013468100632538
+            },
+            {
+              "a": "b004",
+              "b": "b008",
+              "rotation_deg": 0.06413172882782875,
+              "translation_difference_relative_units": 0.00013351735492376146
+            },
+            {
+              "a": "b004",
+              "b": "b009",
+              "rotation_deg": 0.03657020674057902,
+              "translation_difference_relative_units": 7.203725019206447e-05
+            },
+            {
+              "a": "b004",
+              "b": "b010",
+              "rotation_deg": 0.1612535577367626,
+              "translation_difference_relative_units": 0.00014308043248544792
+            },
+            {
+              "a": "b004",
+              "b": "b011",
+              "rotation_deg": 0.028119367380066596,
+              "translation_difference_relative_units": 1.3654189925163177e-05
+            },
+            {
+              "a": "b004",
+              "b": "b012",
+              "rotation_deg": 0.03815468213105748,
+              "translation_difference_relative_units": 0.0001467886358508742
+            },
+            {
+              "a": "b004",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 3.1464385278173774e-05
+            },
+            {
+              "a": "b004",
+              "b": "b014",
+              "rotation_deg": 0.03062979824001937,
+              "translation_difference_relative_units": 7.112648173308495e-05
+            },
+            {
+              "a": "b004",
+              "b": "b015",
+              "rotation_deg": 0.11810208197222227,
+              "translation_difference_relative_units": 0.00032940005080510777
+            },
+            {
+              "a": "b004",
+              "b": "b016",
+              "rotation_deg": 0.04330166538210482,
+              "translation_difference_relative_units": 4.774884629424475e-05
+            },
+            {
+              "a": "b004",
+              "b": "b017",
+              "rotation_deg": 0.04615703152959276,
+              "translation_difference_relative_units": 3.383707024172691e-05
+            },
+            {
+              "a": "b004",
+              "b": "b018",
+              "rotation_deg": 0.003296271779244701,
+              "translation_difference_relative_units": 1.0413840490469283e-05
+            },
+            {
+              "a": "b004",
+              "b": "b019",
+              "rotation_deg": 0.009990517472318185,
+              "translation_difference_relative_units": 2.277051967014219e-05
+            },
+            {
+              "a": "b004",
+              "b": "b020",
+              "rotation_deg": 0.0034554117043309137,
+              "translation_difference_relative_units": 2.2218516444050935e-05
+            },
+            {
+              "a": "b004",
+              "b": "b021",
+              "rotation_deg": 0.06914393339585423,
+              "translation_difference_relative_units": 3.7045291149367096e-05
+            },
+            {
+              "a": "b004",
+              "b": "b022",
+              "rotation_deg": 0.06095988499893223,
+              "translation_difference_relative_units": 0.0001253858083552792
+            },
+            {
+              "a": "b005",
+              "b": "b006",
+              "rotation_deg": 0.04920212607537818,
+              "translation_difference_relative_units": 8.175088730872012e-05
+            },
+            {
+              "a": "b005",
+              "b": "b007",
+              "rotation_deg": 0.06524452394951535,
+              "translation_difference_relative_units": 0.0003357222789250707
+            },
+            {
+              "a": "b005",
+              "b": "b008",
+              "rotation_deg": 0.08199049892103116,
+              "translation_difference_relative_units": 0.0002058234461548158
+            },
+            {
+              "a": "b005",
+              "b": "b009",
+              "rotation_deg": 0.049490657184402584,
+              "translation_difference_relative_units": 0.00014020061500318173
+            },
+            {
+              "a": "b005",
+              "b": "b010",
+              "rotation_deg": 0.11279674398446966,
+              "translation_difference_relative_units": 0.00013106028544921034
+            },
+            {
+              "a": "b005",
+              "b": "b011",
+              "rotation_deg": 0.045669118792436646,
+              "translation_difference_relative_units": 0.00011345775663889064
+            },
+            {
+              "a": "b005",
+              "b": "b012",
+              "rotation_deg": 0.06552298928082341,
+              "translation_difference_relative_units": 0.0002987750398207975
+            },
+            {
+              "a": "b005",
+              "b": "b013",
+              "rotation_deg": 0.01697576952467743,
+              "translation_difference_relative_units": 0.00012450469581632597
+            },
+            {
+              "a": "b005",
+              "b": "b014",
+              "rotation_deg": 0.029079679775047457,
+              "translation_difference_relative_units": 0.00014258689820387962
+            },
+            {
+              "a": "b005",
+              "b": "b015",
+              "rotation_deg": 0.06820017525123755,
+              "translation_difference_relative_units": 0.00031366349728639744
+            },
+            {
+              "a": "b005",
+              "b": "b016",
+              "rotation_deg": 0.02908269175023022,
+              "translation_difference_relative_units": 0.00011762716482789823
+            },
+            {
+              "a": "b005",
+              "b": "b017",
+              "rotation_deg": 0.047503047595872566,
+              "translation_difference_relative_units": 0.00014802004764680592
+            },
+            {
+              "a": "b005",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00011575732281744325
+            },
+            {
+              "a": "b005",
+              "b": "b019",
+              "rotation_deg": 0.06689044500228464,
+              "translation_difference_relative_units": 0.00016750699792789306
+            },
+            {
+              "a": "b005",
+              "b": "b020",
+              "rotation_deg": 0.025100069076585272,
+              "translation_difference_relative_units": 0.0001133772313817699
+            },
+            {
+              "a": "b005",
+              "b": "b021",
+              "rotation_deg": 0.04284151654340761,
+              "translation_difference_relative_units": 8.042578734528701e-05
+            },
+            {
+              "a": "b005",
+              "b": "b022",
+              "rotation_deg": 0.05897196411416972,
+              "translation_difference_relative_units": 0.00015832978337996425
+            },
+            {
+              "a": "b006",
+              "b": "b007",
+              "rotation_deg": 0.07181636914790065,
+              "translation_difference_relative_units": 0.0003566136885664363
+            },
+            {
+              "a": "b006",
+              "b": "b008",
+              "rotation_deg": 0.056333734500308215,
+              "translation_difference_relative_units": 0.00019015317080184303
+            },
+            {
+              "a": "b006",
+              "b": "b009",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00011012894412918995
+            },
+            {
+              "a": "b006",
+              "b": "b010",
+              "rotation_deg": 0.12368233543956811,
+              "translation_difference_relative_units": 0.00023758774020370436
+            },
+            {
+              "a": "b006",
+              "b": "b011",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 2.8954574467156764e-05
+            },
+            {
+              "a": "b006",
+              "b": "b012",
+              "rotation_deg": 0.027929102830585348,
+              "translation_difference_relative_units": 0.00014829176173715745
+            },
+            {
+              "a": "b006",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 3.583595395368101e-05
+            },
+            {
+              "a": "b006",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 5.8614858110836144e-05
+            },
+            {
+              "a": "b006",
+              "b": "b015",
+              "rotation_deg": 0.07373069045615412,
+              "translation_difference_relative_units": 0.00027107960698570294
+            },
+            {
+              "a": "b006",
+              "b": "b016",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 7.58992254950623e-05
+            },
+            {
+              "a": "b006",
+              "b": "b017",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 7.174764387692445e-05
+            },
+            {
+              "a": "b006",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 4.619881023792181e-05
+            },
+            {
+              "a": "b006",
+              "b": "b019",
+              "rotation_deg": 0.03012012722331616,
+              "translation_difference_relative_units": 4.007437806283578e-05
+            },
+            {
+              "a": "b006",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 3.640805552538194e-05
+            },
+            {
+              "a": "b006",
+              "b": "b021",
+              "rotation_deg": 0.02216400175032842,
+              "translation_difference_relative_units": 4.7266640206114993e-05
+            },
+            {
+              "a": "b006",
+              "b": "b022",
+              "rotation_deg": 0.03478006609504924,
+              "translation_difference_relative_units": 0.00010977675764362408
+            },
+            {
+              "a": "b007",
+              "b": "b008",
+              "rotation_deg": 0.12247615914730832,
+              "translation_difference_relative_units": 0.00043606500674703833
+            },
+            {
+              "a": "b007",
+              "b": "b009",
+              "rotation_deg": 0.09084995185770273,
+              "translation_difference_relative_units": 0.0003849702575239474
+            },
+            {
+              "a": "b007",
+              "b": "b010",
+              "rotation_deg": 0.06159039342377348,
+              "translation_difference_relative_units": 0.00039591243713138556
+            },
+            {
+              "a": "b007",
+              "b": "b011",
+              "rotation_deg": 0.08505852146002431,
+              "translation_difference_relative_units": 0.0003459937599888567
+            },
+            {
+              "a": "b007",
+              "b": "b012",
+              "rotation_deg": 0.10982238051203577,
+              "translation_difference_relative_units": 0.0004614667416541395
+            },
+            {
+              "a": "b007",
+              "b": "b013",
+              "rotation_deg": 0.07343530922095548,
+              "translation_difference_relative_units": 0.00035320271694339826
+            },
+            {
+              "a": "b007",
+              "b": "b014",
+              "rotation_deg": 0.07704481102534237,
+              "translation_difference_relative_units": 0.0003527116570223757
+            },
+            {
+              "a": "b007",
+              "b": "b015",
+              "rotation_deg": 0.03548056111801563,
+              "translation_difference_relative_units": 0.0001475589584865284
+            },
+            {
+              "a": "b007",
+              "b": "b016",
+              "rotation_deg": 0.06937161748582536,
+              "translation_difference_relative_units": 0.00037274988123332683
+            },
+            {
+              "a": "b007",
+              "b": "b017",
+              "rotation_deg": 0.08464886519604464,
+              "translation_difference_relative_units": 0.000390484449579013
+            },
+            {
+              "a": "b007",
+              "b": "b018",
+              "rotation_deg": 0.0624853487581953,
+              "translation_difference_relative_units": 0.0003656915056496476
+            },
+            {
+              "a": "b007",
+              "b": "b019",
+              "rotation_deg": 0.10738091562708862,
+              "translation_difference_relative_units": 0.00034366068271477103
+            },
+            {
+              "a": "b007",
+              "b": "b020",
+              "rotation_deg": 0.078495858041415,
+              "translation_difference_relative_units": 0.00034503712259043696
+            },
+            {
+              "a": "b007",
+              "b": "b021",
+              "rotation_deg": 0.06130489630481755,
+              "translation_difference_relative_units": 0.0003525205287471681
+            },
+            {
+              "a": "b007",
+              "b": "b022",
+              "rotation_deg": 0.08780379045627101,
+              "translation_difference_relative_units": 0.00034615623325214223
+            },
+            {
+              "a": "b008",
+              "b": "b009",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00010192927914316164
+            },
+            {
+              "a": "b008",
+              "b": "b010",
+              "rotation_deg": 0.15067822701531938,
+              "translation_difference_relative_units": 0.00036378949305946917
+            },
+            {
+              "a": "b008",
+              "b": "b011",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00017434622186412346
+            },
+            {
+              "a": "b008",
+              "b": "b012",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00021898880574951996
+            },
+            {
+              "a": "b008",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0001758550998351057
+            },
+            {
+              "a": "b008",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00020438399243719092
+            },
+            {
+              "a": "b008",
+              "b": "b015",
+              "rotation_deg": 0.09259648964112667,
+              "translation_difference_relative_units": 0.0005750747606038624
+            },
+            {
+              "a": "b008",
+              "b": "b016",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00013895593510382222
+            },
+            {
+              "a": "b008",
+              "b": "b017",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00013620470246542913
+            },
+            {
+              "a": "b008",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00016198912429096364
+            },
+            {
+              "a": "b008",
+              "b": "b019",
+              "rotation_deg": 0.022692460797492008,
+              "translation_difference_relative_units": 0.00018751118216960954
+            },
+            {
+              "a": "b008",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00016446080103933752
+            },
+            {
+              "a": "b008",
+              "b": "b021",
+              "rotation_deg": 0.03965645245305632,
+              "translation_difference_relative_units": 0.0002079573500043792
+            },
+            {
+              "a": "b008",
+              "b": "b022",
+              "rotation_deg": 0.03849521279960099,
+              "translation_difference_relative_units": 0.00026592527726076467
+            },
+            {
+              "a": "b009",
+              "b": "b010",
+              "rotation_deg": 0.13463200394723637,
+              "translation_difference_relative_units": 0.00019985586962826995
+            },
+            {
+              "a": "b009",
+              "b": "b011",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 7.609296288176351e-05
+            },
+            {
+              "a": "b009",
+              "b": "b012",
+              "rotation_deg": 0.028461503364747683,
+              "translation_difference_relative_units": 0.00023209517283072427
+            },
+            {
+              "a": "b009",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 9.278193515654961e-05
+            },
+            {
+              "a": "b009",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00013051072125308256
+            },
+            {
+              "a": "b009",
+              "b": "b015",
+              "rotation_deg": 0.08538471399796543,
+              "translation_difference_relative_units": 0.00047050352644853135
+            },
+            {
+              "a": "b009",
+              "b": "b016",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 5.2577412936718065e-05
+            },
+            {
+              "a": "b009",
+              "b": "b017",
+              "rotation_deg": 0.017178025716448247,
+              "translation_difference_relative_units": 6.497531985016908e-05
+            },
+            {
+              "a": "b009",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 5.6696732740241096e-05
+            },
+            {
+              "a": "b009",
+              "b": "b019",
+              "rotation_deg": 0.03362557876121188,
+              "translation_difference_relative_units": 0.00012460710704062134
+            },
+            {
+              "a": "b009",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 8.072560413398009e-05
+            },
+            {
+              "a": "b009",
+              "b": "b021",
+              "rotation_deg": 0.03867577197029395,
+              "translation_difference_relative_units": 8.96145503793907e-05
+            },
+            {
+              "a": "b009",
+              "b": "b022",
+              "rotation_deg": 0.042935627891745896,
+              "translation_difference_relative_units": 0.00017029020123921217
+            },
+            {
+              "a": "b010",
+              "b": "b011",
+              "rotation_deg": 0.11567255485118816,
+              "translation_difference_relative_units": 0.0002390943554533848
+            },
+            {
+              "a": "b010",
+              "b": "b012",
+              "rotation_deg": 0.14202389095400875,
+              "translation_difference_relative_units": 0.00012639348913934774
+            },
+            {
+              "a": "b010",
+              "b": "b013",
+              "rotation_deg": 0.10778933487812273,
+              "translation_difference_relative_units": 0.0002183343078208643
+            },
+            {
+              "a": "b010",
+              "b": "b014",
+              "rotation_deg": 0.11043841821246893,
+              "translation_difference_relative_units": 0.00019263349841733914
+            },
+            {
+              "a": "b010",
+              "b": "b015",
+              "rotation_deg": 0.04105361696616539,
+              "translation_difference_relative_units": 0.0004014459341270562
+            },
+            {
+              "a": "b010",
+              "b": "b016",
+              "rotation_deg": 0.10157135574685928,
+              "translation_difference_relative_units": 0.00027380706664730913
+            },
+            {
+              "a": "b010",
+              "b": "b017",
+              "rotation_deg": 0.11514886226954779,
+              "translation_difference_relative_units": 0.00021768653094676662
+            },
+            {
+              "a": "b010",
+              "b": "b018",
+              "rotation_deg": 0.0972937700052898,
+              "translation_difference_relative_units": 0.00022438367752871093
+            },
+            {
+              "a": "b010",
+              "b": "b019",
+              "rotation_deg": 0.13772166642747632,
+              "translation_difference_relative_units": 0.00024377706773083617
+            },
+            {
+              "a": "b010",
+              "b": "b020",
+              "rotation_deg": 0.11260207190683433,
+              "translation_difference_relative_units": 0.00024647103271279103
+            },
+            {
+              "a": "b010",
+              "b": "b021",
+              "rotation_deg": 0.08828988738122799,
+              "translation_difference_relative_units": 0.00019536164683120705
+            },
+            {
+              "a": "b010",
+              "b": "b022",
+              "rotation_deg": 0.1152811826420172,
+              "translation_difference_relative_units": 0.00016944946141462714
+            },
+            {
+              "a": "b011",
+              "b": "b012",
+              "rotation_deg": 0.04074615764769732,
+              "translation_difference_relative_units": 0.00015167981282369176
+            },
+            {
+              "a": "b011",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 2.3748557040048674e-05
+            },
+            {
+              "a": "b011",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 6.282079276380233e-05
+            },
+            {
+              "a": "b011",
+              "b": "b015",
+              "rotation_deg": 0.08780220988677843,
+              "translation_difference_relative_units": 0.0002730505188478895
+            },
+            {
+              "a": "b011",
+              "b": "b016",
+              "rotation_deg": 0.005655798116122283,
+              "translation_difference_relative_units": 6.799965406972298e-05
+            },
+            {
+              "a": "b011",
+              "b": "b017",
+              "rotation_deg": 0.02903383209189361,
+              "translation_difference_relative_units": 4.385679000325749e-05
+            },
+            {
+              "a": "b011",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 2.585879307048997e-05
+            },
+            {
+              "a": "b011",
+              "b": "b019",
+              "rotation_deg": 0.03009079596753341,
+              "translation_difference_relative_units": 2.9519622524335574e-05
+            },
+            {
+              "a": "b011",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 1.7989992429352026e-05
+            },
+            {
+              "a": "b011",
+              "b": "b021",
+              "rotation_deg": 0.04310363945772668,
+              "translation_difference_relative_units": 1.5913316162801497e-05
+            },
+            {
+              "a": "b011",
+              "b": "b022",
+              "rotation_deg": 0.046729783356926555,
+              "translation_difference_relative_units": 0.00010853305264212464
+            },
+            {
+              "a": "b012",
+              "b": "b013",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00015671650952348617
+            },
+            {
+              "a": "b012",
+              "b": "b014",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00012610271691941625
+            },
+            {
+              "a": "b012",
+              "b": "b015",
+              "rotation_deg": 0.09902724017153977,
+              "translation_difference_relative_units": 0.00046121167073665936
+            },
+            {
+              "a": "b012",
+              "b": "b016",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00026337978016158285
+            },
+            {
+              "a": "b012",
+              "b": "b017",
+              "rotation_deg": 0.019392011284095904,
+              "translation_difference_relative_units": 0.00017727530010114227
+            },
+            {
+              "a": "b012",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.00020030806595569786
+            },
+            {
+              "a": "b012",
+              "b": "b019",
+              "rotation_deg": 0.029157219595261716,
+              "translation_difference_relative_units": 0.0001335324836853752
+            },
+            {
+              "a": "b012",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 0.0001723902018390595
+            },
+            {
+              "a": "b012",
+              "b": "b021",
+              "rotation_deg": 0.05002741727605289,
+              "translation_difference_relative_units": 0.00024374239221754604
+            },
+            {
+              "a": "b012",
+              "b": "b022",
+              "rotation_deg": 0.04647847620474457,
+              "translation_difference_relative_units": 0.00010732968934077099
+            },
+            {
+              "a": "b013",
+              "b": "b014",
+              "rotation_deg": 0.024703108146969396,
+              "translation_difference_relative_units": 3.6004404390319946e-05
+            },
+            {
+              "a": "b013",
+              "b": "b015",
+              "rotation_deg": 0.0904247872737368,
+              "translation_difference_relative_units": 0.0004094132042422762
+            },
+            {
+              "a": "b013",
+              "b": "b016",
+              "rotation_deg": 0.033167526474778594,
+              "translation_difference_relative_units": 8.608964096700745e-05
+            },
+            {
+              "a": "b013",
+              "b": "b017",
+              "rotation_deg": 0.0453885774472538,
+              "translation_difference_relative_units": 4.1029435152619284e-05
+            },
+            {
+              "a": "b013",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 2.5441821275157814e-05
+            },
+            {
+              "a": "b013",
+              "b": "b019",
+              "rotation_deg": 0.05622164524573754,
+              "translation_difference_relative_units": 3.325214905414655e-05
+            },
+            {
+              "a": "b013",
+              "b": "b020",
+              "rotation_deg": 0.012874560512529937,
+              "translation_difference_relative_units": 2.3476793747803183e-05
+            },
+            {
+              "a": "b013",
+              "b": "b021",
+              "rotation_deg": 0.05433254013598016,
+              "translation_difference_relative_units": 4.519559826213321e-05
+            },
+            {
+              "a": "b013",
+              "b": "b022",
+              "rotation_deg": 0.05949796158380092,
+              "translation_difference_relative_units": 9.728403889025198e-05
+            },
+            {
+              "a": "b014",
+              "b": "b015",
+              "rotation_deg": 0.08548271684794874,
+              "translation_difference_relative_units": 5.244593255864915e-05
+            },
+            {
+              "a": "b014",
+              "b": "b016",
+              "rotation_deg": 0.023308588315227877,
+              "translation_difference_relative_units": 0.00011842908700574732
+            },
+            {
+              "a": "b014",
+              "b": "b017",
+              "rotation_deg": 0.03951544772690875,
+              "translation_difference_relative_units": 8.182015775652976e-05
+            },
+            {
+              "a": "b014",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 9.042605925592546e-05
+            },
+            {
+              "a": "b014",
+              "b": "b019",
+              "rotation_deg": 0.05726735506624505,
+              "translation_difference_relative_units": 0.0002197699767313232
+            },
+            {
+              "a": "b014",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 6.965418883088777e-05
+            },
+            {
+              "a": "b014",
+              "b": "b021",
+              "rotation_deg": 0.049113525072259995,
+              "translation_difference_relative_units": 0.00011083555780326115
+            },
+            {
+              "a": "b014",
+              "b": "b022",
+              "rotation_deg": 0.05588551516199295,
+              "translation_difference_relative_units": 6.518300276652098e-05
+            },
+            {
+              "a": "b015",
+              "b": "b016",
+              "rotation_deg": 0.058674617054771804,
+              "translation_difference_relative_units": 0.00032280671299717066
+            },
+            {
+              "a": "b015",
+              "b": "b017",
+              "rotation_deg": 0.077109814771042,
+              "translation_difference_relative_units": 0.0003709520477248973
+            },
+            {
+              "a": "b015",
+              "b": "b018",
+              "rotation_deg": 0.05434219457401767,
+              "translation_difference_relative_units": 0.0003463902203810558
+            },
+            {
+              "a": "b015",
+              "b": "b019",
+              "rotation_deg": 0.10710461714491153,
+              "translation_difference_relative_units": 0.000366328188520366
+            },
+            {
+              "a": "b015",
+              "b": "b020",
+              "rotation_deg": 0.06956275860585873,
+              "translation_difference_relative_units": 0.00033636535651637565
+            },
+            {
+              "a": "b015",
+              "b": "b021",
+              "rotation_deg": 0.05215814577085399,
+              "translation_difference_relative_units": 0.0003234802164769016
+            },
+            {
+              "a": "b015",
+              "b": "b022",
+              "rotation_deg": 0.08239413880920368,
+              "translation_difference_relative_units": 0.00038518008757857096
+            },
+            {
+              "a": "b016",
+              "b": "b017",
+              "rotation_deg": 0.03519724875880426,
+              "translation_difference_relative_units": 8.599130396245698e-05
+            },
+            {
+              "a": "b016",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 6.884587606161601e-05
+            },
+            {
+              "a": "b016",
+              "b": "b019",
+              "rotation_deg": 0.05530386947950617,
+              "translation_difference_relative_units": 0.00016445597171872134
+            },
+            {
+              "a": "b016",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 8.297125199767756e-05
+            },
+            {
+              "a": "b016",
+              "b": "b021",
+              "rotation_deg": 0.03894681361818174,
+              "translation_difference_relative_units": 7.16333109812226e-05
+            },
+            {
+              "a": "b016",
+              "b": "b022",
+              "rotation_deg": 0.05153917597556408,
+              "translation_difference_relative_units": 0.00018319448128885604
+            },
+            {
+              "a": "b017",
+              "b": "b018",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 2.622527963014142e-05
+            },
+            {
+              "a": "b017",
+              "b": "b019",
+              "rotation_deg": 0.03578489370562078,
+              "translation_difference_relative_units": 4.3605399397945536e-05
+            },
+            {
+              "a": "b017",
+              "b": "b020",
+              "rotation_deg": 0.0,
+              "translation_difference_relative_units": 4.6707134412680244e-05
+            },
+            {
+              "a": "b017",
+              "b": "b021",
+              "rotation_deg": 0.02824311426333031,
+              "translation_difference_relative_units": 4.731433496163663e-05
+            },
+            {
+              "a": "b017",
+              "b": "b022",
+              "rotation_deg": 0.0384095660438475,
+              "translation_difference_relative_units": 0.00012491278180699328
+            },
+            {
+              "a": "b018",
+              "b": "b019",
+              "rotation_deg": 0.05889729398421504,
+              "translation_difference_relative_units": 3.426727215558637e-05
+            },
+            {
+              "a": "b018",
+              "b": "b020",
+              "rotation_deg": 0.025144316165848127,
+              "translation_difference_relative_units": 2.533125505916957e-05
+            },
+            {
+              "a": "b018",
+              "b": "b021",
+              "rotation_deg": 0.053300145111430254,
+              "translation_difference_relative_units": 2.3549547585462492e-05
+            },
+            {
+              "a": "b018",
+              "b": "b022",
+              "rotation_deg": 0.06113140007829123,
+              "translation_difference_relative_units": 0.00011876590561372086
+            },
+            {
+              "a": "b019",
+              "b": "b020",
+              "rotation_deg": 0.015427846650109135,
+              "translation_difference_relative_units": 2.434326289571716e-05
+            },
+            {
+              "a": "b019",
+              "b": "b021",
+              "rotation_deg": 0.06370713462838636,
+              "translation_difference_relative_units": 3.2183800003132445e-05
+            },
+            {
+              "a": "b019",
+              "b": "b022",
+              "rotation_deg": 0.05894510061062284,
+              "translation_difference_relative_units": 9.691846811968418e-05
+            },
+            {
+              "a": "b020",
+              "b": "b021",
+              "rotation_deg": 0.05554820757152889,
+              "translation_difference_relative_units": 2.47883965651432e-05
+            },
+            {
+              "a": "b020",
+              "b": "b022",
+              "rotation_deg": 0.059455609614477545,
+              "translation_difference_relative_units": 0.00010102837710805398
+            },
+            {
+              "a": "b021",
+              "b": "b022",
+              "rotation_deg": 0.04282106516441377,
+              "translation_difference_relative_units": 0.00012119081425244617
+            }
+          ],
+          "raw_xyz_relative_difference": 0.0003412779526024858,
+          "normalized_xyz_relative_difference": 0.00024353115879277554
+        }
+      ],
+      "prediction_status": {
+        "ok": 2
+      },
+      "scoring_manifest_sha256": "9b9e80c66721e56405054bdcf93f11a19feb3d9f8ce11de97f52145cdc3f149e",
+      "scoring_producer_sha256": "62ebf16be32f4d6b20818d23e89472872dd6b9eb980ecd0538549b3de8fc25d5",
+      "inference_seconds": 2677.1882914180023
+    }
+  },
+  "analysis_sha256": "5f1c25ef35c58cd5d10304209a2054b7df8899e03c2dd79b31654a5b3879f881",
+  "inputs_sha256": "7d9c98d47bbf7aa310be627bc00f2f350b39889773165c94a531303e074d65b9",
+  "scope": "E1 dev screen; report and calibration separate",
+  "analysis_sources": {
+    "scripts/analyze_joint_geometry.py": "5f1c25ef35c58cd5d10304209a2054b7df8899e03c2dd79b31654a5b3879f881",
+    "planrec/joint_evaluation.py": "a5d3db6ffa56a7ea708530054614eef56d984786bb8bbdc0bc96c69fdec29fae",
+    "planrec/pointmap_geometry.py": "39749d197e9c2fe18f059f347b48f48bc2645ffd119ec62a05bcf4c9f5babaa7",
+    "planrec/joint_geometry.py": "8e4e008e096f26a05c10209a950c744acf08e6d7d4acec888772e2c815c87672",
+    "planrec/joint_artifacts.py": "b2bf6f49d25443f912575a78d7f27ddc19220d7f485bbc811aa450827e1a8051"
+  },
+  "conditioning_contrasts": [],
+  "conditioning_summary": []
+}

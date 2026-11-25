@@ -1,0 +1,434 @@
+{
+  "schema": "structural-summary-v1",
+  "summary": [
+    {
+      "dataset": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "counts": {
+        "cases": 1,
+        "dense_successes": 1,
+        "structure_successes": 1,
+        "reference_photos": 0,
+        "native_hypotheses": 16,
+        "matched_native_hypotheses": 0,
+        "multi_photo_matched_hypotheses": 0,
+        "incompatible_merges": 0,
+        "s0_hypotheses": 0,
+        "matched_s0_hypotheses": 0,
+        "horizontal_prior_cases": 0
+      },
+      "methods": {
+        "planedust3r": {
+          "native_confidence_visible_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "world_structural_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "world_structural_numeric_subset_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          }
+        },
+        "metricanything": {
+          "native_layout_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          }
+        },
+        "s0": {
+          "native_layout_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "native_layout_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "occluded_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_depth_within_10pct": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_mean_deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_normal_within_20deg": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_coverage": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_subset_abs_rel": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          },
+          "visible_numeric_subset_point_rmse_m": {
+            "location_mean": null,
+            "bootstrap_95": null,
+            "locations": 0
+          }
+        }
+      },
+      "planedust3r_minus_control": {
+        "metricanything": {},
+        "s0": {}
+      },
+      "planes": {
+        "incompatible_merge_fraction": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "native_matched_fraction": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "native_normal_error_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "native_offset_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "native_overlap_purity": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "s0_matched_fraction": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "s0_normal_error_deg": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        },
+        "s0_offset_error_m": {
+          "location_mean": null,
+          "bootstrap_95": null,
+          "locations": 0
+        }
+      },
+      "cameras": {}
+    }
+  ],
+  "order_changes": [
+    {
+      "case": "blueprint-all-23",
+      "order": "reverse",
+      "dataset": "blueprint",
+      "location": "blueprint",
+      "role": "smoke",
+      "kind": "blueprint_all_photos",
+      "before_structure_status": "ok",
+      "after_structure_status": "ok",
+      "native_hypothesis_count_change": 0,
+      "changes": {}
+    }
+  ],
+  "source_scores": {
+    "structural-evaluation/blueprint-all-23--canonical_shuffled.json": "43c3081274b9afc1bbc4dec16e1e937ad9218e0730a8f47779cc7a9a3d34f991",
+    "structural-evaluation/blueprint-all-23--reverse.json": "58479e0e793e98deb9d77e308ad1516caede660769fc942272efded2591e77cf"
+  },
+  "producer_sha256": "7a18449c4e61065629ef1297ab3fa63637d76bc2506bb7836962ad503c9a161e",
+  "analysis_sources": {
+    "scripts/analyze_structural_geometry.py": "e45aeec5ec7b743096f174da1c8d28bb83786cf91e1cb2eea2ec49c55451c2e9",
+    "planrec/structural_analysis.py": "1b9efc8cfcdaf85fd71ee15a3558b791c5a7848f5c37a6f97d72cfbc90bb06bd",
+    "planrec/fusion_analysis.py": "99a5e9719742a72b4deec09674e9b7c09929c5ad4fada03defe13092f9f38d2a",
+    "planrec/pair_geometry.py": "bc352ad8ef16db6b519fcb81978e185e51d15fd152300c28bb8621cf37076d02",
+    "planrec/evaluation.py": "acf418ae606bf9c3113b2cbcea7760897eb59a04238eba2e3728aea997f21756"
+  }
+}
