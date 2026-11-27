@@ -12,7 +12,12 @@ const models = {metricanything:'MetricAnything', moge2:'MoGe-2', moge3:'MoGe-3',
 const matchers = {roma:'RoMa', loma:'LoMa-B', sift:'SIFT'};
 const stages = {initial:'Original placement', pair_refit_tree:'Independent pair refits',
   tree_cameras:'Cameras · tree edges', cameras:'Cameras · all edges',
-  tree_cameras_scale:'Cameras + scale · tree edges', cameras_scale:'Cameras + scale · all edges'};
+  tree_cameras_scale:'Cameras + scale · tree edges', cameras_scale:'Cameras + scale · all edges',
+  ba_reprojection:'BA · fixed dense depth', ba_depth_scale:'BA · depth + scale',
+  tree_cameras_scale_ba_depth:'Cameras + scale · tree → depth-aware BA',
+  cameras_scale_ba_depth:'Cameras + scale · all edges → depth-aware BA',
+  ba_depth_scale_3d:'BA · depth + scale + 3D consistency',
+  depth_refinement:'Depth refinement · fixed cameras'};
 
 export function facets(variant) {
   if (variant.controls) {
@@ -98,13 +103,16 @@ export function facets(variant) {
 
 const equal = (a, b, key) => facets(a)[key]?.id === facets(b)[key]?.id;
 export function sameConfiguration(a, b) { return fields.every(([key]) => equal(a, b, key)); }
+const refinementState = (a, b, field) => field !== 'refinement'
+  || (!!a.vlm === !!b.vlm && !!a.recovery === !!b.recovery);
 const surfaceState = (a, b, field) => field !== 'surface'
   || (!!a.vlm === !!b.vlm && !!a.recovery === !!b.recovery
     && fields.every(([key]) => key === 'surface' || equal(a, b, key)));
 
 export function fieldOptions(variants, current, field) {
   const earlier = fields.slice(0, fields.findIndex(([key]) => key === field));
-  const candidates = variants.filter(v => surfaceState(v, current, field)
+  const candidates = variants.filter(v => refinementState(v, current, field)
+    && surfaceState(v, current, field)
     && earlier.every(([key]) => equal(v, current, key)));
   return new Map(candidates.map(v => facets(v)[field]).filter(Boolean).map(c => [c.id, c.label]));
 }
@@ -112,6 +120,7 @@ export function fieldOptions(variants, current, field) {
 export function selectField(variants, current, field, value, preferredId = null) {
   const index = fields.findIndex(([key]) => key === field), earlier = fields.slice(0, index);
   const candidates = variants.filter(v => facets(v)[field]?.id === value
+    && refinementState(v, current, field)
     && surfaceState(v, current, field)
     && earlier.every(([key]) => equal(v, current, key)));
   // A return from Surfels or Mesh should recover the exact Points result the

@@ -984,7 +984,10 @@
     recoveryStatus.hidden = !state.variant.recovery;
     if (state.variant.recovery) {
       const result = recovered.recoveryInfo;
-      recoveryStatus.append(document.createTextNode(`Recovered bridges: ${result.bridges}; additional constraints: ${result.constraints}; total edges: ${result.edges}. Scale follows the anchor component; internal poses are preserved. `));
+      const placementNote = facets(state.variant).refinement?.id === 'initial'
+        ? 'Scale follows the anchor component; internal poses are preserved.'
+        : 'Connections were recovered before this saved refinement. Component membership is preserved.';
+      recoveryStatus.append(document.createTextNode(`Recovered bridges: ${result.bridges}; additional constraints: ${result.constraints}; total edges: ${result.edges}. ${placementNote} `));
       const link = document.createElement('a'); link.href = result.href; link.textContent = 'Checks and scale corrections ↗'; recoveryStatus.append(link);
     }
     const visible = !!reviewEvidence || !!recovered;
@@ -1031,15 +1034,27 @@
     if (component.unavailableReason || next.wholeComponentMesh && !component.mesh) return null;
     const matrix = (value,size) => Array.isArray(value) && value.length === size
       && value.every(row => Array.isArray(row) && row.length === size && row.every(Number.isFinite));
+    const transpose = value => value[0].map((_,j) => value.map(row => row[j]));
+    const rigidCamera = pose => {
+      if (!matrix(pose,4) || pose[3].some((n,j) => Math.abs(n-Number(j === 3)) > 1e-6)) return null;
+      const r = pose.slice(0,3).map(row => row.slice(0,3));
+      const determinant = r[0][0]*(r[1][1]*r[2][2]-r[1][2]*r[2][1])
+        - r[0][1]*(r[1][0]*r[2][2]-r[1][2]*r[2][0]) + r[0][2]*(r[1][0]*r[2][1]-r[1][1]*r[2][0]);
+      if (!(determinant > 0)) return null;
+      const scale = Math.cbrt(determinant), rotation = r.map(row => row.map(n => n/scale));
+      if (multiplyRotations(rotation,transpose(rotation))
+          .some((row,i) => row.some((n,j) => Math.abs(n-Number(i === j)) > 1e-6))) return null;
+      return rotation.map((row,i) => [...row,pose[i][3]]);
+    };
     const from = new Map(current.sources.map(s => [s.id,s])), to = new Map(next.sources.map(s => [s.id,s]));
-    // Check every saved camera-to-component matrix, not component numbers or
-    // method labels. 1e-6 allows the frozen float32/float64 serialization delta.
+    // A positive uniform scale may be stored in depth instead of the pose.
+    // Compare physical centers/orientations; reject shear and changed cameras.
+    // 1e-6 allows the frozen float32/float64 serialization delta.
     for (const photo of members) {
-      const x = from.get(photo)?.pose, y = to.get(photo)?.pose;
-      if (!matrix(x,4) || !matrix(y,4) || x.some((row,i) => row.some((n,j) => Math.abs(n-y[i][j]) > 1e-6))) return null;
+      const x = rigidCamera(from.get(photo)?.pose), y = rigidCamera(to.get(photo)?.pose);
+      if (!x || !y || x.some((row,i) => row.some((n,j) => Math.abs(n-y[i][j]) > 1e-6))) return null;
     }
     const oldRotation = level ? source.rotation : source.fixed, newRotation = level ? component.rotation : component.fixed;
-    const transpose = value => value[0].map((_,j) => value.map(row => row[j]));
     for (const rotation of [oldRotation,newRotation]) {
       if (!matrix(rotation,3) || multiplyRotations(rotation,transpose(rotation))
           .some((row,i) => row.some((n,j) => Math.abs(n - Number(i === j)) > 1e-6))) return null;

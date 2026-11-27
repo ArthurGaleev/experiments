@@ -1,0 +1,86 @@
+{
+  "created": "2026-11-27T03:55:25.529255+03:00",
+  "versions": {
+    "python": "3.13.16",
+    "numpy": "2.5.4"
+  },
+  "settings": {
+    "fusion": {
+      "absolute_tolerance": 0.03,
+      "relative_tolerance": 0.02,
+      "voxel_size": 0.03,
+      "normal_angle_deg": 30.0,
+      "roundtrip_pixels": 1.0,
+      "chunk_points": 100000
+    },
+    "mesh": {
+      "voxel_size": 0.03,
+      "truncation_voxels": 3.0,
+      "depth_max": 20.0,
+      "weight_threshold": 0.0,
+      "block_resolution": 16,
+      "max_blocks": 8192,
+      "max_photos": 32,
+      "max_input_pixels": 8000000,
+      "max_memory_bytes": 8589934592,
+      "max_abs_coordinate": 1000.0,
+      "chunk_points": 16384,
+      "cpu_threads": 1,
+      "diagnostic_absolute_tolerance": 0.03,
+      "diagnostic_relative_tolerance": 0.02
+    }
+  },
+  "status": "complete",
+  "title": "Refinement · Points, Surfels and Mesh",
+  "run": "20261127-035525-457250",
+  "params": {
+    "schema": "recovered-refinement-surfaces-v1",
+    "scope": "Blueprint canonical order, every refinement and component",
+    "branches": [
+      "initial",
+      "tree_cameras_scale",
+      "cameras_scale",
+      "ba_reprojection",
+      "ba_depth_scale",
+      "tree_cameras_scale_ba_depth",
+      "cameras_scale_ba_depth",
+      "ba_depth_scale_3d",
+      "depth_refinement"
+    ],
+    "surfaces": [
+      "points",
+      "surfels",
+      "mesh"
+    ],
+    "fusion": {
+      "absolute_tolerance": 0.03,
+      "relative_tolerance": 0.02,
+      "voxel_size": 0.03,
+      "normal_angle_deg": 30.0,
+      "roundtrip_pixels": 1.0,
+      "chunk_points": 100000
+    },
+    "mesh": {
+      "voxel_size": 0.03,
+      "truncation_voxels": 3.0,
+      "depth_max": 20.0,
+      "weight_threshold": 0.0,
+      "block_resolution": 16,
+      "max_blocks": 8192,
+      "max_photos": 32,
+      "max_input_pixels": 8000000,
+      "max_memory_bytes": 8589934592,
+      "max_abs_coordinate": 1000.0,
+      "chunk_points": 16384,
+      "cpu_threads": 1,
+      "diagnostic_absolute_tolerance": 0.03,
+      "diagnostic_relative_tolerance": 0.02
+    },
+    "scale": "Absorb saved photo scales into depth once; rigid cameras, common voxel units",
+    "anchors": "Same IDs: largest reviewed constituent's first canonical photo",
+    "fixed": "No camera/depth optimization or new inference. All photos/components retained.",
+    "limits": "Predicted surfaces; no reference accuracy or triangle photo ownership. No hole filling or fragment deletion."
+  },
+  "dataset": "Blueprint-Bench / example_house (collages split manually)",
+  "source": "https://github.com/AndonLabs/Blueprint-Bench-generation/tree/6e9b9a62eeb5dc0a43718045a2b1e79b41725eaa/dataset/example_house"
+}
